@@ -4,9 +4,9 @@ module.exports = {
     async up(queryInterface, Sequelize) {
         await queryInterface.createTable('histories', {
             id: {
-                allowNull: false,
-                primaryKey: true,
                 type: Sequelize.STRING,
+                primaryKey: true,
+                allowNull: false,
             },
             pateintId: {
                 type: Sequelize.STRING,
