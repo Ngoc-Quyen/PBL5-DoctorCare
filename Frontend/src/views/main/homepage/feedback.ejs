@@ -1,0 +1,110 @@
+<% extend("../app.ejs") %>
+<section class="mt-0" style="background-color: #ABF3FD; height: 50px; display: flex; align-items: center;">
+    <div class="container-fluid">
+        <div class="row align-items-center">
+            
+            <div class="col-md-2">
+                <div class="homepage-logo mt-2">
+                    <img class="menu-nav" src="../images/background/DC.png" alt="img logo">
+                </div>
+            </div>
+            
+            <div class="col-md-7 d-none d-md-flex justify-content-between">
+                <div class="d-flex flex-column">
+                    <button class="btn btn-design" onclick="redirectToHome()">Trang chủ</button>
+                </div>
+                <div class="d-flex flex-column">
+                    <button class="btn btn-design" onclick="redirectToSpecializations()">Chuyên khoa</button>
+                </div>
+                <div class="d-flex flex-column">
+                    <button class="btn btn-design" onclick="redirectToDoctors()">Bác sĩ</button>
+                </div>
+                <div class="d-flex flex-column">
+                    <button class="btn btn-design" onclick="redirectToClinic()">Gói khám</button>
+                </div>
+                <div class="header-search align-self-center justify-content-center">
+                    <i class="fa fa-search"></i>
+                    <label for="input-search"></label>
+                    <input id="input-search" placeholder="Tìm kiếm...">
+                    <div id="show-info-search" class="show-info-search"></div>
+                </div>
+                <script>
+                    function redirectToHome() {
+                        window.location.href = "/";
+                    }
+                    function redirectToSpecializations() {
+                        window.location.href = "/all-specializations";
+                    }
+                    function redirectToDoctors() {
+                        window.location.href = "/all-doctors %>" ;
+                    }
+                    function redirectToClinic() {
+                        window.location.href = "/all-clinics";
+                    }
+                </script>
+            </div>
+            
+            <div class="col-md-3 mt-2 d-none d-md-flex justify-content-between align-self-center justify-content-center">
+                    <a href="/login" class="btn btn-design1 ">Đăng nhập</a>
+                    <a href="/register" class="btn btn-design2 ">Đăng ký</a>
+                <a href="https://www.facebook.com/profile.php?id=100011010698678" target="_blank">
+                    <img src="../images/background/Vector.png" alt="Contact logo">
+                </a>
+            </div>
+            
+        </div>
+    </div>
+</section>
+<section class="detail-info-specialization">
+    <div class="container">
+        <div class="container">
+            <div class="row">
+                <div class="col-12 mt-3">
+                    <a class="text-decoration-none" href="/">Trang chủ </a><span aria-hidden="true">&raquo;</span>
+                    <span style="text-transform: uppercase">
+                 Gửi phản hồi
+                    </span>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+<section class="detail-info-clinic mt-3">
+    <div class="container">
+        <div class="container">
+            <div class="row">
+                <div class="col-8 mx-auto">
+                    <h2>Gửi phản hồi sau khi đi khám bác sĩ</h2>
+                    <hr>
+                    <div>
+                        Phản hồi của bạn sẽ giúp người khác dễ dàng lựa chọn bác sĩ phù hợp hơn.                 </div>
+                    <div class="mt-2">
+                        Vui lòng tham khảo ý kiến ​​bác sĩ:<%= doctor.name %>
+                    </div>
+                    <form id="formFeedBack">
+                        <div class="form-row mt-4">
+                            <div class="col">
+                                <label for="feedbackName">Tên</label>
+                                <input class="form-control" name="feedbackName" id="feedbackName" type="text"
+                                       placeholder="Tên (bắt buộc)">
+                            </div>
+                            <div class="col">
+                                <label for="feedbackPhone">Số điện thoại</label>
+                                <input class="form-control" name="feedbackPhone" id="feedbackPhone" type="text"
+                                       placeholder="Số điện thoại (bắt buộc)">
+                            </div>
+                        </div>
+                        <div class="form-group mt-2">
+                            <label for="feedbackContent">Nội dung</label>
+                            <textarea class="form-control" name="feedbackContent" id="feedbackContent"
+                                      type="text"></textarea>
+                        </div>
+                        <div class="mb-4">
+                            <button type="button" class="btn btn-primary" data-doctor-id="<%= doctor.id %>" id="sendFeedback">Gửi</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>

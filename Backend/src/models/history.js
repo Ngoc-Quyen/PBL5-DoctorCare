@@ -13,7 +13,10 @@ module.exports = (sequelize, DataTypes) => {
     }
     History.init(
         {
-            id: DataTypes.STRING,
+            id: {
+                type: DataTypes.STRING,
+                primaryKey: true, // Mark id as primary key
+            },
             pateintId: DataTypes.STRING,
             doctorId: DataTypes.STRING,
             decription: DataTypes.TEXT,

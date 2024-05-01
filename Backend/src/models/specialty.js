@@ -13,7 +13,10 @@ module.exports = (sequelize, DataTypes) => {
     }
     Specilty.init(
         {
-            id: DataTypes.STRING,
+            id: {
+                type: DataTypes.STRING,
+                primaryKey: true, // Mark id as primary key
+            },
             name: DataTypes.STRING,
             description: DataTypes.TEXT,
             avatar: DataTypes.STRING,

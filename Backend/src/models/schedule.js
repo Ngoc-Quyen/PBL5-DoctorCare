@@ -13,7 +13,10 @@ module.exports = (sequelize, DataTypes) => {
     }
     Schedule.init(
         {
-            id: DataTypes.STRING,
+            id: {
+                type: DataTypes.STRING,
+                primaryKey: true, // Mark id as primary key
+            },
             currentNumber: DataTypes.INTEGER,
             maxNumber: DataTypes.INTEGER,
             date: DataTypes.DATE,
