@@ -88,9 +88,22 @@ let updateUserData = (data) => {
         }
     });
 };
+let deteleUserByEmail = async (userEmail) => {
+    return new Promise(async (resolve, reject) => {
+        try {
+            await db.User.destroy({
+                where: { email: userEmail },
+            });
+            resolve(); // = return;
+        } catch (error) {
+            reject(error);
+        }
+    });
+};
 module.exports = {
     createNewUser: createNewUser,
     getAllUser: getAllUser,
     getUserByEmail: getUserByEmail,
     updateUserData: updateUserData,
+    deteleUserByEmail: deteleUserByEmail,
 };
