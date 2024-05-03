@@ -17,6 +17,9 @@ module.exports = {
             decription: {
                 type: Sequelize.TEXT,
             },
+            file: {
+                type: Sequelize.TEXT,
+            },
             createdAt: {
                 allowNull: false,
                 type: Sequelize.DATE,

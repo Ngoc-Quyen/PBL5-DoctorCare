@@ -30,10 +30,10 @@ module.exports = {
             birthday: {
                 type: Sequelize.DATEONLY,
             },
-            typeRole: {
-                type: Sequelize.STRING,
+            avatar: {
+                type: Sequelize.DATEONLY,
             },
-            keyRole: {
+            roleId: {
                 type: Sequelize.STRING,
             },
             createdAt: {
