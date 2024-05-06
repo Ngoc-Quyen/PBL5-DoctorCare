@@ -58,10 +58,6 @@ Các quy trình sử dụng web (frontend)
     |__ Tất cả chuyên khoa (main/homepage/allSpecialozation.ejs)
         |__ Chi tiết chuyên khoa (main/homepage/specialization.ejs)
 
-- Xem gói khám
-    Home (main/homepage/homepage.ejs)
-    |__ Tất cả gói khám (main/homepage/allClinic.ejs)
-        |__ Chi tiết gói khám (main/homepage/clinic.ejs)
 
 - Xem bài đăng (chưa hoàn thiện)
     Home (main/homepage/homepage.ejs)
@@ -85,27 +81,20 @@ Các quy trình sử dụng web (frontend)
 - Người dùng:
     |__ Quản lý người dùng: (main/user/admins/manageUser.ejs)  (Từ quản lý supporter chuyển qua quản lý user)
 
-- Gói khám:
-    |__ Tạo gói khám: (main/user/admins/createClinic.ejs)
-    |__ Chỉnh sửa gói khám: (main/user/admins/editClinic.ejs)
-    |__ Quản lý gói khám: (main/user/admins/manageClinic.ejs)
-
 - Bài đăng:
     |__ Tạo bài đăng: (main/user/admins/createPost.ejs)
     |__ Chỉnh sửa bài đăng: (main/user/admins/editPost.ejs)
     |__ Quản lý bài đăng: (main/user/admins/managePost.ejs)
 
+- Quản lý các lịch hẹn  - có thể search và xem lại lịch đã hẹn
+    |__ Quản lý lịch hẹn (main/user/admins/manageAppointment.ejs)
 
-Khúc này hơi dư nên mn xem để coi bỏ phần nào nhé
-- Lịch trình: (chưa hoàn thiện)
+- Kế hoạch (từng bác sĩ): 
     |__ Tạo lịch trình: (main/user/admins/createSchedule.ejs)
     |__ Lịch trình: (main/user/admins/Schedule.ejs)
 
-- Kế hoạch:
-    |__ Quản lý kế hoạch (main/user/admins/manageScheduleForDoctor.ejs)
+- Quản lý đặt khám
+    |__ Quản lý lịch đã đặt (main/user/admins/manageBooking.ejs)
 
-- Quản lý các lịch đã hẹn (chưa hoàn thiện) - có thể search và xem lại lịch đã hẹn
-    |__ Quản lý lịch hẹn (main/user/admins/manageAppointment.ejs)
-
-- Quản lý các bệnh nhân đặt lịch 
-    |__ Quản lý bệnh nhân đặt lịch (main/user/admins/managePatient.ejs)
+- Thống kê:
+    |__ Thống kê (main/user/admins/manageChartDoctor.ejs)

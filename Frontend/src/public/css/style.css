@@ -708,4 +708,23 @@ h3.show-title-post {
 .btn-design2:hover,
 .btn-design2:focus {
   background-color: #c1ae03; 
+<<<<<<< Updated upstream
 }
+=======
+}
+.btn-noclick {
+  color: black; 
+  background-color: #F1B600; /* Thiết lập màu nền là màu vàng */
+}
+
+.btn-cancel {
+  color: black; 
+  background-color: #d2d0bc; /* Thiết lập màu nền là màu vàng */
+  height: 35px;
+}
+
+.btn-cancel:hover,
+.btn-cancel:focus {
+  background-color: #979586; 
+}
+>>>>>>> Stashed changes

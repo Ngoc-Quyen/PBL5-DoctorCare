@@ -44,14 +44,36 @@
                 </script>
             </div>
             
+<<<<<<< Updated upstream
             <div class="col-md-3 mt-2 d-none d-md-flex justify-content-between align-self-center justify-content-center">
+=======
+            <div class="col-md-3 mt-3 d-none d-md-flex justify-content-around align-self-center">
+                <div class="d-flex flex-column">
+>>>>>>> Stashed changes
                     <a href="/login" class="btn btn-design1 ">Đăng nhập</a>
                     <a href="/register" class="btn btn-design2 ">Đăng ký</a>
                 <a href="https://www.facebook.com/profile.php?id=100011010698678" target="_blank">
+<<<<<<< Updated upstream
                     <img src="../images/background/Vector.png" alt="Contact logo">
                 </a>
             </div>
             
+=======
+                    <img src="../images/background/Vector.png" alt="Contact logo" class="logo">
+                </a>
+            </div>
+            <!--<div class="col-md-3 d-none d-md-flex justify-content-around align-self-center">
+                <a href="/InfoUser" target="_blank">
+                    <img src="../images/background/User.png" alt="User logo" class="logo">
+                </a>
+                <a href="/InfoBooked" target="_blank">
+                    <img src="../images/background/Lichhen.png" alt="Lichhen logo" class="logo">
+                </a>
+                <a href="https://www.facebook.com/profile.php?id=100011010698678" target="_blank">
+                    <img src="../images/background/Vector.png" alt="Contact logo" class="logo">
+                </a>
+            </div>-->
+>>>>>>> Stashed changes
         </div>
     </div>
 </section>
@@ -181,10 +203,33 @@
         </div>
     </div>
 </section>
+<<<<<<< Updated upstream
 <section class="sec-foot">
     <div class="sec-fields-title mx-auto d-flex my-3">
         <h6 class="">DOCTORS CARE</h6>
         
+=======
+<footer class="sec-foot">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-6">
+                <h4>Liên kết</h6>
+                <ul class="footer-links">
+                    <li><a href="/">Trang chủ</a></li>
+                    <li><a href="/all-specializations">Chuyên khoa</a></li>
+                    <li><a href="/all-doctors %>">Bác sĩ</a></li>
+                    <li><a href="/all-posts">Hỏi đáp cộng đồng</a></li>
+                </ul>
+            </div>
+            <div class="col-md-6">
+                <h4>Thông tin liên hệ</h6>
+                <p>Địa chỉ: 64 Nguyễn Lương Bằng, Hòa Khánh, Liên Chiểu, Đà Nẵng</p>
+                <p>Website: <a href="http://DoctorCare.com">http://DoctorCare.com</a></p>
+                <p>Email: <a href="mailto:Doctorcare@gmail.com">Doctorcare@gmail.com</a></p>
+                <p>Số điện thoại: 0123 456 789</p>
+            </div>
+        </div>
+>>>>>>> Stashed changes
     </div>
 </section>
 
@@ -215,32 +260,6 @@
     </div>
 </div>
 
-<!-- Modal show all clinics-->
-<div class="modal fade " tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true"
-     id="modalAllClinics">
-    <div class="modal-dialog modal-lg" role="document">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title" id="exampleModalLabel">Danh sách gói khám</h5>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                </button>
-            </div>
-            <div class="modal-body">
-                <div class="row all-specializations-body px-2">
-                    <% clinics.forEach(function(x) { %>
-                        <div class="col-12 col-spe pl-3"><a href="/detail/clinic/<%= x.id %>" class="text-decoration-none"><%= x.name %> </a></div>
-                    <% }) %>
-                        <div class="col-12 col-spe pl-3"><a href="/all-clinics" class="text-decoration-none">Xem tất cả</a></div>
-
-                </div>
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-primary" id="btn-confirm-booking-spe"  data-dismiss="modal">OK</button>
-            </div>
-        </div>
-    </div>
-</div>
 
 <!-- Modal show all doctors-->
 <div class="modal fade " tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true"
