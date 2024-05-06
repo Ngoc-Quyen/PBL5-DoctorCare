@@ -82,7 +82,77 @@ let getAllCodeService = (typeInput) => {
     });
 };
 
+let createNewUser = async (data) => {
+    return new Promise(async (resolve, reject) => {
+        try {
+            const emailExists = await checkExistingEmail(data.email);
+            if (emailExists) {
+                resolve('Email đã tồn tại trong hệ thống. Vui lòng sử dụng một email khác.');
+            } else if (data.password !== data.rgPasswordAgain) {
+                resolve('Mật khẩu không khớp. Vui lòng nhập lại mật khẩu.');
+            } else {
+                let hashPasswordFromBcrypt = await hashUserPassword(data.password);
+                await db.User.create({
+                    email: data.email,
+                    password: hashPasswordFromBcrypt,
+                    firstName: data.firstName,
+                    lastName: data.lastName,
+                });
+                console.log(data);
+                resolve('Tạo tài khoản mới thành công.');
+            }
+        } catch (error) {
+            reject(error);
+        }
+    });
+};
+let checkExistingEmail = async (email) => {
+    try {
+        const existingUser = await db.User.findOne({ where: { email: email } });
+        return existingUser ? true : false;
+    } catch (error) {
+        throw error;
+    }
+};
+let hashUserPassword = (password) => {
+    return new Promise(async (resolve, reject) => {
+        try {
+            var hashPassword = await bcrypt.hashSync(password, salt);
+            resolve(hashPassword); //thay vi dung return
+        } catch (error) {
+            reject(error);
+        }
+    });
+};
+
+let getAllUsers = async (userEmail) => {
+    return new Promise(async (resolve, reject) => {
+        try {
+            let users = '';
+            if (userEmail === 'ALL' || userEmail === 'all') {
+                users = await db.User.findAll({
+                    attributes: {
+                        exclude: ['password'],
+                    },
+                });
+            }
+            if (userEmail !== 'ALL' && userEmail !== 'all' && userEmail) {
+                users = await db.User.findOne({
+                    where: { email: userEmail },
+                    attributes: {
+                        exclude: ['password'],
+                    },
+                });
+            }
+            resolve(users);
+        } catch (error) {
+            reject(error);
+        }
+    });
+};
 module.exports = {
     handleUserLogin: handleUserLogin,
     getAllCodeService: getAllCodeService,
+    createNewUser: createNewUser,
+    getAllUsers: getAllUsers,
 };
