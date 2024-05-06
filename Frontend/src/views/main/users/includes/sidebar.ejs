@@ -51,7 +51,6 @@
                  data-parent="#accordionSidebar">
                 <div class="bg-white py-2 collapse-inner rounded">
                     <h6 class="collapse-header">Khác</h6>
-                    <a class="collapse-item" id="aManageClinic" href="/users/manage/clinic">Gói khám</a>
                     <a class="collapse-item" id="aManageSpecialization" href="/users/manage/specialization">Chuyên khoa</a>
                     <a class="collapse-item" id="aManagePosts" href="/admin/manage/posts">Bài đăng</a>
                     <!--<a class="collapse-item" id="aManageCreateScheduleDoctors"
@@ -61,105 +60,44 @@
         </li>
         <!-- Admin -->
 
-        <hr class="sidebar-divider">
-
-        <!-- Doctors -->
-        <div class="sidebar-heading">
-           Bác sĩ 
-        </div>
-        <li class="nav-item " id="listAppointment">
-            <a class="nav-link" href="/doctor/manage/appointment">
-                <i class="fas fa-calendar-check"></i>
-                <span>Lịch hẹn</span></a>
-        </li>
-
-        <!--<li class="nav-item liScheduleClass" id="liSchedule">
-            <a class="nav-link" href="/doctor/manage/schedule">
-                <i class="fas fa-fw fa-table"></i>
-                <span>Kế hoạch</span></a>
-        </li> -->
-        <li class="nav-item liScheduleClass" id="liSchedule">
-            <a class="nav-link" href="/users/manage/schedule-for-doctors">
-                <i class="fas fa-fw fa-table"></i>
-                <span>Kế hoạch</span></a>
-        </li>
-        <li class="nav-item admin-list-patients" id="liSchedule">
-            <a class="nav-link" href="/admin/get-new-patients">
-                <i class="fas fa-procedures"></i>
-                <span>Đặt khám</span></a>
-        </li>
-        <li class="nav-item" id="listChart">
-            <a class="nav-link" href="/doctor/manage/chart">
-                <i class="fas fa-fw fa-chart-area"></i>
-                <span>Thống kê</span></a>
-        </li>
         
-        <!-- Doctors -->
 
-        <hr class="sidebar-divider">
-
-        <div class="sidebar-heading">
-           Gói khám
-        </div>
-        <li class="nav-item " id="listAppointment">
-            <a class="nav-link" href="/doctor/manage/appointment">
-                <i class="fas fa-calendar-check"></i>
-                <span>Lịch hẹn</span></a>
-        </li>
-
-        <!--<li class="nav-item liScheduleClass" id="liSchedule">
-            <a class="nav-link" href="/doctor/manage/schedule">
-                <i class="fas fa-fw fa-table"></i>
-                <span>Kế hoạch</span></a>
-        </li> -->
-        <li class="nav-item liScheduleClass" id="liSchedule">
-            <a class="nav-link" href="/users/manage/schedule-for-doctors">
-                <i class="fas fa-fw fa-table"></i>
-                <span>Kế hoạch</span></a>
-        </li>
-        <li class="nav-item admin-list-patients" id="liSchedule">
-            <a class="nav-link" href="/admin/get-new-patients">
-                <i class="fas fa-procedures"></i>
-                <span>Đặt khám</span></a>
-        </li>
-        <li class="nav-item" id="listChart">
-            <a class="nav-link" href="/doctor/manage/chart">
-                <i class="fas fa-fw fa-chart-area"></i>
-                <span>Thống kê</span></a>
-        </li>
         
-        <!-- Doctors -->
     <% } %>
 
     <% if(user.roleId === 2 ) { %>
         <!-- Doctors -->
-
         <div class="sidebar-heading">
-           Bác sĩ
-        </div>
-        <li class="nav-item " id="listAppointment">
-            <a class="nav-link" href="/doctor/manage/appointment">
-                <i class="fas fa-calendar-check"></i>
-                <span>Lịch hẹn</span></a>
-        </li>
-        <!--<li class="nav-item liScheduleClass" id="liSchedule">
-            <a class="nav-link" href="/doctor/manage/schedule">
-                <i class="fas fa-fw fa-table"></i>
-                <span>Kế hoạch</span></a>
-        </li> -->
-        <li class="nav-item liScheduleClass" id="liSchedule">
-            <a class="nav-link" href="/users/manage/schedule-for-doctors">
-                <i class="fas fa-fw fa-table"></i>
-                <span>Kế hoạch</span></a>
-        </li>
-
-        <li class="nav-item"  id="listChart">
-            <a class="nav-link" href="/doctor/manage/chart">
-                <i class="fas fa-fw fa-chart-area"></i>
-                <span>Thống kê</span></a>
-        </li>
-        <!-- Doctors -->
-
+            Bác sĩ 
+         </div>
+         <li class="nav-item " id="listAppointment">
+             <a class="nav-link" href="/doctor/manage/appointment">
+                 <i class="fas fa-calendar-check"></i>
+                 <span>Lịch hẹn</span></a>
+         </li>
+ 
+         <!--<li class="nav-item liScheduleClass" id="liSchedule">
+             <a class="nav-link" href="/doctor/manage/schedule">
+                 <i class="fas fa-fw fa-table"></i>
+                 <span>Kế hoạch</span></a>
+         </li> -->
+         <li class="nav-item liScheduleClass" id="liSchedule">
+             <a class="nav-link" href="/doctor/manage/schedule">
+                 <i class="fas fa-fw fa-table"></i>
+                 <span>Kế hoạch</span></a>
+         </li>
+         <li class="nav-item admin-list-patients" id="liSchedule">
+             <a class="nav-link" href="/admin/get-new-patients">
+                 <i class="fas fa-procedures"></i>
+                 <span>Đặt khám</span></a>
+         </li>
+         <li class="nav-item" id="listChart">
+             <a class="nav-link" href="/doctor/manage/chart">
+                 <i class="fas fa-fw fa-chart-area"></i>
+                 <span>Thống kê</span></a>
+         </li>
+         
+         <!-- Doctors -->
     <% } %>
 
     <hr class="sidebar-divider d-none d-md-block">

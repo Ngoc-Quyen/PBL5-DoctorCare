@@ -1,5 +1,5 @@
 <% extend("../app.ejs") %>
-<section class="mt-0" style="background-color: #ABF3FD; height: 50px; display: flex; align-items: center;">
+<section class="mt-0" style="background-color: #ABF3FD; height: 60px; display: flex; align-items: center;">
     <div class="container-fluid">
         <div class="row align-items-center">
             
@@ -19,9 +19,6 @@
                 <div class="d-flex flex-column">
                     <button class="btn btn-design" onclick="redirectToDoctors()">Bác sĩ</button>
                 </div>
-                <div class="d-flex flex-column">
-                    <button class="btn btn-design" onclick="redirectToClinic()">Gói khám</button>
-                </div>
                 <div class="header-search align-self-center justify-content-center">
                     <i class="fa fa-search"></i>
                     <label for="input-search"></label>
@@ -38,20 +35,31 @@
                     function redirectToDoctors() {
                         window.location.href = "/all-doctors %>" ;
                     }
-                    function redirectToClinic() {
-                        window.location.href = "/all-clinics";
-                    }
                 </script>
             </div>
             
-            <div class="col-md-3 mt-2 d-none d-md-flex justify-content-between align-self-center justify-content-center">
+            <!--<div class="col-md-3 mt-3 d-none d-md-flex justify-content-around align-self-center">
+                <div class="d-flex flex-column">
                     <a href="/login" class="btn btn-design1 ">Đăng nhập</a>
+                </div>
+                <div class="d-flex flex-column">
                     <a href="/register" class="btn btn-design2 ">Đăng ký</a>
+                </div>
                 <a href="https://www.facebook.com/profile.php?id=100011010698678" target="_blank">
-                    <img src="../images/background/Vector.png" alt="Contact logo">
+                    <img src="../images/background/Vector.png" alt="Contact logo" class="logo">
+                </a>
+            </div>-->
+            <div class="col-md-3 d-none d-md-flex justify-content-around align-self-center">
+                <a href="/InfoUser" target="_blank">
+                    <img src="../images/background/User.png" alt="User logo" class="logo">
+                </a>
+                <a href="/InfoBooked" target="_blank">
+                    <img src="../images/background/Lichhen.png" alt="Lichhen logo" class="logo">
+                </a>
+                <a href="https://www.facebook.com/profile.php?id=100011010698678" target="_blank">
+                    <img src="../images/background/Vector.png" alt="Contact logo" class="logo">
                 </a>
             </div>
-            
         </div>
     </div>
 </section>
@@ -117,25 +125,7 @@
     </div>
 </section>
 
-<section class="sec-hospitals">
-    <div class="sec-fields-title mx-auto d-flex my-3">
-        <h3 class="">Gói khám</h3>
-        <a class="flex-grow-1 my-auto"><span class="d-block show-all-clinics">Xem thêm</span></a>
-    </div>
-    <div class="section-slide">
-        <div class="slider slider-nav text-decoration-none">
-            <% clinics.forEach(function(clinic) { %>
-                <a href="/detail/clinic/<%= clinic.id %>" class="text-decoration-none" style="outline: none">
-                    <div class="d-flex flex-column slide-fields clinics" data-clinic="<%= clinic.id %>">
-                        <img src="/images/clinics/<%= clinic.image %>"
-                             alt="image bla bla">
-                        <h3><%= clinic.name %></h3>
-                    </div>
-                </a>
-            <% }) %>
-        </div>
-    </div>
-</section>
+
 <section class="sec-doctors">
     <div class="sec-fields-title mx-auto d-flex my-3">
         <h3 class="">Bác sĩ nổi bật</h3>
@@ -171,7 +161,6 @@
         </div>
     </div>
     
-    <!-- Phần hình nền màu xanh viền đen -->
     <div class="background-right">
         <div class="support-method">
             <h2>Cách thức hỗ trợ</h2>
@@ -181,12 +170,42 @@
         </div>
     </div>
 </section>
+<<<<<<< HEAD
+<footer class="sec-foot">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-6">
+                <h4>Liên kết</h6>
+                <ul class="footer-links">
+                    <li><a href="/">Trang chủ</a></li>
+                    <li><a href="/all-specializations">Chuyên khoa</a></li>
+                    <li><a href="/all-doctors %>">Bác sĩ</a></li>
+                    <li><a href="/all-posts">Hỏi đáp cộng đồng</a></li>
+                </ul>
+            </div>
+            <div class="col-md-6">
+                <h4>Thông tin liên hệ</h6>
+                <p>Địa chỉ: 64 Nguyễn Lương Bằng, Hòa Khánh, Liên Chiểu, Đà Nẵng</p>
+                <p>Website: <a href="http://DoctorCare.com">http://DoctorCare.com</a></p>
+                <p>Email: <a href="mailto:Doctorcare@gmail.com">Doctorcare@gmail.com</a></p>
+                <p>Số điện thoại: 0123 456 789</p>
+            </div>
+=======
 <section class="sec-foot">
     <div class="sec-fields-title mx-auto d-flex my-3">
-        <h6 class="">DOCTORS CARE</h6>
-        
+        <div>
+            <img src="../images/background/DC.png" alt=""/>
+            <ul>
+                <li style="list-style: none;"><i class="fa fa-map-marker" aria-hidden="true"></i> Địa chỉ: 54 Nguyễn Lương Bằng </li>
+                <li style="list-style: none;"><i class="fa fa-link" aria-hidden="true"></i> Website: doctorcare.vn</li>
+                <li style="list-style: none;"><i class="fa fa-envelope" aria-hidden="true"></i> Email: doctorcare@gmail.com</li>
+                <li style="list-style: none;"><i class="fa fa-phone" aria-hidden="true"></i> Hotline: 0123456789</li>
+            </ul>
+>>>>>>> 351868a5d1d436dbcda7a4dfd8318c1c7f652fef
+        </div>
     </div>
-</section>
+</footer>
+
 
 <!-- Modal show all specializations-->
 <div class="modal fade " tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true"

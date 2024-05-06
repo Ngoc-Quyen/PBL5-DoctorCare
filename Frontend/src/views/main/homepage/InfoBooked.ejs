@@ -5,13 +5,13 @@
             
             <div class="col-md-2">
                 <div class="homepage-logo mt-2">
-                    <img class="menu-nav" src="/images/background/DC.png" alt="img logo">
+                    <img class="menu-nav" src="../images/background/DC.png" alt="img logo">
                 </div>
             </div>
             
             <div class="col-md-7 d-none d-md-flex justify-content-between">
                 <div class="d-flex flex-column">
-                    <button class="btn btn-design" onclick="redirectToHome()">Trang chủ</button>
+                    <button class="btn btn-warning text-black" onclick="redirectToHome()">Trang chủ</button>
                 </div>
                 <div class="d-flex flex-column">
                     <button class="btn btn-design" onclick="redirectToSpecializations()">Chuyên khoa</button>
@@ -38,7 +38,7 @@
                 </script>
             </div>
             
-            <div class="col-md-3 mt-3 d-none d-md-flex justify-content-around align-self-center">
+            <!--<div class="col-md-3 mt-3 d-none d-md-flex justify-content-around align-self-center">
                 <div class="d-flex flex-column">
                     <a href="/login" class="btn btn-design1 ">Đăng nhập</a>
                 </div>
@@ -46,56 +46,26 @@
                     <a href="/register" class="btn btn-design2 ">Đăng ký</a>
                 </div>
                 <a href="https://www.facebook.com/profile.php?id=100011010698678" target="_blank">
-                    <img src="/images/background/Vector.png" alt="Contact logo" class="logo">
-                </a>
-            </div>
-            <!--<div class="col-md-3 d-none d-md-flex justify-content-around align-self-center">
-                <a href="" target="_blank">
-                    <img src="/images/background/User.png" alt="User logo" class="logo">
-                </a>
-                <a href="" target="_blank">
-                    <img src="/images/background/Lichhen.png" alt="Lichhen logo" class="logo">
-                </a>
-                <a href="https://www.facebook.com/profile.php?id=100011010698678" target="_blank">
-                    <img src="/images/background/Vector.png" alt="Contact logo" class="logo">
+                    <img src="../images/background/Vector.png" alt="Contact logo" class="logo">
                 </a>
             </div>-->
-            
-        </div>
-    </div>
-</section>
-<section class="detail-content detail-post">
-    <div class="container">
-        <div class="container">
-            <div class="row">
-                <div class="col-8">
-                    <div class="input-search-post">
-                        <input id="searchInDetailPost" class="form-control" type="text" placeholder="Tìm kiếm bài đăng...">
-                    </div>
-                    <hr>
-                    <div class="title-post"> <%= post.title %></div>
-                    <div class="content-detail-post"><%- post.contentHTML %></div>
-                </div>
-                <div class="col-4 tableOfContent pt-3">
-                    <div id="toc">
-                        <div class="main-content">Nội dung</div>
-                    </div>
-                </div>
+            <div class="col-md-3 d-none d-md-flex justify-content-around align-self-center">
+                <a href="/InfoUser" target="_blank">
+                    <img src="../images/background/User.png" alt="User logo" class="logo">
+                </a>
+                <a href="/InfoBooked" target="_blank">
+                    <img src="../images/background/Lichhen.png" alt="Lichhen logo" class="logo">
+                </a>
+                <a href="https://www.facebook.com/profile.php?id=100011010698678" target="_blank">
+                    <img src="../images/background/Vector.png" alt="Contact logo" class="logo">
+                </a>
             </div>
         </div>
     </div>
 </section>
 
-<script>
-
-    $(function() {
-        var toc = $("#toc").tocify({
-            selectors: "h2,h3,h4,h5"
-        }).data("toc-tocify");
-        toc.setOption("showEffect", "fadeIn");
-    });
-
-</script>
+<section class="mt-0" style="background-color: #ABF3FD; height: 1000px; display: flex; align-items: center;"></section>
+</section>
 <footer class="sec-foot">
     <div class="container">
         <div class="row">
