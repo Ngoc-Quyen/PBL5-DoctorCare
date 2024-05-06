@@ -24,6 +24,19 @@ let handleLogin = async (req, res) => {
     });
 };
 
+let getAllCode = async (req, res) => {
+    try {
+        let data = await userService.getAllCodeService(req.query.type);
+        return res.status(200).json(data);
+    } catch (error) {
+        console.log('Get all code error: ', error);
+        return res.status(200).json({
+            errCode: -1,
+            errMessage: 'Error from Server',
+        });
+    }
+};
 module.exports = {
     handleLogin: handleLogin,
+    getAllCode: getAllCode,
 };

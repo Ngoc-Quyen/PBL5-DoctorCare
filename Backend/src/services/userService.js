@@ -59,6 +59,30 @@ let checkUserEmail = (userEmail) => {
     });
 };
 
+let getAllCodeService = (typeInput) => {
+    return new Promise(async (resolve, reject) => {
+        try {
+            if (!typeInput) {
+                resolve({
+                    errCode: 1,
+                    errMessage: 'Missing required parameder!!',
+                });
+            } else {
+                let res = {};
+                let allcode = await db.Allcodes.findAll({
+                    where: { type: typeInput },
+                });
+                res.errCode = 0;
+                res.data = allcode;
+                resolve(res);
+            }
+        } catch (error) {
+            reject(error);
+        }
+    });
+};
+
 module.exports = {
     handleUserLogin: handleUserLogin,
+    getAllCodeService: getAllCodeService,
 };

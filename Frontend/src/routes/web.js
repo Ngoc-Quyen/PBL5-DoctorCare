@@ -3,7 +3,6 @@ import home from "./../controllers/homeController";
 import auth from "./../controllers/authController";
 import admin from "./../controllers/adminController";
 import doctor from "./../controllers/doctorController";
-import clinic from "./../controllers/clinicController";
 import bot from "./../controllers/botFBController";
 import passport from "passport";
 import passportLocal from 'passport-local';
@@ -59,9 +58,10 @@ passport.deserializeUser((id, done) => {
 });
 
 let initRoutes = (app) => {
-    router.get("/all-clinics", home.getPageAllClinics);
     router.get("/all-doctors", home.getPageAllDoctors);
     router.get("/all-specializations", home.getPageAllSpecializations);
+    router.get("/InfoUser", home.getPageInfoUser);
+    router.get("/InfoInfoBooked", home.getPageInfoBooked);
 
     router.get('/webhook', bot.getWebhookFB);
     router.post('/webhook', bot.postWebhookFB);
@@ -88,7 +88,6 @@ let initRoutes = (app) => {
     router.post('/booking-doctor-normal/create', home.postBookingDoctorPageNormal);
 
     router.get('/detail/post/:id', home.getDetailPostPage);
-    router.get('/detail/clinic/:id', home.getDetailClinicPage);
     router.get('/booking-info/:id', home.getInfoBookingPage);
 
     router.get('/all-posts', home.getPostsWithPagination);
@@ -107,15 +106,6 @@ let initRoutes = (app) => {
     router.get('/users/doctor/edit/:id', auth.checkLoggedIn, admin.getEditDoctor);
     router.put('/admin/doctor/update-without-file', auth.checkLoggedIn, admin.putUpdateDoctorWithoutFile);
     router.put('/admin/doctor/update', auth.checkLoggedIn, admin.putUpdateDoctor);
-
-    router.get('/users/manage/clinic', auth.checkLoggedIn, admin.getManageClinic);
-    router.get('/users/manage/clinic/create', auth.checkLoggedIn, admin.getCreateClinic);
-    router.post('/admin/clinic/create', auth.checkLoggedIn, admin.postCreateClinic);
-    router.post('/admin/clinic/create-without-file', auth.checkLoggedIn, admin.postCreateClinicWithoutFile);
-
-    router.put('/admin/clinic/update-without-file', auth.checkLoggedIn, admin.putUpdateClinicWithoutFile);
-    router.put('/admin/clinic/update', auth.checkLoggedIn, admin.putUpdateClinic);
-    router.get('/users/clinic/edit/:id', auth.checkLoggedIn, admin.getEditClinic);
 
     router.get('/doctor/manage/schedule', doctor.getSchedule);
     router.get('/doctor/manage/schedule/create', auth.checkLoggedIn, doctor.getCreateSchedule);
@@ -142,10 +132,8 @@ let initRoutes = (app) => {
     router.post('/admin/done-comment', auth.checkLoggedIn, admin.postDoneComment);
 
     router.post('/api/get-info-doctor-by-id', doctor.getInfoDoctorById);
-    router.post('/api/get-info-clinic-by-id', clinic.getInfoClinicById);
     router.post('/api/get-detail-patient-by-id', home.getDetailPatientBooking);
 
-    router.delete('/admin/delete/clinic', auth.checkLoggedIn, admin.deleteClinicById);
     router.delete('/admin/delete/doctor', auth.checkLoggedIn, admin.deleteDoctorById);
     router.delete('/admin/delete/specialization', auth.checkLoggedIn, admin.deleteSpecializationById);
     router.delete('/admin/delete/post', auth.checkLoggedIn, admin.deletePostById);

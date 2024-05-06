@@ -398,7 +398,7 @@ let getInfoStatistical = async (req, res) => {
 };
 let getNewPatients = (req, res) => {
     //render data = js/ getForPatientsTabs
-    return res.render('main/users/admins/managePatient.ejs', {
+    return res.render('main/users/admins/manageBooking.ejs', {
         user: req.user
     })
 };

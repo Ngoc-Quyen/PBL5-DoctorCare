@@ -267,10 +267,10 @@ let createAllDoctorsSchedule = () => {
                             });
                         })
                     );
-                    resolve("Appointments are created successful (in 7 days). Please check your database (schedule table)");
+                    resolve("Cuộc hẹn được tạo thành công (trong 7 ngày). Vui lòng kiểm tra cơ sở dữ liệu của bạn (schedule table)");
                 }
             } else {
-                resolve("Appointments are duplicated. Please check your database (schedule table)");
+                resolve("Các cuộc hẹn bị trùng lặp. Vui lòng kiểm tra cơ sở dữ liệu của bạn (schedule table)");
             }
         } catch (e) {
             reject(e);
@@ -292,6 +292,20 @@ let getAllDoctorsSchedule = () => {
         }
     })
 }
+let getAllUsers = () => {
+    return new Promise(async (resolve, reject) => {
+        try {
+            let supporters = await db.User.findAll({
+                where: { roleId: 3 }
+            });
+
+            resolve(supporters);
+
+        } catch (e) {
+            reject(e);
+        }
+    });
+};
 module.exports = {
     createDoctor: createDoctor,
     getInfoDoctors: getInfoDoctors,
@@ -301,5 +315,6 @@ module.exports = {
     getInfoStatistical: getInfoStatistical,
     getInfoDoctorChart: getInfoDoctorChart,
     createAllDoctorsSchedule: createAllDoctorsSchedule,
-    getAllDoctorsSchedule: getAllDoctorsSchedule
+    getAllDoctorsSchedule: getAllDoctorsSchedule,
+    getAllUsers: getAllUsers
 };

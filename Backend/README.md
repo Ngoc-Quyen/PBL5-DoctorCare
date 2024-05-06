@@ -11,3 +11,5 @@
     atributes: ['email', 'roleId'], // Lay vai truong mong muon
     where: { email: userEmail },
     });
+
+khi gọi db nhớ phải dùng await

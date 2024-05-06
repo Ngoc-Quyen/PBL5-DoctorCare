@@ -211,6 +211,12 @@ function showModalInfoClinic() {
                 } else {
                     $('#phone').val('Chưa cập nhật');
                 }
+                
+
+
+
+
+
                 if (data.clinic.image) {
                     $('#imageClinic').prepend(`<img class="img-info-clinic" src="/images/clinics/${data.clinic.image}" />`)
                 } else {
@@ -307,6 +313,7 @@ function showModalInfoDoctor() {
                     $('#addressDoctor').val('Chưa cập nhật');
                 }
                 $('#specializationDoctor').val(data.doctor.specializationName);
+                
                 if (data.doctor.avatar) {
                     $('#imageDoctor').prepend(`<img class="img-info-clinic" src="/images/users/${data.doctor.avatar}" />`)
                 } else {
@@ -405,7 +412,7 @@ function deleteSpecializationById() {
     });
 }
 
-function showPostsForerAdmin() {
+function showPostsForAdmin() {
     let currentPage = 1;
     let total = $('#paginationForPost').data('total');
     if (total === 1) {
@@ -964,7 +971,7 @@ function handleBtnViewHistory() {
                                 <input type="text"  class="form-control" id="historyStatus" value="${log.content}">
                             </div>
                             <div class="col-3">
-                                <input type="text"  class="form-control" id="personDone" value="${log.AdminName}">
+                                <input type="text"  class="form-control" id="personDone" value="${log.adminName}">
                             </div>
                             <div class="col-3">
                                 <input type="text"  class="form-control" id="timeDone" value="${convertStringToDateClient(log.createdAt)} ">
@@ -1176,7 +1183,7 @@ function statisticalAdmin(month) {
             if (data.bestAdmin === '') {
                 $('#bestAdmin').text(`Không có thông tin`);
             } else {
-                $('#bestAddmin').text(`${data.bestAdmin.name} (${data.bestAdmin.count})`);
+                $('#bestAdmin').text(`${data.bestAdmin.name} (${data.bestAdmin.count})`);
             }
         },
         error: function(error) {
