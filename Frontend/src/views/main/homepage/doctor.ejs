@@ -1,11 +1,11 @@
 <% extend("../app.ejs") %>
-<section class="mt-0" style="background-color: #ABF3FD; height: 50px; display: flex; align-items: center;">
+<section class="mt-0" style="background-color: #ABF3FD; height: 60px; display: flex; align-items: center;">
     <div class="container-fluid">
         <div class="row align-items-center">
             
             <div class="col-md-2">
                 <div class="homepage-logo mt-2">
-                    <img class="menu-nav" src="../images/background/DC.png" alt="img logo">
+                    <img class="menu-nav" src="/images/background/DC.png" alt="img logo">
                 </div>
             </div>
             
@@ -18,9 +18,6 @@
                 </div>
                 <div class="d-flex flex-column">
                     <button class="btn btn-warning text-black" onclick="redirectToDoctors()">Bác sĩ</button>
-                </div>
-                <div class="d-flex flex-column">
-                    <button class="btn btn-design" onclick="redirectToClinic()">Gói khám</button>
                 </div>
                 <div class="header-search align-self-center justify-content-center">
                     <i class="fa fa-search"></i>
@@ -38,19 +35,31 @@
                     function redirectToDoctors() {
                         window.location.href = "/all-doctors %>" ;
                     }
-                    function redirectToClinic() {
-                        window.location.href = "/all-clinics";
-                    }
                 </script>
             </div>
             
-            <div class="col-md-3 mt-2 d-none d-md-flex justify-content-between align-self-center justify-content-center">
+            <div class="col-md-3 mt-3 d-none d-md-flex justify-content-around align-self-center">
+                <div class="d-flex flex-column">
                     <a href="/login" class="btn btn-design1 ">Đăng nhập</a>
+                </div>
+                <div class="d-flex flex-column">
                     <a href="/register" class="btn btn-design2 ">Đăng ký</a>
+                </div>
                 <a href="https://www.facebook.com/profile.php?id=100011010698678" target="_blank">
-                    <img src="../images/background/Vector.png" alt="Contact logo">
+                    <img src="../images/background/Vector.png" alt="Contact logo" class="logo">
                 </a>
             </div>
+            <!--<div class="col-md-3 d-none d-md-flex justify-content-around align-self-center">
+                <a href="" target="_blank">
+                    <img src="/images/background/User.png" alt="User logo" class="logo">
+                </a>
+                <a href="" target="_blank">
+                    <img src="/images/background/Lichhen.png" alt="Lichhen logo" class="logo">
+                </a>
+                <a href="https://www.facebook.com/profile.php?id=100011010698678" target="_blank">
+                    <img src="/images/background/Vector.png" alt="Contact logo" class="logo">
+                </a>
+            </div>-->
             
         </div>
     </div>
@@ -242,7 +251,7 @@
                                                placeholder="Ghi chú lịch sử bệnh án (nếu có)"
                                                name="breath"></textarea>
                                     <div class="form-group">
-                                        <label class="mt-2 col-form-label w-100">Đã từng đặt khám tại (kể từ 15 ngày qua):</label>
+                                        <!--<label class="mt-2 col-form-label w-100">Đã từng đặt khám tại (kể từ 15 ngày qua):</label>
 
                                         <% places.forEach(function(place) { %>
                                         <div class="form-check form-check-inline">
@@ -256,14 +265,14 @@
                                             <input class="form-check-input" type="radio" name="places"
                                                    id="selectNone" value="none" checked>
                                             <label class="form-check-label" for="selectNone">Chưa từng đặt khám</label>
-                                        </div>
+                                        </div>-->
 
                                         <div class="mt-3">
                                             <label>Các lần khám trước:</label>
                                             <div class="d-flex ">
                                                 <label class="mr-2" for="oldForms">Đăng tải hình ảnh: </label>
-                                                <input name="oldForms" id="oldForms" type="file" accept="image/*"
-                                                       multiple>
+                                                <input name="oldForms" id="oldForms" type="file" accept="image/*" multiple title="Chọn tệp">
+
                                             </div>
                                             <textarea class="form-control mt-2" id="extraOldForms"
                                                       placeholder="Thông tin bổ sung, nếu có "
@@ -295,3 +304,25 @@
         $('#modalBooking').modal('show');
     }
 </script>
+<footer class="sec-foot">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-6">
+                <h4>Liên kết</h6>
+                <ul class="footer-links">
+                    <li><a href="/">Trang chủ</a></li>
+                    <li><a href="/all-specializations">Chuyên khoa</a></li>
+                    <li><a href="/all-doctors %>">Bác sĩ</a></li>
+                    <li><a href="/all-posts">Hỏi đáp cộng đồng</a></li>
+                </ul>
+            </div>
+            <div class="col-md-6">
+                <h4>Thông tin liên hệ</h6>
+                <p>Địa chỉ: 64 Nguyễn Lương Bằng, Hòa Khánh, Liên Chiểu, Đà Nẵng</p>
+                <p>Website: <a href="http://DoctorCare.com">http://DoctorCare.com</a></p>
+                <p>Email: <a href="mailto:Doctorcare@gmail.com">Doctorcare@gmail.com</a></p>
+                <p>Số điện thoại: 0123 456 789</p>
+            </div>
+        </div>
+    </div>
+</footer>

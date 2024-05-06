@@ -336,6 +336,22 @@ let getPageAllDoctors = async (req, res)=>{
     }
 };
 
+let getPageInfoUser = async (req, res)=>{
+    try{
+        return res.render("main/homepage/InfoUser.ejs",{
+        })
+    }catch (e) {
+        console.log(e);
+    }
+};
+let getPageInfoBooked = async (req, res)=>{
+    try{
+        return res.render("main/homepage/InfoBooked.ejs",{
+        })
+    }catch (e) {
+        console.log(e);
+    }
+};
 let getPageAllSpecializations =async (req, res)=>{
     try{
         let specializations = await homeService.getDataPageAllSpecializations();
@@ -370,5 +386,7 @@ module.exports = {
     postSearchHomePage: postSearchHomePage,
     getPageAllClinics: getPageAllClinics,
     getPageAllDoctors: getPageAllDoctors,
+    getPageInfoUser:getPageInfoUser,
+    getPageInfoBooked:getPageInfoBooked,
     getPageAllSpecializations: getPageAllSpecializations
 };
