@@ -125,7 +125,7 @@ let postLogin = async (req, res) => {
 };
 
 let handleGetAllUsers = async (req, res) => {
-    let email = req.body.email; // all, id
+    let email = req.query.email; // all, id
     if (!email) {
         return res.status(200).json({
             errCode: 1,
@@ -140,6 +140,25 @@ let handleGetAllUsers = async (req, res) => {
         users,
     });
 };
+let handleCreateNewUser = async (req, res) => {
+    let message = await userService.createNewUser(req.body);
+    return res.status(200).json(message);
+};
+let handleEditUser = async (req, res) => {
+    let data = req.body;
+    let message = await userService.updateUserData(data);
+    return res.status(200).json(message);
+};
+let handleDeleteUser = async (req, res) => {
+    if (!req.body.email) {
+        return res.status(200).json({
+            errCode: 1,
+            errMessage: 'Missinf required parameters!',
+        });
+    }
+    let message = await userService.deleteUser(req.body.email);
+    return res.status(200).json(message);
+};
 module.exports = {
     handleLogin: handleLogin,
     getAllCode: getAllCode,
@@ -148,4 +167,7 @@ module.exports = {
     postLogin: postLogin,
     getRegisterPage: getRegisterPage,
     handleGetAllUsers: handleGetAllUsers,
+    handleCreateNewUser: handleCreateNewUser,
+    handleEditUser: handleEditUser,
+    handleDeleteUser: handleDeleteUser,
 };
