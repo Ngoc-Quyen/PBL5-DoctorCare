@@ -1,5 +1,6 @@
 import db from '../models/index';
 import CRUDService from '../services/CRUDService';
+import userService from '../services/userService';
 let getHomePage = async (req, res) => {
     try {
         let data = await db.User.findAll();
@@ -53,10 +54,24 @@ let getEditCRUD = async (req, res) => {
 };
 let putCRUD = async (req, res) => {
     let data = req.body;
-    let allUsers = await CRUDService.updateUserData(data);
-    return res.render('displayCRUD.ejs', {
-        dataTable: allUsers,
-    });
+    console.log(data);
+    try {
+        let result = await userService.updateUserData(data);
+        if (result.errCode === 0) {
+            return res.redirect('/get-crud');
+        } else {
+            return res.status(200).json({
+                errorCode: result.errCode,
+                errorMessage: result.errMessage,
+            });
+        }
+    } catch (error) {
+        console.error('Error updating user:', error);
+        return res.status(200).json({
+            errorCode: -1,
+            errorMessage: 'Internal Server Error',
+        });
+    }
 };
 let deleteCRUD = async (req, res) => {
     let email = req.query.email;

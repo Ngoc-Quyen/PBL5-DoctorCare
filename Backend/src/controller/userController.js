@@ -53,21 +53,26 @@ let getRegisterPage = async (req, res) => {
     }
 };
 let postRegister = async (req, res) => {
-    console.log('PostRegister from controller');
     try {
         let message = await userService.createNewUser(req.body);
-        console.log(message);
-        return res.render('auth/login.ejs', {
-            error: req.flash('error'),
-        });
+        if (message.errCode === 0) {
+            // Nếu không có lỗi, đưa ra thông báo thành công và chuyển hướng sang trang đăng nhập
+            req.flash('successMessage', 'Bạn đã tạo tài khoản thành công');
+            return res.redirect('/login');
+        } else {
+            // Nếu có lỗi, đưa ra thông báo lỗi và chuyển hướng lại trang đăng ký
+            req.flash('error', message.errMessage);
+            return res.redirect('/register');
+        }
     } catch (error) {
         console.log('Error: ', error);
-        return res.status(200).json({
+        return res.status(500).json({
             errorCode: -1,
             errMessage: 'Error from Server',
         });
     }
 };
+
 let postLogin = async (req, res) => {
     try {
         let email = req.body.email;
@@ -89,7 +94,6 @@ let postLogin = async (req, res) => {
         // }
         // Gọi hàm xử lý đăng nhập từ service
         let userData = await userService.handleUserLogin(email, password);
-        console.log('userData: ', userData);
         // Kiểm tra kết quả đăng nhập
         if (userData.errCode === 0) {
             // Tạo JWT token
@@ -159,6 +163,28 @@ let handleDeleteUser = async (req, res) => {
     let message = await userService.deleteUser(req.body.email);
     return res.status(200).json(message);
 };
+let getRessetPassword = async (req, res) => {
+    let email = req.query.email;
+    console.log(email);
+    if (!email) {
+        return res.render('auth/login.ejs', {
+            error: 'Vui lòng nhập email của tài khoản!',
+        });
+    }
+    let users = await userService.getAllUsers(email);
+    if (users) {
+        // Nếu có người dùng được tìm thấy, chuyển hướng đến trang reset password
+        // return res.render('auth/reset-password.ejs');
+        return res.render('editCRUD.ejs', {
+            user: users,
+        });
+    } else {
+        // Nếu không có người dùng, ở lại trang hiện tại và đưa ra thông báo lỗi
+        return res.render('auth/login.ejs', {
+            error: 'Không có tài khoản nào được tìm thấy cho email này',
+        });
+    }
+};
 module.exports = {
     handleLogin: handleLogin,
     getAllCode: getAllCode,
@@ -170,4 +196,5 @@ module.exports = {
     handleCreateNewUser: handleCreateNewUser,
     handleEditUser: handleEditUser,
     handleDeleteUser: handleDeleteUser,
+    getRessetPassword: getRessetPassword,
 };

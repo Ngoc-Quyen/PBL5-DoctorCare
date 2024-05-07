@@ -68,8 +68,8 @@
     </div>
 
     <!-- Modal -->
-    <div class="modal fade" id="forgotPasswordModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
-        aria-hidden="true">
+    <form class="modal fade" id="forgotPasswordModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+        aria-hidden="true" action="/reset-password" method="GET">
         <div class="modal-dialog" role="document">
             <div class="modal-content">
                 <div class="modal-header">
@@ -82,16 +82,17 @@
                 <div class="modal-body">
                     <div>
                         <label for="input-forgot-password">Địa chỉ email"</label>
-                        <input id="input-forgot-password" type="email" class="form-control" placeholder="Email...">
+                        <input id="input-forgot-password" type="email" class="form-control" placeholder="Email..."
+                            name="email">
                     </div>
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-dismiss="modal">Hủy</button>
-                    <button type="button" class="btn btn-primary" action="/reset-password" method="POST">OK</button>
+                    <button type="submit" class="btn btn-primary">OK</button>
                 </div>
             </div>
         </div>
-    </div>
+    </form>
 
     <!-- Đoạn mã JavaScript -->
     <script>
