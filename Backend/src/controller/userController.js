@@ -80,7 +80,7 @@ let postLogin = async (req, res) => {
 
         // Kiểm tra xem email và mật khẩu có được cung cấp không
         if (!email || !password) {
-            return res.status(500).json({
+            return res.status(200).json({
                 errCode: 1,
                 message: 'Missing inputs parameter!',
             });

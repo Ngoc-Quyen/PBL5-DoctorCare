@@ -6,10 +6,16 @@ import connecDB from './config/connectDB';
 import flash from 'connect-flash';
 import session from './config/session';
 import cors from 'cors';
+import * as admin from 'firebase-admin';
+import serviceAccount from './serviceAccountKey.json';
 
 // import dotenv from '.env';
 require('dotenv').config();
 let app = express();
+admin.initializeApp({
+    credential: admin.credential.cert(serviceAccount),
+    storageBucket: process.env.StorageBucket, // Thay thế bằng địa chỉ bucket của bạn
+});
 app.use(cors({ origin: true }));
 // config app
 app.use(bodyParser.json());

@@ -1,6 +1,8 @@
 import express from 'express';
 import homeController from '../controller/homeController';
 import userController from '../controller/userController';
+import specialtyService from '../services/specialtyService';
+import specialtyController from '../controller/specialtyController';
 
 let router = express.Router();
 let initWebRouters = (app) => {
@@ -24,6 +26,15 @@ let initWebRouters = (app) => {
     router.get('/api/get-all-users', userController.handleGetAllUsers);
     router.put('/api/edit-user', userController.handleEditUser);
     router.delete('/api/delete-user', userController.handleDeleteUser);
+
+    // api lay toan bo du lieu trong bang Specialty
+    router.get('/api/get-all-specialty', specialtyController.handleGetAllSpecialty);
+    // api tạo chuyên khoa
+    router.post('/api/create-specialty', specialtyController.handleCreateSpecialty);
+    // api sửa chuyên khoa
+    router.put('/api/edit-specialty', specialtyController.handleEditSpecialty);
+    // api xóa chuyen khoa
+    router.delete('/api/delete-specialty', specialtyController.handleDeleteSpecialty);
 
     router.get('/allcode', userController.getAllCode);
     return app.use('/', router);
