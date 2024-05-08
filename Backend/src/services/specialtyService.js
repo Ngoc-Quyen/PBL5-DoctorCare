@@ -11,7 +11,6 @@ let getAllSpecialty = async () => {
                 });
             }
             let specialtise = await db.Specialty.findAll();
-            console.log(specialtise);
             resolve(specialtise);
             if (!specialtise) {
                 resolve({
@@ -36,31 +35,41 @@ let checkId = async (idSpecialty) => {
             const isExist = await db.Specialty.findOne({
                 where: { id: idSpecialty },
             });
-            return isExist ? true : false;
-        } catch (error) {}
+            if (isExist) {
+                resolve(true);
+            } else {
+                resolve(false);
+            }
+        } catch (error) {
+            reject(error);
+        }
     });
 };
-let createSpecialty = async (data) => {
+let createSpecialty = async (data, file) => {
     return new Promise(async (resolve, reject) => {
         try {
-            const idExists = await checkId(data.id);
+            let idExists = await checkId(data.id);
             if (idExists) {
                 resolve({
                     errCode: 1,
                     errMessage: 'id đã tồn tại trong hệ thống. Vui lòng sử dụng một id khác.',
                 });
+            } else {
+                let url = data.avatar;
+                if (file) {
+                    url = await imgLoadFirebase.getImgUrl(file.path);
+                }
+                await db.Specialty.create({
+                    id: data.id,
+                    name: data.name,
+                    description: data.description,
+                    avatar: url,
+                });
+                resolve({
+                    errCode: 0,
+                    errMessage: 'OK',
+                });
             }
-            await db.User.create({
-                id: data.id,
-                name: data.name,
-                description: data.description,
-                avatar: data.avatar,
-            });
-            // console.log(data);
-            resolve({
-                errCode: 0,
-                errMessage: 'OK',
-            });
         } catch (error) {
             reject(error);
         }
@@ -113,10 +122,11 @@ let updateSpecialtyData = async (data, file) => {
                 specialty.name = data.name;
                 specialty.description = data.description;
                 // Nếu có file ảnh được upload, gửi ảnh lên Firebase và lấy URL
+                let url = data.avatar;
                 if (file) {
-                    const url = await imgLoadFirebase.getImgUrl(file.path);
-                    specialty.avatar = url;
+                    url = await imgLoadFirebase.getImgUrl(file.path);
                 }
+                specialty.avatar = url;
                 await specialty.save();
                 resolve({
                     errCode: 0,

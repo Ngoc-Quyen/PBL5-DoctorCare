@@ -13,3 +13,7 @@
     });
 
 khi gọi db nhớ phải dùng await
+
+5. Cách xóa các commit chưa được push
+   Mixed Reset: Lệnh này sẽ chuyển HEAD của bạn đến commit mà bạn muốn quay lại và đặt tất cả các thay đổi từ commit đó trở về trạng thái "staged" (đã được chuẩn bị cho commit).
+   git reset --mixed HEAD~[số commit]
