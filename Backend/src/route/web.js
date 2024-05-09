@@ -3,6 +3,7 @@ import homeController from '../controller/homeController';
 import userController from '../controller/userController';
 import specialtyService from '../services/specialtyService';
 import specialtyController from '../controller/specialtyController';
+import doctor_specialtyController from '../controller/doctor_specialtyController';
 
 let router = express.Router();
 let initWebRouters = (app) => {
@@ -35,7 +36,15 @@ let initWebRouters = (app) => {
     router.put('/api/edit-specialty', specialtyController.handleEditSpecialty);
     // api xóa chuyen khoa
     router.delete('/api/delete-specialty', specialtyController.handleDeleteSpecialty);
-
+    // api create doctor vao specialty
+    router.post('/create-doctor-specialty', doctor_specialtyController.handleCreateDoctorSpecialty);
+    // api get all doctor specialty
+    router.get('/get-all-doctor-specialty', doctor_specialtyController.handleGetAllDoctorSpecialty);
+    // api delete doctor specialty
+    router.delete('/delete-doctor-specialty', doctor_specialtyController.handleDeleteDoctorSpecialty);
+    // api update specialty by doctor
+    router.put('/edit-doctor-specialty', doctor_specialtyController.handleEditDoctorSpecialty);
+    // get allcode by type
     router.get('/allcode', userController.getAllCode);
     return app.use('/', router);
 };

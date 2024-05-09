@@ -183,6 +183,7 @@ let updateUserData = async (data) => {
                 user.birthday = data.birthday;
                 user.avatar = data.avatar;
                 user.password = data.password;
+                user.roleId = data.roleId;
                 await user.save();
                 // await db.User.save({
                 //     firstName: data.firstName,

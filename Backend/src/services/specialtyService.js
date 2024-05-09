@@ -138,6 +138,7 @@ let updateSpecialtyData = async (data, file) => {
         }
     });
 };
+
 module.exports = {
     getAllSpecialty: getAllSpecialty,
     createSpecialty: createSpecialty,
