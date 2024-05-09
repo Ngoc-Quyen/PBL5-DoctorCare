@@ -748,12 +748,6 @@ h3.show-title-post {
 .btn-design2:hover,
 .btn-design2:focus {
   background-color: #c1ae03; 
-<<<<<<< HEAD
-<<<<<<< Updated upstream
-}
-=======
-=======
->>>>>>> 3281f8bb85e0f722d9be1558455864651cd1949c
 }
 .btn-noclick {
   color: black; 
@@ -770,9 +764,6 @@ h3.show-title-post {
 .btn-cancel:focus {
   background-color: #979586; 
 }
-<<<<<<< HEAD
->>>>>>> Stashed changes
-=======
 
 .container {
   width: 100%;
@@ -808,6 +799,7 @@ h3.show-title-post {
   border: 1px solid #ccc;
   border-radius: 5px;
   font-size: 16px;
+  
 }
 
 .form-group span.error {
@@ -837,4 +829,14 @@ h3.show-title-post {
   cursor: pointer;
   border-radius: 5px;
 }
->>>>>>> 3281f8bb85e0f722d9be1558455864651cd1949c
+.infor-user-container{
+  text-align:center;
+  width: 30%;
+  height: 100vh;
+}
+
+.infor-user-detail{
+  text-align:center;
+  width: 100%;
+  height: 100vh;
+}
