@@ -1,9 +1,11 @@
 import express from 'express';
 import homeController from '../controller/homeController';
 import userController from '../controller/userController';
-import specialtyService from '../services/specialtyService';
+
 import specialtyController from '../controller/specialtyController';
 import doctor_specialtyController from '../controller/doctor_specialtyController';
+import passport from 'passport';
+import passportLocal from 'passport-local';
 
 let router = express.Router();
 let initWebRouters = (app) => {
@@ -17,8 +19,12 @@ let initWebRouters = (app) => {
     router.post('/put-crud', homeController.putCRUD);
     router.get('/delete-crud', homeController.deleteCRUD);
 
+    router.get('/users', userController.checkLoggedIn, homeController.getUserPage);
+
     router.get('/login', userController.getLoginPage);
     router.post('/login', userController.postLogin);
+
+    // });
     router.get('/register', userController.getRegisterPage);
     router.post('/create-user', userController.postRegister);
     router.get('/reset-password', userController.getRessetPassword);

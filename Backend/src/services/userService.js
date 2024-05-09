@@ -4,7 +4,7 @@ import bcrypt from 'bcryptjs';
 import { raw } from 'body-parser';
 const salt = bcrypt.genSaltSync(10);
 
-let handleUserLogin = (email, password) => {
+let handleUserLogin = async (email, password) => {
     return new Promise(async (resolve, reject) => {
         try {
             let userData = {};
@@ -43,6 +43,33 @@ let handleUserLogin = (email, password) => {
             reject(error);
         }
     });
+};
+let getUserByEmail = async (emailUser) => {
+    return new Promise(async (resolve, reject) => {
+        let isExist = await checkUserEmail(emailUser);
+        if (isExist) {
+            let user = await db.User.findOne({
+                // attributes: ['email', 'roleId', 'password', 'isActive'], // Lay vai truong mong muon
+                where: { email: emailUser },
+                // raw: false,
+            });
+            resolve({
+                errCode: 0,
+                errMessage: 'OK',
+                user,
+            });
+        } else {
+            resolve({
+                errCode: 1,
+                errMessage: `Your's email isn't exist in your system. Pls try other email!`,
+            });
+        }
+    });
+};
+let comparePassword = async (password, user) => {
+    // console.log(user.password);
+    if (!user.password) return false;
+    return await bcrypt.compareSync(password, user.password);
 };
 let checkUserEmail = (userEmail) => {
     return new Promise(async (resolve, reject) => {
@@ -176,22 +203,17 @@ let updateUserData = async (data) => {
                     errMessage: `User's not found!`,
                 });
             } else {
+                let hashPassword = await hashUserPassword(data.password);
+
                 user.firstName = data.firstName;
                 user.lastName = data.lastName;
                 user.address = data.address;
                 user.phone = data.phone;
                 user.birthday = data.birthday;
                 user.avatar = data.avatar;
-                user.password = data.password;
+                user.password = hashPassword;
                 user.roleId = data.roleId;
                 await user.save();
-                // await db.User.save({
-                //     firstName: data.firstName,
-                //     lastName: data.lastName,
-                //     address: data.address,
-                //     phone: data.phone,
-                //     birthday: data.birthday,
-                // });
                 resolve({
                     errCode: 0,
                     errMessage: 'Update the user success!',
@@ -224,6 +246,7 @@ let getAllCodeService = (typeInput) => {
         }
     });
 };
+
 module.exports = {
     handleUserLogin: handleUserLogin,
     getAllCodeService: getAllCodeService,
@@ -231,4 +254,6 @@ module.exports = {
     getAllUsers: getAllUsers,
     deleteUser: deleteUser,
     updateUserData: updateUserData,
+    comparePassword: comparePassword,
+    getUserByEmail: getUserByEmail,
 };
