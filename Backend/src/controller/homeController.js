@@ -31,6 +31,7 @@ let postCRUD = async (req, res) => {
 // function Select All User
 let displayCRUD = async (req, res) => {
     let data = await CRUDService.getAllUser();
+    console.log(data);
     return res.render('displayCRUD', {
         dataTable: data,
         raw: true,
@@ -43,7 +44,7 @@ let getEditCRUD = async (req, res) => {
         let userData = await CRUDService.getUserByEmail(userEmail);
         // Check user data not found
 
-        //
+        console.log(userData);
         return res.render('editCRUD.ejs', {
             user: userData,
         });
@@ -86,7 +87,14 @@ let deleteCRUD = async (req, res) => {
         return res.send('User not found!!');
     }
 };
-
+let getUserPage = async (req, res) => {
+    let currentMonth = new Date().getMonth() + 1;
+    console.log('getUserPage: ', req.user.user);
+    res.render('main/users/home.ejs', {
+        user: req.user.user,
+        currentMonth: currentMonth,
+    });
+};
 module.exports = {
     getHomePage: getHomePage,
     getAboutPage: getAboutPage,
@@ -96,4 +104,5 @@ module.exports = {
     getEditCRUD: getEditCRUD,
     putCRUD: putCRUD,
     deleteCRUD: deleteCRUD,
+    getUserPage: getUserPage,
 };

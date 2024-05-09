@@ -23,12 +23,15 @@
         "dotenv": "^16.4.5",
         "ejs": "^3.1.10",
         "express": "^4.19.2",
+        "express-ejs-extend": "^0.0.1",
         "express-flash": "^0.0.2",
         "express-session": "^1.18.0",
         "firebase": "^10.11.1",
         "firebase-admin": "^12.1.0",
         "jsonwebtoken": "^9.0.2",
         "mysql2": "^3.9.7",
+        "passport": "^0.7.0",
+        "passport-local": "^1.0.0",
         "sequelize": "^6.37.3"
     },
     "devDependencies": {

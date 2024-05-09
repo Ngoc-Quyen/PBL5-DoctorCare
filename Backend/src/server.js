@@ -8,6 +8,7 @@ import session from './config/session';
 import cors from 'cors';
 import * as admin from 'firebase-admin';
 import serviceAccount from './serviceAccountKey.json';
+import passPort from 'passport';
 
 // import dotenv from '.env';
 require('dotenv').config();
@@ -24,7 +25,9 @@ app.use(bodyParser.urlencoded({ extends: true }));
 session.configSession(app);
 // Sử dụng express-flash middleware
 app.use(flash());
-
+// config Passportjs
+app.use(passPort.initialize());
+app.use(passPort.session());
 viewEngine(app);
 initWebRouter(app);
 

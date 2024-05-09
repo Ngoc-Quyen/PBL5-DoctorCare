@@ -1,5 +1,56 @@
 import userService from '../services/userService';
 import jwt from 'jsonwebtoken';
+import passport from 'passport';
+import passportLocal from 'passport-local';
+let LocalStrategy = passportLocal.Strategy;
+passport.use(
+    new LocalStrategy(
+        {
+            usernameField: 'email',
+            passwordField: 'password',
+            passReqToCallback: true,
+        },
+        async (req, email, password, done) => {
+            try {
+                let data = await userService.getUserByEmail(email);
+                let user = data.user;
+                console.log(data.user);
+                if (!user) {
+                    return done(null, false, req.flash('error', 'Email không tồn tại'));
+                } else {
+                    if (user.isActive === 1) {
+                        let match = await userService.comparePassword(password, user);
+                        if (match) {
+                            return done(null, user, null);
+                        } else {
+                            return done(null, false, req.flash('error', 'Mật khẩu không chính xác'));
+                        }
+                    } else {
+                        return done(null, false, req.flash('error', 'Tài khoản chưa được kích hoạt'));
+                    }
+                }
+            } catch (err) {
+                console.log(err);
+                return done(null, false, { message: err });
+            }
+        }
+    )
+);
+
+passport.serializeUser((user, done) => {
+    done(null, user.email);
+});
+
+passport.deserializeUser(async (email, done) => {
+    await userService
+        .getUserByEmail(email)
+        .then((user) => {
+            return done(null, user);
+        })
+        .catch((error) => {
+            return done(error, null);
+        });
+});
 let handleLogin = async (req, res) => {
     let email = req.body.email;
     let password = req.body.password;
@@ -73,59 +124,66 @@ let postRegister = async (req, res) => {
     }
 };
 
-let postLogin = async (req, res) => {
-    try {
-        let email = req.body.email;
-        let password = req.body.password;
+let postLogin = async (req, res, next) => {
+    // try {
+    //     let email = req.body.email;
+    //     let password = req.body.password;
 
-        // Kiểm tra xem email và mật khẩu có được cung cấp không
-        if (!email || !password) {
-            return res.status(200).json({
-                errCode: 1,
-                message: 'Missing inputs parameter!',
-            });
+    //     // Kiểm tra xem email và mật khẩu có được cung cấp không
+    //     if (!email || !password) {
+    //         return res.status(200).json({
+    //             errCode: 1,
+    //             message: 'Missing inputs parameter!',
+    //         });
+    //     }
+    //     // Gọi hàm xử lý đăng nhập từ service
+    //     let userData = await userService.handleUserLogin(email, password);
+    //     // Kiểm tra kết quả đăng nhập
+    //     if (userData.errCode === 0) {
+    //         // Lưu thông tin người dùng vào session (nếu cần)
+    //         req.session.user = userData.user;
+    //         console.log(userData.user);
+    //         // Chuyển hướng đến trang homePage neu la admin
+    //         if (userData.user.roleId === '1') {
+    //             return res.redirect('/get-crud');
+    //         } else if (userData.user.roleId === '2') {
+    //             return res.redirect('/users');
+    //         }
+    //     } else {
+    //         return res.render('auth/login.ejs', {
+    //             error: req.flash('error'),
+    //             errCode: userData.errCode,
+    //             message: userData.errMessage,
+    //         });
+    //     }
+    // } catch (error) {
+    //     console.log('Error: ', error);
+    //     return res.status(500).json({
+    //         errorCode: -1,
+    //         errMessage: 'Error from Server',
+    //     });
+    // }
+
+    passport.authenticate('local', function (err, user, info) {
+        if (err) {
+            return next(err);
         }
-        // // Kiểm tra giá trị của biến môi trường ACCESS_TOKEN_SECRET
-        // if (!process.env.ACCESS_TOKEN_SECRET) {
-        //     return res.status(500).json({
-        //         errCode: 2,
-        //         message: 'Missing ACCESS_TOKEN_SECRET in environment variables!',
-        //     });
-        // }
-        // Gọi hàm xử lý đăng nhập từ service
-        let userData = await userService.handleUserLogin(email, password);
-        // Kiểm tra kết quả đăng nhập
-        if (userData.errCode === 0) {
-            // Tạo JWT token
-            // let accessToken = jwt.sign({ email: email }, process.env.ACCESS_TOKEN_SECRET, { expiresIn: '1h' });
-
-            // Lưu thông tin người dùng vào session (nếu cần)
-            req.session.user = userData.user;
-
-            // Chuyển hướng đến trang homePage
-            return res.redirect('/get-crud');
-        } else {
-            // Trả về thông báo lỗi
-            // return res.status(200).json({
-            //     errCode: userData.errCode,
-            //     message: userData.errMessage,
-            // });
-            // Trả về trang login với thông báo lỗi
-            // return res.render('./auth/login', { errCode: userData.errCode, message: userData.errMessage });
-            return res.render('auth/login.ejs', {
-                error: req.flash('error'),
-                errCode: userData.errCode,
-                message: userData.errMessage,
-            });
-            // return res.render('/auth/login', { errCode: userData.errCode, message: userData.errMessage });
+        // Redirect if it fails
+        if (!user) {
+            return res.redirect('/login');
         }
-    } catch (error) {
-        console.log('Error: ', error);
-        return res.status(500).json({
-            errorCode: -1,
-            errMessage: 'Error from Server',
+
+        req.logIn(user, function (err) {
+            if (err) {
+                return next(err);
+            }
+
+            req.session.save(() => {
+                // Redirect if it succeeds
+                return res.redirect('/users');
+            });
         });
-    }
+    })(req, res, next);
 };
 
 let handleGetAllUsers = async (req, res) => {
@@ -185,6 +243,18 @@ let getRessetPassword = async (req, res) => {
         });
     }
 };
+let checkLoggedIn = async (req, res, next) => {
+    if (!req.isAuthenticated()) {
+        return res.redirect('/login');
+    }
+    next();
+};
+let checkLoggedOut = async (req, res, next) => {
+    if (req.isAuthenticated()) {
+        return res.redirect('/users');
+    }
+    next();
+};
 module.exports = {
     handleLogin: handleLogin,
     getAllCode: getAllCode,
@@ -197,4 +267,6 @@ module.exports = {
     handleEditUser: handleEditUser,
     handleDeleteUser: handleDeleteUser,
     getRessetPassword: getRessetPassword,
+    checkLoggedIn: checkLoggedIn,
+    checkLoggedOut: checkLoggedOut,
 };
