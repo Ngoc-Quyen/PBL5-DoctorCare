@@ -2,7 +2,7 @@
     "development": {
         "username": "root",
         "password": null,
-        "database": "doctorcare",
+        "database": "aaa",
         "host": "localhost",
         "dialect": "mysql",
         "operatorsAliases": 0,
@@ -10,9 +10,6 @@
             "dateStrings": true,
             "typeCast": true,
             "timezone": "+07:00"
-        },
-        "query": {
-            "raw": true
         },
         "timezone": "+07:00"
     },

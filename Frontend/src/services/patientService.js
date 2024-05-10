@@ -187,7 +187,7 @@ let createNewPatient = (data) => {
                     //update logs
                     let logs = {
                         patientId: patient.id,
-                        content: "Bệnh nhân đặt lịch hẹn từ hệ thống ",
+                        content: "The patient made an appointment from the system ",
                         createdAt: Date.now()
                     };
 
@@ -201,13 +201,13 @@ let createNewPatient = (data) => {
 
                     let isEmailSend = await mailer.sendEmailNormal(patient.email, transMailBookingNew.subject, transMailBookingNew.template(dataSend));
                     if (!isEmailSend) {
-                        console.log("Xảy ra lỗi khi gửi email tới: " + patient.email);
+                        console.log("An error occurs when sending an email to: " + patient.email);
                         console.log(isEmailSend);
                     }
 
                     resolve(patient);
                 } else {
-                    resolve("Đặt phòng tối đa")
+                    resolve("Max booking")
                 }
 
             });
