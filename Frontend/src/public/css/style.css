@@ -385,12 +385,12 @@ body a {
 .sec-foot {
   height: 200px;
   background-image: url("../images/background/BGFooter.png");
-  background-size: cover;
-  background-position: center;
-  color: #000000;
-  display: flex;
-  justify-content: center;
-  align-items: center;
+  background-size: cover; 
+  background-position: center; 
+  color: #000000; 
+  display: flex; 
+  justify-content: center; 
+  align-items: center; 
 }
 
 
@@ -619,7 +619,13 @@ select#day-book {
 
 .detail-info-specialization {
   height: 50px;
-  background-color: #e6e6e6;
+  background-image: url("../images/background/Frame.png");
+  background-size: cover;
+  background-position: center;
+  color: #000000;
+  display: flex;
+  justify-content: center;
+
 }
 
 .content-specialization .each-doctor-spe {
@@ -998,4 +1004,108 @@ h3.show-title-post {
 .btn-cancel:hover,
 .btn-cancel:focus {
   background-color: #979586;
+}
+
+.mt-1 .container{
+  width: 100%;
+  height: 80vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: #ffffff;
+  border: dimgray;
+  text-align: center;
+}
+
+.form-container {
+  width: 100%; /* Điều chỉnh độ rộng nếu cần */
+  height: 85vh;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  padding: 20px;
+  margin-bottom: 20px;
+}
+.form-container > div:first-child {
+  background-color: #ABF3FD;
+  height: 50px;
+  font-size: 20px;
+  display: flex;
+  align-items: center;
+  padding: 0 10px;
+}
+/* Trang trí cho ảnh đại diện */
+.form-container img {
+  width: 100px; /* Điều chỉnh kích thước nếu cần */
+  border-radius: 50%;
+  margin: 0 auto; /* Để căn giữa */
+  display: block; /* Để giữ cho margin: 0 auto hoạt động */
+  margin-bottom: 10px;
+}
+
+.form-group {
+  display: flex;
+  align-items: center;
+}
+.form-group input[type="text"],
+.form-group input[type="email"],
+.form-group input[type="date"],
+.form-group textarea {
+    flex: 1;
+    padding: 6px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    box-sizing: border-box;
+    margin-top: 10px;
+}
+.form-group {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.form-group label {
+    flex: 0 0 auto; /* Độ rộng tự động của nhãn */
+    margin-right: 10px; /* Khoảng cách giữa nhãn và ô nhập liệu */
+    margin-top: 10px;
+    width: 30%;
+    text-align: left;
+}
+
+.infor-user-container {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  width: 40%;
+  height: 80;
+}
+/* Định dạng cho button */
+.btn-submit {
+  background-color: #00e1ff;
+  color: rgb(0, 0, 0);
+  padding: 10px 20px;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  display: block; /* Để nút trở thành một phần tử block */
+  margin: 0 auto;
+  box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1); /* Tạo đổ bóng với màu đen và độ trong suốt */
+  cursor: pointer;
+}
+
+.btn-submit:hover {
+  background-color: #ABF3FD;
+}
+.form-group-infor {
+  display: table;
+  width: 100%;
+}
+
+.form-group-infor > div {
+  display: table-row;
+}
+
+.form-group-infor > div > div {
+  display: table-cell;
+  padding: 10px;
+  border: 1px solid #ccc;
 }
