@@ -315,7 +315,7 @@ function showModalInfoDoctor() {
                 $('#specializationDoctor').val(data.doctor.specializationName);
                 
                 if (data.doctor.avatar) {
-                    $('#imageDoctor').prepend(`<img class="img-info-clinic" src="/images/users/${data.doctor.avatar}" />`)
+                    $('#imageDoctor').prepend(`<img class="img-info-clinic" src="${data.doctor.avatar}" />`)
                 } else {
                     $('#imageDoctor').text('Chưa cập nhật')
                 }

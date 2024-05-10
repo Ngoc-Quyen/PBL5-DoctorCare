@@ -1,55 +1,55 @@
 <% extend("../app.ejs") %>
-<section class="mt-0" style="background-color: #ABF3FD; height: 60px; display: flex; align-items: center;">
-    <div class="container-fluid">
-        <div class="row align-items-center">
-            
-            <div class="col-md-2">
-                <div class="homepage-logo mt-2">
-                    <img class="menu-nav" src="/images/background/DC.png" alt="img logo">
+    <section class="mt-0" style="background-color: #ABF3FD; height: 60px; display: flex; align-items: center;">
+        <div class="container-fluid">
+            <div class="row align-items-center">
+
+                <div class="col-md-2">
+                    <div class="homepage-logo mt-2">
+                        <img class="menu-nav" src="/images/background/DC.png" alt="img logo">
+                    </div>
                 </div>
-            </div>
-            
-            <div class="col-md-7 d-none d-md-flex justify-content-between">
-                <div class="d-flex flex-column">
-                    <button class="btn btn-design" onclick="redirectToHome()">Trang chủ</button>
+
+                <div class="col-md-7 d-none d-md-flex justify-content-between">
+                    <div class="d-flex flex-column">
+                        <button class="btn btn-design" onclick="redirectToHome()">Trang chủ</button>
+                    </div>
+                    <div class="d-flex flex-column">
+                        <button class="btn btn-design" onclick="redirectToSpecializations()">Chuyên khoa</button>
+                    </div>
+                    <div class="d-flex flex-column">
+                        <button class="btn btn-design" onclick="redirectToDoctors()">Bác sĩ</button>
+                    </div>
+                    <div class="header-search align-self-center justify-content-center">
+                        <i class="fa fa-search"></i>
+                        <label for="input-search"></label>
+                        <input id="input-search" placeholder="Tìm kiếm...">
+                        <div id="show-info-search" class="show-info-search"></div>
+                    </div>
+                    <script>
+                        function redirectToHome() {
+                            window.location.href = "/";
+                        }
+                        function redirectToSpecializations() {
+                            window.location.href = "/all-specializations";
+                        }
+                        function redirectToDoctors() {
+                            window.location.href = "/all-doctors %>";
+                        }
+                    </script>
                 </div>
-                <div class="d-flex flex-column">
-                    <button class="btn btn-design" onclick="redirectToSpecializations()">Chuyên khoa</button>
+
+                <div class="col-md-3 mt-3 d-none d-md-flex justify-content-around align-self-center">
+                    <div class="d-flex flex-column">
+                        <a href="/login" class="btn btn-design1 ">Đăng nhập</a>
+                    </div>
+                    <div class="d-flex flex-column">
+                        <a href="/register" class="btn btn-design2 ">Đăng ký</a>
+                    </div>
+                    <a href="https://www.facebook.com/profile.php?id=100011010698678" target="_blank">
+                        <img src="/images/background/Vector.png" alt="Contact logo" class="logo">
+                    </a>
                 </div>
-                <div class="d-flex flex-column">
-                    <button class="btn btn-design" onclick="redirectToDoctors()">Bác sĩ</button>
-                </div>
-                <div class="header-search align-self-center justify-content-center">
-                    <i class="fa fa-search"></i>
-                    <label for="input-search"></label>
-                    <input id="input-search" placeholder="Tìm kiếm...">
-                    <div id="show-info-search" class="show-info-search"></div>
-                </div>
-                <script>
-                    function redirectToHome() {
-                        window.location.href = "/";
-                    }
-                    function redirectToSpecializations() {
-                        window.location.href = "/all-specializations";
-                    }
-                    function redirectToDoctors() {
-                        window.location.href = "/all-doctors %>" ;
-                    }
-                </script>
-            </div>
-            
-            <div class="col-md-3 mt-3 d-none d-md-flex justify-content-around align-self-center">
-                <div class="d-flex flex-column">
-                    <a href="/login" class="btn btn-design1 ">Đăng nhập</a>
-                </div>
-                <div class="d-flex flex-column">
-                    <a href="/register" class="btn btn-design2 ">Đăng ký</a>
-                </div>
-                <a href="https://www.facebook.com/profile.php?id=100011010698678" target="_blank">
-                    <img src="/images/background/Vector.png" alt="Contact logo" class="logo">
-                </a>
-            </div>
-            <!--<div class="col-md-3 d-none d-md-flex justify-content-around align-self-center">
+                <!--<div class="col-md-3 d-none d-md-flex justify-content-around align-self-center">
                 <a href="" target="_blank">
                     <img src="../images/background/User.png" alt="User logo" class="logo">
                 </a>
@@ -60,57 +60,59 @@
                     <img src="/images/background/Vector.png" alt="Contact logo" class="logo">
                 </a>
             </div>-->
-            
+
+            </div>
         </div>
-    </div>
-</section>
-<section class="detail-info-specialization">
-    <div class="container">
+    </section>
+    <section class="detail-info-specialization">
         <div class="container">
-            <div class="row">
-                <div class="col-12 mt-3">
-                    <a class="text-decoration-none" href="/">Trang chủ </a><span aria-hidden="true">&raquo;</span>
-                    <span style="text-transform: uppercase">
-                        Thông tin lịch khám
-                    </span>
+            <div class="container">
+                <div class="row">
+                    <div class="col-12 mt-3">
+                        <a class="text-decoration-none" href="/">Trang chủ </a><span aria-hidden="true">&raquo;</span>
+                        <span style="text-transform: uppercase">
+                            Thông tin lịch khám
+                        </span>
+                    </div>
                 </div>
             </div>
         </div>
-    </div>
-</section>
-<section class="detail-info-booking mt-3">
-    <div class="container">
+    </section>
+    <section class="detail-info-booking mt-3">
         <div class="container">
-            <div class="row">
-                <div class="col-8 mx-auto">
-                    <h2>Đặt lịch hẹn thành công!</h2>
-                    <hr>
-                    <div class="booking-success row">
-                        <div class="right-booking col-3 d-flex flex-column ">
-                                <img src="/images/users/<%= patient.getDataValue('doctorAvatar')%>">
-                                <div class="mt-2"><%= patient.getDataValue('doctorName')%></div>
-                        </div>
-                        <div class="left-booking col-9 mt-3">
-                            <div> Cảm ơn bạn đã đặt chuyến thăm khám từ DoctorCare. Hệ thống đã ghi lại cuộc hẹn.
-                                Nhân viên hỗ trợ sẽ gọi điện xác nhận trong vòng 24h sau khi đặt vé.</div>
-                            <div class="mt-2">Cần hỗ trợ vui lòng liên hệ hotline: 0123 456 789 </div>
-                            <div class="col-md-12 d-none d-md-flex justify-content-between">
-                                <div class="d-flex flex-column">
-                                    <button class="btn btn-noclick" >Đã đặt khám</button>
+            <div class="container">
+                <div class="row">
+                    <div class="col-8 mx-auto">
+                        <h2>Đặt lịch hẹn thành công!</h2>
+                        <hr>
+                        <div class="booking-success row">
+                            <div class="right-booking col-3 d-flex flex-column ">
+                                <img src="<%= patient.getDataValue('doctorAvatar')%>">
+                                <div class="mt-2">
+                                    <%= patient.getDataValue('doctorName')%>
                                 </div>
-                                <div class="d-flex flex-column">
-                                    <button class="btn btn-cancel" onclick="redirectToCancelPage()">Hủy</button>
+                            </div>
+                            <div class="left-booking col-9 mt-3">
+                                <div> Cảm ơn bạn đã đặt chuyến thăm khám từ DoctorCare. Hệ thống đã ghi lại cuộc hẹn.
+                                    Nhân viên hỗ trợ sẽ gọi điện xác nhận trong vòng 24h sau khi đặt vé.</div>
+                                <div class="mt-2">Cần hỗ trợ vui lòng liên hệ hotline: 0123 456 789 </div>
+                                <div class="col-md-12 d-none d-md-flex justify-content-between">
+                                    <div class="d-flex flex-column">
+                                        <button class="btn btn-noclick">Đã đặt khám</button>
+                                    </div>
+                                    <div class="d-flex flex-column">
+                                        <button class="btn btn-cancel" onclick="redirectToCancelPage()">Hủy</button>
+                                    </div>
+                                    <script>
+                                        function redirectToCancelPage() {
+                                            window.location.href = "/";
+                                        }
+                                    </script>
                                 </div>
-                                <script>
-                                    function redirectToCancelPage() {
-                                        window.location.href = "/";
-                                    }
-                                </script>
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
-    </div>
-</section>
+    </section>

@@ -15,7 +15,7 @@
                 <span class="mr-2 d-none d-lg-inline text-gray-600 small">
                     <%= user.name %>
                 </span>
-                <img class="img-profile rounded-circle" src="/images/users/<%= user.avatar %>">
+                <img class="img-profile rounded-circle" src="<%= user.avatar %>">
             </a>
             <!-- Dropdown - User Information -->
             <div class="dropdown-menu dropdown-menu-right shadow animated--grow-in" aria-labelledby="userDropdown">
@@ -109,8 +109,7 @@
                                     <input id="update-avatar" class="d-none" type="file" accept="image/*"
                                         onchange="loadImageUserSetting(event)">
                                 </div>
-                                <img class="img-user-setting ml-4" id="img-user-setting"
-                                    src="/images/users/<%= user.avatar%>">
+                                <img class="img-user-setting ml-4" id="img-user-setting" src="<%= user.avatar%>">
                             </div>
                         </div>
                         <hr>
