@@ -1,11 +1,15 @@
 -- phpMyAdmin SQL Dump
--- version 5.0.3
+-- version 5.2.1
 -- https://www.phpmyadmin.net/
 --
--- Host: 127.0.0.1
--- Generation Time: Nov 15, 2020 at 02:41 AM
--- Server version: 10.4.14-MariaDB
--- PHP Version: 7.4.11
+-- Máy chủ: 127.0.0.1
+-- Thời gian đã tạo: Th5 10, 2024 lúc 11:24 AM
+-- Phiên bản máy phục vụ: 10.4.28-MariaDB
+-- Phiên bản PHP: 8.2.4
+
+SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
+START TRANSACTION;
+SET time_zone = "+00:00";
 
 
 /*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
@@ -14,20 +18,124 @@
 /*!40101 SET NAMES utf8mb4 */;
 
 --
--- Database: `doctorcare`
+-- Cơ sở dữ liệu: `doctorcare`
 --
-CREATE DATABASE IF NOT EXISTS `doctorcare` DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci;
-USE `doctorcare`;
 
 -- --------------------------------------------------------
 
 --
--- Table structure for table `clinics`
+-- Cấu trúc bảng cho bảng `adminlogs`
 --
 
-DROP TABLE IF EXISTS `clinics`;
-CREATE TABLE IF NOT EXISTS `clinics` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
+CREATE TABLE `adminlogs` (
+  `id` int(11) NOT NULL,
+  `patientId` int(11) DEFAULT NULL,
+  `adminId` int(11) DEFAULT NULL,
+  `content` varchar(255) DEFAULT NULL,
+  `createdAt` datetime NOT NULL,
+  `updatedAt` datetime DEFAULT NULL,
+  `deletedAt` datetime DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Đang đổ dữ liệu cho bảng `adminlogs`
+--
+
+INSERT INTO `adminlogs` (`id`, `patientId`, `adminId`, `content`, `createdAt`, `updatedAt`, `deletedAt`) VALUES
+(7, 4, 1, 'The patient made an appointment from the system ', '2024-04-14 20:20:18', '2024-04-14 20:20:18', NULL),
+(8, 4, 1, 'New appointments have been received', '2024-04-14 20:20:41', '2024-04-14 20:20:41', NULL),
+(9, 4, 1, 'Cancel with reason - The patient canceled the schedule', '2024-04-14 20:20:47', '2024-04-14 20:20:47', NULL),
+(10, 5, 1, 'The patient made an appointment from the system ', '2024-04-15 08:27:25', '2024-04-15 08:27:25', NULL),
+(11, 5, 1, 'New appointments have been received', '2024-04-15 08:27:36', '2024-04-15 08:27:36', NULL),
+(12, 5, 1, 'The appointment has been successfully booked', '2024-04-15 08:27:40', '2024-04-15 08:27:40', NULL),
+(13, 6, 1, 'The patient made an appointment from the system ', '2024-04-16 23:04:01', '2024-04-16 23:04:01', NULL),
+(14, 6, 1, 'New appointments have been received', '2024-04-16 23:26:33', '2024-04-16 23:26:33', NULL),
+(15, 6, 1, 'The appointment has been successfully booked', '2024-04-16 23:28:49', '2024-04-16 23:28:49', NULL),
+(16, 7, NULL, 'Bệnh nhân đặt lịch hẹn từ hệ thống ', '2024-05-10 07:28:07', '2024-05-10 07:28:07', NULL);
+
+-- --------------------------------------------------------
+
+--
+-- Cấu trúc bảng cho bảng `allcodes`
+--
+
+CREATE TABLE `allcodes` (
+  `id` int(11) NOT NULL,
+  `key` varchar(255) DEFAULT NULL,
+  `type` varchar(255) DEFAULT NULL,
+  `valueEn` varchar(255) DEFAULT NULL,
+  `valueVi` varchar(255) DEFAULT NULL,
+  `createdAt` datetime NOT NULL,
+  `updatedAt` datetime NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Đang đổ dữ liệu cho bảng `allcodes`
+--
+
+INSERT INTO `allcodes` (`id`, `key`, `type`, `valueEn`, `valueVi`, `createdAt`, `updatedAt`) VALUES
+(1, 'R1', 'ROLE', 'Admin', 'Quản trị viên', '0000-00-00 00:00:00', '0000-00-00 00:00:00'),
+(2, 'R2', 'ROLE', 'Doctor', 'Bác sĩ', '0000-00-00 00:00:00', '0000-00-00 00:00:00'),
+(3, 'R3', 'ROLE', 'Patient', 'Bệnh nhân', '0000-00-00 00:00:00', '0000-00-00 00:00:00'),
+(4, 'S1', 'STATUS', 'New', 'Lịch hẹn mới', '0000-00-00 00:00:00', '0000-00-00 00:00:00'),
+(5, 'S2', 'STATUS', 'Confirmed', 'Đã xác nhận', '0000-00-00 00:00:00', '0000-00-00 00:00:00'),
+(6, 'S3', 'STATUS', 'Done', 'Đã khám xong', '0000-00-00 00:00:00', '0000-00-00 00:00:00'),
+(7, 'S4', 'STATUS', 'Cancel', 'Đã hủy', '0000-00-00 00:00:00', '0000-00-00 00:00:00'),
+(8, 'T1', 'TIME', '8:00 AM - 8:15 AM', '8:00 - 8:15', '0000-00-00 00:00:00', '0000-00-00 00:00:00'),
+(9, 'T2', 'TIME', '8:20 AM - 8:35 AM', '8:20 - 8:35', '0000-00-00 00:00:00', '0000-00-00 00:00:00'),
+(10, 'T3', 'TIME', '8:40 AM - 8:55 AM', '8:40 - 8:55', '0000-00-00 00:00:00', '0000-00-00 00:00:00'),
+(11, 'T4', 'TIME', '9:00 AM - 9:15 AM', '9:00 - 9:15', '0000-00-00 00:00:00', '0000-00-00 00:00:00'),
+(12, 'T5', 'TIME', '9:20 AM - 9:35 AM', '9:20 - 9:35', '0000-00-00 00:00:00', '0000-00-00 00:00:00'),
+(13, 'T6', 'TIME', '9:40 AM - 9:55 AM', '9:40 - 9:55', '0000-00-00 00:00:00', '0000-00-00 00:00:00'),
+(14, 'T7', 'TIME', '10:00 AM - 10:15 AM', '10:00 - 10:15', '0000-00-00 00:00:00', '0000-00-00 00:00:00'),
+(15, 'T8', 'TIME', '10:20 AM - 10:35 AM', '10:20 - 10:35', '0000-00-00 00:00:00', '0000-00-00 00:00:00'),
+(16, 'T9', 'TIME', '10:40 AM - 10:55 AM', '10:40 - 10:55', '0000-00-00 00:00:00', '0000-00-00 00:00:00'),
+(17, 'T10', 'TIME', '1:00 PM - 1:15 PM', '13:00 - 13:15', '0000-00-00 00:00:00', '0000-00-00 00:00:00'),
+(18, 'T11', 'TIME', '1:20 PM - 1:35 PM', '13:20 - 13:35', '0000-00-00 00:00:00', '0000-00-00 00:00:00'),
+(19, 'T12', 'TIME', '1:40 PM - 1:55 PM', '13:40 - 13:55', '0000-00-00 00:00:00', '0000-00-00 00:00:00'),
+(20, 'T13', 'TIME', '2:00 PM - 2:15 PM', '14:00 - 14:15', '0000-00-00 00:00:00', '0000-00-00 00:00:00'),
+(21, 'T14', 'TIME', '2:20 PM - 2:35 PM', '14:20 - 14:35', '0000-00-00 00:00:00', '0000-00-00 00:00:00'),
+(22, 'T15', 'TIME', '2:40 PM - 2:55 PM', '14:40 - 14:55', '0000-00-00 00:00:00', '0000-00-00 00:00:00'),
+(23, 'T16', 'TIME', '3:00 PM - 3:15 PM', '15:00 - 15:15', '0000-00-00 00:00:00', '0000-00-00 00:00:00'),
+(24, 'T17', 'TIME', '3:20 PM - 3:35 PM', '15:20 - 15:35', '0000-00-00 00:00:00', '0000-00-00 00:00:00'),
+(25, 'T18', 'TIME', '3:40 PM - 3:55 PM', '15:40 - 15:55', '0000-00-00 00:00:00', '0000-00-00 00:00:00'),
+(26, 'T19', 'TIME', '4:00 PM - 4:15 PM', '16:00 - 16:15', '0000-00-00 00:00:00', '0000-00-00 00:00:00'),
+(27, 'T20', 'TIME', '4:20 PM - 4:35 PM', '16:20 - 16:35', '0000-00-00 00:00:00', '0000-00-00 00:00:00'),
+(28, 'T21', 'TIME', '4:40 PM - 4:55 PM', '16:40 - 16:55', '0000-00-00 00:00:00', '0000-00-00 00:00:00'),
+(29, 'P0', 'POSITION', 'None', 'Bác sĩ', '0000-00-00 00:00:00', '0000-00-00 00:00:00'),
+(30, 'P1', 'POSITION', 'Master', 'Thạc sĩ', '0000-00-00 00:00:00', '0000-00-00 00:00:00'),
+(31, 'P2', 'POSITION', 'Doctor', 'Tiến sĩ', '0000-00-00 00:00:00', '0000-00-00 00:00:00'),
+(32, 'P3', 'POSITION', 'Associate Professor', 'Phó giáo sư', '0000-00-00 00:00:00', '0000-00-00 00:00:00'),
+(33, 'P4', 'POSITION', 'Professor', 'Giáo sư', '0000-00-00 00:00:00', '0000-00-00 00:00:00'),
+(34, 'M', 'GENDER', 'Male', 'Nam', '0000-00-00 00:00:00', '0000-00-00 00:00:00'),
+(35, 'F', 'GENDER', 'Female', 'Nữ', '0000-00-00 00:00:00', '0000-00-00 00:00:00'),
+(36, 'O', 'GENDER', 'Other', 'Khác', '0000-00-00 00:00:00', '0000-00-00 00:00:00');
+
+-- --------------------------------------------------------
+
+--
+-- Cấu trúc bảng cho bảng `appointments`
+--
+
+CREATE TABLE `appointments` (
+  `id` int(11) NOT NULL,
+  `doctorId` int(11) NOT NULL,
+  `patientId` int(11) NOT NULL,
+  `date` varchar(255) DEFAULT NULL,
+  `time` varchar(255) DEFAULT NULL,
+  `createdAt` datetime NOT NULL,
+  `updatedAt` datetime DEFAULT NULL,
+  `deletedAt` datetime DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+-- --------------------------------------------------------
+
+--
+-- Cấu trúc bảng cho bảng `clinics`
+--
+
+CREATE TABLE `clinics` (
+  `id` int(11) NOT NULL,
   `name` varchar(255) DEFAULT NULL,
   `introductionHTML` text DEFAULT NULL,
   `introductionMarkdown` text DEFAULT NULL,
@@ -35,9 +143,8 @@ CREATE TABLE IF NOT EXISTS `clinics` (
   `image` varchar(255) DEFAULT NULL,
   `createdAt` datetime NOT NULL,
   `updatedAt` datetime DEFAULT NULL,
-  `deletedAt` datetime DEFAULT NULL,
-  PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8mb4;
+  `deletedAt` datetime DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
 -- Đang đổ dữ liệu cho bảng `clinics`
@@ -45,7 +152,7 @@ CREATE TABLE IF NOT EXISTS `clinics` (
 
 INSERT INTO `clinics` (`id`, `name`, `introductionHTML`, `introductionMarkdown`, `description`, `image`, `createdAt`, `updatedAt`, `deletedAt`) VALUES
 (1, 'Gói khám sức khỏe tổng quát cơ bản cho nữ', '<p>Gói khám bao gồm: Khám lâm sàng, Xét nghiệm máu, xét nghiệm chức năng gan, thận, chức năng chuyển hóa, chụp Xquang, siêu âm ổ bụng, điện tim. \r\nGói khám tại Phòng khám Bệnh viện Đại học Y dược 1\r\nGói khám dành cho đối tượng trên 15 tuổi.</p>', 'Gói khám bao gồm: Khám lâm sàng, Xét nghiệm máu, xét nghiệm chức năng gan, thận, chức năng chuyển hóa, chụp Xquang, siêu âm ổ bụng, điện tim. \r\nGói khám tại Phòng khám Bệnh viện Đại học Y dược 1\r\nGói khám dành cho đối tượng trên 15 tuổi.', '', 'usa-az.jpg', '2020-11-13 19:44:36', '2020-11-13 20:44:20', NULL),
-(2, 'Gói khám sức khỏe tổng quát nâng cao dành cho nam','<p>Gói khám giúp phát hiện: các vấn đề về thận, tiền liệt tuyến, tuyến giáp, tiết niệu, gan, mật, tim mắt, tai mũi họng, răng, bất thường về các loại tế bào máu, bệnh viêm gan siêu vi B, viêm gan siêu vi C....Kiểm tra tổng thể\r\nĐối tượng: Nam, trên 15 tuổi</p>', 'Gói khám giúp phát hiện: các vấn đề về thận, tiền liệt tuyến, tuyến giáp, tiết niệu, gan, mật, tim mắt, tai mũi họng, răng, bất thường về các loại tế bào máu, bệnh viêm gan siêu vi B, viêm gan siêu vi C....Kiểm tra tổng thể\r\nĐối tượng: Nam, trên 15 tuổi', 'Gói khám giúp phát hiện: các vấn đề về thận, tiền liệt tuyến, tuyến giáp, tiết niệu, gan, mật, tim mắt, tai mũi họng, răng, bất thường về các loại tế bào máu, bệnh viêm gan siêu vi B, viêm gan siêu vi C....Kiểm tra tổng thể\r\nĐối tượng: Nam, trên 15 tuổi', 'mayo-clinic-health-system.jpg', '2020-11-13 19:44:36', '2020-11-13 20:46:01', NULL),
+(2, 'Gói khám sức khỏe tổng quát nâng cao dành cho nam', '<p>Gói khám giúp phát hiện: các vấn đề về thận, tiền liệt tuyến, tuyến giáp, tiết niệu, gan, mật, tim mắt, tai mũi họng, răng, bất thường về các loại tế bào máu, bệnh viêm gan siêu vi B, viêm gan siêu vi C....Kiểm tra tổng thể\r\nĐối tượng: Nam, trên 15 tuổi</p>', 'Gói khám giúp phát hiện: các vấn đề về thận, tiền liệt tuyến, tuyến giáp, tiết niệu, gan, mật, tim mắt, tai mũi họng, răng, bất thường về các loại tế bào máu, bệnh viêm gan siêu vi B, viêm gan siêu vi C....Kiểm tra tổng thể\r\nĐối tượng: Nam, trên 15 tuổi', 'Gói khám giúp phát hiện: các vấn đề về thận, tiền liệt tuyến, tuyến giáp, tiết niệu, gan, mật, tim mắt, tai mũi họng, răng, bất thường về các loại tế bào máu, bệnh viêm gan siêu vi B, viêm gan siêu vi C....Kiểm tra tổng thể\r\nĐối tượng: Nam, trên 15 tuổi', 'mayo-clinic-health-system.jpg', '2020-11-13 19:44:36', '2020-11-13 20:46:01', NULL),
 (3, 'Gói khám sức khỏe tổng quát chuyên sâu dành cho nữ', NULL, NULL, NULL, 'campbell-clinic.jpg', '2020-11-13 19:44:36', '2020-11-13 19:44:36', NULL),
 (4, 'Gói khám sức khỏe cơ bản', NULL, NULL, NULL, 'cleveland-clinic-usa.jpg', '2020-11-13 19:44:36', '2020-11-13 19:44:36', NULL),
 (5, 'Gói khám tổng quát tiêu chuẩn cho nam và nữ ', NULL, NULL, NULL, 'clinic-Ft-McCoy.jpg', '2020-11-13 19:44:36', '2020-11-13 19:44:36', NULL);
@@ -55,9 +162,9 @@ INSERT INTO `clinics` (`id`, `name`, `introductionHTML`, `introductionMarkdown`,
 --
 -- Cấu trúc bảng cho bảng `comments`
 --
-DROP TABLE IF EXISTS `comments`;
-CREATE TABLE IF NOT EXISTS `comments` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
+
+CREATE TABLE `comments` (
+  `id` int(11) NOT NULL,
   `doctorId` int(11) DEFAULT NULL,
   `timeBooking` varchar(255) DEFAULT NULL,
   `dateBooking` varchar(255) DEFAULT NULL,
@@ -67,9 +174,8 @@ CREATE TABLE IF NOT EXISTS `comments` (
   `status` tinyint(1) NOT NULL DEFAULT 0,
   `createdAt` datetime NOT NULL,
   `updatedAt` datetime DEFAULT NULL,
-  `deletedAt` datetime DEFAULT NULL,
-  PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8mb4;
+  `deletedAt` datetime DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
 -- Đang đổ dữ liệu cho bảng `comments`
@@ -85,28 +191,26 @@ INSERT INTO `comments` (`id`, `doctorId`, `timeBooking`, `dateBooking`, `name`, 
 -- Cấu trúc bảng cho bảng `doctor_users`
 --
 
-DROP TABLE IF EXISTS `doctor_users`;
-CREATE TABLE IF NOT EXISTS `doctor_users` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
+CREATE TABLE `doctor_users` (
+  `id` int(11) NOT NULL,
   `doctorId` int(11) NOT NULL,
   `specializationId` int(11) NOT NULL,
   `createdAt` datetime NOT NULL,
   `updatedAt` datetime DEFAULT NULL,
-  `deletedAt` datetime DEFAULT NULL,
-  PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=utf8mb4;
+  `deletedAt` datetime DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
 -- Đang đổ dữ liệu cho bảng `doctor_users`
 --
 
 INSERT INTO `doctor_users` (`id`, `doctorId`, `specializationId`, `createdAt`, `updatedAt`, `deletedAt`) VALUES
-(1, 2, 1, '2024-04-13 19:46:18', '2024-04-13 19:46:18', NULL),
-(2, 3, 3, '2024-04-13 20:19:56', '2024-04-13 20:19:56', NULL),
-(3, 4, 7, '2024-04-13 20:20:15', '2024-04-13 20:20:15', NULL),
-(4, 5, 4, '2024-04-13 20:20:26', '2024-04-13 20:20:26', NULL),
-(5, 6, 1, '2024-04-13 20:20:38', '2024-04-14 19:49:26', NULL),
-(6, 7, 1, '2024-04-13 20:20:53', '2024-04-14 19:49:12', NULL);
+(7, 13, 8, '2024-05-10 10:47:57', NULL, NULL),
+(8, 14, 8, '2024-05-10 10:47:57', NULL, NULL),
+(9, 15, 9, '2024-05-10 10:48:37', NULL, NULL),
+(10, 17, 10, '2024-05-10 10:48:37', NULL, NULL),
+(11, 15, 10, '2024-05-10 10:48:37', NULL, NULL),
+(12, 20, 11, '2024-05-10 10:48:37', NULL, NULL);
 
 -- --------------------------------------------------------
 
@@ -114,9 +218,8 @@ INSERT INTO `doctor_users` (`id`, `doctorId`, `specializationId`, `createdAt`, `
 -- Cấu trúc bảng cho bảng `extrainfos`
 --
 
-DROP TABLE IF EXISTS `extrainfos`;
-CREATE TABLE IF NOT EXISTS `extrainfos` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
+CREATE TABLE `extrainfos` (
+  `id` int(11) NOT NULL,
   `patientId` int(11) DEFAULT NULL,
   `historyBreath` text DEFAULT NULL,
   `placeId` int(11) DEFAULT NULL,
@@ -125,16 +228,16 @@ CREATE TABLE IF NOT EXISTS `extrainfos` (
   `moreInfo` text DEFAULT NULL,
   `createdAt` datetime NOT NULL,
   `updatedAt` datetime DEFAULT NULL,
-  `deletedAt` datetime DEFAULT NULL,
-  PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8mb4;
+  `deletedAt` datetime DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
 -- Đang đổ dữ liệu cho bảng `extrainfos`
 --
 
 INSERT INTO `extrainfos` (`id`, `patientId`, `historyBreath`, `placeId`, `oldForms`, `sendForms`, `moreInfo`, `createdAt`, `updatedAt`, `deletedAt`) VALUES
-(6, 6, '', 0, NULL, NULL, '', '2024-04-16 23:04:01', '2024-04-16 23:04:01', NULL);
+(6, 6, '', 0, NULL, NULL, '', '2024-04-16 23:04:01', '2024-04-16 23:04:01', NULL),
+(7, 7, '', 0, NULL, NULL, '', '2024-05-10 07:28:06', '2024-05-10 07:28:07', NULL);
 
 -- --------------------------------------------------------
 
@@ -142,9 +245,8 @@ INSERT INTO `extrainfos` (`id`, `patientId`, `historyBreath`, `placeId`, `oldFor
 -- Cấu trúc bảng cho bảng `patients`
 --
 
-DROP TABLE IF EXISTS `patients`;
-CREATE TABLE IF NOT EXISTS `patients` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
+CREATE TABLE `patients` (
+  `id` int(11) NOT NULL,
   `doctorId` int(11) NOT NULL,
   `userId` int(11) NOT NULL,
   `statusId` int(11) NOT NULL,
@@ -161,9 +263,8 @@ CREATE TABLE IF NOT EXISTS `patients` (
   `isTakeCare` tinyint(1) NOT NULL DEFAULT 0,
   `createdAt` datetime NOT NULL,
   `updatedAt` datetime DEFAULT NULL,
-  `deletedAt` datetime DEFAULT NULL,
-  PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8mb4;
+  `deletedAt` datetime DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
 -- Đang đổ dữ liệu cho bảng `patients`
@@ -172,7 +273,8 @@ CREATE TABLE IF NOT EXISTS `patients` (
 INSERT INTO `patients` (`id`, `doctorId`, `userId`, `statusId`, `name`, `phone`, `dateBooking`, `timeBooking`, `email`, `gender`, `year`, `address`, `description`, `isSentForms`, `isTakeCare`, `createdAt`, `updatedAt`, `deletedAt`) VALUES
 (4, 2, 3, 1, 'Alex', '0321456789', '15/11/2020', '08:00 - 09:00', 'alex@gmail.com', 'male', '1998', '', 'aaaaaaaaaaaaaaaaaa', 1, 0, '2024-04-14 20:20:18', '2024-04-14 20:22:14', NULL),
 (5, 2, 3, 1, 'Kane', '0321848484', '15/11/2020', '10:00 - 11:00', 'kane@gmail.com', 'male', '1997', '', '', 0, 0, '2020-11-15 08:27:25', '2020-11-15 08:27:40', NULL),
-(6, 2, 3, 1, 'HT', '0934978913', '17/04/2024', '13:00 - 14:00', 'hongtien003@gmail.com', 'male', '', '', '', 0, 0, '2024-04-16 23:04:01', '2024-04-16 23:28:49', NULL);
+(6, 2, 3, 1, 'HT', '0934978913', '17/04/2024', '13:00 - 14:00', 'hongtien003@gmail.com', 'male', '', '', '', 0, 0, '2024-04-16 23:04:01', '2024-04-16 23:28:49', NULL),
+(7, 2, 0, 4, 'Trần Thị Ngọc Quyên', '+84382106557', '10/05/2024', '16:00 - 17:00', 'tranngocquyen262dc@gmail.com', 'male', '', 'thôn Thanh Châu, xã Duy Châu, huyện Duy Xuyên, tỉnh Quảng Nam', '', 0, 0, '2024-05-10 07:28:06', '2024-05-10 07:28:06', NULL);
 
 -- --------------------------------------------------------
 
@@ -180,15 +282,13 @@ INSERT INTO `patients` (`id`, `doctorId`, `userId`, `statusId`, `name`, `phone`,
 -- Cấu trúc bảng cho bảng `places`
 --
 
-DROP TABLE IF EXISTS `places`;
-CREATE TABLE IF NOT EXISTS `places` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
+CREATE TABLE `places` (
+  `id` int(11) NOT NULL,
   `name` varchar(255) DEFAULT NULL,
   `createdAt` datetime NOT NULL,
   `updatedAt` datetime DEFAULT NULL,
-  `deletedAt` datetime DEFAULT NULL,
-  PRIMARY KEY (`id`)
-)  ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8mb4;
+  `deletedAt` datetime DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
 -- Đang đổ dữ liệu cho bảng `places`
@@ -207,9 +307,8 @@ INSERT INTO `places` (`id`, `name`, `createdAt`, `updatedAt`, `deletedAt`) VALUE
 -- Cấu trúc bảng cho bảng `posts`
 --
 
-DROP TABLE IF EXISTS `posts`;
-CREATE TABLE IF NOT EXISTS `posts` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
+CREATE TABLE `posts` (
+  `id` int(11) NOT NULL,
   `title` varchar(255) DEFAULT NULL,
   `contentMarkdown` text DEFAULT NULL,
   `contentHTML` text DEFAULT NULL,
@@ -220,23 +319,22 @@ CREATE TABLE IF NOT EXISTS `posts` (
   `image` varchar(255) DEFAULT NULL,
   `createdAt` datetime NOT NULL,
   `updatedAt` datetime DEFAULT NULL,
-  `deletedAt` datetime DEFAULT NULL,
-  PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=9 DEFAULT CHARSET=utf8mb4;
+  `deletedAt` datetime DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
 -- Đang đổ dữ liệu cho bảng `posts`
 --
 
 INSERT INTO `posts` (`id`, `title`, `contentMarkdown`, `contentHTML`, `forDoctorId`, `forSpecializationId`, `writerId`, `confirmByDoctor`, `image`, `createdAt`, `updatedAt`, `deletedAt`) VALUES
-(1, 'No', 'No', '', -1, 1, 8 , NULL, NULL, '2024-03-13 20:29:11', '2024-03-13 20:35:21', NULL),
+(1, 'No', 'No', '', -1, 1, 8, NULL, NULL, '2024-03-13 20:29:11', '2024-03-13 20:35:21', NULL),
 (2, '', 'No', '', -1, 2, 9, NULL, NULL, '2024-03-13 20:36:34', '2024-03-13 20:39:00', NULL),
 (3, '', 'No', '', -1, 3, 10, NULL, NULL, '2024-03-13 20:38:04', '2024-03-13 20:38:43', NULL),
 (4, 'Bác sĩ Phạm Hải Đăng', 'No', '<p>No</p>', 4, -1, 11, NULL, NULL, '2024-03-13 20:58:42', '2024-03-19 23:54:47', NULL),
 (5, 'Bác sĩ Nguyễn Văn A', 'No', '<p>No</p>', 2, -1, 8, NULL, NULL, '2024-03-13 21:00:19', '2024-03-19 23:54:55', NULL),
 (6, 'Bác sĩ Võ Văn B', 'No', '<p>No</p>', 3, -1, 9, NULL, NULL, '2024-03-13 21:00:37', '2024-04-19 23:54:03', NULL),
 (7, 'Bác sĩ Phạm Bình Nguyên', 'No', '<p>No</p>', 5, -1, 10, NULL, NULL, '2024-03-13 21:00:52', '2024-03-19 23:53:54', NULL),
-(8, 'Bác sĩ Nguyễn Cảnh Nam', 'No', '<p>No</p>', 6, -1, 11, NULL, NULL, '2024-03-13 21:01:09', '2024-04-19 23:53:43', NULL);
+(9, 'Không nên thức khuya quá', 'qưertyuiophgfđbnm,', '<p>qưertyuiophgfđbnm,</p>', 5, 3, 1, NULL, NULL, '2024-05-10 01:57:37', '2024-05-10 01:57:37', NULL);
 
 -- --------------------------------------------------------
 
@@ -244,15 +342,13 @@ INSERT INTO `posts` (`id`, `title`, `contentMarkdown`, `contentHTML`, `forDoctor
 -- Cấu trúc bảng cho bảng `roles`
 --
 
-DROP TABLE IF EXISTS `roles`;
-CREATE TABLE IF NOT EXISTS `roles` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
+CREATE TABLE `roles` (
+  `id` int(11) NOT NULL,
   `name` varchar(255) DEFAULT NULL,
   `createdAt` datetime NOT NULL,
   `updatedAt` datetime DEFAULT NULL,
-  `deletedAt` datetime DEFAULT NULL,
-  PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8mb4;
+  `deletedAt` datetime DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
 -- Đang đổ dữ liệu cho bảng `roles`
@@ -269,9 +365,8 @@ INSERT INTO `roles` (`id`, `name`, `createdAt`, `updatedAt`, `deletedAt`) VALUES
 -- Cấu trúc bảng cho bảng `schedules`
 --
 
-DROP TABLE IF EXISTS `schedules`;
-CREATE TABLE IF NOT EXISTS `schedules` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
+CREATE TABLE `schedules` (
+  `id` int(11) NOT NULL,
   `doctorId` int(11) NOT NULL,
   `date` varchar(255) DEFAULT NULL,
   `time` varchar(255) DEFAULT NULL,
@@ -279,63 +374,14 @@ CREATE TABLE IF NOT EXISTS `schedules` (
   `sumBooking` varchar(255) DEFAULT NULL,
   `createdAt` datetime NOT NULL,
   `updatedAt` datetime DEFAULT NULL,
-  `deletedAt` datetime DEFAULT NULL,
-  PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=297 DEFAULT CHARSET=utf8mb4;
+  `deletedAt` datetime DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
 -- Đang đổ dữ liệu cho bảng `schedules`
 --
 
 INSERT INTO `schedules` (`id`, `doctorId`, `date`, `time`, `maxBooking`, `sumBooking`, `createdAt`, `updatedAt`, `deletedAt`) VALUES
-(297, 2, '16/04/2024', '10:00 - 11:00', '2', '0', '2024-04-16 22:50:08', '2024-04-16 22:50:08', NULL),
-(298, 2, '16/04/2024', '09:00 - 10:00', '2', '0', '2024-04-16 22:50:08', '2024-04-16 22:50:08', NULL),
-(299, 2, '16/04/2024', '08:00 - 09:00', '2', '0', '2024-04-16 22:50:08', '2024-04-16 22:50:08', NULL),
-(300, 2, '16/04/2024', '11:00 - 12:00', '2', '0', '2024-04-16 22:50:08', '2024-04-16 22:50:08', NULL),
-(301, 2, '16/04/2024', '14:00 - 15:00', '2', '0', '2024-04-16 22:50:08', '2024-04-16 22:50:08', NULL),
-(302, 2, '16/04/2024', '15:00 - 16:00', '2', '0', '2024-04-16 22:50:08', '2024-04-16 22:50:08', NULL),
-(303, 2, '16/04/2024', '16:00 - 17:00', '2', '0', '2024-04-16 22:50:08', '2024-04-16 22:50:08', NULL),
-(304, 2, '16/04/2024', '13:00 - 14:00', '2', '0', '2024-04-16 22:50:08', '2024-04-16 22:50:08', NULL),
-(305, 2, '17/04/2024', '08:00 - 09:00', '2', '0', '2024-04-16 22:50:08', '2024-04-16 22:50:08', NULL),
-(306, 2, '17/04/2024', '09:00 - 10:00', '2', '0', '2024-04-16 22:50:08', '2024-04-16 22:50:08', NULL),
-(307, 2, '17/04/2024', '10:00 - 11:00', '2', '0', '2024-04-16 22:50:08', '2024-04-16 22:50:08', NULL),
-(308, 2, '17/04/2024', '11:00 - 12:00', '2', '0', '2024-04-16 22:50:08', '2024-04-16 22:50:08', NULL),
-(309, 2, '17/04/2024', '13:00 - 14:00', '2', '2', '2024-04-16 22:50:08', '2024-04-16 23:28:49', NULL),
-(310, 2, '17/04/2024', '14:00 - 15:00', '2', '0', '2024-04-16 22:50:08', '2024-04-16 22:50:08', NULL),
-(311, 2, '17/04/2024', '15:00 - 16:00', '2', '0', '2024-04-16 22:50:08', '2024-04-16 22:50:08', NULL),
-(312, 2, '17/04/2024', '16:00 - 17:00', '2', '0', '2024-04-16 22:50:08', '2024-04-16 22:50:08', NULL),
-(313, 2, '18/04/2024', '08:00 - 09:00', '2', '0', '2024-04-16 22:50:08', '2024-04-16 22:50:08', NULL),
-(314, 2, '18/04/2024', '09:00 - 10:00', '2', '0', '2024-04-16 22:50:08', '2024-04-16 22:50:08', NULL),
-(315, 2, '18/04/2024', '10:00 - 11:00', '2', '0', '2024-04-16 22:50:08', '2024-04-16 22:50:08', NULL),
-(316, 2, '18/04/2024', '11:00 - 12:00', '2', '0', '2024-04-16 22:50:08', '2024-04-16 22:50:08', NULL),
-(317, 2, '18/04/2024', '13:00 - 14:00', '2', '0', '2024-04-16 22:50:08', '2024-04-16 22:50:08', NULL),
-(318, 2, '18/04/2024', '14:00 - 15:00', '2', '0', '2024-04-16 22:50:08', '2024-04-16 22:50:08', NULL),
-(319, 2, '18/04/2024', '15:00 - 16:00', '2', '0', '2024-04-16 22:50:08', '2024-04-16 22:50:08', NULL),
-(320, 2, '18/04/2024', '16:00 - 17:00', '2', '0', '2024-04-16 22:50:08', '2024-04-16 22:50:08', NULL),
-(321, 3, '16/04/2024', '08:00 - 09:00', '2', '0', '2024-04-16 22:50:08', '2024-04-16 22:50:08', NULL),
-(322, 3, '16/04/2024', '09:00 - 10:00', '2', '0', '2024-04-16 22:50:08', '2024-04-16 22:50:08', NULL),
-(323, 3, '16/04/2024', '10:00 - 11:00', '2', '0', '2024-04-16 22:50:08', '2024-04-16 22:50:08', NULL),
-(324, 3, '16/04/2024', '11:00 - 12:00', '2', '0', '2024-04-16 22:50:08', '2024-04-16 22:50:08', NULL),
-(325, 3, '16/04/2024', '13:00 - 14:00', '2', '0', '2024-04-16 22:50:08', '2024-04-16 22:50:08', NULL),
-(326, 3, '16/04/2024', '14:00 - 15:00', '2', '0', '2024-04-16 22:50:08', '2024-04-16 22:50:08', NULL),
-(327, 3, '16/04/2024', '15:00 - 16:00', '2', '0', '2024-04-16 22:50:08', '2024-04-16 22:50:08', NULL),
-(328, 3, '16/04/2024', '16:00 - 17:00', '2', '0', '2024-04-16 22:50:08', '2024-04-16 22:50:08', NULL),
-(329, 3, '17/04/2024', '08:00 - 09:00', '2', '0', '2024-04-16 22:50:08', '2024-04-16 22:50:08', NULL),
-(330, 3, '17/04/2024', '09:00 - 10:00', '2', '0', '2024-04-16 22:50:08', '2024-04-16 22:50:08', NULL),
-(331, 3, '17/04/2024', '10:00 - 11:00', '2', '0', '2024-04-16 22:50:08', '2024-04-16 22:50:08', NULL),
-(332, 3, '17/04/2024', '11:00 - 12:00', '2', '0', '2024-04-16 22:50:08', '2024-04-16 22:50:08', NULL),
-(333, 3, '17/04/2024', '13:00 - 14:00', '2', '0', '2024-04-16 22:50:08', '2024-04-16 22:50:08', NULL),
-(334, 3, '17/04/2024', '14:00 - 15:00', '2', '0', '2024-04-16 22:50:08', '2024-04-16 22:50:08', NULL),
-(335, 3, '17/04/2024', '15:00 - 16:00', '2', '0', '2024-04-16 22:50:08', '2024-04-16 22:50:08', NULL),
-(336, 3, '17/04/2024', '16:00 - 17:00', '2', '0', '2024-04-16 22:50:08', '2024-04-16 22:50:08', NULL),
-(337, 3, '18/04/2024', '08:00 - 09:00', '2', '0', '2024-04-16 22:50:08', '2024-04-16 22:50:08', NULL),
-(338, 3, '18/04/2024', '09:00 - 10:00', '2', '0', '2024-04-16 22:50:08', '2024-04-16 22:50:08', NULL),
-(339, 3, '18/04/2024', '10:00 - 11:00', '2', '0', '2024-04-16 22:50:08', '2024-04-16 22:50:08', NULL),
-(340, 3, '18/04/2024', '11:00 - 12:00', '2', '0', '2024-04-16 22:50:08', '2024-04-16 22:50:08', NULL),
-(341, 3, '18/04/2024', '13:00 - 14:00', '2', '0', '2024-04-16 22:50:08', '2024-04-16 22:50:08', NULL),
-(342, 3, '18/04/2024', '14:00 - 15:00', '2', '0', '2024-04-16 22:50:08', '2024-04-16 22:50:08', NULL),
-(343, 3, '18/04/2024', '15:00 - 16:00', '2', '0', '2024-04-16 22:50:08', '2024-04-16 22:50:08', NULL),
-(344, 3, '18/04/2024', '16:00 - 17:00', '2', '0', '2024-04-16 22:50:08', '2024-04-16 22:50:08', NULL),
 (345, 4, '16/04/2024', '08:00 - 09:00', '2', '0', '2024-04-16 22:50:08', '2024-04-16 22:50:08', NULL),
 (346, 4, '16/04/2024', '09:00 - 10:00', '2', '0', '2024-04-16 22:50:08', '2024-04-16 22:50:08', NULL),
 (347, 4, '16/04/2024', '10:00 - 11:00', '2', '0', '2024-04-16 22:50:08', '2024-04-16 22:50:08', NULL),
@@ -433,7 +479,382 @@ INSERT INTO `schedules` (`id`, `doctorId`, `date`, `time`, `maxBooking`, `sumBoo
 (439, 7, '18/04/2024', '15:00 - 16:00', '2', '0', '2024-04-16 22:50:08', '2024-04-16 22:50:08', NULL),
 (440, 7, '18/04/2024', '16:00 - 17:00', '2', '0', '2024-04-16 22:50:08', '2024-04-16 22:50:08', NULL),
 (441, 1, '16/04/2024', '09:00 - 10:00', '2', '0', '2024-04-16 23:27:55', '2024-04-16 23:27:55', NULL),
-(442, 1, '16/04/2024', '08:00 - 09:00', '2', '0', '2024-04-16 23:33:06', '2024-04-16 23:33:06', NULL);
+(442, 1, '16/04/2024', '08:00 - 09:00', '2', '0', '2024-04-16 23:33:06', '2024-04-16 23:33:06', NULL),
+(443, 2, '04/05/2024', '08:00 - 09:00', '2', '0', '2024-05-04 14:31:09', '2024-05-04 14:31:09', NULL),
+(444, 2, '04/05/2024', '09:00 - 10:00', '2', '0', '2024-05-04 14:31:09', '2024-05-04 14:31:09', NULL),
+(445, 2, '04/05/2024', '10:00 - 11:00', '2', '0', '2024-05-04 14:31:09', '2024-05-04 14:31:09', NULL),
+(446, 2, '04/05/2024', '14:00 - 15:00', '2', '0', '2024-05-04 14:31:09', '2024-05-04 14:31:09', NULL),
+(447, 2, '04/05/2024', '11:00 - 12:00', '2', '0', '2024-05-04 14:31:09', '2024-05-04 14:31:09', NULL),
+(448, 2, '04/05/2024', '13:00 - 14:00', '2', '0', '2024-05-04 14:31:09', '2024-05-04 14:31:09', NULL),
+(449, 2, '04/05/2024', '15:00 - 16:00', '2', '0', '2024-05-04 14:31:09', '2024-05-04 14:31:09', NULL),
+(450, 2, '04/05/2024', '16:00 - 17:00', '2', '0', '2024-05-04 14:31:09', '2024-05-04 14:31:09', NULL),
+(451, 2, '05/05/2024', '08:00 - 09:00', '2', '0', '2024-05-04 14:31:09', '2024-05-04 14:31:09', NULL),
+(452, 2, '05/05/2024', '09:00 - 10:00', '2', '0', '2024-05-04 14:31:09', '2024-05-04 14:31:09', NULL),
+(453, 2, '05/05/2024', '10:00 - 11:00', '2', '0', '2024-05-04 14:31:09', '2024-05-04 14:31:09', NULL),
+(454, 2, '05/05/2024', '11:00 - 12:00', '2', '0', '2024-05-04 14:31:09', '2024-05-04 14:31:09', NULL),
+(455, 2, '05/05/2024', '13:00 - 14:00', '2', '0', '2024-05-04 14:31:09', '2024-05-04 14:31:09', NULL),
+(456, 2, '05/05/2024', '14:00 - 15:00', '2', '0', '2024-05-04 14:31:09', '2024-05-04 14:31:09', NULL),
+(457, 2, '05/05/2024', '15:00 - 16:00', '2', '0', '2024-05-04 14:31:09', '2024-05-04 14:31:09', NULL),
+(458, 2, '05/05/2024', '16:00 - 17:00', '2', '0', '2024-05-04 14:31:09', '2024-05-04 14:31:09', NULL),
+(459, 2, '06/05/2024', '08:00 - 09:00', '2', '0', '2024-05-04 14:31:09', '2024-05-04 14:31:09', NULL),
+(460, 2, '06/05/2024', '09:00 - 10:00', '2', '0', '2024-05-04 14:31:09', '2024-05-04 14:31:09', NULL),
+(461, 2, '06/05/2024', '10:00 - 11:00', '2', '0', '2024-05-04 14:31:09', '2024-05-04 14:31:09', NULL),
+(462, 2, '06/05/2024', '11:00 - 12:00', '2', '0', '2024-05-04 14:31:09', '2024-05-04 14:31:09', NULL),
+(463, 2, '06/05/2024', '13:00 - 14:00', '2', '0', '2024-05-04 14:31:09', '2024-05-04 14:31:09', NULL),
+(464, 2, '06/05/2024', '14:00 - 15:00', '2', '0', '2024-05-04 14:31:09', '2024-05-04 14:31:09', NULL),
+(465, 2, '06/05/2024', '15:00 - 16:00', '2', '0', '2024-05-04 14:31:09', '2024-05-04 14:31:09', NULL),
+(466, 2, '06/05/2024', '16:00 - 17:00', '2', '0', '2024-05-04 14:31:09', '2024-05-04 14:31:09', NULL),
+(467, 2, '07/05/2024', '08:00 - 09:00', '2', '0', '2024-05-04 14:31:09', '2024-05-04 14:31:09', NULL),
+(468, 2, '07/05/2024', '09:00 - 10:00', '2', '0', '2024-05-04 14:31:09', '2024-05-04 14:31:09', NULL),
+(469, 2, '07/05/2024', '10:00 - 11:00', '2', '0', '2024-05-04 14:31:09', '2024-05-04 14:31:09', NULL),
+(470, 2, '07/05/2024', '11:00 - 12:00', '2', '0', '2024-05-04 14:31:09', '2024-05-04 14:31:09', NULL),
+(471, 2, '07/05/2024', '13:00 - 14:00', '2', '0', '2024-05-04 14:31:09', '2024-05-04 14:31:09', NULL),
+(472, 2, '07/05/2024', '14:00 - 15:00', '2', '0', '2024-05-04 14:31:09', '2024-05-04 14:31:09', NULL),
+(473, 2, '07/05/2024', '15:00 - 16:00', '2', '0', '2024-05-04 14:31:09', '2024-05-04 14:31:09', NULL),
+(474, 2, '07/05/2024', '16:00 - 17:00', '2', '0', '2024-05-04 14:31:09', '2024-05-04 14:31:09', NULL),
+(475, 2, '08/05/2024', '08:00 - 09:00', '2', '0', '2024-05-04 14:31:09', '2024-05-04 14:31:09', NULL),
+(476, 2, '08/05/2024', '09:00 - 10:00', '2', '0', '2024-05-04 14:31:09', '2024-05-04 14:31:09', NULL),
+(477, 2, '08/05/2024', '10:00 - 11:00', '2', '0', '2024-05-04 14:31:09', '2024-05-04 14:31:09', NULL),
+(478, 2, '08/05/2024', '11:00 - 12:00', '2', '0', '2024-05-04 14:31:09', '2024-05-04 14:31:09', NULL),
+(479, 2, '08/05/2024', '13:00 - 14:00', '2', '0', '2024-05-04 14:31:09', '2024-05-04 14:31:09', NULL),
+(480, 2, '08/05/2024', '14:00 - 15:00', '2', '0', '2024-05-04 14:31:09', '2024-05-04 14:31:09', NULL),
+(481, 2, '08/05/2024', '15:00 - 16:00', '2', '0', '2024-05-04 14:31:09', '2024-05-04 14:31:09', NULL),
+(482, 2, '08/05/2024', '16:00 - 17:00', '2', '0', '2024-05-04 14:31:09', '2024-05-04 14:31:09', NULL),
+(483, 2, '09/05/2024', '08:00 - 09:00', '2', '0', '2024-05-04 14:31:09', '2024-05-04 14:31:09', NULL),
+(484, 2, '09/05/2024', '09:00 - 10:00', '2', '0', '2024-05-04 14:31:09', '2024-05-04 14:31:09', NULL),
+(485, 2, '09/05/2024', '10:00 - 11:00', '2', '0', '2024-05-04 14:31:09', '2024-05-04 14:31:09', NULL),
+(486, 2, '09/05/2024', '11:00 - 12:00', '2', '0', '2024-05-04 14:31:09', '2024-05-04 14:31:09', NULL),
+(487, 2, '09/05/2024', '13:00 - 14:00', '2', '0', '2024-05-04 14:31:09', '2024-05-04 14:31:09', NULL),
+(488, 2, '09/05/2024', '14:00 - 15:00', '2', '0', '2024-05-04 14:31:09', '2024-05-04 14:31:09', NULL),
+(489, 2, '09/05/2024', '15:00 - 16:00', '2', '0', '2024-05-04 14:31:09', '2024-05-04 14:31:09', NULL),
+(490, 2, '09/05/2024', '16:00 - 17:00', '2', '0', '2024-05-04 14:31:09', '2024-05-04 14:31:09', NULL),
+(491, 2, '10/05/2024', '08:00 - 09:00', '2', '0', '2024-05-04 14:31:09', '2024-05-04 14:31:09', NULL),
+(492, 2, '10/05/2024', '09:00 - 10:00', '2', '0', '2024-05-04 14:31:09', '2024-05-04 14:31:09', NULL),
+(493, 2, '10/05/2024', '10:00 - 11:00', '2', '0', '2024-05-04 14:31:09', '2024-05-04 14:31:09', NULL),
+(494, 2, '10/05/2024', '11:00 - 12:00', '2', '0', '2024-05-04 14:31:09', '2024-05-04 14:31:09', NULL),
+(495, 2, '10/05/2024', '13:00 - 14:00', '2', '0', '2024-05-04 14:31:09', '2024-05-04 14:31:09', NULL),
+(496, 2, '10/05/2024', '14:00 - 15:00', '2', '0', '2024-05-04 14:31:09', '2024-05-04 14:31:09', NULL),
+(497, 2, '10/05/2024', '15:00 - 16:00', '2', '0', '2024-05-04 14:31:09', '2024-05-04 14:31:09', NULL),
+(498, 2, '10/05/2024', '16:00 - 17:00', '2', '1', '2024-05-04 14:31:09', '2024-05-10 07:28:07', NULL),
+(499, 3, '04/05/2024', '08:00 - 09:00', '2', '0', '2024-05-04 14:31:09', '2024-05-04 14:31:09', NULL),
+(500, 3, '04/05/2024', '09:00 - 10:00', '2', '0', '2024-05-04 14:31:09', '2024-05-04 14:31:09', NULL),
+(501, 3, '04/05/2024', '10:00 - 11:00', '2', '0', '2024-05-04 14:31:09', '2024-05-04 14:31:09', NULL),
+(502, 3, '04/05/2024', '11:00 - 12:00', '2', '0', '2024-05-04 14:31:09', '2024-05-04 14:31:09', NULL),
+(503, 3, '04/05/2024', '13:00 - 14:00', '2', '0', '2024-05-04 14:31:09', '2024-05-04 14:31:09', NULL),
+(504, 3, '04/05/2024', '14:00 - 15:00', '2', '0', '2024-05-04 14:31:09', '2024-05-04 14:31:09', NULL),
+(505, 3, '04/05/2024', '15:00 - 16:00', '2', '0', '2024-05-04 14:31:09', '2024-05-04 14:31:09', NULL),
+(506, 3, '04/05/2024', '16:00 - 17:00', '2', '0', '2024-05-04 14:31:09', '2024-05-04 14:31:09', NULL),
+(507, 3, '05/05/2024', '08:00 - 09:00', '2', '0', '2024-05-04 14:31:09', '2024-05-04 14:31:09', NULL),
+(508, 3, '05/05/2024', '09:00 - 10:00', '2', '0', '2024-05-04 14:31:09', '2024-05-04 14:31:09', NULL),
+(509, 3, '05/05/2024', '10:00 - 11:00', '2', '0', '2024-05-04 14:31:09', '2024-05-04 14:31:09', NULL),
+(510, 3, '05/05/2024', '11:00 - 12:00', '2', '0', '2024-05-04 14:31:09', '2024-05-04 14:31:09', NULL),
+(511, 3, '05/05/2024', '13:00 - 14:00', '2', '0', '2024-05-04 14:31:09', '2024-05-04 14:31:09', NULL),
+(512, 3, '05/05/2024', '14:00 - 15:00', '2', '0', '2024-05-04 14:31:09', '2024-05-04 14:31:09', NULL),
+(513, 3, '05/05/2024', '15:00 - 16:00', '2', '0', '2024-05-04 14:31:09', '2024-05-04 14:31:09', NULL),
+(514, 3, '05/05/2024', '16:00 - 17:00', '2', '0', '2024-05-04 14:31:09', '2024-05-04 14:31:09', NULL),
+(515, 3, '06/05/2024', '08:00 - 09:00', '2', '0', '2024-05-04 14:31:09', '2024-05-04 14:31:09', NULL),
+(516, 3, '06/05/2024', '09:00 - 10:00', '2', '0', '2024-05-04 14:31:09', '2024-05-04 14:31:09', NULL),
+(517, 3, '06/05/2024', '10:00 - 11:00', '2', '0', '2024-05-04 14:31:09', '2024-05-04 14:31:09', NULL),
+(518, 3, '06/05/2024', '11:00 - 12:00', '2', '0', '2024-05-04 14:31:09', '2024-05-04 14:31:09', NULL),
+(519, 3, '06/05/2024', '13:00 - 14:00', '2', '0', '2024-05-04 14:31:09', '2024-05-04 14:31:09', NULL),
+(520, 3, '06/05/2024', '14:00 - 15:00', '2', '0', '2024-05-04 14:31:09', '2024-05-04 14:31:09', NULL),
+(521, 3, '06/05/2024', '15:00 - 16:00', '2', '0', '2024-05-04 14:31:09', '2024-05-04 14:31:09', NULL),
+(522, 3, '06/05/2024', '16:00 - 17:00', '2', '0', '2024-05-04 14:31:09', '2024-05-04 14:31:09', NULL),
+(523, 3, '07/05/2024', '08:00 - 09:00', '2', '0', '2024-05-04 14:31:09', '2024-05-04 14:31:09', NULL),
+(524, 3, '07/05/2024', '09:00 - 10:00', '2', '0', '2024-05-04 14:31:09', '2024-05-04 14:31:09', NULL),
+(525, 3, '07/05/2024', '10:00 - 11:00', '2', '0', '2024-05-04 14:31:09', '2024-05-04 14:31:09', NULL),
+(526, 3, '07/05/2024', '11:00 - 12:00', '2', '0', '2024-05-04 14:31:09', '2024-05-04 14:31:09', NULL),
+(527, 3, '07/05/2024', '13:00 - 14:00', '2', '0', '2024-05-04 14:31:09', '2024-05-04 14:31:09', NULL),
+(528, 3, '07/05/2024', '14:00 - 15:00', '2', '0', '2024-05-04 14:31:09', '2024-05-04 14:31:09', NULL),
+(529, 3, '07/05/2024', '15:00 - 16:00', '2', '0', '2024-05-04 14:31:09', '2024-05-04 14:31:09', NULL),
+(530, 3, '07/05/2024', '16:00 - 17:00', '2', '0', '2024-05-04 14:31:09', '2024-05-04 14:31:09', NULL),
+(531, 3, '08/05/2024', '08:00 - 09:00', '2', '0', '2024-05-04 14:31:09', '2024-05-04 14:31:09', NULL),
+(532, 3, '08/05/2024', '09:00 - 10:00', '2', '0', '2024-05-04 14:31:09', '2024-05-04 14:31:09', NULL),
+(533, 3, '08/05/2024', '10:00 - 11:00', '2', '0', '2024-05-04 14:31:09', '2024-05-04 14:31:09', NULL),
+(534, 3, '08/05/2024', '11:00 - 12:00', '2', '0', '2024-05-04 14:31:09', '2024-05-04 14:31:09', NULL),
+(535, 3, '08/05/2024', '13:00 - 14:00', '2', '0', '2024-05-04 14:31:09', '2024-05-04 14:31:09', NULL),
+(536, 3, '08/05/2024', '14:00 - 15:00', '2', '0', '2024-05-04 14:31:09', '2024-05-04 14:31:09', NULL),
+(537, 3, '08/05/2024', '15:00 - 16:00', '2', '0', '2024-05-04 14:31:09', '2024-05-04 14:31:09', NULL),
+(538, 3, '08/05/2024', '16:00 - 17:00', '2', '0', '2024-05-04 14:31:09', '2024-05-04 14:31:09', NULL),
+(539, 3, '09/05/2024', '08:00 - 09:00', '2', '0', '2024-05-04 14:31:09', '2024-05-04 14:31:09', NULL),
+(540, 3, '09/05/2024', '09:00 - 10:00', '2', '0', '2024-05-04 14:31:09', '2024-05-04 14:31:09', NULL),
+(541, 3, '09/05/2024', '10:00 - 11:00', '2', '0', '2024-05-04 14:31:09', '2024-05-04 14:31:09', NULL),
+(542, 3, '09/05/2024', '11:00 - 12:00', '2', '0', '2024-05-04 14:31:09', '2024-05-04 14:31:09', NULL),
+(543, 3, '09/05/2024', '13:00 - 14:00', '2', '0', '2024-05-04 14:31:09', '2024-05-04 14:31:09', NULL),
+(544, 3, '09/05/2024', '14:00 - 15:00', '2', '0', '2024-05-04 14:31:09', '2024-05-04 14:31:09', NULL),
+(545, 3, '09/05/2024', '15:00 - 16:00', '2', '0', '2024-05-04 14:31:09', '2024-05-04 14:31:09', NULL),
+(546, 3, '09/05/2024', '16:00 - 17:00', '2', '0', '2024-05-04 14:31:09', '2024-05-04 14:31:09', NULL),
+(547, 3, '10/05/2024', '08:00 - 09:00', '2', '0', '2024-05-04 14:31:09', '2024-05-04 14:31:09', NULL),
+(548, 3, '10/05/2024', '09:00 - 10:00', '2', '0', '2024-05-04 14:31:09', '2024-05-04 14:31:09', NULL),
+(549, 3, '10/05/2024', '10:00 - 11:00', '2', '0', '2024-05-04 14:31:09', '2024-05-04 14:31:09', NULL),
+(550, 3, '10/05/2024', '11:00 - 12:00', '2', '0', '2024-05-04 14:31:09', '2024-05-04 14:31:09', NULL),
+(551, 3, '10/05/2024', '13:00 - 14:00', '2', '0', '2024-05-04 14:31:09', '2024-05-04 14:31:09', NULL),
+(552, 3, '10/05/2024', '14:00 - 15:00', '2', '0', '2024-05-04 14:31:09', '2024-05-04 14:31:09', NULL),
+(553, 3, '10/05/2024', '15:00 - 16:00', '2', '0', '2024-05-04 14:31:09', '2024-05-04 14:31:09', NULL),
+(554, 3, '10/05/2024', '16:00 - 17:00', '2', '0', '2024-05-04 14:31:09', '2024-05-04 14:31:09', NULL),
+(555, 4, '04/05/2024', '08:00 - 09:00', '2', '0', '2024-05-04 14:31:09', '2024-05-04 14:31:09', NULL),
+(556, 4, '04/05/2024', '09:00 - 10:00', '2', '0', '2024-05-04 14:31:09', '2024-05-04 14:31:09', NULL),
+(557, 4, '04/05/2024', '10:00 - 11:00', '2', '0', '2024-05-04 14:31:09', '2024-05-04 14:31:09', NULL),
+(558, 4, '04/05/2024', '11:00 - 12:00', '2', '0', '2024-05-04 14:31:09', '2024-05-04 14:31:09', NULL),
+(559, 4, '04/05/2024', '13:00 - 14:00', '2', '0', '2024-05-04 14:31:09', '2024-05-04 14:31:09', NULL),
+(560, 4, '04/05/2024', '14:00 - 15:00', '2', '0', '2024-05-04 14:31:09', '2024-05-04 14:31:09', NULL),
+(561, 4, '04/05/2024', '15:00 - 16:00', '2', '0', '2024-05-04 14:31:09', '2024-05-04 14:31:09', NULL),
+(562, 4, '04/05/2024', '16:00 - 17:00', '2', '0', '2024-05-04 14:31:09', '2024-05-04 14:31:09', NULL),
+(563, 4, '05/05/2024', '08:00 - 09:00', '2', '0', '2024-05-04 14:31:09', '2024-05-04 14:31:09', NULL),
+(564, 4, '05/05/2024', '09:00 - 10:00', '2', '0', '2024-05-04 14:31:09', '2024-05-04 14:31:09', NULL),
+(565, 4, '05/05/2024', '10:00 - 11:00', '2', '0', '2024-05-04 14:31:09', '2024-05-04 14:31:09', NULL),
+(566, 4, '05/05/2024', '11:00 - 12:00', '2', '0', '2024-05-04 14:31:09', '2024-05-04 14:31:09', NULL),
+(567, 4, '05/05/2024', '13:00 - 14:00', '2', '0', '2024-05-04 14:31:09', '2024-05-04 14:31:09', NULL),
+(568, 4, '05/05/2024', '14:00 - 15:00', '2', '0', '2024-05-04 14:31:09', '2024-05-04 14:31:09', NULL),
+(569, 4, '05/05/2024', '15:00 - 16:00', '2', '0', '2024-05-04 14:31:09', '2024-05-04 14:31:09', NULL),
+(570, 4, '05/05/2024', '16:00 - 17:00', '2', '0', '2024-05-04 14:31:09', '2024-05-04 14:31:09', NULL),
+(571, 4, '06/05/2024', '08:00 - 09:00', '2', '0', '2024-05-04 14:31:09', '2024-05-04 14:31:09', NULL),
+(572, 4, '06/05/2024', '09:00 - 10:00', '2', '0', '2024-05-04 14:31:09', '2024-05-04 14:31:09', NULL),
+(573, 4, '06/05/2024', '10:00 - 11:00', '2', '0', '2024-05-04 14:31:09', '2024-05-04 14:31:09', NULL),
+(574, 4, '06/05/2024', '11:00 - 12:00', '2', '0', '2024-05-04 14:31:09', '2024-05-04 14:31:09', NULL),
+(575, 4, '06/05/2024', '13:00 - 14:00', '2', '0', '2024-05-04 14:31:09', '2024-05-04 14:31:09', NULL),
+(576, 4, '06/05/2024', '14:00 - 15:00', '2', '0', '2024-05-04 14:31:09', '2024-05-04 14:31:09', NULL),
+(577, 4, '06/05/2024', '15:00 - 16:00', '2', '0', '2024-05-04 14:31:09', '2024-05-04 14:31:09', NULL),
+(578, 4, '06/05/2024', '16:00 - 17:00', '2', '0', '2024-05-04 14:31:09', '2024-05-04 14:31:09', NULL),
+(579, 4, '07/05/2024', '08:00 - 09:00', '2', '0', '2024-05-04 14:31:09', '2024-05-04 14:31:09', NULL),
+(580, 4, '07/05/2024', '09:00 - 10:00', '2', '0', '2024-05-04 14:31:09', '2024-05-04 14:31:09', NULL),
+(581, 4, '07/05/2024', '10:00 - 11:00', '2', '0', '2024-05-04 14:31:09', '2024-05-04 14:31:09', NULL),
+(582, 4, '07/05/2024', '11:00 - 12:00', '2', '0', '2024-05-04 14:31:09', '2024-05-04 14:31:09', NULL),
+(583, 4, '07/05/2024', '13:00 - 14:00', '2', '0', '2024-05-04 14:31:09', '2024-05-04 14:31:09', NULL),
+(584, 4, '07/05/2024', '14:00 - 15:00', '2', '0', '2024-05-04 14:31:09', '2024-05-04 14:31:09', NULL),
+(585, 4, '07/05/2024', '15:00 - 16:00', '2', '0', '2024-05-04 14:31:09', '2024-05-04 14:31:09', NULL),
+(586, 4, '07/05/2024', '16:00 - 17:00', '2', '0', '2024-05-04 14:31:09', '2024-05-04 14:31:09', NULL),
+(587, 4, '08/05/2024', '08:00 - 09:00', '2', '0', '2024-05-04 14:31:09', '2024-05-04 14:31:09', NULL),
+(588, 4, '08/05/2024', '09:00 - 10:00', '2', '0', '2024-05-04 14:31:09', '2024-05-04 14:31:09', NULL),
+(589, 4, '08/05/2024', '10:00 - 11:00', '2', '0', '2024-05-04 14:31:09', '2024-05-04 14:31:09', NULL),
+(590, 4, '08/05/2024', '11:00 - 12:00', '2', '0', '2024-05-04 14:31:09', '2024-05-04 14:31:09', NULL),
+(591, 4, '08/05/2024', '13:00 - 14:00', '2', '0', '2024-05-04 14:31:09', '2024-05-04 14:31:09', NULL),
+(592, 4, '08/05/2024', '14:00 - 15:00', '2', '0', '2024-05-04 14:31:09', '2024-05-04 14:31:09', NULL),
+(593, 4, '08/05/2024', '15:00 - 16:00', '2', '0', '2024-05-04 14:31:09', '2024-05-04 14:31:09', NULL),
+(594, 4, '08/05/2024', '16:00 - 17:00', '2', '0', '2024-05-04 14:31:09', '2024-05-04 14:31:09', NULL),
+(595, 4, '09/05/2024', '08:00 - 09:00', '2', '0', '2024-05-04 14:31:09', '2024-05-04 14:31:09', NULL),
+(596, 4, '09/05/2024', '09:00 - 10:00', '2', '0', '2024-05-04 14:31:09', '2024-05-04 14:31:09', NULL),
+(597, 4, '09/05/2024', '10:00 - 11:00', '2', '0', '2024-05-04 14:31:09', '2024-05-04 14:31:09', NULL),
+(598, 4, '09/05/2024', '11:00 - 12:00', '2', '0', '2024-05-04 14:31:09', '2024-05-04 14:31:09', NULL),
+(599, 4, '09/05/2024', '13:00 - 14:00', '2', '0', '2024-05-04 14:31:09', '2024-05-04 14:31:09', NULL),
+(600, 4, '09/05/2024', '14:00 - 15:00', '2', '0', '2024-05-04 14:31:09', '2024-05-04 14:31:09', NULL),
+(601, 4, '09/05/2024', '15:00 - 16:00', '2', '0', '2024-05-04 14:31:09', '2024-05-04 14:31:09', NULL),
+(602, 4, '09/05/2024', '16:00 - 17:00', '2', '0', '2024-05-04 14:31:09', '2024-05-04 14:31:09', NULL),
+(603, 4, '10/05/2024', '08:00 - 09:00', '2', '0', '2024-05-04 14:31:09', '2024-05-04 14:31:09', NULL),
+(604, 4, '10/05/2024', '09:00 - 10:00', '2', '0', '2024-05-04 14:31:09', '2024-05-04 14:31:09', NULL),
+(605, 4, '10/05/2024', '10:00 - 11:00', '2', '0', '2024-05-04 14:31:09', '2024-05-04 14:31:09', NULL),
+(606, 4, '10/05/2024', '11:00 - 12:00', '2', '0', '2024-05-04 14:31:09', '2024-05-04 14:31:09', NULL),
+(607, 4, '10/05/2024', '13:00 - 14:00', '2', '0', '2024-05-04 14:31:09', '2024-05-04 14:31:09', NULL),
+(608, 4, '10/05/2024', '14:00 - 15:00', '2', '0', '2024-05-04 14:31:09', '2024-05-04 14:31:09', NULL),
+(609, 4, '10/05/2024', '15:00 - 16:00', '2', '0', '2024-05-04 14:31:09', '2024-05-04 14:31:09', NULL),
+(610, 4, '10/05/2024', '16:00 - 17:00', '2', '0', '2024-05-04 14:31:09', '2024-05-04 14:31:09', NULL),
+(611, 5, '04/05/2024', '08:00 - 09:00', '2', '0', '2024-05-04 14:31:09', '2024-05-04 14:31:09', NULL),
+(612, 5, '04/05/2024', '09:00 - 10:00', '2', '0', '2024-05-04 14:31:09', '2024-05-04 14:31:09', NULL),
+(613, 5, '04/05/2024', '10:00 - 11:00', '2', '0', '2024-05-04 14:31:09', '2024-05-04 14:31:09', NULL),
+(614, 5, '04/05/2024', '11:00 - 12:00', '2', '0', '2024-05-04 14:31:09', '2024-05-04 14:31:09', NULL),
+(615, 5, '04/05/2024', '13:00 - 14:00', '2', '0', '2024-05-04 14:31:09', '2024-05-04 14:31:09', NULL),
+(616, 5, '04/05/2024', '14:00 - 15:00', '2', '0', '2024-05-04 14:31:09', '2024-05-04 14:31:09', NULL),
+(617, 5, '04/05/2024', '15:00 - 16:00', '2', '0', '2024-05-04 14:31:09', '2024-05-04 14:31:09', NULL),
+(618, 5, '04/05/2024', '16:00 - 17:00', '2', '0', '2024-05-04 14:31:09', '2024-05-04 14:31:09', NULL),
+(619, 5, '05/05/2024', '08:00 - 09:00', '2', '0', '2024-05-04 14:31:09', '2024-05-04 14:31:09', NULL),
+(620, 5, '05/05/2024', '09:00 - 10:00', '2', '0', '2024-05-04 14:31:09', '2024-05-04 14:31:09', NULL),
+(621, 5, '05/05/2024', '10:00 - 11:00', '2', '0', '2024-05-04 14:31:09', '2024-05-04 14:31:09', NULL),
+(622, 5, '05/05/2024', '11:00 - 12:00', '2', '0', '2024-05-04 14:31:09', '2024-05-04 14:31:09', NULL),
+(623, 5, '05/05/2024', '13:00 - 14:00', '2', '0', '2024-05-04 14:31:09', '2024-05-04 14:31:09', NULL),
+(624, 5, '05/05/2024', '14:00 - 15:00', '2', '0', '2024-05-04 14:31:09', '2024-05-04 14:31:09', NULL),
+(625, 5, '05/05/2024', '15:00 - 16:00', '2', '0', '2024-05-04 14:31:09', '2024-05-04 14:31:09', NULL),
+(626, 5, '05/05/2024', '16:00 - 17:00', '2', '0', '2024-05-04 14:31:09', '2024-05-04 14:31:09', NULL),
+(627, 5, '06/05/2024', '08:00 - 09:00', '2', '0', '2024-05-04 14:31:09', '2024-05-04 14:31:09', NULL),
+(628, 5, '06/05/2024', '09:00 - 10:00', '2', '0', '2024-05-04 14:31:09', '2024-05-04 14:31:09', NULL),
+(629, 5, '06/05/2024', '10:00 - 11:00', '2', '0', '2024-05-04 14:31:09', '2024-05-04 14:31:09', NULL),
+(630, 5, '06/05/2024', '11:00 - 12:00', '2', '0', '2024-05-04 14:31:09', '2024-05-04 14:31:09', NULL),
+(631, 5, '06/05/2024', '13:00 - 14:00', '2', '0', '2024-05-04 14:31:09', '2024-05-04 14:31:09', NULL),
+(632, 5, '06/05/2024', '14:00 - 15:00', '2', '0', '2024-05-04 14:31:09', '2024-05-04 14:31:09', NULL),
+(633, 5, '06/05/2024', '15:00 - 16:00', '2', '0', '2024-05-04 14:31:09', '2024-05-04 14:31:09', NULL),
+(634, 5, '06/05/2024', '16:00 - 17:00', '2', '0', '2024-05-04 14:31:09', '2024-05-04 14:31:09', NULL),
+(635, 5, '07/05/2024', '08:00 - 09:00', '2', '0', '2024-05-04 14:31:09', '2024-05-04 14:31:09', NULL),
+(636, 5, '07/05/2024', '09:00 - 10:00', '2', '0', '2024-05-04 14:31:09', '2024-05-04 14:31:09', NULL),
+(637, 5, '07/05/2024', '10:00 - 11:00', '2', '0', '2024-05-04 14:31:09', '2024-05-04 14:31:09', NULL),
+(638, 5, '07/05/2024', '11:00 - 12:00', '2', '0', '2024-05-04 14:31:09', '2024-05-04 14:31:09', NULL),
+(639, 5, '07/05/2024', '13:00 - 14:00', '2', '0', '2024-05-04 14:31:09', '2024-05-04 14:31:09', NULL),
+(640, 5, '07/05/2024', '14:00 - 15:00', '2', '0', '2024-05-04 14:31:09', '2024-05-04 14:31:09', NULL),
+(641, 5, '07/05/2024', '15:00 - 16:00', '2', '0', '2024-05-04 14:31:09', '2024-05-04 14:31:09', NULL),
+(642, 5, '07/05/2024', '16:00 - 17:00', '2', '0', '2024-05-04 14:31:09', '2024-05-04 14:31:09', NULL),
+(643, 5, '08/05/2024', '08:00 - 09:00', '2', '0', '2024-05-04 14:31:09', '2024-05-04 14:31:09', NULL),
+(644, 5, '08/05/2024', '09:00 - 10:00', '2', '0', '2024-05-04 14:31:09', '2024-05-04 14:31:09', NULL),
+(645, 5, '08/05/2024', '10:00 - 11:00', '2', '0', '2024-05-04 14:31:09', '2024-05-04 14:31:09', NULL),
+(646, 5, '08/05/2024', '11:00 - 12:00', '2', '0', '2024-05-04 14:31:09', '2024-05-04 14:31:09', NULL),
+(647, 5, '08/05/2024', '13:00 - 14:00', '2', '0', '2024-05-04 14:31:09', '2024-05-04 14:31:09', NULL),
+(648, 5, '08/05/2024', '14:00 - 15:00', '2', '0', '2024-05-04 14:31:09', '2024-05-04 14:31:09', NULL),
+(649, 5, '08/05/2024', '15:00 - 16:00', '2', '0', '2024-05-04 14:31:09', '2024-05-04 14:31:09', NULL),
+(650, 5, '08/05/2024', '16:00 - 17:00', '2', '0', '2024-05-04 14:31:09', '2024-05-04 14:31:09', NULL),
+(651, 5, '09/05/2024', '08:00 - 09:00', '2', '0', '2024-05-04 14:31:09', '2024-05-04 14:31:09', NULL),
+(652, 5, '09/05/2024', '09:00 - 10:00', '2', '0', '2024-05-04 14:31:09', '2024-05-04 14:31:09', NULL),
+(653, 5, '09/05/2024', '10:00 - 11:00', '2', '0', '2024-05-04 14:31:09', '2024-05-04 14:31:09', NULL),
+(654, 5, '09/05/2024', '11:00 - 12:00', '2', '0', '2024-05-04 14:31:09', '2024-05-04 14:31:09', NULL),
+(655, 5, '09/05/2024', '13:00 - 14:00', '2', '0', '2024-05-04 14:31:09', '2024-05-04 14:31:09', NULL),
+(656, 5, '09/05/2024', '14:00 - 15:00', '2', '0', '2024-05-04 14:31:09', '2024-05-04 14:31:09', NULL),
+(657, 5, '09/05/2024', '15:00 - 16:00', '2', '0', '2024-05-04 14:31:09', '2024-05-04 14:31:09', NULL),
+(658, 5, '09/05/2024', '16:00 - 17:00', '2', '0', '2024-05-04 14:31:09', '2024-05-04 14:31:09', NULL),
+(659, 5, '10/05/2024', '08:00 - 09:00', '2', '0', '2024-05-04 14:31:09', '2024-05-04 14:31:09', NULL),
+(660, 5, '10/05/2024', '09:00 - 10:00', '2', '0', '2024-05-04 14:31:09', '2024-05-04 14:31:09', NULL),
+(661, 5, '10/05/2024', '10:00 - 11:00', '2', '0', '2024-05-04 14:31:09', '2024-05-04 14:31:09', NULL),
+(662, 5, '10/05/2024', '11:00 - 12:00', '2', '0', '2024-05-04 14:31:09', '2024-05-04 14:31:09', NULL),
+(663, 5, '10/05/2024', '13:00 - 14:00', '2', '0', '2024-05-04 14:31:09', '2024-05-04 14:31:09', NULL),
+(664, 5, '10/05/2024', '14:00 - 15:00', '2', '0', '2024-05-04 14:31:09', '2024-05-04 14:31:09', NULL),
+(665, 5, '10/05/2024', '15:00 - 16:00', '2', '0', '2024-05-04 14:31:09', '2024-05-04 14:31:09', NULL),
+(666, 5, '10/05/2024', '16:00 - 17:00', '2', '0', '2024-05-04 14:31:09', '2024-05-04 14:31:09', NULL),
+(667, 6, '04/05/2024', '08:00 - 09:00', '2', '0', '2024-05-04 14:31:09', '2024-05-04 14:31:09', NULL),
+(668, 6, '04/05/2024', '09:00 - 10:00', '2', '0', '2024-05-04 14:31:09', '2024-05-04 14:31:09', NULL),
+(669, 6, '04/05/2024', '10:00 - 11:00', '2', '0', '2024-05-04 14:31:09', '2024-05-04 14:31:09', NULL),
+(670, 6, '04/05/2024', '11:00 - 12:00', '2', '0', '2024-05-04 14:31:09', '2024-05-04 14:31:09', NULL),
+(671, 6, '04/05/2024', '13:00 - 14:00', '2', '0', '2024-05-04 14:31:09', '2024-05-04 14:31:09', NULL),
+(672, 6, '04/05/2024', '14:00 - 15:00', '2', '0', '2024-05-04 14:31:09', '2024-05-04 14:31:09', NULL),
+(673, 6, '04/05/2024', '15:00 - 16:00', '2', '0', '2024-05-04 14:31:09', '2024-05-04 14:31:09', NULL),
+(674, 6, '04/05/2024', '16:00 - 17:00', '2', '0', '2024-05-04 14:31:09', '2024-05-04 14:31:09', NULL),
+(675, 6, '05/05/2024', '08:00 - 09:00', '2', '0', '2024-05-04 14:31:09', '2024-05-04 14:31:09', NULL),
+(676, 6, '05/05/2024', '09:00 - 10:00', '2', '0', '2024-05-04 14:31:09', '2024-05-04 14:31:09', NULL),
+(677, 6, '05/05/2024', '10:00 - 11:00', '2', '0', '2024-05-04 14:31:09', '2024-05-04 14:31:09', NULL),
+(678, 6, '05/05/2024', '11:00 - 12:00', '2', '0', '2024-05-04 14:31:09', '2024-05-04 14:31:09', NULL),
+(679, 6, '05/05/2024', '13:00 - 14:00', '2', '0', '2024-05-04 14:31:09', '2024-05-04 14:31:09', NULL),
+(680, 6, '05/05/2024', '14:00 - 15:00', '2', '0', '2024-05-04 14:31:09', '2024-05-04 14:31:09', NULL),
+(681, 6, '05/05/2024', '15:00 - 16:00', '2', '0', '2024-05-04 14:31:09', '2024-05-04 14:31:09', NULL),
+(682, 6, '05/05/2024', '16:00 - 17:00', '2', '0', '2024-05-04 14:31:09', '2024-05-04 14:31:09', NULL),
+(683, 6, '06/05/2024', '08:00 - 09:00', '2', '0', '2024-05-04 14:31:09', '2024-05-04 14:31:09', NULL),
+(684, 6, '06/05/2024', '09:00 - 10:00', '2', '0', '2024-05-04 14:31:09', '2024-05-04 14:31:09', NULL),
+(685, 6, '06/05/2024', '10:00 - 11:00', '2', '0', '2024-05-04 14:31:09', '2024-05-04 14:31:09', NULL),
+(686, 6, '06/05/2024', '11:00 - 12:00', '2', '0', '2024-05-04 14:31:09', '2024-05-04 14:31:09', NULL),
+(687, 6, '06/05/2024', '13:00 - 14:00', '2', '0', '2024-05-04 14:31:09', '2024-05-04 14:31:09', NULL),
+(688, 6, '06/05/2024', '14:00 - 15:00', '2', '0', '2024-05-04 14:31:09', '2024-05-04 14:31:09', NULL),
+(689, 6, '06/05/2024', '15:00 - 16:00', '2', '0', '2024-05-04 14:31:09', '2024-05-04 14:31:09', NULL),
+(690, 6, '06/05/2024', '16:00 - 17:00', '2', '0', '2024-05-04 14:31:09', '2024-05-04 14:31:09', NULL),
+(691, 6, '07/05/2024', '08:00 - 09:00', '2', '0', '2024-05-04 14:31:09', '2024-05-04 14:31:09', NULL),
+(692, 6, '07/05/2024', '09:00 - 10:00', '2', '0', '2024-05-04 14:31:09', '2024-05-04 14:31:09', NULL),
+(693, 6, '07/05/2024', '10:00 - 11:00', '2', '0', '2024-05-04 14:31:09', '2024-05-04 14:31:09', NULL),
+(694, 6, '07/05/2024', '11:00 - 12:00', '2', '0', '2024-05-04 14:31:09', '2024-05-04 14:31:09', NULL),
+(695, 6, '07/05/2024', '13:00 - 14:00', '2', '0', '2024-05-04 14:31:09', '2024-05-04 14:31:09', NULL),
+(696, 6, '07/05/2024', '14:00 - 15:00', '2', '0', '2024-05-04 14:31:09', '2024-05-04 14:31:09', NULL),
+(697, 6, '07/05/2024', '15:00 - 16:00', '2', '0', '2024-05-04 14:31:09', '2024-05-04 14:31:09', NULL),
+(698, 6, '07/05/2024', '16:00 - 17:00', '2', '0', '2024-05-04 14:31:09', '2024-05-04 14:31:09', NULL),
+(699, 6, '08/05/2024', '08:00 - 09:00', '2', '0', '2024-05-04 14:31:09', '2024-05-04 14:31:09', NULL),
+(700, 6, '08/05/2024', '09:00 - 10:00', '2', '0', '2024-05-04 14:31:09', '2024-05-04 14:31:09', NULL),
+(701, 6, '08/05/2024', '10:00 - 11:00', '2', '0', '2024-05-04 14:31:09', '2024-05-04 14:31:09', NULL),
+(702, 6, '08/05/2024', '11:00 - 12:00', '2', '0', '2024-05-04 14:31:09', '2024-05-04 14:31:09', NULL),
+(703, 6, '08/05/2024', '13:00 - 14:00', '2', '0', '2024-05-04 14:31:09', '2024-05-04 14:31:09', NULL),
+(704, 6, '08/05/2024', '14:00 - 15:00', '2', '0', '2024-05-04 14:31:09', '2024-05-04 14:31:09', NULL),
+(705, 6, '08/05/2024', '15:00 - 16:00', '2', '0', '2024-05-04 14:31:09', '2024-05-04 14:31:09', NULL),
+(706, 6, '08/05/2024', '16:00 - 17:00', '2', '0', '2024-05-04 14:31:09', '2024-05-04 14:31:09', NULL),
+(707, 6, '09/05/2024', '08:00 - 09:00', '2', '0', '2024-05-04 14:31:09', '2024-05-04 14:31:09', NULL),
+(708, 6, '09/05/2024', '09:00 - 10:00', '2', '0', '2024-05-04 14:31:09', '2024-05-04 14:31:09', NULL),
+(709, 6, '09/05/2024', '10:00 - 11:00', '2', '0', '2024-05-04 14:31:09', '2024-05-04 14:31:09', NULL),
+(710, 6, '09/05/2024', '11:00 - 12:00', '2', '0', '2024-05-04 14:31:09', '2024-05-04 14:31:09', NULL),
+(711, 6, '09/05/2024', '13:00 - 14:00', '2', '0', '2024-05-04 14:31:09', '2024-05-04 14:31:09', NULL),
+(712, 6, '09/05/2024', '14:00 - 15:00', '2', '0', '2024-05-04 14:31:09', '2024-05-04 14:31:09', NULL),
+(713, 6, '09/05/2024', '15:00 - 16:00', '2', '0', '2024-05-04 14:31:09', '2024-05-04 14:31:09', NULL),
+(714, 6, '09/05/2024', '16:00 - 17:00', '2', '0', '2024-05-04 14:31:09', '2024-05-04 14:31:09', NULL),
+(715, 6, '10/05/2024', '08:00 - 09:00', '2', '0', '2024-05-04 14:31:09', '2024-05-04 14:31:09', NULL),
+(716, 6, '10/05/2024', '09:00 - 10:00', '2', '0', '2024-05-04 14:31:09', '2024-05-04 14:31:09', NULL),
+(717, 6, '10/05/2024', '10:00 - 11:00', '2', '0', '2024-05-04 14:31:09', '2024-05-04 14:31:09', NULL),
+(718, 6, '10/05/2024', '11:00 - 12:00', '2', '0', '2024-05-04 14:31:09', '2024-05-04 14:31:09', NULL),
+(719, 6, '10/05/2024', '13:00 - 14:00', '2', '0', '2024-05-04 14:31:09', '2024-05-04 14:31:09', NULL),
+(720, 6, '10/05/2024', '14:00 - 15:00', '2', '0', '2024-05-04 14:31:09', '2024-05-04 14:31:09', NULL),
+(721, 6, '10/05/2024', '15:00 - 16:00', '2', '0', '2024-05-04 14:31:09', '2024-05-04 14:31:09', NULL),
+(722, 6, '10/05/2024', '16:00 - 17:00', '2', '0', '2024-05-04 14:31:09', '2024-05-04 14:31:09', NULL),
+(723, 7, '04/05/2024', '08:00 - 09:00', '2', '0', '2024-05-04 14:31:09', '2024-05-04 14:31:09', NULL),
+(724, 7, '04/05/2024', '09:00 - 10:00', '2', '0', '2024-05-04 14:31:09', '2024-05-04 14:31:09', NULL),
+(725, 7, '04/05/2024', '10:00 - 11:00', '2', '0', '2024-05-04 14:31:09', '2024-05-04 14:31:09', NULL),
+(726, 7, '04/05/2024', '11:00 - 12:00', '2', '0', '2024-05-04 14:31:09', '2024-05-04 14:31:09', NULL),
+(727, 7, '04/05/2024', '13:00 - 14:00', '2', '0', '2024-05-04 14:31:09', '2024-05-04 14:31:09', NULL),
+(728, 7, '04/05/2024', '14:00 - 15:00', '2', '0', '2024-05-04 14:31:09', '2024-05-04 14:31:09', NULL),
+(729, 7, '04/05/2024', '15:00 - 16:00', '2', '0', '2024-05-04 14:31:09', '2024-05-04 14:31:09', NULL),
+(730, 7, '04/05/2024', '16:00 - 17:00', '2', '0', '2024-05-04 14:31:09', '2024-05-04 14:31:09', NULL),
+(731, 7, '05/05/2024', '08:00 - 09:00', '2', '0', '2024-05-04 14:31:09', '2024-05-04 14:31:09', NULL),
+(732, 7, '05/05/2024', '09:00 - 10:00', '2', '0', '2024-05-04 14:31:09', '2024-05-04 14:31:09', NULL),
+(733, 7, '05/05/2024', '10:00 - 11:00', '2', '0', '2024-05-04 14:31:09', '2024-05-04 14:31:09', NULL),
+(734, 7, '05/05/2024', '11:00 - 12:00', '2', '0', '2024-05-04 14:31:09', '2024-05-04 14:31:09', NULL),
+(735, 7, '05/05/2024', '13:00 - 14:00', '2', '0', '2024-05-04 14:31:09', '2024-05-04 14:31:09', NULL),
+(736, 7, '05/05/2024', '14:00 - 15:00', '2', '0', '2024-05-04 14:31:09', '2024-05-04 14:31:09', NULL),
+(737, 7, '05/05/2024', '15:00 - 16:00', '2', '0', '2024-05-04 14:31:09', '2024-05-04 14:31:09', NULL),
+(738, 7, '05/05/2024', '16:00 - 17:00', '2', '0', '2024-05-04 14:31:09', '2024-05-04 14:31:09', NULL),
+(739, 7, '06/05/2024', '08:00 - 09:00', '2', '0', '2024-05-04 14:31:09', '2024-05-04 14:31:09', NULL),
+(740, 7, '06/05/2024', '09:00 - 10:00', '2', '0', '2024-05-04 14:31:09', '2024-05-04 14:31:09', NULL),
+(741, 7, '06/05/2024', '10:00 - 11:00', '2', '0', '2024-05-04 14:31:09', '2024-05-04 14:31:09', NULL),
+(742, 7, '06/05/2024', '11:00 - 12:00', '2', '0', '2024-05-04 14:31:09', '2024-05-04 14:31:09', NULL),
+(743, 7, '06/05/2024', '13:00 - 14:00', '2', '0', '2024-05-04 14:31:09', '2024-05-04 14:31:09', NULL),
+(744, 7, '06/05/2024', '14:00 - 15:00', '2', '0', '2024-05-04 14:31:09', '2024-05-04 14:31:09', NULL),
+(745, 7, '06/05/2024', '15:00 - 16:00', '2', '0', '2024-05-04 14:31:09', '2024-05-04 14:31:09', NULL),
+(746, 7, '06/05/2024', '16:00 - 17:00', '2', '0', '2024-05-04 14:31:09', '2024-05-04 14:31:09', NULL),
+(747, 7, '07/05/2024', '08:00 - 09:00', '2', '0', '2024-05-04 14:31:09', '2024-05-04 14:31:09', NULL),
+(748, 7, '07/05/2024', '09:00 - 10:00', '2', '0', '2024-05-04 14:31:09', '2024-05-04 14:31:09', NULL),
+(749, 7, '07/05/2024', '10:00 - 11:00', '2', '0', '2024-05-04 14:31:09', '2024-05-04 14:31:09', NULL),
+(750, 7, '07/05/2024', '11:00 - 12:00', '2', '0', '2024-05-04 14:31:09', '2024-05-04 14:31:09', NULL),
+(751, 7, '07/05/2024', '13:00 - 14:00', '2', '0', '2024-05-04 14:31:09', '2024-05-04 14:31:09', NULL),
+(752, 7, '07/05/2024', '14:00 - 15:00', '2', '0', '2024-05-04 14:31:09', '2024-05-04 14:31:09', NULL),
+(753, 7, '07/05/2024', '15:00 - 16:00', '2', '0', '2024-05-04 14:31:09', '2024-05-04 14:31:09', NULL),
+(754, 7, '07/05/2024', '16:00 - 17:00', '2', '0', '2024-05-04 14:31:09', '2024-05-04 14:31:09', NULL),
+(755, 7, '08/05/2024', '08:00 - 09:00', '2', '0', '2024-05-04 14:31:09', '2024-05-04 14:31:09', NULL),
+(756, 7, '08/05/2024', '09:00 - 10:00', '2', '0', '2024-05-04 14:31:09', '2024-05-04 14:31:09', NULL),
+(757, 7, '08/05/2024', '10:00 - 11:00', '2', '0', '2024-05-04 14:31:09', '2024-05-04 14:31:09', NULL),
+(758, 7, '08/05/2024', '11:00 - 12:00', '2', '0', '2024-05-04 14:31:09', '2024-05-04 14:31:09', NULL),
+(759, 7, '08/05/2024', '13:00 - 14:00', '2', '0', '2024-05-04 14:31:09', '2024-05-04 14:31:09', NULL),
+(760, 7, '08/05/2024', '14:00 - 15:00', '2', '0', '2024-05-04 14:31:09', '2024-05-04 14:31:09', NULL),
+(761, 7, '08/05/2024', '15:00 - 16:00', '2', '0', '2024-05-04 14:31:09', '2024-05-04 14:31:09', NULL),
+(762, 7, '08/05/2024', '16:00 - 17:00', '2', '0', '2024-05-04 14:31:09', '2024-05-04 14:31:09', NULL),
+(763, 7, '09/05/2024', '08:00 - 09:00', '2', '0', '2024-05-04 14:31:09', '2024-05-04 14:31:09', NULL),
+(764, 7, '09/05/2024', '09:00 - 10:00', '2', '0', '2024-05-04 14:31:09', '2024-05-04 14:31:09', NULL),
+(765, 7, '09/05/2024', '10:00 - 11:00', '2', '0', '2024-05-04 14:31:09', '2024-05-04 14:31:09', NULL),
+(766, 7, '09/05/2024', '11:00 - 12:00', '2', '0', '2024-05-04 14:31:09', '2024-05-04 14:31:09', NULL),
+(767, 7, '09/05/2024', '13:00 - 14:00', '2', '0', '2024-05-04 14:31:09', '2024-05-04 14:31:09', NULL),
+(768, 7, '09/05/2024', '14:00 - 15:00', '2', '0', '2024-05-04 14:31:09', '2024-05-04 14:31:09', NULL),
+(769, 7, '09/05/2024', '15:00 - 16:00', '2', '0', '2024-05-04 14:31:09', '2024-05-04 14:31:09', NULL),
+(770, 7, '09/05/2024', '16:00 - 17:00', '2', '0', '2024-05-04 14:31:09', '2024-05-04 14:31:09', NULL),
+(771, 7, '10/05/2024', '08:00 - 09:00', '2', '0', '2024-05-04 14:31:09', '2024-05-04 14:31:09', NULL),
+(772, 7, '10/05/2024', '09:00 - 10:00', '2', '0', '2024-05-04 14:31:09', '2024-05-04 14:31:09', NULL),
+(773, 7, '10/05/2024', '10:00 - 11:00', '2', '0', '2024-05-04 14:31:09', '2024-05-04 14:31:09', NULL),
+(774, 7, '10/05/2024', '11:00 - 12:00', '2', '0', '2024-05-04 14:31:09', '2024-05-04 14:31:09', NULL),
+(775, 7, '10/05/2024', '13:00 - 14:00', '2', '0', '2024-05-04 14:31:09', '2024-05-04 14:31:09', NULL),
+(776, 7, '10/05/2024', '14:00 - 15:00', '2', '0', '2024-05-04 14:31:09', '2024-05-04 14:31:09', NULL),
+(777, 7, '10/05/2024', '15:00 - 16:00', '2', '0', '2024-05-04 14:31:09', '2024-05-04 14:31:09', NULL),
+(778, 7, '10/05/2024', '16:00 - 17:00', '2', '0', '2024-05-04 14:31:09', '2024-05-04 14:31:09', NULL),
+(779, 2, '09/05/2024', '08:00 - 09:00', '2', '0', '2024-05-09 17:35:44', '2024-05-09 17:35:44', NULL),
+(780, 2, '09/05/2024', '09:00 - 10:00', '2', '0', '2024-05-09 17:35:44', '2024-05-09 17:35:44', NULL),
+(781, 2, '09/05/2024', '11:00 - 12:00', '2', '0', '2024-05-09 17:35:44', '2024-05-09 17:35:44', NULL),
+(782, 2, '09/05/2024', '13:00 - 14:00', '2', '0', '2024-05-09 17:35:44', '2024-05-09 17:35:44', NULL),
+(783, 2, '09/05/2024', '14:00 - 15:00', '2', '0', '2024-05-09 17:35:44', '2024-05-09 17:35:44', NULL),
+(784, 2, '09/05/2024', '15:00 - 16:00', '2', '0', '2024-05-09 17:35:44', '2024-05-09 17:35:44', NULL),
+(785, 2, '13/05/2024', '08:00 - 09:00', '2', '0', '2024-05-09 17:36:24', '2024-05-09 17:36:24', NULL),
+(786, 2, '13/05/2024', '09:00 - 10:00', '2', '0', '2024-05-09 17:36:24', '2024-05-09 17:36:24', NULL),
+(787, 2, '13/05/2024', '10:00 - 11:00', '2', '0', '2024-05-09 17:36:24', '2024-05-09 17:36:24', NULL),
+(788, 2, '13/05/2024', '11:00 - 12:00', '2', '0', '2024-05-09 17:36:24', '2024-05-09 17:36:24', NULL),
+(789, 2, '10/05/2024', '13:00 - 13:15', '2', '0', '2024-05-10 06:09:36', '2024-05-10 06:09:36', NULL),
+(790, 2, '10/05/2024', '13:20 - 13:35', '2', '0', '2024-05-10 06:09:36', '2024-05-10 06:09:36', NULL),
+(791, 2, '10/05/2024', '13:40 - 13:55', '2', '0', '2024-05-10 06:09:36', '2024-05-10 06:09:36', NULL),
+(792, 2, '10/05/2024', '8:00 - 8:15', '2', '0', '2024-05-10 06:09:36', '2024-05-10 06:09:36', NULL),
+(793, 2, '10/05/2024', '8:20 - 8:35', '2', '0', '2024-05-10 06:09:36', '2024-05-10 06:09:36', NULL),
+(794, 2, '10/05/2024', '8:40 - 8:55', '2', '0', '2024-05-10 06:09:36', '2024-05-10 06:09:36', NULL),
+(795, 2, '10/05/2024', '9:00 - 9:15', '2', '0', '2024-05-10 06:09:36', '2024-05-10 06:09:36', NULL),
+(796, 2, '10/05/2024', '9:20 - 9:35', '2', '0', '2024-05-10 06:09:36', '2024-05-10 06:09:36', NULL),
+(797, 2, '10/05/2024', '9:40 - 9:55', '2', '0', '2024-05-10 06:09:36', '2024-05-10 06:09:36', NULL),
+(798, 2, '11/05/2024', '10:40 - 10:55', '2', '0', '2024-05-10 06:10:26', '2024-05-10 06:10:26', NULL),
+(799, 2, '11/05/2024', '13:00 - 13:15', '2', '0', '2024-05-10 06:10:26', '2024-05-10 06:10:26', NULL),
+(800, 2, '11/05/2024', '13:20 - 13:35', '2', '0', '2024-05-10 06:10:26', '2024-05-10 06:10:26', NULL),
+(801, 2, '11/05/2024', '13:40 - 13:55', '2', '0', '2024-05-10 06:10:26', '2024-05-10 06:10:26', NULL),
+(802, 2, '11/05/2024', '14:00 - 14:15', '2', '0', '2024-05-10 06:10:26', '2024-05-10 06:10:26', NULL),
+(803, 2, '11/05/2024', '8:00 - 8:15', '2', '0', '2024-05-10 06:10:26', '2024-05-10 06:10:26', NULL),
+(804, 2, '11/05/2024', '8:20 - 8:35', '2', '0', '2024-05-10 06:10:26', '2024-05-10 06:10:26', NULL),
+(805, 2, '11/05/2024', '8:40 - 8:55', '2', '0', '2024-05-10 06:10:26', '2024-05-10 06:10:26', NULL),
+(806, 2, '11/05/2024', '9:00 - 9:15', '2', '0', '2024-05-10 06:10:26', '2024-05-10 06:10:26', NULL),
+(807, 2, '11/05/2024', '9:20 - 9:35', '2', '0', '2024-05-10 06:10:26', '2024-05-10 06:10:26', NULL),
+(808, 2, '11/05/2024', '9:40 - 9:55', '2', '0', '2024-05-10 06:10:26', '2024-05-10 06:10:26', NULL),
+(809, 2, '12/05/2024', '9:00 - 9:15', '2', '0', '2024-05-10 07:00:05', '2024-05-10 07:00:05', NULL),
+(810, 2, '12/05/2024', '9:00 - 9:15', '2', '0', '2024-05-10 07:01:12', '2024-05-10 07:01:12', NULL),
+(811, 2, '12/05/2024', '9:20 - 9:35', '2', '0', '2024-05-10 07:01:12', '2024-05-10 07:01:12', NULL),
+(812, 2, '12/05/2024', '9:40 - 9:55', '2', '0', '2024-05-10 07:01:12', '2024-05-10 07:01:12', NULL),
+(813, 2, '12/05/2024', '10:20 - 10:35', '2', '0', '2024-05-10 07:01:42', '2024-05-10 07:01:42', NULL),
+(814, 2, '12/05/2024', '10:40 - 10:55', '2', '0', '2024-05-10 07:01:42', '2024-05-10 07:01:42', NULL),
+(815, 2, '12/05/2024', '13:00 - 13:15', '2', '0', '2024-05-10 07:01:42', '2024-05-10 07:01:42', NULL),
+(816, 2, '12/05/2024', '13:40 - 13:55', '2', '0', '2024-05-10 07:02:42', '2024-05-10 07:02:42', NULL),
+(817, 2, '12/05/2024', '14:00 - 14:15', '2', '0', '2024-05-10 07:02:42', '2024-05-10 07:02:42', NULL);
 
 -- --------------------------------------------------------
 
@@ -441,11 +862,8 @@ INSERT INTO `schedules` (`id`, `doctorId`, `date`, `time`, `maxBooking`, `sumBoo
 -- Cấu trúc bảng cho bảng `sequelizemeta`
 --
 
-DROP TABLE IF EXISTS `sequelizemeta`;
-CREATE TABLE IF NOT EXISTS `sequelizemeta` (
-  `name` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
-  PRIMARY KEY (`name`),
-  UNIQUE KEY `name` (`name`)
+CREATE TABLE `sequelizemeta` (
+  `name` varchar(255) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 --
@@ -455,17 +873,19 @@ CREATE TABLE IF NOT EXISTS `sequelizemeta` (
 INSERT INTO `sequelizemeta` (`name`) VALUES
 ('20200311024259-users.js'),
 ('20200311025445-create-role.js'),
+('20200311025458-create-appointment.js'),
 ('20200311025538-create-post.js'),
 ('20200311025553-create-clinic.js'),
 ('20200311025604-create-specialization.js'),
 ('20200311025619-create-schedule.js'),
 ('20200311025632-create-status.js'),
 ('20200311025648-create-patient.js'),
+('migration-create-adminLog.js'),
+('migration-create-allcode.js'),
 ('migration-create-comment.js'),
 ('migration-create-doctor-user.js'),
 ('migration-create-extraInfo.js'),
-('migration-create-place.js'),
-('migration-create-adminLog.js');
+('migration-create-place.js');
 
 -- --------------------------------------------------------
 
@@ -473,22 +893,28 @@ INSERT INTO `sequelizemeta` (`name`) VALUES
 -- Cấu trúc bảng cho bảng `session`
 --
 
-DROP TABLE IF EXISTS `session`;
-CREATE TABLE IF NOT EXISTS `session` (
+CREATE TABLE `session` (
   `sid` varchar(36) NOT NULL,
   `expires` datetime DEFAULT NULL,
   `data` text DEFAULT NULL,
   `createdAt` datetime NOT NULL,
-  `updatedAt` datetime NOT NULL,
-  PRIMARY KEY (`sid`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+  `updatedAt` datetime NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
 -- Đang đổ dữ liệu cho bảng `session`
 --
 
 INSERT INTO `session` (`sid`, `expires`, `data`, `createdAt`, `updatedAt`) VALUES
-('M4XQDCsE_8xdCiFdlIQxQk7Ska3Nby06', '2024-04-28 14:09:17', '{\"cookie\":{\"originalMaxAge\":86399996,\"expires\":\"2024-04-28T07:09:17.013Z\",\"secure\":false,\"httpOnly\":false,\"path\":\"/\"},\"flash\":{}}', '2024-04-27 09:14:49', '2024-04-27 14:09:17');
+('-lxpxltZt2UCVk_0956E5pZ7wXV-Rybz', '2024-05-10 22:36:20', '{\"cookie\":{\"originalMaxAge\":86400000,\"expires\":\"2024-05-10T15:36:20.364Z\",\"secure\":false,\"httpOnly\":false,\"path\":\"/\"},\"flash\":{},\"passport\":{\"user\":2}}', '2024-05-09 22:36:07', '2024-05-09 22:36:20'),
+('A9MBUhV7P0ccqum1n6s2Myp17nnjsNM1', '2024-05-11 01:38:53', '{\"cookie\":{\"originalMaxAge\":86400000,\"expires\":\"2024-05-10T18:38:53.100Z\",\"secure\":false,\"httpOnly\":false,\"path\":\"/\"},\"flash\":{}}', '2024-05-10 01:38:49', '2024-05-10 01:38:53'),
+('aw9whjgoe4_lT3ZLmOCAEptI_fpuyIpz', '2024-05-11 00:58:13', '{\"cookie\":{\"originalMaxAge\":86400000,\"expires\":\"2024-05-10T17:58:13.407Z\",\"secure\":false,\"httpOnly\":false,\"path\":\"/\"},\"flash\":{},\"passport\":{\"user\":2}}', '2024-05-10 00:57:52', '2024-05-10 00:58:13'),
+('k3tQolPq4-SYyoV6GaQ-jfNo8JdqV9rs', '2024-05-11 07:12:41', '{\"cookie\":{\"originalMaxAge\":86400000,\"expires\":\"2024-05-11T00:12:41.686Z\",\"secure\":false,\"httpOnly\":false,\"path\":\"/\"},\"flash\":{}}', '2024-05-10 07:10:41', '2024-05-10 07:12:41'),
+('LGA3unhVgquQqLBQG5TJALcPc_IVquZM', '2024-05-11 16:12:38', '{\"cookie\":{\"originalMaxAge\":86400000,\"expires\":\"2024-05-11T09:12:38.811Z\",\"secure\":false,\"httpOnly\":false,\"path\":\"/\"},\"flash\":{}}', '2024-05-10 07:22:41', '2024-05-10 16:12:38'),
+('ppdr0qkfPfoTs22eJgwdHNWjl6FLFBmu', '2024-05-10 21:21:31', '{\"cookie\":{\"originalMaxAge\":86400000,\"expires\":\"2024-05-10T14:21:31.519Z\",\"secure\":false,\"httpOnly\":false,\"path\":\"/\"},\"flash\":{}}', '2024-05-09 21:21:18', '2024-05-09 21:21:31'),
+('ssxmV6d9fpUMEEp6oUg8yd3eAFZQBvxq', '2024-05-10 22:40:08', '{\"cookie\":{\"originalMaxAge\":86400000,\"expires\":\"2024-05-10T15:40:08.800Z\",\"secure\":false,\"httpOnly\":false,\"path\":\"/\"},\"flash\":{},\"passport\":{\"user\":2}}', '2024-05-09 22:39:42', '2024-05-09 22:40:08'),
+('TwJTMsPjhRL4wjgDsAUJnox-7ecYqHE-', '2024-05-10 17:46:32', '{\"cookie\":{\"originalMaxAge\":86400000,\"expires\":\"2024-05-10T10:46:32.247Z\",\"secure\":false,\"httpOnly\":false,\"path\":\"/\"},\"flash\":{},\"passport\":{\"user\":2}}', '2024-05-09 17:34:34', '2024-05-09 17:46:32'),
+('uS4oFDffVW3fLBKArCfgAzzQxucbG5SM', '2024-05-10 18:16:25', '{\"cookie\":{\"originalMaxAge\":86400000,\"expires\":\"2024-05-10T11:16:25.847Z\",\"secure\":false,\"httpOnly\":false,\"path\":\"/\"},\"flash\":{},\"passport\":{\"user\":1}}', '2024-05-09 18:08:27', '2024-05-09 18:16:25');
 
 -- --------------------------------------------------------
 
@@ -496,30 +922,33 @@ INSERT INTO `session` (`sid`, `expires`, `data`, `createdAt`, `updatedAt`) VALUE
 -- Cấu trúc bảng cho bảng `specializations`
 --
 
-DROP TABLE IF EXISTS `specializations`;
-CREATE TABLE IF NOT EXISTS `specializations` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
+CREATE TABLE `specializations` (
+  `id` int(11) NOT NULL,
   `name` varchar(255) DEFAULT NULL,
   `description` text DEFAULT NULL,
   `image` varchar(255) DEFAULT NULL,
   `createdAt` datetime NOT NULL,
   `updatedAt` datetime DEFAULT NULL,
-  `deletedAt` datetime DEFAULT NULL,
-  PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=8 DEFAULT CHARSET=utf8mb4;
+  `deletedAt` datetime DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
 -- Đang đổ dữ liệu cho bảng `specializations`
 --
 
 INSERT INTO `specializations` (`id`, `name`, `description`, `image`, `createdAt`, `updatedAt`, `deletedAt`) VALUES
-(1, 'Tai Mũi Họng', NULL, 'TaiMuiHong.png', '2024-04-13 19:44:36', '2024-04-13 19:44:36', NULL),
-(2, 'Phẫu thuật thần kinh', NULL, 'ThanKinh.png', '2024-04 19:44:36', '2024-04-13 19:44:36', NULL),
-(3, 'Tiêu hóa', NULL, 'TieuHoa.png', '2024-04 19:44:36', '2024-04-13 19:44:36', NULL),
-(4, 'Tim mạch', NULL, 'TimMach.png', '2024-04 19:44:36', '2024-04-13 19:44:36', NULL),
-(5, 'Đông Y', NULL, 'DongY.png', '2024-04 19:44:36', '2024-04-13 19:44:36', NULL),
-(6, 'Hô hấp', NULL, 'HoHap.png', '2024-04 19:44:36', '2024-04-13 19:44:36', NULL),
-(7, 'Nhi Khoa', NULL, 'NhiKhoa.png', '2024-04 19:44:36', '2024-04-13 19:44:36', NULL);
+(8, 'Thần kinh', 'Chuyên khoa Thần kinh thuộc khối Y học lâm sàng, là một lĩnh vực gồm nội khoa và ngoại khoa,  giữ chức năng khám, chẩn đoán, tư vấn, điều trị chuyên sâu và phẫu thuật những bệnh lý có liên quan đến yếu tố thần kinh.\r\nChuyên khoa Nội Thần kinh chuyên điều trị các bệnh: đau đầu, đau vai gáy, đau thắt lưng hông, rối loạn tiền đình, chóng mặt do thiếu máu não, rối loạn về giấc ngủ, khám thần kinh và điều trị liệt dây 7 ngoại vi, liệt nửa người do đột quỵ não, sa sút trí tuệ, rối loạn vận động như bệnh Parkinson, động kinh, viêm não tủy, viêm đa dây thần kinh, các bệnh gây thoái hoá hệ thần kinh, nhiễm trùng thần kinh, bệnh lý thần kinh ngoại biên, nhiễm độc thần kinh, rối loạn chuyển hóa,…\r\nCác phương pháp điều trị đang được áp dụng tại chuyên khoa Nội Thần kinh:\r\n\r\nXét nghiệm để chẩn đoán chính xác: sàng lọc máu, nước tiểu, di truyền; điện não đồ; điện cơ; EMG (hoạt động điện trong cơ bắp)\r\nChẩn đoán hình ảnh: chụp cắt lớp vi tính (CT scan); cộng hưởng từ (MRI); chụp cắt lớp phát xạ positron (PET); chụp cắt lớp phát xạ đơn photon (SPECT).\r\nChuyên khoa Ngoại thần kinh thực hiện các phẫu thuật u não, u dây thần kinh, u cột sống, chấn thương sọ não và cột sống; vi phẫu thuật mạch máu não trong co giật nửa mặt; vi phẫu thuật mạch máu não trong đau dây thần kinh v.v.. ', 'https://firebasestorage.googleapis.com/v0/b/pbl5-a1f37.appspot.com/o/images%2FavatarSpecialties%2Fthankinh.png?alt=media&token=3ccc51a0-f534-45e7-bc5d-581ac0ce846c', '0000-00-00 00:00:00', NULL, NULL),
+(9, 'Cơ xương khớp', 'Khoa Cơ xương khớp chuyên điều trị các bệnh về cơ xương khớp, tư vấn điều trị và theo dõi định kỳ. Bác sỹ chuyên khoa xương khớp thăm khám cho bệnh nhân các lứa tuổi khác nhau.\r\nChuyên khoa xương khớp điều trị nhiều bệnh lý hay gặp như:\r\n    -  Bệnh gút; bệnh giả gút  (goutte, pseudogoutte)\r\n    -  Viêm khớp nhiễm khuẩn (arthrite infectieuse )\r\n    -  Viêm khớp phản ứng (arthrite resactive)\r\n    -  Viêm khớp dạng thấp ( Polyarthrite rhumatoïde)\r\n    -  Thoái hóa khớp (arthrose )\r\n   - Các bệnh lý về gân cơ: viêm quanh khớp vai (tendinite de l’epaule), viêm lồi cầu xương cánh tay (epicondylite), viêm mỏm châm quay ( syndrome de De Quervain), ngón tay lò xo (doigt a resort ), viêm gân cơ mông nhỡ (tendinite du moyen fessier), hội chứng đường hầm cổ tay, chân ( syndrome du canal carpien, canal tarsien) …\r\n', 'https://firebasestorage.googleapis.com/v0/b/pbl5-a1f37.appspot.com/o/images%2FavatarSpecialties%2Fcoxuongkhop.png?alt=media&token=e6ab3c36-cc04-41fc-9d7d-8575a3874ac4', '0000-00-00 00:00:00', NULL, NULL),
+(10, 'Tiêu hóa', 'Khoa tiêu hoá là một chuyên khoa thuộc nội khoa chuyên điều trị các bệnh về tiêu hoá, rối loạn chức năng tiêu hoá và các cơ quan nội tạng. Ngoài ra, các bác sĩ chuyên khoa Tiêu hoá cố vấn nhiều chuyên khoa ngoài lĩnh vực trong vấn đề điều trị do đặc thù của bệnh lý tiêu hoá, đôi khi là nguồn gốc của nhiều bệnh lý khác có liên quan.\r\nKhám và chữa các bệnh cấp và mạn tính:\r\n- Viêm loét dạ dày - tá tràng\r\n- Trào ngược dạ dày - thực quản\r\n- Hội chứng ruột kích thích Viêm đại tràng\r\n- Nhiễm vi khuẩn HP\r\n- Khám tầm soát ung thư đường tiêu hóa\r\nỨng dụng các phương tiện kỹ thuật hiện đại trong chẩn đoán và tầm soát bệnh: \r\n- Nội soi tiêu hóa\r\n- Siêu âm\r\n- X-quang\r\n- CT Scan\r\n- Chụp Cộng hưởng từ', 'https://firebasestorage.googleapis.com/v0/b/pbl5-a1f37.appspot.com/o/images%2FavatarSpecialties%2Ftieuhoa.png?alt=media&token=aa61b841-4570-4fb6-bfb4-44c400ecf95c', '0000-00-00 00:00:00', NULL, NULL),
+(11, 'Tim mạch', 'Chuyên khoa Tim mạch là một ngành quan trọng thuộc khối Y học lâm sàng, giữ chức năng khám, chẩn đoán, tư vấn và điều trị các bệnh lý liên quan đến hệ thống tim mạch, cơ quan quan trọng giúp duy trì sự sống của con người.\r\nChức năng và nhiệm vụ: \r\nCấp cứu, chẩn đoán và điều trị các bệnh Tim mạch; thực hiện các kỹ thuật chẩn đoán, can thiệp tim mạch và nhịp học; tham gia chuẩn bị bệnh nhân và hội chẩn phẫu thuật tim mạch cho bệnh nhân là bộ đội, chính sách, BHYT và bệnh nhân nhân dân.\r\nTham gia công tác đào tạo, nghiên cứu khoa học, hợp tác Quốc tế và chỉ đạo tuyến', 'https://firebasestorage.googleapis.com/v0/b/pbl5-a1f37.appspot.com/o/images%2FavatarSpecialties%2Ftimmach.png?alt=media&token=6a8868de-a66c-410e-8415-e3fb010cdcd4', '0000-00-00 00:00:00', NULL, NULL),
+(12, 'Tai mũi họng', 'Khoa Tai Mũi Họng là chuyên khoa điều trị các bệnh lý liên quan đến tai, mũi và họng cũng như vùng đầu và cổ. Khoa Tai Mũi Họng cung cấp dịch vụ đa dạng, từ khám bệnh đến thực hiện các loại phẫu thuật phức tạp cho cả trẻ em và người lớn.\r\nĐể điều trị các bệnh lý phức tạp, các bác sĩ tai mũi họng của chúng tôi phối hợp chặt chẽ với các bác sĩ tại các chuyên khoa khác trong bệnh viện như bác sĩ Ngoại Thần kinh và chuyên gia điều trị ung thư.', 'https://firebasestorage.googleapis.com/v0/b/pbl5-a1f37.appspot.com/o/images%2FavatarSpecialties%2Ftaimuihong.png?alt=media&token=d6385508-ed1f-469c-9cd7-8493472b34a3', '0000-00-00 00:00:00', NULL, NULL),
+(13, 'Ngoại thần kinh cột sống', 'Khoa ngoại cột sống là chuyên khám, chẩn đoán và điều trị các bệnh lý từ đơn giản đến phức tạp về cột sống như gãy lún đốt sống, hẹp ống sống, thoái hóa cột sống, thoát vị đĩa đệm, trượt đốt sống,..\r\nNhờ được áp dụng các phương pháp xâm lấn tối thiểu trong phẫu thuật và điều trị như: phẫu thuật nội soi, phẫu thuật qua da... người bệnh sẽ hồi phục nhanh chóng, từ đó rút ngắn thời gian nằm viện, tối ưu chi phí điều trị và giúp người bệnh sớm trở lại với cuộc sống lao động thường ngày.', 'https://firebasestorage.googleapis.com/v0/b/pbl5-a1f37.appspot.com/o/images%2FavatarSpecialties%2Fngoaithankinhcotsong.png?alt=media&token=5644d5be-13a5-498b-b383-d48c7315c111', '0000-00-00 00:00:00', NULL, NULL),
+(14, 'Sản phụ khoa', 'Sản & Phụ khoa là chuyên khoa về sức khoẻ phụ nữ và các vấn đề liên quan tới bộ phận sinh sản nữ từ khi dậy thì cho đến hết cuộc đời.\r\nKhoa có hai lĩnh vực chủ yếu là: Khả năng sinh sản & sản khoa ,Các bệnh phụ khoa\r\nKhám tư vấn về:\r\nBệnh viêm nhiễm;\r\nThực hiện các biện pháp phòng tránh thai;\r\nRối loạn tiền mãn kinh;\r\nXuất huyết tử cung;\r\nPhát hiện ung thư cổ tử cung và ung thư vú\r\nNgoại khoa, đặc biệt là phẫu thuật phần phụ và phẫu thuật ít xâm lấn:\r\nU xơ tử cung;\r\nSa sinh dục;\r\nSón tiểu;\r\nBệnh lý về vú;\r\nUng thư cổ tử cung và ung thư tử cung;\r\nNội soi u nang buồng trứng\r\nTạo hình tầng sinh môn\r\nMổ nội soi kiểm tra vòi trứng', 'https://firebasestorage.googleapis.com/v0/b/pbl5-a1f37.appspot.com/o/images%2FavatarSpecialties%2Fsanphukhoa.png?alt=media&token=16481ec7-9126-48fc-a014-881e6828dc9e', '0000-00-00 00:00:00', NULL, NULL),
+(15, 'Da liễu', 'Da liễu là chuyên khoa chuyên điều trị các bệnh về da và những phần phụ của da (lông, tóc, móng), các bệnh lý niêm mạc (lưỡi, môi, miệng), các bệnh lý nội khoa có biểu hiện ngoài da, các bệnh lây qua đường tình dục.\r\nCác vấn đề bệnh lý Da liễu được chẩn đoán, điều trị:\r\n    Mụn trứng cá và thâm sau mụn\r\n    Nám, tàn nhanh, sẹo lồi\r\n    Dị ứng mỹ phẩm\r\n    Mề đay mạn tính tái phát\r\n    Các bệnh da thông thường: vẩy nến, tổ dĩa, lang ben, bệnh da nghề nghiệp\r\n    Các bệnh lý về móng\r\n    Rụng tóc, gàu, ngứa da đầu\r\n    Mụn cóc, nốt ruồi, u lành da\r\n    Sinh thiết da trong chẩn đoán bệnh lý về da và tầm soát ung thư da', 'https://firebasestorage.googleapis.com/v0/b/pbl5-a1f37.appspot.com/o/images%2FavatarSpecialties%2Fdalieu.png?alt=media&token=982ea0f4-ae85-48d4-9bc7-0c9b5290893d', '0000-00-00 00:00:00', NULL, NULL),
+(16, 'Sức khỏe tâm thần', 'Khoa Tâm thần  với các thế mạnh trong lĩnh vực khám, đánh giá, thiết lập chẩn đoán; điều trị và tư vấn cho trẻ em có các vấn đề liên quan tới sức khỏe tâm thần như:\r\nRối loạn phổ tự kỷ\r\nRối loạn tăng động giảm chú ý\r\nChậm phát triển tâm thần\r\nRối loạn trầm cảm, rối loạn cảm xúc lưỡng cực\r\nRối loạn lo âu, rối loạn ám ảnh – cưỡng chế, rối loạn liên quan đến stress\r\nRối loạn hành vi, Rối loạn bướng bỉnh chống đối\r\nRối loạn học tập\r\nRối loạn tic\r\nRối loạn giấc ngủ\r\nRối loạn ăn uống\r\nNghiện game, nghiện thuốc lá điện tử, nghiện các chất ma tuý', 'https://firebasestorage.googleapis.com/v0/b/pbl5-a1f37.appspot.com/o/images%2FavatarSpecialties%2Fsuckhoetamthan.png?alt=media&token=1440ba6e-7174-4b1e-b7c4-ddce756ed52a', '0000-00-00 00:00:00', NULL, NULL),
+(17, 'Hô hấp - Phổi', 'Khoa nội hô hấp (hay phổi học) là chuyên khoa lâm sàng để điều trị các bệnh lý liên quan đến đường thở và phổi. Các vấn đề về hô hấp có thể bao gồm các ca bệnh thường quy như hen suyễn, viêm tiểu phế quản và viêm mũi dị ứng đến các bệnh lý phức tạp như ung thư phổi, lao và bệnh phổi tắc nghẽn mạn tính (COPD).', 'https://firebasestorage.googleapis.com/v0/b/pbl5-a1f37.appspot.com/o/images%2FavatarSpecialties%2Fhohapphoi.png?alt=media&token=da67da7b-17c4-42ab-9d71-2009bceaf293', '0000-00-00 00:00:00', NULL, NULL),
+(18, 'Ngoại thần kinh', 'Khoa Ngoại thần kinh còn gọi là khoa phẫu thuật thần kinh, giữ chức năng điều trị các bệnh lý liên quan đến yếu tố thần kinh bằng các phương pháp ngoại khoa, bao gồm phẫu thuật nội soi, vi phẫu thuật, can thiệp nội mạch, phẫu thuật tạo hình, mổ và cấy ghép.', 'https://firebasestorage.googleapis.com/v0/b/pbl5-a1f37.appspot.com/o/images%2FavatarSpecialties%2Fhohapphoi.png?alt=media&token=da67da7b-17c4-42ab-9d71-2009bceaf293', '0000-00-00 00:00:00', NULL, NULL),
+(19, 'Chuyên khoa mắt', 'Khám chuyên sâu và điều trị hiệu quả các bệnh lý của mắt.\r\n    Khám phát hiện sớm và điều trị hiệu quả  các trường hợp bệnh lý cườm nước - tăng nhãn áp và cườm khô - đục thể thủy tinh .\r\n    Phối hợp liên chuyên khoa mắt và nội tiết để điều trị hiệu quả bệnh lý võng mạc do tiểu đường.\r\n    Đo khúc xạ - kính chính xác và tư vấn nhiều phương pháp điều trị chuyên sâu các bất thường khúc xạ của mắt.\r\n    Điều trị chảy nước mắt sống hiệu quả.\r\n    Điều trị hiệu quả các bệnh lý bề mặt giác mạc: như bệnh lý khô mắt, viêm kết mạc cấp tính hoặc mãn tính.', 'https://firebasestorage.googleapis.com/v0/b/pbl5-a1f37.appspot.com/o/images%2FavatarSpecialties%2Fchuyenkhoamat.png?alt=media&token=114c1957-81be-4a17-b38b-5628852050e4', '0000-00-00 00:00:00', NULL, NULL);
 
 -- --------------------------------------------------------
 
@@ -527,15 +956,13 @@ INSERT INTO `specializations` (`id`, `name`, `description`, `image`, `createdAt`
 -- Cấu trúc bảng cho bảng `statuses`
 --
 
-DROP TABLE IF EXISTS `statuses`;
-CREATE TABLE IF NOT EXISTS `statuses` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
+CREATE TABLE `statuses` (
+  `id` int(11) NOT NULL,
   `name` varchar(255) DEFAULT NULL,
   `createdAt` datetime NOT NULL,
   `updatedAt` datetime DEFAULT NULL,
-  `deletedAt` datetime DEFAULT NULL,
-  PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8mb4;
+  `deletedAt` datetime DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
 -- Đang đổ dữ liệu cho bảng `statuses`
@@ -551,50 +978,17 @@ INSERT INTO `statuses` (`id`, `name`, `createdAt`, `updatedAt`, `deletedAt`) VAL
 -- --------------------------------------------------------
 
 --
--- Cấu trúc bảng cho bảng `adminlogs`
---
-
-DROP TABLE IF EXISTS `adminlogs`;
-CREATE TABLE IF NOT EXISTS `adminlogs` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
-  `patientId` int(11) DEFAULT NULL,
-  `adminId` int(11) DEFAULT NULL,
-  `content` varchar(255) DEFAULT NULL,
-  `createdAt` datetime NOT NULL,
-  `updatedAt` datetime DEFAULT NULL,
-  `deletedAt` datetime DEFAULT NULL,
-  PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=13 DEFAULT CHARSET=utf8mb4;
-
---
--- Đang đổ dữ liệu cho bảng `adminlogs`
---
-
-INSERT INTO `adminlogs` (`id`, `patientId`, `adminId`, `content`, `createdAt`, `updatedAt`, `deletedAt`) VALUES
-(7, 4, 1, 'The patient made an appointment from the system ', '2024-04-14 20:20:18', '2024-04-14 20:20:18', NULL),
-(8, 4, 1, 'New appointments have been received', '2024-04-14 20:20:41', '2024-04-14 20:20:41', NULL),
-(9, 4, 1, 'Cancel with reason - The patient canceled the schedule', '2024-04-14 20:20:47', '2024-04-14 20:20:47', NULL),
-(10, 5, 1, 'The patient made an appointment from the system ', '2024-04-15 08:27:25', '2024-04-15 08:27:25', NULL),
-(11, 5, 1, 'New appointments have been received', '2024-04-15 08:27:36', '2024-04-15 08:27:36', NULL),
-(12, 5, 1, 'The appointment has been successfully booked', '2024-04-15 08:27:40', '2024-04-15 08:27:40', NULL),
-(13, 6, 1, 'The patient made an appointment from the system ', '2024-04-16 23:04:01', '2024-04-16 23:04:01', NULL),
-(14, 6, 1, 'New appointments have been received', '2024-04-16 23:26:33', '2024-04-16 23:26:33', NULL),
-(15, 6, 1, 'The appointment has been successfully booked', '2024-04-16 23:28:49', '2024-04-16 23:28:49', NULL);
-
--- --------------------------------------------------------
-
---
 -- Cấu trúc bảng cho bảng `users`
 --
 
-DROP TABLE IF EXISTS `users`;
-CREATE TABLE IF NOT EXISTS `users` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
+CREATE TABLE `users` (
+  `id` int(11) NOT NULL,
   `name` varchar(255) DEFAULT NULL,
   `email` varchar(255) DEFAULT NULL,
   `password` varchar(255) DEFAULT NULL,
   `address` varchar(255) DEFAULT NULL,
   `phone` varchar(255) DEFAULT NULL,
+  `birthday` date DEFAULT NULL,
   `avatar` varchar(255) DEFAULT NULL,
   `gender` varchar(255) DEFAULT 'male',
   `description` text DEFAULT NULL,
@@ -602,31 +996,285 @@ CREATE TABLE IF NOT EXISTS `users` (
   `isActive` tinyint(1) DEFAULT 1,
   `createdAt` datetime NOT NULL,
   `updatedAt` datetime DEFAULT NULL,
-  `deletedAt` datetime DEFAULT NULL,
-  PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=12 DEFAULT CHARSET=utf8mb4;
+  `deletedAt` datetime DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
 -- Đang đổ dữ liệu cho bảng `users`
 --
 
-INSERT INTO `users` (`id`, `name`, `email`, `password`, `address`, `phone`, `avatar`, `gender`, `description`, `roleId`, `isActive`, `createdAt`, `updatedAt`, `deletedAt`) VALUES
-(1, 'admin ', 'admin@gmail.com', '$2a$07$Bq0hCq3kVrvKUHfMT0NJROmQkx09aEQkGlwBGEdw799YJvWqH1kuy', 'ĐN', '088456732', 'admin.png', 'male', NULL, 1, 1, '2024-04-13 19:44:36', '2024-04-13 19:44:36', NULL),
-(2, 'Bác sĩ Nguyễn Văn A', 'doctor@gmail.com', '$2a$07$Bq0hCq3kVrvKUHfMT0NJROmQkx09aEQkGlwBGEdw799YJvWqH1kuy', 'ĐN', '088456735', 'doctor3.jpg', 'male', '   ', 2, 1, '2024-04-13 19:44:36', '2024-04-13 19:46:18', NULL),
-(3, 'Bác sĩ Võ Văn B', 'doctor5@gmail.com', '$2a$07$Bq0hCq3kVrvKUHfMT0NJROmQkx09aEQkGlwBGEdw799YJvWqH1kuy', 'ĐN', '088456735', 'doctor4.jpg', 'male', '   ', 2, 1, '2024-04-13 19:44:36', '2024-04-13 20:19:55', NULL),
-(4, 'Bác sĩ Phạm Hải Đăng', 'doctor10@gmail.com', '$2a$07$Bq0hCq3kVrvKUHfMT0NJROmQkx09aEQkGlwBGEdw799YJvWqH1kuy', 'ĐN', '088456735', 'doctor1.jpg', 'male', '   ', 2, 1, '2024-04-13 19:44:36', '2024-04-13 20:20:15', NULL),
-(5, 'Bác sĩ Phạm Bình Nguyên', 'doctor1@gmail.com', '$2a$07$Bq0hCq3kVrvKUHfMT0NJROmQkx09aEQkGlwBGEdw799YJvWqH1kuy', 'ĐN', '088456735', 'doctor2.jpg', 'male', '   ', 2, 1, '2024-04-13 19:44:36', '2024-04-13 20:20:26', NULL),
-(6, 'Bác sĩ Nguyễn Cảnh Nam', 'doctor2@gmail.com', '$2a$07$Bq0hCq3kVrvKUHfMT0NJROmQkx09aEQkGlwBGEdw799YJvWqH1kuy', 'ĐN', '088456735', 'doctor3.jpg', 'male', '      ', 2, 1, '2024-04-13 19:44:36', '2024-04-14 19:49:26', NULL),
-(7, 'Bác sĩ Bùi Minh Hà', 'doctor3@gmail.com', '$2a$07$Bq0hCq3kVrvKUHfMT0NJROmQkx09aEQkGlwBGEdw799YJvWqH1kuy', 'ĐN', '088456735', 'doctor4.jpg', 'male', '      ', 2, 1, '2024-04-13 19:44:36', '2024-04-14 19:49:12', NULL),
-(8, 'Hoàng Văn Hải', 'user@gmail.com', '$2a$07$Bq0hCq3kVrvKUHfMT0NJROmQkx09aEQkGlwBGEdw799YJvWqH1kuy', 'ĐN', '088456736', 'supporter.png', 'male', NULL, 3, 1, '2024-04-13 19:44:36', '2024-04-13 19:44:36', NULL),
-(9, 'Nguyễn Minh Hậu', 'user1@gmail.com', '$2a$07$Bq0hCq3kVrvKUHfMT0NJROmQkx09aEQkGlwBGEdw799YJvWqH1kuy', 'ĐN', '088456736', 'supporter.png', 'male', NULL, 3, 0, '2024-04-13 19:44:36', '2024-04-13 19:44:36', NULL),
-(10, 'Vũ Hồng Hạnh', 'user2@gmail.com', '$2a$07$Bq0hCq3kVrvKUHfMT0NJROmQkx09aEQkGlwBGEdw799YJvWqH1kuy', 'ĐN', '088456736', 'supporter.png', 'male', NULL, 3, 1, '2024-04-13 19:44:36', '2024-04-13 19:44:36', NULL),
-(11, 'Trần Văn Quang', 'user3@gmail.com', '$2a$07$Bq0hCq3kVrvKUHfMT0NJROmQkx09aEQkGlwBGEdw799YJvWqH1kuy', 'ĐN', '088456736', 'supporter.png', 'male', NULL, 3, 1, '2024-04-13 19:44:36', '2024-04-13 19:44:36', NULL);
+INSERT INTO `users` (`id`, `name`, `email`, `password`, `address`, `phone`, `birthday`, `avatar`, `gender`, `description`, `roleId`, `isActive`, `createdAt`, `updatedAt`, `deletedAt`) VALUES
+(12, 'Nguyễn Thanh Liêm', 'thanhliem@gmail.com', '123456', 'Liên Chiểu, Đà Nẵng', '0978 451 287', '1990-12-02', 'https://firebasestorage.googleapis.com/v0/b/pbl5-a1f37.appspot.com/o/images%2FavatarUsers%2FavatarDoctor%2Fthanhliem.png?alt=media&token=cd3538c3-0116-4efd-bb76-08ac6b377150', 'M', NULL, 2, 1, '0000-00-00 00:00:00', NULL, NULL),
+(13, 'Võ Thành Nhân', 'thanhnhan@gmail.com', '123456', 'TP Hồ Chí Minh', '0978 456 123', '1965-04-15', 'https://firebasestorage.googleapis.com/v0/b/pbl5-a1f37.appspot.com/o/images%2FavatarUsers%2FavatarDoctor%2Fthanhnhan.png?alt=media&token=171c0c43-349e-49aa-882c-e60e360621b4', 'M', NULL, 2, 1, '0000-00-00 00:00:00', NULL, NULL),
+(14, 'Phạm Nhật An', 'nhatan@gmail.com', '123456', 'Hà Nội', '0905 678 901', '1972-07-28', 'https://firebasestorage.googleapis.com/v0/b/pbl5-a1f37.appspot.com/o/images%2FavatarUsers%2FavatarDoctor%2Fnhatan.png?alt=media&token=1f00d46b-516b-4833-8a71-238017c62cfe', 'M', NULL, 2, 1, '0000-00-00 00:00:00', NULL, NULL),
+(15, 'Phan Quỳnh Lan', 'quynhlan@gmail.com', '123456', 'TP Hồ Chí Minh', '0906 789 012', '1978-11-03', 'https://firebasestorage.googleapis.com/v0/b/pbl5-a1f37.appspot.com/o/images%2FavatarUsers%2FavatarDoctor%2Fquynhlan.png?alt=media&token=391d73b8-5c08-4c37-b1e3-9620f05003ce', 'F', NULL, 2, 1, '0000-00-00 00:00:00', NULL, NULL),
+(16, 'Nguyễn Thị Tân Sinh', 'tansinh@gmail.com', '123456', 'Huế', '0907 890 123', '1971-09-12', 'https://firebasestorage.googleapis.com/v0/b/pbl5-a1f37.appspot.com/o/images%2FavatarUsers%2FavatarDoctor%2Ftansinh.png?alt=media&token=43b90ae5-04bc-4047-be62-5a01efef848b', 'F', NULL, 2, 1, '0000-00-00 00:00:00', NULL, NULL),
+(17, 'Quách Thanh Dung', 'thanhdung@gmail.com', '123456', 'Hà Nội', '0908 901 234', '1976-06-20', 'https://firebasestorage.googleapis.com/v0/b/pbl5-a1f37.appspot.com/o/images%2FavatarUsers%2FavatarDoctor%2Fthanhdung.png?alt=media&token=66b67abe-d860-43bd-8326-b975a1930e7a', 'F', NULL, 2, 1, '0000-00-00 00:00:00', NULL, NULL),
+(18, 'Tôn Thất Trí Dũng', 'tridung@gmail.com', '123456', 'Đà Nẵng', '0909 012 345', '1963-02-09', 'https://firebasestorage.googleapis.com/v0/b/pbl5-a1f37.appspot.com/o/images%2FavatarUsers%2FavatarDoctor%2Ftridung.png?alt=media&token=7f1d0494-8f79-4751-92e0-1b6f33be266c', 'M', NULL, 2, 1, '0000-00-00 00:00:00', NULL, NULL),
+(19, 'Ngô Văn Đoan', 'vandoan@gmail.com', '123456', 'Hà Nội', '0910 123 456', '1968-08-31', 'https://firebasestorage.googleapis.com/v0/b/pbl5-a1f37.appspot.com/o/images%2FavatarUsers%2FavatarDoctor%2Fvandoan.png?alt=media&token=a93e08c3-2620-42f0-aa68-0545cfa2793b', 'M', NULL, 2, 1, '0000-00-00 00:00:00', NULL, NULL),
+(20, 'Nguyễn Tất Bình', 'tatbinh@gmail.com', '123456', 'TP Hồ Chí Minh', '0911 234 567', '1975-05-14', 'https://firebasestorage.googleapis.com/v0/b/pbl5-a1f37.appspot.com/o/images%2FavatarUsers%2FavatarDoctor%2Ftatbinh.png?alt=media&token=8a706761-025d-4c0b-b65b-07ec99b999ac', 'M', NULL, 2, 1, '0000-00-00 00:00:00', NULL, NULL),
+(21, 'Nguyễn Văn Quyết', 'vanquyet@gmail.com', '123456', 'Hà Tĩnh', '0912 345 678', '1970-10-24', 'https://firebasestorage.googleapis.com/v0/b/pbl5-a1f37.appspot.com/o/images%2FavatarUsers%2FavatarDoctor%2Fvanquyet.png?alt=media&token=615395e2-012e-4cb2-97a5-4f8a7e4ab9c1', 'M', NULL, 2, 1, '0000-00-00 00:00:00', NULL, NULL),
+(22, 'Đoàn Thị Hồng Hạnh', 'honghanh@gmail.com', '123456', 'Hà Nội', '0913 456 789', '1962-12-05', 'https://firebasestorage.googleapis.com/v0/b/pbl5-a1f37.appspot.com/o/images%2FavatarUsers%2FavatarDoctor%2Fhonghanh.png?alt=media&token=da151b0a-9e86-499a-b24d-6425f42306f4', 'F', NULL, 2, 1, '0000-00-00 00:00:00', NULL, NULL),
+(23, 'Nguyễn Thái Trí', 'thaitri@gmail.com', '123456', 'Hà Tĩnh', '0914 567 890', '1974-03-17', 'https://firebasestorage.googleapis.com/v0/b/pbl5-a1f37.appspot.com/o/images%2FavatarUsers%2FavatarDoctor%2Fthaitri.png?alt=media&token=da96cf0b-a926-44dd-8d8f-87a0489be221', 'M', NULL, 2, 1, '0000-00-00 00:00:00', NULL, NULL),
+(24, 'Lê Trọng Bình', 'trongbinh@gmail.com', '123456', 'TP Hồ Chí Minh', '0915 678 901', '1967-01-28', 'https://firebasestorage.googleapis.com/v0/b/pbl5-a1f37.appspot.com/o/images%2FavatarUsers%2FavatarDoctor%2Ftrongbinh.png?alt=media&token=02ea4554-b0a8-4dde-9b1c-1d537b8f2498', 'M', NULL, 2, 1, '0000-00-00 00:00:00', NULL, NULL),
+(25, 'Phạm Thị Thùy Nhung', 'thuynhung@gmail.com', '123456', 'Đà Nẵng', '0916 789 012', '1979-06-10', 'https://firebasestorage.googleapis.com/v0/b/pbl5-a1f37.appspot.com/o/images%2FavatarUsers%2FavatarDoctor%2Fthuynhung.png?alt=media&token=b4e55aae-d37d-4365-b551-22bd1a6ea530', 'F', NULL, 2, 1, '0000-00-00 00:00:00', NULL, NULL),
+(26, 'Đoàn Thị Trung Hiệp', 'trunghiep@gmail.com', '123456', 'TP Hồ Chí Minh', '0917 890 123', '1961-09-22', 'https://firebasestorage.googleapis.com/v0/b/pbl5-a1f37.appspot.com/o/images%2FavatarUsers%2FavatarDoctor%2Ftrunghiep.png?alt=media&token=e9ac6daf-32b1-4bac-a6e8-6ac70ba0df28', 'F', NULL, 2, 1, '0000-00-00 00:00:00', NULL, NULL),
+(27, 'Bùi Tiến Đạt', 'tiendat@gmail.com', '123456', 'Huế', '0918 901 234', '1977-11-30', 'https://firebasestorage.googleapis.com/v0/b/pbl5-a1f37.appspot.com/o/images%2FavatarUsers%2FavatarDoctor%2Ftiendat.png?alt=media&token=020e68ca-91da-45cc-b7ba-b2cd0688c92e', 'M', NULL, 2, 1, '0000-00-00 00:00:00', NULL, NULL),
+(28, 'Huỳnh Thoại Loan', 'thoailan@gmail.com', '123456', 'Huế', '0919 012 345', '1970-07-09', 'https://firebasestorage.googleapis.com/v0/b/pbl5-a1f37.appspot.com/o/images%2FavatarUsers%2FavatarDoctor%2Fthoailan.png?alt=media&token=fc8f5e50-25ea-4a30-9c07-f06dddacc325', 'F', NULL, 2, 1, '0000-00-00 00:00:00', NULL, NULL),
+(29, 'Nguyễn Thanh Hưng', 'thanhhung@gmail.com', '123456', 'Đà Nẵng', '0920 123 456', '1964-04-22', 'https://firebasestorage.googleapis.com/v0/b/pbl5-a1f37.appspot.com/o/images%2FavatarUsers%2FavatarDoctor%2Fthanhhung.png?alt=media&token=6491a78e-272c-402e-86ae-9836ee206f4b', 'M', NULL, 2, 1, '0000-00-00 00:00:00', NULL, NULL),
+(30, 'Nguyễn Thị Hoàn', 'thihoan@gmail.com', '123456', 'TP Hồ Chí Minh', '0921 234 567', '1962-12-15', 'https://firebasestorage.googleapis.com/v0/b/pbl5-a1f37.appspot.com/o/images%2FavatarUsers%2FavatarDoctor%2Fthihoan.png?alt=media&token=7d5b611e-6dc9-43ff-9b6e-b8209fbf256f', 'F', NULL, 2, 1, '0000-00-00 00:00:00', NULL, NULL),
+(31, 'Trần Thị Linh Chi', 'linhchi@gmail.com', '123456', 'Hà Nội', '0922 345 678', '1973-05-27', 'https://firebasestorage.googleapis.com/v0/b/pbl5-a1f37.appspot.com/o/images%2FavatarUsers%2FavatarDoctor%2Flinhchi.png?alt=media&token=6663f0a9-be2d-4bde-bb78-c4637c3c9e22', 'F', NULL, 2, 1, '0000-00-00 00:00:00', NULL, NULL),
+(32, 'Khổng Trọng Thắng', 'trongthang@gmail.com', '123456', 'TP Hồ Chí Minh', '0923 456 789', '1966-08-07', 'https://firebasestorage.googleapis.com/v0/b/pbl5-a1f37.appspot.com/o/images%2FavatarUsers%2FavatarDoctor%2Ftrongthang.png?alt=media&token=9b7caa88-8718-4bec-a9f7-3209c4abe173', 'M', NULL, 2, 1, '0000-00-00 00:00:00', NULL, NULL),
+(33, 'Dương Thế Vinh', 'thevinh@gmail.com', '123456', 'Huế', '0924 567 890', '1978-10-18', 'https://firebasestorage.googleapis.com/v0/b/pbl5-a1f37.appspot.com/o/images%2FavatarUsers%2FavatarDoctor%2Fthevinh.png?alt=media&token=d0732c70-58fa-4feb-90da-95341e1e7601', 'M', NULL, 2, 1, '0000-00-00 00:00:00', NULL, NULL),
+(34, 'Nguyễn Đăng Tuân', 'dangtuan@gmail.com', '123456', 'Hà Nội', '0925 678 901', '1972-02-01', 'https://firebasestorage.googleapis.com/v0/b/pbl5-a1f37.appspot.com/o/images%2FavatarUsers%2FavatarDoctor%2Fdangtuan.png?alt=media&token=6250982b-46a1-4bea-ac82-6288d6984704', 'M', NULL, 2, 1, '0000-00-00 00:00:00', NULL, NULL),
+(35, 'Nguyễn Việt Anh', 'vietanh@gmail.com', '123456', 'Huế', '0926 789 012', '1965-03-14', 'https://firebasestorage.googleapis.com/v0/b/pbl5-a1f37.appspot.com/o/images%2FavatarUsers%2FavatarDoctor%2Fvietanh.png?alt=media&token=be325aca-117c-4fc0-938f-ccb158208f7d', 'M', NULL, 2, 1, '0000-00-00 00:00:00', NULL, NULL),
+(36, 'Lê Hữu Đồng', 'huudong@gmail.com', '123456', 'Đà Nẵng', '0927 890 123', '1976-09-25', 'https://firebasestorage.googleapis.com/v0/b/pbl5-a1f37.appspot.com/o/images%2FavatarUsers%2FavatarDoctor%2Fhuudong.png?alt=media&token=94a38e71-fe97-4ab7-aeed-24c62d88ecea', 'M', NULL, 2, 1, '0000-00-00 00:00:00', NULL, NULL),
+(37, 'Lê Viết Cường', 'vietcuong@gmail.com', '123456', 'Huế', '0928 901 234', '1971-01-05', 'https://firebasestorage.googleapis.com/v0/b/pbl5-a1f37.appspot.com/o/images%2FavatarUsers%2FavatarDoctor%2Fvietcuong.png?alt=media&token=50abf739-ca49-46e8-8b5d-4c3d5ded5b7c', 'M', NULL, 2, 1, '0000-00-00 00:00:00', NULL, NULL),
+(38, 'Trần Hữu Tuấn', 'huutuan@gmail.com', '123456', 'Hà Nội', '0929 012 345', '1963-07-16', 'https://firebasestorage.googleapis.com/v0/b/pbl5-a1f37.appspot.com/o/images%2FavatarUsers%2FavatarDoctor%2Fhuutuan.png?alt=media&token=a40eb656-7183-4aa5-9023-48e6206f3e91', 'M', NULL, 2, 1, '0000-00-00 00:00:00', NULL, NULL),
+(39, 'Phan Phi Tuấn', 'phituan@gmail.com', '123456', 'TP Hồ Chí Minh', '0930 123 456', '1974-11-26', 'https://firebasestorage.googleapis.com/v0/b/pbl5-a1f37.appspot.com/o/images%2FavatarUsers%2FavatarDoctor%2Fphituan.png?alt=media&token=1603645a-c807-4fd8-bad2-320309bcd8a6', 'M', NULL, 2, 1, '0000-00-00 00:00:00', NULL, NULL),
+(40, 'Phùng Tuyết Lan', 'tuyetlan@gmail.com', '123456', 'Đà Nẵng', '0931 234 567', '1968-08-08', 'https://firebasestorage.googleapis.com/v0/b/pbl5-a1f37.appspot.com/o/images%2FavatarUsers%2FavatarDoctor%2Ftuyetlan.png?alt=media&token=79e03e3c-dc3d-4253-bd6c-cd844eaf5800', 'F', NULL, 2, 1, '0000-00-00 00:00:00', NULL, NULL),
+(41, 'Võ Hồng Tiên', 'hongtien003@gmail.com', '123456', 'Quế Sơn, Quảng Nam', '0934 978 913', '2003-10-29', 'https://firebasestorage.googleapis.com/v0/b/pbl5-a1f37.appspot.com/o/images%2FavatarUsers%2FavatarPatient%2Favatar-default.png?alt=media&token=f8cd9a9f-d234-4b99-b742-77cf25ca86dd', 'F', NULL, 3, 1, '0000-00-00 00:00:00', NULL, NULL),
+(42, 'Nguyễn Thị Hương Giang', 'huonggianghk2003@gmail.com', '123456', 'Hà Tĩnh', '0934 456 123', '2003-08-16', 'https://firebasestorage.googleapis.com/v0/b/pbl5-a1f37.appspot.com/o/images%2FavatarUsers%2FavatarPatient%2Favatar-default.png?alt=media&token=f8cd9a9f-d234-4b99-b742-77cf25ca86dd', 'F', NULL, 3, 1, '0000-00-00 00:00:00', NULL, NULL),
+(43, 'Nguyễn Thị Ngân Anh', 'nguyenngananh44@gmail.com', '123456', 'Huế', '0945 288 715', '2003-04-01', 'https://firebasestorage.googleapis.com/v0/b/pbl5-a1f37.appspot.com/o/images%2FavatarUsers%2FavatarPatient%2Favatar-default.png?alt=media&token=f8cd9a9f-d234-4b99-b742-77cf25ca86dd', 'F', NULL, 3, 1, '0000-00-00 00:00:00', NULL, NULL),
+(44, 'Trần Thị Ngọc Quyên', 'ngocquyen@gmail.com', '123456', 'Quảng Nam', '0913 456 789', '2003-04-04', 'https://firebasestorage.googleapis.com/v0/b/pbl5-a1f37.appspot.com/o/images%2FavatarUsers%2FavatarPatient%2Favatar-default.png?alt=media&token=f8cd9a9f-d234-4b99-b742-77cf25ca86dd', 'F', NULL, 3, 1, '0000-00-00 00:00:00', NULL, NULL),
+(45, 'Nguyễn Văn A', 'nguyenvana.patient@gmail.com', '123456', 'Phú Thọ', '0897 651 432', '1987-09-25', 'https://firebasestorage.googleapis.com/v0/b/pbl5-a1f37.appspot.com/o/images%2FavatarUsers%2FavatarPatient%2Favatar-default.png?alt=media&token=f8cd9a9f-d234-4b99-b742-77cf25ca86dd', 'M', NULL, 3, 1, '0000-00-00 00:00:00', NULL, NULL),
+(46, 'Trần Thị B', 'tranthib.patient@gmail.com', '123456', 'Khánh Hòa', '0432 109 876', '1983-03-12', 'https://firebasestorage.googleapis.com/v0/b/pbl5-a1f37.appspot.com/o/images%2FavatarUsers%2FavatarPatient%2Favatar-default.png?alt=media&token=f8cd9a9f-d234-4b99-b742-77cf25ca86dd', 'F', NULL, 3, 1, '0000-00-00 00:00:00', NULL, NULL),
+(47, 'Phạm Thị C', 'phamthic.patient@gmail.com', '123456', 'Hưng Yên', '0789 654 321', '1974-07-30', 'https://firebasestorage.googleapis.com/v0/b/pbl5-a1f37.appspot.com/o/images%2FavatarUsers%2FavatarPatient%2Favatar-default.png?alt=media&token=f8cd9a9f-d234-4b99-b742-77cf25ca86dd', 'F', NULL, 3, 1, '0000-00-00 00:00:00', NULL, NULL),
+(48, 'Lê Đình', 'ledinh.patient@gmail.com', '123456', 'Lạng Sơn', '0981 234 567', '1998-11-18', 'https://firebasestorage.googleapis.com/v0/b/pbl5-a1f37.appspot.com/o/images%2FavatarUsers%2FavatarPatient%2Favatar-default.png?alt=media&token=f8cd9a9f-d234-4b99-b742-77cf25ca86dd', 'M', NULL, 3, 1, '0000-00-00 00:00:00', NULL, NULL),
+(49, 'Nguyễn Thị D', 'nguyenthid.patient@gmail.com', '123456', 'Nghệ An', '0654 321 098', '1969-05-03', 'https://firebasestorage.googleapis.com/v0/b/pbl5-a1f37.appspot.com/o/images%2FavatarUsers%2FavatarPatient%2Favatar-default.png?alt=media&token=f8cd9a9f-d234-4b99-b742-77cf25ca86dd', 'F', NULL, 3, 1, '0000-00-00 00:00:00', NULL, NULL),
+(50, 'Trần Văn Đức', 'tranduc.patient@gmail.com', '123456', 'Quảng Bình', '0345 678 912', '1976-08-22', 'https://firebasestorage.googleapis.com/v0/b/pbl5-a1f37.appspot.com/o/images%2FavatarUsers%2FavatarPatient%2Favatar-default.png?alt=media&token=f8cd9a9f-d234-4b99-b742-77cf25ca86dd', 'M', NULL, 3, 1, '0000-00-00 00:00:00', NULL, NULL),
+(51, 'Đinh Thị P', 'dinhthip.patient@gmail.com', '123456', 'Quảng Ngãi', '0876 543 210', '1985-12-07', 'https://firebasestorage.googleapis.com/v0/b/pbl5-a1f37.appspot.com/o/images%2FavatarUsers%2FavatarPatient%2Favatar-default.png?alt=media&token=f8cd9a9f-d234-4b99-b742-77cf25ca86dd', 'F', NULL, 3, 1, '0000-00-00 00:00:00', NULL, NULL),
+(52, 'Lê Nhật Minh', 'leminh.patient@gmail.com', '123456', 'Quảng Trị', '0987 654 321', '1994-01-15', 'https://firebasestorage.googleapis.com/v0/b/pbl5-a1f37.appspot.com/o/images%2FavatarUsers%2FavatarPatient%2Favatar-default.png?alt=media&token=f8cd9a9f-d234-4b99-b742-77cf25ca86dd', 'M', NULL, 3, 1, '0000-00-00 00:00:00', NULL, NULL),
+(53, 'Phan Trần Đức', 'phanduc.patient@gmail.com', '123456', 'Phú Thọ', '0567 890 123', '1991-06-09', 'https://firebasestorage.googleapis.com/v0/b/pbl5-a1f37.appspot.com/o/images%2FavatarUsers%2FavatarPatient%2Favatar-default.png?alt=media&token=f8cd9a9f-d234-4b99-b742-77cf25ca86dd', 'M', NULL, 3, 1, '0000-00-00 00:00:00', NULL, NULL),
+(54, 'Vũ Văn Thanh', 'vuthanh.patient@gmail.com', '123456', 'Nghệ An', '0456 789 012', '1980-04-28', 'https://firebasestorage.googleapis.com/v0/b/pbl5-a1f37.appspot.com/o/images%2FavatarUsers%2FavatarPatient%2Favatar-default.png?alt=media&token=f8cd9a9f-d234-4b99-b742-77cf25ca86dd', 'M', NULL, 3, 1, '0000-00-00 00:00:00', NULL, NULL),
+(55, 'Đoàn Chí Hạ', 'doanha.patient@gmail.com', '123456', 'Đồng Nai', '0234 567 890', '1972-10-19', 'https://firebasestorage.googleapis.com/v0/b/pbl5-a1f37.appspot.com/o/images%2FavatarUsers%2FavatarPatient%2Favatar-default.png?alt=media&token=f8cd9a9f-d234-4b99-b742-77cf25ca86dd', 'M', NULL, 3, 1, '0000-00-00 00:00:00', NULL, NULL),
+(56, 'Nguyễn Chính Quân', 'nguyenquan.patient@gmail.com', '123456', 'Quảng Ngãi', '0876 543 210', '1988-02-11', 'https://firebasestorage.googleapis.com/v0/b/pbl5-a1f37.appspot.com/o/images%2FavatarUsers%2FavatarPatient%2Favatar-default.png?alt=media&token=f8cd9a9f-d234-4b99-b742-77cf25ca86dd', 'M', NULL, 3, 1, '0000-00-00 00:00:00', NULL, NULL),
+(57, 'Bùi Văn Hà', 'buivan.patient@gmail.com', '123456', 'Hưng Yên', '0456 789 012', '1999-09-01', 'https://firebasestorage.googleapis.com/v0/b/pbl5-a1f37.appspot.com/o/images%2FavatarUsers%2FavatarPatient%2Favatar-default.png?alt=media&token=f8cd9a9f-d234-4b99-b742-77cf25ca86dd', 'M', NULL, 3, 1, '0000-00-00 00:00:00', NULL, NULL),
+(58, 'Trần Trí Nam', 'trinam.patient@gmail.com', '123456', 'Quảng Ngãi', '0765 432 109', '1978-07-26', 'https://firebasestorage.googleapis.com/v0/b/pbl5-a1f37.appspot.com/o/images%2FavatarUsers%2FavatarPatient%2Favatar-default.png?alt=media&token=f8cd9a9f-d234-4b99-b742-77cf25ca86dd', 'M', NULL, 3, 1, '0000-00-00 00:00:00', NULL, NULL),
+(59, 'Trần Hoàng Thủy', 'hoangthuy.patient@gmail.com', '123456', 'Nghệ An', '0987 654 321', '1996-03-17', 'https://firebasestorage.googleapis.com/v0/b/pbl5-a1f37.appspot.com/o/images%2FavatarUsers%2FavatarPatient%2Favatar-default.png?alt=media&token=f8cd9a9f-d234-4b99-b742-77cf25ca86dd', 'F', NULL, 3, 1, '0000-00-00 00:00:00', NULL, NULL),
+(60, 'Vũ Hoàng Việt', 'phamviet.patient@gmail.com', '123456', 'Quảng Trị', '0567 890 123', '1966-12-04', 'https://firebasestorage.googleapis.com/v0/b/pbl5-a1f37.appspot.com/o/images%2FavatarUsers%2FavatarPatient%2Favatar-default.png?alt=media&token=f8cd9a9f-d234-4b99-b742-77cf25ca86dd', 'M', NULL, 3, 1, '0000-00-00 00:00:00', NULL, NULL),
+(61, 'Lương Như Anh', 'luonganh.patient@gmail.com', '123456', 'Hải Phòng', '0543 210 987', '1982-10-30', 'https://firebasestorage.googleapis.com/v0/b/pbl5-a1f37.appspot.com/o/images%2FavatarUsers%2FavatarPatient%2Favatar-default.png?alt=media&token=f8cd9a9f-d234-4b99-b742-77cf25ca86dd', 'F', NULL, 3, 1, '0000-00-00 00:00:00', NULL, NULL),
+(62, 'Nguyễn Thị Hồng Thủy', 'nguyenthuy.patient@gmail.com', '123456', 'Hải Phòng', '0432 109 876', '1965-08-14', 'https://firebasestorage.googleapis.com/v0/b/pbl5-a1f37.appspot.com/o/images%2FavatarUsers%2FavatarPatient%2Favatar-default.png?alt=media&token=f8cd9a9f-d234-4b99-b742-77cf25ca86dd', 'F', NULL, 3, 1, '0000-00-00 00:00:00', NULL, NULL),
+(63, 'Hoàng Nam Nguyễn', 'hoangnam.patient@gmail.com', '123456', 'Lạng Sơn', '0981 234 567', '1970-06-23', 'https://firebasestorage.googleapis.com/v0/b/pbl5-a1f37.appspot.com/o/images%2FavatarUsers%2FavatarPatient%2Favatar-default.png?alt=media&token=f8cd9a9f-d234-4b99-b742-77cf25ca86dd', 'M', NULL, 3, 1, '0000-00-00 00:00:00', NULL, NULL),
+(64, 'Vũ Thị Thu Thảo', 'vuthao.patient@gmail.com', '123456', 'Đồng Nai', '0765 432 109', '1989-04-02', 'https://firebasestorage.googleapis.com/v0/b/pbl5-a1f37.appspot.com/o/images%2FavatarUsers%2FavatarPatient%2Favatar-default.png?alt=media&token=f8cd9a9f-d234-4b99-b742-77cf25ca86dd', 'F', NULL, 3, 1, '0000-00-00 00:00:00', NULL, NULL),
+(65, 'Trần Văn Hùng', 'tranhung.patient@gmail.com', '123456', 'Kon Tum', '0654 321 098', '1975-01-08', 'https://firebasestorage.googleapis.com/v0/b/pbl5-a1f37.appspot.com/o/images%2FavatarUsers%2FavatarPatient%2Favatar-default.png?alt=media&token=f8cd9a9f-d234-4b99-b742-77cf25ca86dd', 'M', NULL, 3, 1, '0000-00-00 00:00:00', NULL, NULL),
+(66, 'Nguyễn Xuân Thạnh', 'xuanthanh.patient@gmail.com', '123456', 'Kon Tum', '0876 543 210', '1992-11-26', 'https://firebasestorage.googleapis.com/v0/b/pbl5-a1f37.appspot.com/o/images%2FavatarUsers%2FavatarPatient%2Favatar-default.png?alt=media&token=f8cd9a9f-d234-4b99-b742-77cf25ca86dd', 'M', NULL, 3, 1, '0000-00-00 00:00:00', NULL, NULL),
+(67, 'Ngô Hoàng Tiến', 'hoangtien.patient@gmail.com', '123456', 'Quảng Ngãi', '0345 678 912', '1990-05-20', 'https://firebasestorage.googleapis.com/v0/b/pbl5-a1f37.appspot.com/o/images%2FavatarUsers%2FavatarPatient%2Favatar-default.png?alt=media&token=f8cd9a9f-d234-4b99-b742-77cf25ca86dd', 'M', NULL, 3, 1, '0000-00-00 00:00:00', NULL, NULL),
+(68, 'Huỳnh Thị Hoàng Anh', 'hoanganh.patient@gmail.com', '123456', 'Nghệ An', '0234 567 890', '1973-09-10', 'https://firebasestorage.googleapis.com/v0/b/pbl5-a1f37.appspot.com/o/images%2FavatarUsers%2FavatarPatient%2Favatar-default.png?alt=media&token=f8cd9a9f-d234-4b99-b742-77cf25ca86dd', 'F', NULL, 3, 1, '0000-00-00 00:00:00', NULL, NULL),
+(69, 'Nguyễn Hải Anh', 'haianh.patient@gmail.com', '123456', 'Phú Thọ', '0567 890 123', '1997-07-01', 'https://firebasestorage.googleapis.com/v0/b/pbl5-a1f37.appspot.com/o/images%2FavatarUsers%2FavatarPatient%2Favatar-default.png?alt=media&token=f8cd9a9f-d234-4b99-b742-77cf25ca86dd', 'M', NULL, 3, 1, '0000-00-00 00:00:00', NULL, NULL),
+(70, 'Phạm Ngô Nguyên Hoàng', 'nguyenhoang.patient@gmail.com', '123456', 'Phú Thọ', '0456 789 012', '1981-02-16', 'https://firebasestorage.googleapis.com/v0/b/pbl5-a1f37.appspot.com/o/images%2FavatarUsers%2FavatarPatient%2Favatar-default.png?alt=media&token=f8cd9a9f-d234-4b99-b742-77cf25ca86dd', 'M', NULL, 3, 1, '0000-00-00 00:00:00', NULL, NULL),
+(71, 'Trần Văn Dũng', 'trandung.patient@gmail.com', '123456', 'Quảng Bình', '0987 654 321', '1995-06-13', 'https://firebasestorage.googleapis.com/v0/b/pbl5-a1f37.appspot.com/o/images%2FavatarUsers%2FavatarPatient%2Favatar-default.png?alt=media&token=f8cd9a9f-d234-4b99-b742-77cf25ca86dd', 'M', NULL, 3, 1, '0000-00-00 00:00:00', NULL, NULL),
+(72, 'Trần Thị Phương Thảo', 'phuongthao.patient@gmail.com', '123456', 'Hải Phòng', '0543 210 987', '1967-04-03', 'https://firebasestorage.googleapis.com/v0/b/pbl5-a1f37.appspot.com/o/images%2FavatarUsers%2FavatarPatient%2Favatar-default.png?alt=media&token=f8cd9a9f-d234-4b99-b742-77cf25ca86dd', 'F', NULL, 3, 1, '0000-00-00 00:00:00', NULL, NULL),
+(73, 'Hoàng Phúc Minh', 'phucminh.patient@gmail.com', '123456', 'Khánh Hòa', '0432 109 876', '1971-11-07', 'https://firebasestorage.googleapis.com/v0/b/pbl5-a1f37.appspot.com/o/images%2FavatarUsers%2FavatarPatient%2Favatar-default.png?alt=media&token=f8cd9a9f-d234-4b99-b742-77cf25ca86dd', 'M', NULL, 3, 1, '0000-00-00 00:00:00', NULL, NULL),
+(74, 'Nguyễn Việt Anh', 'vietanh.patient@gmail.com', '123456', 'Quảng Bình', '0765 432 109', '1968-08-25', 'https://firebasestorage.googleapis.com/v0/b/pbl5-a1f37.appspot.com/o/images%2FavatarUsers%2FavatarPatient%2Favatar-default.png?alt=media&token=f8cd9a9f-d234-4b99-b742-77cf25ca86dd', 'M', NULL, 3, 1, '0000-00-00 00:00:00', NULL, NULL),
+(75, 'Võ Trung Nguyên', 'trungnguyen@gmail.com', '123456', 'Lạng Sơn', '0981 234 567', '1984-10-05', 'https://firebasestorage.googleapis.com/v0/b/pbl5-a1f37.appspot.com/o/images%2FavatarUsers%2FavatarPatient%2Favatar-default.png?alt=media&token=f8cd9a9f-d234-4b99-b742-77cf25ca86dd', 'M', NULL, 3, 1, '0000-00-00 00:00:00', NULL, NULL),
+(76, 'Vũ Thị Hoàng', 'hoangthi@gmail.com', '123456', 'Nghệ An', '0654 321 098', '1993-12-19', 'https://firebasestorage.googleapis.com/v0/b/pbl5-a1f37.appspot.com/o/images%2FavatarUsers%2FavatarPatient%2Favatar-default.png?alt=media&token=f8cd9a9f-d234-4b99-b742-77cf25ca86dd', 'F', NULL, 3, 1, '0000-00-00 00:00:00', NULL, NULL),
+(77, 'Cao Nguyên Minh', 'nguyenminh@gmail.com', '123456', 'Hưng Yên', '0234 123 890', '1979-06-28', 'https://firebasestorage.googleapis.com/v0/b/pbl5-a1f37.appspot.com/o/images%2FavatarUsers%2FavatarPatient%2Favatar-default.png?alt=media&token=f8cd9a9f-d234-4b99-b742-77cf25ca86dd', 'M', NULL, 3, 1, '0000-00-00 00:00:00', NULL, NULL),
+(78, 'Phạm Mai Hoàng', 'hoangmai@gmail.com', '123456', 'Khánh Hòa', '0876 543 781', '1986-03-09', 'https://firebasestorage.googleapis.com/v0/b/pbl5-a1f37.appspot.com/o/images%2FavatarUsers%2FavatarPatient%2Favatar-default.png?alt=media&token=f8cd9a9f-d234-4b99-b742-77cf25ca86dd', 'M', NULL, 3, 1, '0000-00-00 00:00:00', NULL, NULL),
+(79, 'Lê Thanh', 'lethanh@gmail.com', '123456', 'Kon Tum', '0345 456 912', '1977-09-14', 'https://firebasestorage.googleapis.com/v0/b/pbl5-a1f37.appspot.com/o/images%2FavatarUsers%2FavatarPatient%2Favatar-default.png?alt=media&token=f8cd9a9f-d234-4b99-b742-77cf25ca86dd', 'M', NULL, 3, 1, '0000-00-00 00:00:00', NULL, NULL),
+(80, 'Admin', 'admin@gmail.com', '123456', 'Đà Nẵng', '0382106557', '2003-02-26', 'https://firebasestorage.googleapis.com/v0/b/pbl5-a1f37.appspot.com/o/images%2FavatarUsers%2FavatarPatient%2Favatar-default.png?alt=media&token=f8cd9a9f-d234-4b99-b742-77cf25ca86dd', 'M', NULL, 1, 1, '0000-00-00 00:00:00', NULL, NULL);
 
 --
 -- Chỉ mục cho các bảng đã đổ
 --
 
+--
+-- Chỉ mục cho bảng `adminlogs`
+--
+ALTER TABLE `adminlogs`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- Chỉ mục cho bảng `allcodes`
+--
+ALTER TABLE `allcodes`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- Chỉ mục cho bảng `appointments`
+--
+ALTER TABLE `appointments`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- Chỉ mục cho bảng `clinics`
+--
+ALTER TABLE `clinics`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- Chỉ mục cho bảng `comments`
+--
+ALTER TABLE `comments`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- Chỉ mục cho bảng `doctor_users`
+--
+ALTER TABLE `doctor_users`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- Chỉ mục cho bảng `extrainfos`
+--
+ALTER TABLE `extrainfos`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- Chỉ mục cho bảng `patients`
+--
+ALTER TABLE `patients`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- Chỉ mục cho bảng `places`
+--
+ALTER TABLE `places`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- Chỉ mục cho bảng `posts`
+--
+ALTER TABLE `posts`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- Chỉ mục cho bảng `roles`
+--
+ALTER TABLE `roles`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- Chỉ mục cho bảng `schedules`
+--
+ALTER TABLE `schedules`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- Chỉ mục cho bảng `sequelizemeta`
+--
+ALTER TABLE `sequelizemeta`
+  ADD PRIMARY KEY (`name`),
+  ADD UNIQUE KEY `name` (`name`);
+
+--
+-- Chỉ mục cho bảng `session`
+--
+ALTER TABLE `session`
+  ADD PRIMARY KEY (`sid`);
+
+--
+-- Chỉ mục cho bảng `specializations`
+--
+ALTER TABLE `specializations`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- Chỉ mục cho bảng `statuses`
+--
+ALTER TABLE `statuses`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- Chỉ mục cho bảng `users`
+--
+ALTER TABLE `users`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- AUTO_INCREMENT cho các bảng đã đổ
+--
+
+--
+-- AUTO_INCREMENT cho bảng `adminlogs`
+--
+ALTER TABLE `adminlogs`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=17;
+
+--
+-- AUTO_INCREMENT cho bảng `allcodes`
+--
+ALTER TABLE `allcodes`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=37;
+
+--
+-- AUTO_INCREMENT cho bảng `appointments`
+--
+ALTER TABLE `appointments`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+
+--
+-- AUTO_INCREMENT cho bảng `clinics`
+--
+ALTER TABLE `clinics`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
+
+--
+-- AUTO_INCREMENT cho bảng `comments`
+--
+ALTER TABLE `comments`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+
+--
+-- AUTO_INCREMENT cho bảng `doctor_users`
+--
+ALTER TABLE `doctor_users`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=13;
+
+--
+-- AUTO_INCREMENT cho bảng `extrainfos`
+--
+ALTER TABLE `extrainfos`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
+
+--
+-- AUTO_INCREMENT cho bảng `patients`
+--
+ALTER TABLE `patients`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
+
+--
+-- AUTO_INCREMENT cho bảng `places`
+--
+ALTER TABLE `places`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
+
+--
+-- AUTO_INCREMENT cho bảng `posts`
+--
+ALTER TABLE `posts`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=10;
+
+--
+-- AUTO_INCREMENT cho bảng `roles`
+--
+ALTER TABLE `roles`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+
+--
+-- AUTO_INCREMENT cho bảng `schedules`
+--
+ALTER TABLE `schedules`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=818;
+
+--
+-- AUTO_INCREMENT cho bảng `specializations`
+--
+ALTER TABLE `specializations`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=20;
+
+--
+-- AUTO_INCREMENT cho bảng `statuses`
+--
+ALTER TABLE `statuses`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
+
+--
+-- AUTO_INCREMENT cho bảng `users`
+--
+ALTER TABLE `users`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=81;
+COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
