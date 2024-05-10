@@ -8,6 +8,7 @@ const Sequelize = require('sequelize');
 const Op = Sequelize.Op;
 
 import moment from 'moment';
+import { reject, resolve } from 'bluebird';
 
 let salt = 7;
 let createDoctor = (doctor) => {
@@ -340,6 +341,55 @@ let getAllCodeService = async (typeInput) => {
         }
     });
 };
+let hashUserPassword = (password) => {
+    return new Promise(async (resolve, reject) => {
+        try {
+            var hashPassword = await bcrypt.hashSync(password, salt);
+            resolve(hashPassword); //thay vi dung return
+        } catch (error) {
+            reject(error);
+        }
+    });
+};
+let updateUser = async (data) => {
+    return new Promise(async (resolve, reject) => {
+        try {
+            if (!data.email) {
+                resolve({
+                    errCode: 2,
+                    errMessage: 'Missing required Parameter!',
+                });
+            }
+            let user = await db.User.findOne({
+                where: { email: data.email },
+                raw: false,
+            });
+            if (!user) {
+                resolve({
+                    errCode: 1,
+                    errMessage: `User's not found!`,
+                });
+            } else {
+                let hashPassword = await hashUserPassword(data.password);
+                user.name = data.name;
+                user.address = data.address;
+                user.phone = data.phone;
+                user.birthday = data.birthday;
+                user.avatar = data.avatar;
+                user.password = hashPassword;
+                user.roleId = data.roleId;
+                user.isActive = data.isActive;
+                await user.save();
+                resolve({
+                    errCode: 0,
+                    errMessage: 'Update the user success!',
+                });
+            }
+        } catch (error) {
+            reject(error);
+        }
+    });
+};
 module.exports = {
     createDoctor: createDoctor,
     getInfoDoctors: getInfoDoctors,
@@ -352,4 +402,5 @@ module.exports = {
     getAllDoctorsSchedule: getAllDoctorsSchedule,
     getAllUsers: getAllUsers,
     getAllCodeService: getAllCodeService,
+    updateUser: updateUser,
 };

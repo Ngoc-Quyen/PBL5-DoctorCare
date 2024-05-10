@@ -183,7 +183,8 @@ let initRoutes = (app) => {
     router.post('/admin/statistical', auth.checkLoggedIn, admin.getInfoStatistical);
 
     router.get('/allcode', auth.getAllCode);
-
+    router.get('/reset-password', auth.getResetPasswordPage);
+    router.post('/forgot-password/set-new-password', auth.postNewPassword);
     return app.use('/', router);
 };
 module.exports = initRoutes;
