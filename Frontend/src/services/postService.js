@@ -10,9 +10,9 @@ let getAllPosts = () => {
                 attributes: [ 'id', 'title', 'writerId', 'createdAt' ],
             });
             await Promise.all(posts.map(async (post) => {
-                let admin = await helper.getAdminById(post.writerId);
+                let user = await helper.getUserById(post.writerId);
                 let dateClient = helper.convertDateClient(post.createdAt);
-                post.setDataValue('writerName', admin.name);
+                post.setDataValue('writerName', user.name);
                 post.setDataValue('dateClient', dateClient);
                 return post;
             }));
@@ -66,21 +66,6 @@ let getDetailPostPage = (id) => {
     }));
 };
 
-let getAllUser = () => {
-    return new Promise(async (resolve, reject) => {
-        try {
-            let user = await db.User.findAll({
-                where: { roleId: 3 }
-            });
-
-            resolve(user);
-
-        } catch (e) {
-            reject(e);
-        }
-    });
-};
-
 let getPostsPagination = (page, limit, role) => {
     return new Promise(async (resolve, reject) => {
         try {
@@ -113,9 +98,9 @@ let getPostsPagination = (page, limit, role) => {
             let total = Math.ceil(posts.count / limit);
 
             await Promise.all(posts.rows.map(async (post) => {
-                let admin = await helper.getAdminById(post.writerId);
+                let user = await helper.getUserById(post.writerId);
                 let dateClient = helper.convertDateClient(post.createdAt);
-                post.setDataValue('writerName', admin.name);
+                post.setDataValue('writerName', user.name);
                 post.setDataValue('dateClient', dateClient);
                 return post;
             }));
@@ -135,12 +120,12 @@ let deletePostById = (id) => {
         try {
             let post = await db.Post.findOne({
                 where: { id: id },
-                attributes: [ 'id', 'forDoctorId', 'forSpecializationId' ]
+                attributes: [ 'id', 'forDoctorId', 'forSpecializationId']
             });
 
             // chỉ delete bài đăng y khoa
             //sync to elasticsearch
-            if (post.forDoctorId === -1 ) {
+            if (post.forDoctorId === -1) {
                 await syncElastic.deletePost(post.id);
             }
 
@@ -200,7 +185,6 @@ module.exports = {
     postCreatePost: postCreatePost,
     getAllPosts: getAllPosts,
     getDetailPostPage: getDetailPostPage,
-    getAllUser: getAllUser,
     getPostsPagination: getPostsPagination,
     deletePostById: deletePostById,
     putUpdatePost: putUpdatePost,

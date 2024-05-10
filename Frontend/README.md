@@ -23,7 +23,7 @@ Clinic là gói khám (để package thì bị lỗi nên để clinic luôn)
 Có gì sai sót khi chuyển thì sửa luôn nhé
 
 Phần gói khám chưa hoàn thành
-Phần supporter chuyển thành bệnh nhân vẫn chưa ổn
+Phần customer chuyển thành bệnh nhân vẫn chưa ổn
 Chưa làm phần đăng nhập cho user
 Mọi người check thử lại hết cái nào k ổn ghi vào đây nhé
 

@@ -218,14 +218,6 @@ body a {
 }
 
 .sec-fields-hospital .show-all-specializations,
-.sec-hospitals .show-all-clinics {
-  color: #085CFF;
-  /* Màu chữ */
-  background-color: #ABF3FD;
-  /* Màu nền */
-  border-radius: 5px;
-  /* Bo tròn góc nếu cần */
-}
 
 .sec-hospitals {
   border-top: 2px solid #ebebeb;
@@ -689,10 +681,7 @@ select#day-book {
   overflow-y: auto;
 }
 
-.before-detail-clinic {
-  height: 50px;
-  background-color: #ccc;
-}
+
 
 .nav-pills .nav-link.active,
 .nav-pills .show>.nav-link {
@@ -724,10 +713,6 @@ body {
   max-height: 300px;
 }
 
-.img-preview-clinic-create {
-  height: 200px;
-  width: 300px;
-}
 
 pre {
   font-family: Montserrat, sans-serif;
@@ -746,10 +731,6 @@ pre {
   /* Internet Explorer 5.5+ */
 }
 
-.img-info-clinic {
-  max-height: 250px;
-  max-width: 500px;
-}
 
 .img-user-setting {
   border: 1px solid #ccc;
@@ -825,11 +806,6 @@ pre {
   margin: 20px -15px 0 -15px;
 }
 
-.clinic-address {
-  font-size: 20px;
-  padding-top: 25px;
-  margin-left: -15px;
-}
 
 .extraInfo {
   padding: 10px;

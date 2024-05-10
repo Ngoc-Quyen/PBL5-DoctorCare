@@ -2,20 +2,20 @@ We would like to thank everyone that contributed to this library. If you find ou
 
 # Sponsors
 
-## Platinum Supporters
+## Platinum customers
 
-## Gold Supporters
+## Gold customers
 
-## Silver Supporters
+## Silver customers
 
 
-# Patron Supporters
+# Patron customers
 
-## Awesome Supporter
+## Awesome customer
 
-## Cool Supporter
+## Cool customer
 
-## Supporter
+## customer
 
  - Ricardo Jordão
  

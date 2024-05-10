@@ -43,196 +43,6 @@ function createNewPost(markdown, converter) {
 
     });
 }
-
-function deleteClinicById() {
-    $('.delete-specific-clinic').bind('click', function(e) {
-        e.preventDefault();
-        if (!confirm('Xóa gói khám này?')) {
-            return
-        }
-
-        let id = $(this).data('clinic-id');
-        let node = this;
-        $.ajax({
-            method: 'DELETE',
-            url: `${window.location.origin}/admin/delete/clinic`,
-            data: { id: id },
-            success: function(data) {
-                node.closest("tr").remove();
-                alertify.success('Xóa thành công!');
-            },
-            error: function(err) {
-                alertify.error('Đã xảy ra lỗi, vui lòng thử lại sau!');
-                console.log(err)
-            }
-        });
-    });
-}
-
-function createNewClinic(markdownIntroClinic, converter) {
-    $("#createNewClinic").on('click', function(e) {
-        let formData = new FormData($('form#formCreateNewClinic')[0]);
-        let contentMarkdown = markdownIntroClinic.value();
-        let contentHTML = converter.makeHtml(contentMarkdown);
-
-        //contain file upload
-        if ($('#image-clinic').val()) {
-            formData.append('introductionMarkdown', contentMarkdown);
-            formData.append('introductionHTML', contentHTML);
-            formData.append('image', document.getElementById('image-clinic').files[0]);
-            handleCreateClinicNormal(formData);
-        } else {
-            // create without file upload
-            let data = {
-                introductionMarkdown: contentMarkdown,
-                introductionHTML: contentHTML
-            };
-            for (let pair of formData.entries()) {
-                data[pair[0]] = pair[1]
-            }
-            handleCreateClinicWithoutFile(data);
-        }
-    });
-}
-
-function handleCreateClinicWithoutFile(data) {
-    $.ajax({
-        method: "POST",
-        url: `${window.location.origin}/admin/clinic/create-without-file`,
-        data: data,
-        success: function(data) {
-            alert('Một gói khám mới được tạo thành công');
-            window.location.href = `${window.location.origin}/users/manage/clinic`;
-        },
-        error: function(error) {
-            alertify.error('Đã xảy ra lỗi, vui lòng thử lại sau!');
-            console.log(error)
-        }
-    });
-}
-
-function handleCreateClinicNormal(formData) {
-    $.ajax({
-        method: "POST",
-        url: `${window.location.origin}/admin/clinic/create`,
-        data: formData,
-        cache: false,
-        contentType: false,
-        processData: false,
-        success: function(data) {
-            alert('Một gói khám mới được tạo thành công');
-            window.location.href = `${window.location.origin}/users/manage/clinic`;
-        },
-        error: function(error) {
-            alertify.error('Đã xảy ra lỗi, vui lòng thử lại sau!');
-            console.log(error);
-        }
-    });
-}
-
-function updateClinic(markdownIntroClinic, converter) {
-    $('#btnUpdateClinic').on('click', function(e) {
-        let clinicId = $('#btnUpdateClinic').data('clinic-id');
-        let formData = new FormData($('form#formUpdateClinic')[0]);
-        let contentMarkdown = markdownIntroClinic.value();
-        let contentHTML = converter.makeHtml(contentMarkdown);
-
-        //contain file upload
-        if ($('#image-clinic').val()) {
-            formData.append('introductionMarkdown', contentMarkdown);
-            formData.append('introductionHTML', contentHTML);
-            formData.append('image', document.getElementById('image-clinic').files[0]);
-            formData.append('id', clinicId);
-            handleUpdateClinicNormal(formData);
-        } else {
-            // create without file upload
-            let data = {
-                id: clinicId,
-                introductionMarkdown: contentMarkdown,
-                introductionHTML: contentHTML
-            };
-            for (let pair of formData.entries()) {
-                data[pair[0]] = pair[1]
-            }
-            handleUpdateClinicWithoutFile(data);
-        }
-    });
-}
-
-function handleUpdateClinicNormal(formData) {
-    $.ajax({
-        method: "PUT",
-        url: `${window.location.origin}/admin/clinic/update`,
-        data: formData,
-        cache: false,
-        contentType: false,
-        processData: false,
-        success: function(data) {
-            alert('Cập nhật thành công');
-            window.location.href = `${window.location.origin}/users/manage/clinic`;
-        },
-        error: function(error) {
-            alertify.error('Đã xảy ra lỗi, vui lòng thử lại sau!');
-            console.log(error);
-        }
-    });
-}
-
-function handleUpdateClinicWithoutFile(data) {
-    $.ajax({
-        method: "PUT",
-        url: `${window.location.origin}/admin/clinic/update-without-file`,
-        data: data,
-        success: function(data) {
-            alert('Cập nhật thành công');
-            window.location.href = `${window.location.origin}/users/manage/clinic`;
-        },
-        error: function(error) {
-            alertify.error('Đã xảy ra lỗi, vui lòng thử lại sau!');
-            console.log(error);
-        }
-    });
-}
-
-function showModalInfoClinic() {
-    $('.info-specific-clinic').on('click', function(e) {
-        e.preventDefault();
-        let id = $(this).data('clinic-id');
-
-        $.ajax({
-            method: 'POST',
-            url: `${window.location.origin}/api/get-info-clinic-by-id`,
-            data: { id: id },
-            success: function(data) {
-                $('#imageClinic').empty();
-                $('#name').val(data.clinic.name);
-                if (data.clinic.phone) {
-                    $('#phone').val(data.clinic.phone);
-                } else {
-                    $('#phone').val('Chưa cập nhật');
-                }
-                
-
-
-
-
-
-                if (data.clinic.image) {
-                    $('#imageClinic').prepend(`<img class="img-info-clinic" src="/images/clinics/${data.clinic.image}" />`)
-                } else {
-                    $('#imageClinic').text('Chưa cập nhật')
-                }
-
-                $('#modalInfoClinic').modal('show');
-            },
-            error: function(error) {
-                alertify.error('Đã xảy ra lỗi, vui lòng thử lại sau!');
-                console.log(error);
-            }
-        });
-    });
-}
-
 function showModalSettingUser() {
     $('.user-setting').on('click', function(e) {
         e.preventDefault();
@@ -331,6 +141,46 @@ function showModalInfoDoctor() {
 
 }
 
+function showModalInfoCustomer() {
+    $('.show-customer-info').on('click', function(e) {
+        e.preventDefault();
+        let id = $(this).data('customer-id');
+
+        $.ajax({
+            method: 'POST',
+            url: `${window.location.origin}/api/get-info-customer-by-id`,
+            data: { id: id },
+            success: function(data) {
+                $('#imageCustomer').empty();
+
+                $('#nameUser').val(data.user.name);
+                if (data.user.phone) {
+                    $('#phoneCustomer').val(data.user.phone);
+                } else {
+                    $('#phoneCustomer').val('Chưa cập nhật');
+                }
+                if (data.user.address) {
+                    $('#addressCustomer').val(data.user.address);
+                } else {
+                    $('#addressCustomer').val('Chưa cập nhật');
+                }
+                
+                if (data.user.avatar) {
+                    $('#imageCustomer').prepend(`<img class="img-info-clinic" src="/images/users/${data.customer.avatar}" />`)
+                } else {
+                    $('#imageCustomer').text('Chưa cập nhật')
+                }
+
+                $('#modalInfoCustomer').modal('show');
+            },
+            error: function(error) {
+                alertify.error('Đã xảy ra lỗi, vui lòng thử lại sau!');
+                console.log(error);
+            }
+        });
+    });
+
+}
 function updateDoctor() {
     $('#btnUpdateDoctor').on('click', function(e) {
         let doctorId = $('#btnUpdateDoctor').data('doctor-id');
@@ -1204,11 +1054,6 @@ $(document).ready(function(e) {
     //     $(this).removeData();
     // });
 
-    let markdownIntroClinic = new SimpleMDE({
-        element: document.getElementById("intro-clinic"),
-        placeholder: 'Nội dung giới thiệu...',
-        spellChecker: false
-    });
     let markdownPost = new SimpleMDE({
         element: document.getElementById("contentMarkdown"),
         placeholder: 'Nội dung bài đăng...',
@@ -1236,14 +1081,11 @@ $(document).ready(function(e) {
 
     loadFile(e);
     loadImageUserSetting(e);
-    createNewClinic(markdownIntroClinic, converter);
-    deleteClinicById();
-    updateClinic(markdownIntroClinic, converter);
-    showModalInfoClinic();
     showModalSettingUser();
     createNewDoctor();
     deleteDoctorById();
     showModalInfoDoctor();
+    showModalInfoUser();
     updateDoctor();
     deleteSpecializationById();
     showPostsForAdmin();
