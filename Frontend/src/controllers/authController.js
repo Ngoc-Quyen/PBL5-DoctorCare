@@ -133,6 +133,22 @@ let postNewPassword = async (req, res) => {
         return res.redirect('/reset-password');
     }
 };
+let handleEditSpecialty = async (req, res) => {
+    let data = req.body;
+    const filePath = req.file; // Đường dẫn tạm thời của tệp tải lên
+    // console.log('data from authController: ', data);
+    // console.log('req.file: ', filePath);
+    let message = await user.updateUserDataFile(data, filePath);
+    if (message.errCode === 0) {
+        console.log('message: ', message.errMessage);
+        return res.redirect('/users');
+        // Hiển thị thông báo cập nhật thành công
+    } else {
+        console.log('message: ', message.errMessage);
+        return res.redirect('/users');
+        // Hien thi thong bao chưa cập nhật được
+    }
+};
 module.exports = {
     getLogin: getLogin,
     getRegister: getRegister,
@@ -144,4 +160,5 @@ module.exports = {
     getAllCode: getAllCode,
     getResetPasswordPage: getResetPasswordPage,
     postNewPassword: postNewPassword,
+    handleEditSpecialty: handleEditSpecialty,
 };

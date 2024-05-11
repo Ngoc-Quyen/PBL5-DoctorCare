@@ -2,8 +2,8 @@ import bcrypt from 'bcryptjs';
 import db from './../models';
 import helper from '../helper/client';
 import elastic from './../config/elastic';
-import _ from 'lodash';
-
+import _, { includes } from 'lodash';
+import imgLoadFirebase from '../services/imgLoadFirebase';
 const Sequelize = require('sequelize');
 const Op = Sequelize.Op;
 
@@ -11,6 +11,7 @@ import moment from 'moment';
 import { reject, resolve } from 'bluebird';
 
 let salt = 7;
+
 let createDoctor = (doctor) => {
     doctor.roleId = 2;
     doctor.password = bcrypt.hashSync(doctor.password, salt);
@@ -58,7 +59,24 @@ let getInfoDoctors = () => {
         }
     });
 };
-
+let getInforPatients = () => {
+    return new Promise(async (resolve, reject) => {
+        try {
+            let patients = await db.User.findAll({
+                where: {
+                    roleId: 3,
+                },
+                include: [
+                    { model: db.Doctor_User, required: false },
+                    { model: db.Patient, required: false, where: { statusId: 1 } },
+                ],
+            });
+            resolve(patients);
+        } catch (error) {
+            reject(error);
+        }
+    });
+};
 let findUserByEmail = (email) => {
     return new Promise(async (resolve, reject) => {
         try {
@@ -390,6 +408,51 @@ let updateUser = async (data) => {
         }
     });
 };
+let updateUserDataFile = async (data, filePath) => {
+    return new Promise(async (resolve, reject) => {
+        try {
+            if (!data.email) {
+                resolve({
+                    errCode: 2,
+                    errMessage: 'Missing required Parameter!',
+                });
+            }
+            let user = await db.User.findOne({
+                where: { email: data.email },
+                raw: false,
+            });
+            if (!user) {
+                resolve({
+                    errCode: 1,
+                    errMessage: `user's not found!`,
+                });
+            } else {
+                user.name = data.name;
+                user.description = data.description;
+                user.phone = data.phone;
+                user.gender = data.gender;
+                // Nếu có file ảnh được upload, gửi ảnh lên Firebase và lấy URL
+                let url = data.avatar;
+                // if (filePath) {
+                //     // let urldt = await imgLoadFirebase.uploadImg(filePath);
+                //     url = await imgLoadFirebase.getUrlFirebase(filePath);
+                //     console.log('url from firebase ', url);
+                // }
+                if (url) {
+                    user.avatar = url;
+                }
+                await user.save();
+                resolve({
+                    errCode: 0,
+                    errMessage: 'Update the user success!',
+                    user,
+                });
+            }
+        } catch (error) {
+            reject(error);
+        }
+    });
+};
 module.exports = {
     createDoctor: createDoctor,
     getInfoDoctors: getInfoDoctors,
@@ -403,4 +466,5 @@ module.exports = {
     getAllUsers: getAllUsers,
     getAllCodeService: getAllCodeService,
     updateUser: updateUser,
+    updateUserDataFile: updateUserDataFile,
 };

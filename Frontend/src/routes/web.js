@@ -9,7 +9,10 @@ import passportLocal from 'passport-local';
 import userService from './../services/userService';
 
 const multer = require('multer');
-const upload = multer();
+// Setting up multer as a middleware to grab photo uploads
+// const upload = multer({ dest: 'uploads/' });
+const upload = multer({ storage: multer.memoryStorage() });
+// const upload = multer();
 
 let router = express.Router();
 
@@ -102,6 +105,7 @@ let initRoutes = (app) => {
     router.get('/users/manage/specialization', auth.checkLoggedIn, admin.getSpecializationPage);
     router.get('/users/manage/user', auth.checkLoggedIn, admin.getUserPage);
     router.get('/users', auth.checkLoggedIn, home.getUserPage);
+    router.get('/users/manage/user/create', auth.checkLoggedIn, admin.getCreatePatient);
 
     router.get('/users/manage/bot', auth.checkLoggedIn, admin.getManageBotPage);
     router.get('/users/manage/schedule-for-doctors', auth.checkLoggedIn, admin.getManageCreateScheduleForDoctorsPage);
@@ -185,6 +189,7 @@ let initRoutes = (app) => {
     router.get('/allcode', auth.getAllCode);
     router.get('/reset-password', auth.getResetPasswordPage);
     router.post('/forgot-password/set-new-password', auth.postNewPassword);
+    router.post('/users/update-user', upload.single('avatar'), auth.handleEditSpecialty);
     return app.use('/', router);
 };
 module.exports = initRoutes;

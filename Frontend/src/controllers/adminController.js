@@ -21,6 +21,7 @@ let getManageDoctor = async (req, res) => {
         doctors: doctors,
     });
 };
+let getManageUser = async (req, res) => {};
 
 let getManageClinic = async (req, res) => {
     let clinics = await homeService.getClinics();
@@ -56,7 +57,13 @@ let postCreateDoctor = async (req, res) => {
         return res.status(500).json({ error: err });
     }
 };
-
+let getCreatePatient = async (req, res) => {
+    let specializations = await homeService.getSpecializations();
+    return res.render('main/users/admins/createPatient.ejs', {
+        user: req.user,
+        specializations: specializations,
+    });
+};
 let getCreateClinic = (req, res) => {
     return res.render('main/users/admins/createClinic.ejs', {
         user: req.user,
@@ -586,4 +593,5 @@ module.exports = {
     getManageCustomersPage: getManageCustomersPage,
     getLogsPatient: getLogsPatient,
     postDoneComment: postDoneComment,
+    getCreatePatient: getCreatePatient,
 };

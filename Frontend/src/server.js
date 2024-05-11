@@ -1,5 +1,7 @@
 require('dotenv').config();
 import express from 'express';
+import * as admin from 'firebase-admin';
+import serviceAccount from './serviceAccountKey.json';
 import configViewEngine from './config/viewEngine';
 import initRoutes from './routes/web';
 import bodyParser from 'body-parser';
@@ -10,6 +12,14 @@ import passPort from 'passport';
 import session from './config/session';
 
 let app = express();
+// admin.initializeApp(
+//     {
+//         credential: admin.credential.cert(serviceAccount),
+//         storageBucket: process.env.StorageBucket, // Thay thế bằng địa chỉ bucket của bạn
+//     },
+//     'PBL5-DoctorCare'
+// );
+
 app.use(methodOverride('_method'));
 app.use(cookieParser('secret'));
 

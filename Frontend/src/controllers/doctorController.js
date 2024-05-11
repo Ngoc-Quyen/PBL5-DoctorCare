@@ -22,19 +22,19 @@ function stringToDate(_date, _format, _delimiter) {
 let getSchedule = async (req, res) => {
     try {
         let sevenDaySchedule = [];
-        // for (let i = 0; i < 7; i++) {
-        //     let date = moment(new Date()).add(i, 'days').locale('vi').format('DD/MM/YYYY');
-        //     sevenDaySchedule.push(date);
-        // }
-        let today = moment().startOf('day'); // Lấy ngày hiện tại và đặt thời gian về 00:00:00
-        let currentDayOfWeek = today.day(); // Lấy số thứ tự của ngày trong tuần (0: Chủ Nhật, 1: Thứ Hai, ..., 6: Thứ Bảy)
-
-        // Tính toán lần lượt 7 ngày trong tuần bắt đầu từ ngày hiện tại
-        for (let i = 1; i < 8; i++) {
-            let date = today.clone().add(i - currentDayOfWeek, 'days'); // Trừ đi số ngày hiện tại so với ngày đầu tuần (thứ Hai)
-            let formattedDate = date.locale('vi').format('DD/MM/YYYY'); // Định dạng ngày theo định dạng 'DD/MM/YYYY'
-            sevenDaySchedule.push(formattedDate); // Thêm ngày vào mảng
+        for (let i = 0; i < 7; i++) {
+            let date = moment(new Date()).add(i, 'days').locale('vi').format('DD/MM/YYYY');
+            sevenDaySchedule.push(date);
         }
+        // let today = moment().startOf('day'); // Lấy ngày hiện tại và đặt thời gian về 00:00:00
+        // let currentDayOfWeek = today.day(); // Lấy số thứ tự của ngày trong tuần (0: Chủ Nhật, 1: Thứ Hai, ..., 6: Thứ Bảy)
+
+        // // Tính toán lần lượt 7 ngày trong tuần bắt đầu từ ngày hiện tại
+        // for (let i = 1; i < 8; i++) {
+        //     let date = today.clone().add(i - currentDayOfWeek, 'days'); // Trừ đi số ngày hiện tại so với ngày đầu tuần (thứ Hai)
+        //     let formattedDate = date.locale('vi').format('DD/MM/YYYY'); // Định dạng ngày theo định dạng 'DD/MM/YYYY'
+        //     sevenDaySchedule.push(formattedDate); // Thêm ngày vào mảng
+        // }
         let data = {
             sevenDaySchedule: sevenDaySchedule,
             doctorId: req.user.id,
