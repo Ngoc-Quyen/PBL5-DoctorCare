@@ -1069,6 +1069,7 @@ h3.show-title-post {
   width: 40%;
   height: 80;
 }
+
 /* Định dạng cho button */
 .btn-submit {
   background-color: #00e1ff;
@@ -1100,3 +1101,53 @@ h3.show-title-post {
   padding: 10px;
   border: 1px solid #ccc;
 }
+.container-booked {
+  width: 80%;
+  margin: 20px auto;
+  padding: 20px;
+  background-color: #f7f7f7;
+  border: 2px solid #ccc; /* Border around the container */
+  border-radius: 5px;
+}
+#container-booked {
+  border: 1px solid #ccc; /* You can adjust the color and size of the border */
+  padding: 10px; /* Optional: Add padding to the container */
+}
+.form-group img {
+  border-radius: 50%; /* Make the image round */
+  display: block; /* Ensure the image is treated as a block element */
+    margin: 0 auto; 
+}
+.infor-booked-container .col-md-6{
+  display: block;
+ 
+}
+/* Style for the buttons */
+/* Style for the first button */
+.btn-booked {
+  padding: 10px 20px; /* Add padding to the buttons */
+  border: none; /* Remove button border */
+  background-color: #007bff; /* Button background color */
+  color: #fff; /* Button text color */
+  cursor: pointer; /* Change cursor to pointer on hover */
+  transition: background-color 0.3s ease; /* Smooth transition for background color */
+  border-radius: 5px; /* Add rounded corners */
+}
+
+/* Style for the second button */
+.btn-cancel-booked {
+  padding: 10px 20px; /* Add padding to the buttons */
+  border: none; /* Remove button border */
+  background-color: #dc3545; /* Button background color */
+  color: #fff; /* Button text color */
+  cursor: pointer; /* Change cursor to pointer on hover */
+  transition: background-color 0.3s ease; /* Smooth transition for background color */
+  border-radius: 5px; /* Add rounded corners */
+}
+
+/* Style for button hover */
+.btn-booked:hover,
+.btn-cancel-booked:hover {
+  filter: brightness(90%); /* Reduce brightness on hover */
+}
+
