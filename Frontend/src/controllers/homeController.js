@@ -3,7 +3,7 @@ import homeService from "./../services/homeService";
 import specializationService from "./../services/specializationService";
 import doctorService from "./../services/doctorService";
 import userService from "./../services/userService";
-import postServiceService from "../services/postService";
+import postService from "../services/postService";
 import elasticService from "./../services/syncsElaticService";
 import patientService from "./../services/patientService";
 import moment from "moment";
@@ -310,7 +310,22 @@ let getPageAllSpecializations =async (req, res)=>{
         console.log(e);
     }
 };
-
+let getPageInfoUser = async (req, res)=>{
+    try{
+        return res.render("main/homepage/InfoUser.ejs",{
+        })
+    }catch (e) {
+        console.log(e);
+    }
+};
+let getPageInfoBooked = async (req, res)=>{
+    try{
+        return res.render("main/homepage/InfoBooked.ejs",{
+        })
+    }catch (e) {
+        console.log(e);
+    }
+};
 
 module.exports = {
     getHomePage: getHomePage,
@@ -332,5 +347,7 @@ module.exports = {
     getPageForDoctors: getPageForDoctors,
     postSearchHomePage: postSearchHomePage,
     getPageAllDoctors: getPageAllDoctors,
+    getPageInfoUser:getPageInfoUser,
+    getPageInfoBooked:getPageInfoBooked,
     getPageAllSpecializations: getPageAllSpecializations
 };

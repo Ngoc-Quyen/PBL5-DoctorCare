@@ -135,32 +135,30 @@
                                                                 <%= x.time %>
                                                             </div>
                                                         </div>
-                                                        <% } %>
+                                                    <% } %>
 
-                                                            <% if( index===doctor.getDataValue('schedule').length - 1 &&
-                                                                x.getDataValue("isDisable")===true){ %>
-                                                                <div>
+                                                    <% if( index===doctor.getDataValue('schedule').length - 1 && x.getDataValue("isDisable")===true){ %>
+                                                        <div>
                                                                     Không có lịch khám theo lịch trình trong khung thời
                                                                     gian hiện tại. Vui lòng chọn các lịch khám đã lên
                                                                     lịch tiếp theo.
-                                                                </div>
-                                                                <% } %>
-                                                                    <% }) %>
+                                                        </div>
+                                                        <% } %>
+                                                <% }) %>
 
                                     </div>
                                     <div id="div-more-info-<%= doctor.User.id %>">
-                                        <% if(doctor.getDataValue('schedule').length> 0){ %>
+                                        <% if(doctor.getDataValue('schedule').length > 0){ %>
                                             <div class="d-flex flex-column">
                                                 <div>
-                                                    <span class="d-block mt-2"> Chọn <i class="fa fa-hand-o-up"
-                                                            aria-hidden="true"></i> và đăng ký tư vấn miễn phí</span>
+                                                    <span class="d-block mt-2"> Chọn <i class="fa fa-hand-o-up" aria-hidden="true"></i>  và đăng ký tư vấn miễn phí</span>
                                                 </div>
                                             </div>
-                                            <% } %>
+                                        <% } %>
                                     </div>
                                 </div>
                             </div>
-                            <% }) %>
+                        <% }) %>
                     </div>
                     <div class="col-4 mt-3">
                         THÔNG TIN:

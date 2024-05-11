@@ -35,7 +35,7 @@ function getScheduleDoctorByDate() {
                         if (index === data.message.length - 1 && schedule.isDisable === true) {
                             html += `<div>
                             Không có lịch hẹn theo lịch trình trong khung thời gian hiện tại. Vui lòng chọn các lịch hẹn đã lên lịch tiếp theo.
-                            </div>`;
+                            </div>`
                         }
 
                         moreInfo = `
@@ -104,7 +104,7 @@ function specializationGetScheduleDoctorByDate() {
                             if (index === data.message.length - 1 && schedule.isDisable === true) {
                                 html += `<div>
                             Không có lịch khám theo lịch trình trong khung thời gian hiện tại. Vui lòng chọn các lịch khám đã lên lịch tiếp theo.
-                            </div>`;
+                            </div>`
                             }
                         });
                         moreInfo = `
@@ -302,7 +302,7 @@ function handleBookingPageDoctorNormal(formData) {
         contentType: false,
         processData: false,
         success: function (data) {
-            if (typeof data.patient === 'string') {
+            if (typeof (data.patient) === 'string') {
                 alert('Rất tiếc, cuộc hẹn này đã đủ bệnh nhân đặt trước, vui lòng chọn thời gian khác.');
                 window.location.reload(true);
             } else {
@@ -322,7 +322,7 @@ function handleBookingPageDoctorWithoutFiles(data) {
         url: `${window.location.origin}/booking-doctor-without-files/create`,
         data: data,
         success: function (data) {
-            if (typeof data.patient === 'string') {
+            if (typeof (data.patient) === 'string') {
                 alert('Rất tiếc, cuộc hẹn này đã đủ bệnh nhân đặt trước, vui lòng chọn thời gian khác.');
                 window.location.reload(true);
             } else {

@@ -10,7 +10,7 @@ let getAllPosts = () => {
                 attributes: [ 'id', 'title', 'writerId', 'createdAt' ],
             });
             await Promise.all(posts.map(async (post) => {
-                let user = await helper.getUserById(post.writerId);
+                let user = await helper.getcustomerById(post.writerId);
                 let dateClient = helper.convertDateClient(post.createdAt);
                 post.setDataValue('writerName', user.name);
                 post.setDataValue('dateClient', dateClient);
@@ -98,7 +98,7 @@ let getPostsPagination = (page, limit, role) => {
             let total = Math.ceil(posts.count / limit);
 
             await Promise.all(posts.rows.map(async (post) => {
-                let user = await helper.getUserById(post.writerId);
+                let user = await helper.getcustomerById(post.writerId);
                 let dateClient = helper.convertDateClient(post.createdAt);
                 post.setDataValue('writerName', user.name);
                 post.setDataValue('dateClient', dateClient);

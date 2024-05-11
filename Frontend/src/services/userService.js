@@ -247,10 +247,10 @@ let createAllDoctorsSchedule = () => {
                             });
                         })
                     );
-                    resolve("Appointments are created successful (in 7 days). Please check your database (schedule table)");
+                    resolve("Cuộc hẹn được tạo thành công (trong 7 ngày). Vui lòng kiểm tra cơ sở dữ liệu của bạn (schedule table)");
                 }
             } else {
-                resolve("Appointments are duplicated. Please check your database (schedule table)");
+                resolve("Các cuộc hẹn bị trùng lặp. Vui lòng kiểm tra cơ sở dữ liệu của bạn (schedule table)");
             }
         } catch (e) {
             reject(e);

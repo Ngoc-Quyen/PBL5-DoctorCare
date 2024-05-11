@@ -125,7 +125,7 @@ let initRoutes = (app) => {
     router.put('/admin/post/update', auth.checkLoggedIn, admin.putUpdatePost);
     router.get('/admin/manage/post/create', auth.checkLoggedIn, admin.getCreatePost);
     router.post('/admin/manage/post/create', auth.checkLoggedIn, admin.postCreatePost);
-    router.get('admin/get-list-posts', auth.checkLoggedIn, admin.getAllPosts);
+    router.get('/admin/get-list-posts', auth.checkLoggedIn, admin.getAllPosts);
     router.post('/admin/get-patients-for-tabs', auth.checkLoggedIn, admin.getForPatientsTabs);
     router.post('/admin/change-status-patient', auth.checkLoggedIn, admin.postChangeStatusPatient);
     router.post('/admin/get-logs-patient', auth.checkLoggedIn, admin.getLogsPatient);
