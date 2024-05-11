@@ -35,7 +35,7 @@ function getScheduleDoctorByDate() {
                         if (index === data.message.length - 1 && schedule.isDisable === true) {
                             html += `<div>
                             Không có lịch hẹn theo lịch trình trong khung thời gian hiện tại. Vui lòng chọn các lịch hẹn đã lên lịch tiếp theo.
-                            </div>`;
+                            </div>`
                         }
 
                         moreInfo = `
@@ -104,7 +104,7 @@ function specializationGetScheduleDoctorByDate() {
                             if (index === data.message.length - 1 && schedule.isDisable === true) {
                                 html += `<div>
                             Không có lịch khám theo lịch trình trong khung thời gian hiện tại. Vui lòng chọn các lịch khám đã lên lịch tiếp theo.
-                            </div>`;
+                            </div>`
                             }
                         });
                         moreInfo = `
@@ -146,12 +146,6 @@ function showModalAllSpecializations() {
     });
 }
 
-function showModalAllClinics() {
-    $('.show-all-clinics').on('click', function (e) {
-        e.preventDefault();
-        $('#modalAllClinics').modal('show');
-    });
-}
 
 function showModalAllDoctors() {
     $('.show-all-doctors').on('click', function (e) {
@@ -308,7 +302,7 @@ function handleBookingPageDoctorNormal(formData) {
         contentType: false,
         processData: false,
         success: function (data) {
-            if (typeof data.patient === 'string') {
+            if (typeof (data.patient) === 'string') {
                 alert('Rất tiếc, cuộc hẹn này đã đủ bệnh nhân đặt trước, vui lòng chọn thời gian khác.');
                 window.location.reload(true);
             } else {
@@ -328,7 +322,7 @@ function handleBookingPageDoctorWithoutFiles(data) {
         url: `${window.location.origin}/booking-doctor-without-files/create`,
         data: data,
         success: function (data) {
-            if (typeof data.patient === 'string') {
+            if (typeof (data.patient) === 'string') {
                 alert('Rất tiếc, cuộc hẹn này đã đủ bệnh nhân đặt trước, vui lòng chọn thời gian khác.');
                 window.location.reload(true);
             } else {
@@ -375,73 +369,9 @@ function handleBookingPageDoctor() {
     });
 }
 
-function showModalBookingClinicPage() {
-    $('#clinicRightContent').on('click', '.show-modal-at-clinic-page', function () {
-        /*let id = $(this).attr('id');
-        let doctorId = $(`#${id}`).data('doctor-id');
-        let date = $(`#${id}`).data('date');
-        let time = $(`#${id}`).data('time');
-        let formData = new FormData();
-        formData.append('id', doctorId);
 
-        let data = {};
-        for (let pair of formData.entries()) {
-            data[pair[0]] = pair[1]
-        }
-        $.ajax({
-            method: "POST",
-            url: `${window.location.origin}/api/get-info-doctor-by-id`,
-            data: data,
-            success: function(data) {
-                $('#infoDoctorSpe').attr('data-doctor-id', doctorId);
-                $('#modal-avatar-doctor-spe').attr('src', `/images/users/${data.doctor.avatar}`);
-                $('#doctor-name-spe').text(`${data.doctor.name}`);
-                $('#time-patient-booking').text(`${time}`);
-                $('#date-patient-booking').text(`${date}`);
-                $('#doctor-address-spe').text(`${data.doctor.address}`);
-                $('#modalBookingClinicDoctor').modal('show');
-            },
-            error: function(error) {
-                alertify.error('Đã xảy ra lỗi, vui lòng thử lại sau!');
-                console.log(error);
-            }
-        })*/
-    });
-}
 
-function handleBookingPageClinic() {
-    $('#btn-confirm-booking-spe').on('click', function (e) {
-        /*let check = validateInputPageDoctor();
-        if (check) {
-            $(this).prop('disabled', true);
-            $('#processLoading').removeClass('d-none');
-            let time = $('#time-patient-booking').text();
-            let date = $('#date-patient-booking').text();
 
-            let formData = new FormData($('form#form-patient-info-spe')[0]);
-            //contain file upload
-            let doctorId = $('#infoDoctorSpe').attr('data-doctor-id');
-            if ($('#oldForms').val()) {
-                formData.append("doctorId", doctorId);
-                formData.append('timeBooking', time);
-                formData.append('dateBooking', date);
-                handleBookingPageDoctorNormal(formData);
-            } else {
-
-                let data = {
-                    doctorId: doctorId,
-                    timeBooking: time,
-                    dateBooking: date,
-                };
-                for (let pair of formData.entries()) {
-                    data[pair[0]] = pair[1]
-                }
-                delete data.oldForms;
-                handleBookingPageDoctorWithoutFiles(data);
-            }
-        }*/
-    });
-}
 
 function showModalBookingSpecializationPage() {
     $('#specializationDoctor').on('click', '.show-modal-at-clinic-page', function () {
@@ -547,7 +477,7 @@ function handleSearchHomepage() {
                     let html = '';
                     $('#show-info-search').empty();
 
-                    if (data.clinics.length === 0 && data.specializations.length === 0 && data.doctors.length === 0) {
+                    if ( data.specializations.length === 0 && data.doctors.length === 0) {
                         html += `
                          <div class="child-info">
                                No search results found
@@ -559,14 +489,6 @@ function handleSearchHomepage() {
                         html += `
                          <div class="child-info">
                                 <a href="detail/doctor/${doctor.id}">Doctor - ${doctor.name}</a>
-                        </div>
-                        `;
-                    });
-
-                    data.clinics.forEach((clinic) => {
-                        html += `
-                         <div class="child-info">
-                                <a href="detail/clinic/${clinic.id}">Clinic - ${clinic.name}</a>
                         </div>
                         `;
                     });
@@ -595,7 +517,6 @@ $(document).ready(function (e) {
     getScheduleDoctorByDate();
     specializationGetScheduleDoctorByDate();
     showModalAllSpecializations();
-    showModalAllClinics();
     showModalAllDoctors();
     showPostsForUsers();
     searchElasticClient();
@@ -603,9 +524,7 @@ $(document).ready(function (e) {
     searchInDetailPost();
     showExtraInfoBooking();
     handleBookingPageDoctor();
-    showModalBookingClinicPage();
     showModalBookingSpecializationPage();
-    handleBookingPageClinic();
     handleSubmitFeedback();
     handleSearchHomepage();
 });

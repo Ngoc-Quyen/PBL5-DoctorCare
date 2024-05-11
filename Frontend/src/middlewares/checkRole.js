@@ -1,5 +1,5 @@
 // import {ROLES} from "../utils/roles";
-//
+
 // const getRedirectUrl = (role) => {
 //     switch (role) {
 //         case ROLES.Admin:
@@ -10,16 +10,16 @@
 //             return '/';
 //     }
 // };
-//
+
 // const checkRole = (req, res, next) => {
 //     if (!req.user.role) {
 //         return res.redirect('/login')
 //     }
 //     switch (req.user) {
 //         case Ro
-//
+
 //     }
-//
+
 //     getRedirectUrl(req.user.local.role);
 //     return next()
 // };

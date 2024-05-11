@@ -31,6 +31,10 @@ app.use(bodyParser.urlencoded({ extended: true }));
 session.configSession(app);
 
 configViewEngine(app);
+app.use(function(req, res, next) {
+    res.locals.user = req.session.user;
+    next();
+});
 
 // config Passportjs
 app.use(passPort.initialize());

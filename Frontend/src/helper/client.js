@@ -13,19 +13,7 @@ let getSpecializationById = (id) => {
     );
 };
 
-let getClinicById = (id) => {
-    return new Promise(async (resolve, reject) => {
-            try {
-                let clinic = await db.Clinic.findOne({ where: { id: id } });
-                resolve(clinic);
-            } catch (e) {
-                reject(e);
-            }
-        }
-    );
-};
-
-let getAdminById = (id) => {
+let getcustomerById = (id) => {
     return new Promise((async (resolve, reject) => {
         try {
             let user = await db.User.findOne({
@@ -45,7 +33,6 @@ let convertDateClient = (date) => {
 
 module.exports = {
     getSpecializationById: getSpecializationById,
-    getClinicById: getClinicById,
-    getAdminById: getAdminById,
+    getcustomerById: getcustomerById,
     convertDateClient: convertDateClient
 };

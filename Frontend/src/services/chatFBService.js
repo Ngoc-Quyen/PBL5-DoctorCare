@@ -42,9 +42,6 @@ let handlePostback = (sender_psid, received_postback) => {
                 case "DOCTORS":
                     await sendMessageReplyDoctors(sender_psid);
                     break;
-                case "CLINICS":
-                    await sendMessageReplyClinics(sender_psid);
-                    break;
                 case "SPECIALIZATION":
                     await sendMessageReplySpecialization(sender_psid);
                     break;
@@ -52,14 +49,8 @@ let handlePostback = (sender_psid, received_postback) => {
                 case "ALL_DOCTORS":
                     await sendMessageAllDoctors(sender_psid);
                     break;
-                case "ALL_CLINICS":
-                    await sendMessageAllClinics(sender_psid);
-                    break;
                 case "ALL_SPECIALIZATION":
                     await sendMessageAllSpecializations(sender_psid);
-                    break;
-                case "CUSTOMER_SERVICE":
-                    await chatWithCustomerService(sender_psid);
                     break;
                 case "BOOKING_MESSENGER":
                     await sendMessageBooking(sender_psid);
@@ -159,7 +150,7 @@ let callSendAPIv2 = (sender_psid, title, subtitle, imageUrl, redirectUrl) => {
                                         {
                                             "type": "phone_number",
                                             "title": "Gọi hotline",
-                                            "payload": "0123456789"
+                                            "payload": "+8498549864"
                                         }
                                     ]
                                 }
@@ -207,9 +198,6 @@ let handleMessage = async (sender_psid, received_message) => {
             return;
         } else if (payload === "DOCTORS") {
             await sendMessageReplyDoctors(sender_psid);
-            return;
-        } else if (payload === "CLINICS") {
-            await sendMessageReplyClinics(sender_psid);
             return;
         } else if (payload === "SPECIALIZATION") {
             await sendMessageReplySpecialization(sender_psid);
@@ -545,7 +533,7 @@ let sendMessageMedicalExamination = (sender_psid) => {
                             {
                                 "type": "phone_number",
                                 "title": "GỌI HOTLINE",
-                                "payload": "0123456789"
+                                "payload": "+8498549864"
                             }
                         ]
                     }
@@ -559,11 +547,6 @@ let sendMessageMedicalExamination = (sender_psid) => {
                         "content_type": "text",
                         "title": "Bác sĩ",
                         "payload": "DOCTORS",
-                    },
-                    {
-                        "content_type": "text",
-                        "title": "Gói khám",
-                        "payload": "CLINICS",
                     },
                     {
                         "content_type": "text",
@@ -643,11 +626,6 @@ let sendMessageReplyDoctors = (sender_psid) => {
                                         "type": "postback",
                                         "title": "Chuyên khoa",
                                         "payload": "SPECIALIZATION",
-                                    },
-                                    {
-                                        "type": "postback",
-                                        "title": "Gói khám",
-                                        "payload": "CLINICS",
                                     }
                                 ],
                             }
@@ -659,11 +637,6 @@ let sendMessageReplyDoctors = (sender_psid) => {
             let response3 = {
                 "text": "Xem thêm thông tin:",
                 "quick_replies": [
-                    {
-                        "content_type": "text",
-                        "title": "Gói khám",
-                        "payload": "CLINICS",
-                    },
                     {
                         "content_type": "text",
                         "title": "Chuyên khoa",
@@ -762,11 +735,6 @@ let sendMessageReplySpecialization = (sender_psid) => {
                 "quick_replies": [
                     {
                         "content_type": "text",
-                        "title": "Gói khám",
-                        "payload": "CLINICS",
-                    },
-                    {
-                        "content_type": "text",
                         "title": "Bác sĩ",
                         "payload": "DOCTORS",
                     },
@@ -789,86 +757,7 @@ let sendMessageReplySpecialization = (sender_psid) => {
     });
 };
 
-let sendMessageReplyClinics = (sender_psid) => {
-    return new Promise(async (resolve, reject) => {
-        try {
-            let response1 = {
-                "text": "Một số gói khám tiêu biểu trên Doctors Care:"
-            };
 
-            let response2 = {
-                "attachment": {
-                    "type": "template",
-                    "payload": {
-                        "template_type": "generic",
-                        "elements": [
-                            {
-                                "title": "Phòng khám đa khoa Thu Cúc",
-                                "image_url": "https://doctorcare-v1.herokuapp.com/images/clinics/phong-kham-thu-cuc.jpg",
-                                "default_action": {
-                                    "type": "web_url",
-                                    "url": "https://doctorcare-v1.herokuapp.com/detail/clinic/1",
-                                    "webview_height_ratio": "tall"
-                                }
-                            },
-
-                            {
-                                "title": "Xem thêm thông tin:",
-                                "image_url": " https://bit.ly/imageToSend",
-                                "buttons": [
-                                    {
-                                        "type": "postback",
-                                        "title": "Tất cả gói khám",
-                                        "payload": "ALL_CLINICS",
-                                    },
-                                    {
-                                        "type": "postback",
-                                        "title": "Bác sĩ",
-                                        "payload": "DOCTORS",
-                                    },
-                                    {
-                                        "type": "postback",
-                                        "title": "Chuyên khoa",
-                                        "payload": "SPECIALIZATION",
-                                    },
-                                ],
-                            }
-                        ]
-                    }
-                }
-            };
-
-            let response3 = {
-                "text": "Xem thêm thông tin:",
-                "quick_replies": [
-                    {
-                        "content_type": "text",
-                        "title": "Bác sĩ",
-                        "payload": "DOCTORS",
-                    },
-                    {
-                        "content_type": "text",
-                        "title": "Chuyên khoa",
-                        "payload": "SPECIALIZATION",
-                    },
-                    {
-                        "content_type": "text",
-                        "title": "Khám bệnh",
-                        "payload": "KHAM_BENH",
-                    },
-                ]
-            };
-
-            await sendMessage(sender_psid, response1);
-            await sendMessage(sender_psid, response2);
-            await sendMessage(sender_psid, response3);
-
-            resolve("ok");
-        } catch (e) {
-            reject(e);
-        }
-    });
-};
 
 let sendMessageAllDoctors = (sender_psid) => {
     return new Promise(async (resolve, reject) => {
@@ -887,11 +776,6 @@ let sendMessageAllDoctors = (sender_psid) => {
                     },
                     {
                         "content_type": "text",
-                        "title": "Gói khám",
-                        "payload": "CLINICS",
-                    },
-                    {
-                        "content_type": "text",
                         "title": "Chuyên khoa",
                         "payload": "SPECIALIZATION",
                     }
@@ -905,41 +789,7 @@ let sendMessageAllDoctors = (sender_psid) => {
         }
     })
 };
-let sendMessageAllClinics = (sender_psid) => {
-    return new Promise(async (resolve, reject) => {
-        try {
-            let response1 = {
-                "text": "Danh sách tất cả phòng khám bạn xem thêm ở link bên dưới nhé:" +
-                    "\n\n 👉 https://doctorcare-v1.herokuapp.com/all-clinics  "
-            };
-            let response2 = {
-                "text": "Xem thêm thông tin:",
-                "quick_replies": [
-                    {
-                        "content_type": "text",
-                        "title": "Khám bệnh",
-                        "payload": "KHAM_BENH",
-                    },
-                    {
-                        "content_type": "text",
-                        "title": "Bác sĩ",
-                        "payload": "DOCTORS",
-                    },
-                    {
-                        "content_type": "text",
-                        "title": "Chuyên khoa",
-                        "payload": "SPECIALIZATION",
-                    }
-                ]
-            };
-            await sendMessage(sender_psid, response1);
-            await sendMessage(sender_psid, response2);
-            resolve("ok");
-        } catch (e) {
-            reject(e);
-        }
-    })
-};
+
 let sendMessageAllSpecializations = (sender_psid) => {
     return new Promise(async (resolve, reject) => {
         try {
@@ -959,11 +809,6 @@ let sendMessageAllSpecializations = (sender_psid) => {
                         "content_type": "text",
                         "title": "Bác sĩ",
                         "payload": "DOCTORS",
-                    },
-                    {
-                        "content_type": "text",
-                        "title": "Gói khám",
-                        "payload": "CLINICS",
                     }
                 ]
             };
@@ -994,11 +839,6 @@ let sendMessageDefault = (sender_psid, text) => {
                     },
                     {
                         "content_type": "text",
-                        "title": "Gói khám",
-                        "payload": "CLINICS",
-                    },
-                    {
-                        "content_type": "text",
                         "title": "Chuyên khoa",
                         "payload": "SPECIALIZATION",
                     }
@@ -1013,26 +853,7 @@ let sendMessageDefault = (sender_psid, text) => {
     })
 };
 
-let chatWithCustomerService = (sender_psid) => {
-    return new Promise(async (resolve, reject) => {
-        try {
-            //send a text message
-            let response1 = {
-                "text": "Bạn đã lựa chọn chat với hỗ trợ viên chăm sóc khách hàng" +
-                    "\n Vui lòng để lại lời nhắn và chúng tôi sẽ phản hồi trong ít phút nữa." +
-                    "\n\nĐể bật lại bot trả lời tự động, nhập 'exit' hoặc 'back' và gửi tin nhắn."
-            };
 
-            await sendMessage(sender_psid, response1);
-
-            //change this conversation to page inbox
-            await passThreadControl(sender_psid);
-            resolve("done");
-        } catch (e) {
-            reject(e);
-        }
-    })
-};
 
 let passThreadControl = (sender_psid) => {
     return new Promise((resolve, reject) => {
@@ -1136,7 +957,7 @@ let handleResBookingOnlineMessenger = (user) => {
         try {
             //save to database
             //name, phone, reason
-            let username = user.customerName;
+            let username = user.adminName;
             let phoneNumber = user.phone;
             if(username === ""){
                 username = await getFacebookUsername(user.psid);
@@ -1166,7 +987,6 @@ module.exports = {
     handleSetupBotFBPage: handleSetupBotFBPage,
     getFacebookUsername: getFacebookUsername,
     sendMessageAllDoctors: sendMessageAllDoctors,
-    sendMessageAllClinics: sendMessageAllClinics,
     sendMessageAllSpecializations: sendMessageAllSpecializations,
     sendMessageDefault: sendMessageDefault,
     takeControlConversation: takeControlConversation,

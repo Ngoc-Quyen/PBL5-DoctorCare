@@ -38,29 +38,34 @@
                     </script>
                 </div>
 
-                <div class="col-md-3 mt-3 d-none d-md-flex justify-content-around align-self-center">
-                    <div class="d-flex flex-column">
-                        <a href="/login" class="btn btn-design1 ">Đăng nhập</a>
+                <% if (user) { %>
+                    <div class="col-md-3 d-none d-md-flex justify-content-around align-self-center" id="loggedIn">
+                        <a href="/InfoUser" target="_blank">
+                            <img src="../images/background/User.png" alt="User logo" class="logo">
+                        </a>
+                        <a href="/InfoBooked" target="_blank">
+                            <img src="../images/background/Lichhen.png" alt="Lichhen logo" class="logo">
+                        </a>
+                        <a href="https://www.facebook.com/profile.php?id=100011010698678" target="_blank">
+                            <img src="../images/background/Vector.png" alt="Contact logo" class="logo">
+                        </a>
+                        <a href="/logout" target="_blank">
+                            <img src="../images/background/logout.png" alt="Contact logo" class="logo">
+                        </a>
                     </div>
-                    <div class="d-flex flex-column">
-                        <a href="/register" class="btn btn-design2 ">Đăng ký</a>
+                <% } else { %>
+                    <div class="col-md-3 mt-3 d-none d-md-flex justify-content-around align-self-center" id="notLoggedIn">
+                        <div class="d-flex flex-column">
+                            <a href="/login" class="btn btn-design1 ">Đăng nhập</a>
+                        </div>
+                        <div class="d-flex flex-column">
+                            <a href="/register" class="btn btn-design2 ">Đăng ký</a>
+                        </div>
+                        <a href="https://www.facebook.com/profile.php?id=100011010698678" target="_blank">
+                            <img src="../images/background/Vector.png" alt="Contact logo" class="logo">
+                        </a>
                     </div>
-                    <a href="https://www.facebook.com/profile.php?id=100011010698678" target="_blank">
-                        <img src="../images/background/Vector.png" alt="Contact logo" class="logo">
-                    </a>
-                </div>
-                <!--<div class="col-md-3 d-none d-md-flex justify-content-around align-self-center">
-                <a href="/InfoUser" target="_blank">
-                    <img src="../images/background/User.png" alt="User logo" class="logo">
-                </a>
-                <a href="/InfoBooked" target="_blank">
-                    <img src="../images/background/Lichhen.png" alt="Lichhen logo" class="logo">
-                </a>
-                <a href="https://www.facebook.com/profile.php?id=100011010698678" target="_blank">
-                    <img src="../images/background/Vector.png" alt="Contact logo" class="logo">
-                </a>
-            </div>-->
-
+                <% } %>
             </div>
         </div>
     </section>
@@ -82,30 +87,26 @@
         <div class="container">
             <div class="container">
                 <div class="row">
-                    <div class="col-8 mx-auto">
-                        <h2>Các bác sĩ</h2>
+                    <div class="col-10 mx-auto">
+                        <h4>Danh sách bác sĩ trực thuộc phòng khám:</h4>
                         <hr>
-                        <div>
-                            Danh sách bác sĩ trực thuộc phòng khám:
-
-                        </div>
-                        <hr>
-                        <div class="d-flex flex-row flex-wrap">
-                            <% doctors.forEach(function(doctor) { %>
-                                <div class="col-6 my-4">
-                                    <a href="/detail/doctor/<%= doctor.id %>" class="text-decoration-none"
-                                        style="outline: none">
-                                        <div class="d-flex flex-column" title="<%= doctor.name%>">
-                                            <img style="height: 200px; width: 300px" src="<%= doctor.avatar %>"
-                                                alt="image bla bla">
-                                            <h3 class="mt-3" style="font-size: 18px">
-                                                <%= doctor.name %>
-                                            </h3>
-                                        </div>
-                                    </a>
-                                </div>
+                        <div class="container">
+                            <hr>
+                            <div class="row">
+                                <% doctors.forEach(function(doctor) { %>
+                                    <div class="col-md-4 my-4"> <!-- Sử dụng col-md-4 để mỗi ảnh chiếm 1/3 chiều rộng trên màn hình lớn -->
+                                        <a href="/detail/doctor/<%= doctor.id %>" class="text-decoration-none" style="outline: none;">
+                                            <div class="d-flex flex-column" title="<%= doctor.name %>">
+                                                <img style="height: 300px; width: 100%;" src="<%= doctor.avatar %>" alt="image bla bla">
+                                                <h3 class="mt-3" style="font-size: 18px;">
+                                                    <%= doctor.name %>
+                                                </h3>
+                                            </div>
+                                        </a>
+                                    </div>
                                 <% }) %>
-                        </div>
+                            </div>
+                        
 
 
                     </div>

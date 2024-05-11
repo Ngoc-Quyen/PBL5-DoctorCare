@@ -217,8 +217,7 @@ body a {
   opacity: 1;
 }
 
-.sec-fields-hospital .show-all-specializations,
-.sec-hospitals .show-all-clinics {
+.sec-fields-hospital .show-all-specializations{
   color: #085CFF;
   /* Màu chữ */
   background-color: #ABF3FD;
@@ -371,10 +370,10 @@ body a {
 .sec-for-doctors {
   height: 400px;
   border-top: 2px solid #ebebeb;
-  background-image: url("../images/background/for-doctors.png");
+  background-color: #EDFAFB;
   background-size: cover;
   background-position: center;
-  color: #085CFF;
+  color: #14171e;
   cursor: pointer;
   border-radius: 5px;
   border: 1px solid #cccccc;
@@ -385,12 +384,12 @@ body a {
 .sec-foot {
   height: 200px;
   background-image: url("../images/background/BGFooter.png");
-  background-size: cover; 
-  background-position: center; 
-  color: #000000; 
-  display: flex; 
-  justify-content: center; 
-  align-items: center; 
+  background-size: cover;
+  background-position: center;
+  color: #000000;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 
 
@@ -619,13 +618,7 @@ select#day-book {
 
 .detail-info-specialization {
   height: 50px;
-  background-image: url("../images/background/Frame.png");
-  background-size: cover;
-  background-position: center;
-  color: #000000;
-  display: flex;
-  justify-content: center;
-
+  background-color: #e6e6e6;
 }
 
 .content-specialization .each-doctor-spe {
@@ -689,10 +682,7 @@ select#day-book {
   overflow-y: auto;
 }
 
-.before-detail-clinic {
-  height: 50px;
-  background-color: #ccc;
-}
+
 
 .nav-pills .nav-link.active,
 .nav-pills .show>.nav-link {
@@ -724,10 +714,6 @@ body {
   max-height: 300px;
 }
 
-.img-preview-clinic-create {
-  height: 200px;
-  width: 300px;
-}
 
 pre {
   font-family: Montserrat, sans-serif;
@@ -746,10 +732,6 @@ pre {
   /* Internet Explorer 5.5+ */
 }
 
-.img-info-clinic {
-  max-height: 250px;
-  max-width: 500px;
-}
 
 .img-user-setting {
   border: 1px solid #ccc;
@@ -825,11 +807,6 @@ pre {
   margin: 20px -15px 0 -15px;
 }
 
-.clinic-address {
-  font-size: 20px;
-  padding-top: 25px;
-  margin-left: -15px;
-}
 
 .extraInfo {
   padding: 10px;
@@ -1006,6 +983,20 @@ h3.show-title-post {
   background-color: #979586;
 }
 
+.image-container {
+  position: relative;
+}
+.image-caption {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  background-color: rgba(56, 180, 211, 0.5);
+  color: rgb(26, 28, 30);
+  text-align: center;
+  padding: 10px;
+}
+
 .mt-1 .container{
   width: 100%;
   height: 80vh;
@@ -1078,6 +1069,7 @@ h3.show-title-post {
   width: 40%;
   height: 80;
 }
+
 /* Định dạng cho button */
 .btn-submit {
   background-color: #00e1ff;
@@ -1109,3 +1101,53 @@ h3.show-title-post {
   padding: 10px;
   border: 1px solid #ccc;
 }
+.container-booked {
+  width: 80%;
+  margin: 20px auto;
+  padding: 20px;
+  background-color: #f7f7f7;
+  border: 2px solid #ccc; /* Border around the container */
+  border-radius: 5px;
+}
+#container-booked {
+  border: 1px solid #ccc; /* You can adjust the color and size of the border */
+  padding: 10px; /* Optional: Add padding to the container */
+}
+.form-group img {
+  border-radius: 50%; /* Make the image round */
+  display: block; /* Ensure the image is treated as a block element */
+    margin: 0 auto; 
+}
+.infor-booked-container .col-md-6{
+  display: block;
+ 
+}
+/* Style for the buttons */
+/* Style for the first button */
+.btn-booked {
+  padding: 10px 20px; /* Add padding to the buttons */
+  border: none; /* Remove button border */
+  background-color: #007bff; /* Button background color */
+  color: #fff; /* Button text color */
+  cursor: pointer; /* Change cursor to pointer on hover */
+  transition: background-color 0.3s ease; /* Smooth transition for background color */
+  border-radius: 5px; /* Add rounded corners */
+}
+
+/* Style for the second button */
+.btn-cancel-booked {
+  padding: 10px 20px; /* Add padding to the buttons */
+  border: none; /* Remove button border */
+  background-color: #dc3545; /* Button background color */
+  color: #fff; /* Button text color */
+  cursor: pointer; /* Change cursor to pointer on hover */
+  transition: background-color 0.3s ease; /* Smooth transition for background color */
+  border-radius: 5px; /* Add rounded corners */
+}
+
+/* Style for button hover */
+.btn-booked:hover,
+.btn-cancel-booked:hover {
+  filter: brightness(90%); /* Reduce brightness on hover */
+}
+

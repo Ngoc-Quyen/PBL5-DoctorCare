@@ -614,10 +614,7 @@ select#day-book {
     }
 }
 
-.before-detail-clinic {
-    height: 50px;
-    background-color: #ccc;
-}
+
 
 .nav-pills .nav-link.active, .nav-pills .show > .nav-link {
     background-color: #45c3d2 !important;
@@ -655,10 +652,6 @@ body {
 
 //
 
-.img-preview-clinic-create {
-    height: 200px;
-    width: 300px;
-}
 
 pre {
     font-family: Montserrat, sans-serif;
@@ -671,11 +664,6 @@ pre {
     white-space: -moz-pre-wrap; /* Mozilla, post millennium */
     white-space: -o-pre-wrap; /* Opera 7 */
     word-wrap: break-word; /* Internet Explorer 5.5+ */
-}
-
-.img-info-clinic {
-    max-height: 250px;
-    max-width: 500px;
 }
 
 .img-user-setting {
@@ -768,11 +756,6 @@ pre {
     margin: 20px -15px 0 -15px;
 }
 
-.clinic-address {
-    font-size: 20px;
-    padding-top: 25px;
-    margin-left: -15px;
-}
 
 .extraInfo {
     padding: 10px;

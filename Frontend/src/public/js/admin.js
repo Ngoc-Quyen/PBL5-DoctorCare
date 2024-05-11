@@ -60,6 +60,7 @@ function createNewPost(markdown, converter) {
         });
     });
 }
+<<<<<<< HEAD
 
 function deleteClinicById() {
     $('.delete-specific-clinic').bind('click', function (e) {
@@ -247,6 +248,8 @@ function showModalInfoClinic() {
     });
 }
 
+=======
+>>>>>>> 4b1a10c67f7aef146bd0d7bf9e6085d0bf35f948
 function showModalSettingUser() {
     $('.user-setting').on('click', function (e) {
         e.preventDefault();
@@ -343,6 +346,46 @@ function showModalInfoDoctor() {
     });
 }
 
+function showModalInfoCustomer() {
+    $('.show-customer-info').on('click', function(e) {
+        e.preventDefault();
+        let id = $(this).data('customer-id');
+
+        $.ajax({
+            method: 'POST',
+            url: `${window.location.origin}/api/get-info-customer-by-id`,
+            data: { id: id },
+            success: function(data) {
+                $('#imageCustomer').empty();
+
+                $('#nameUser').val(data.user.name);
+                if (data.user.phone) {
+                    $('#phoneCustomer').val(data.user.phone);
+                } else {
+                    $('#phoneCustomer').val('Chưa cập nhật');
+                }
+                if (data.user.address) {
+                    $('#addressCustomer').val(data.user.address);
+                } else {
+                    $('#addressCustomer').val('Chưa cập nhật');
+                }
+                
+                if (data.user.avatar) {
+                    $('#imageCustomer').prepend(`<img class="img-info-clinic" src="/images/users/${data.customer.avatar}" />`)
+                } else {
+                    $('#imageCustomer').text('Chưa cập nhật')
+                }
+
+                $('#modalInfoCustomer').modal('show');
+            },
+            error: function(error) {
+                alertify.error('Đã xảy ra lỗi, vui lòng thử lại sau!');
+                console.log(error);
+            }
+        });
+    });
+
+}
 function updateDoctor() {
     $('#btnUpdateDoctor').on('click', function (e) {
         let doctorId = $('#btnUpdateDoctor').data('doctor-id');
@@ -648,7 +691,10 @@ function loadNewPatientsForAdmin() {
             let countPending = data.object.pendingPatients.length;
             let countConfirmed = data.object.confirmedPatients.length;
             let countCanceled = data.object.canceledPatients.length;
-
+            console.log("0");
+            console.log(countPending);
+            console.log(countConfirmed);
+            console.log(countCanceled);
             $('#count-new').text(`${countNew}`);
             $('#count-need').text(`${countPending}`);
             $('#count-confirmed').text(`${countConfirmed}`);
@@ -1280,11 +1326,14 @@ $(document).ready(function (e) {
     //     $(this).removeData();
     // });
 
+<<<<<<< HEAD
     let markdownIntroClinic = new SimpleMDE({
         element: document.getElementById('intro-clinic'),
         placeholder: 'Nội dung giới thiệu...',
         spellChecker: false,
     });
+=======
+>>>>>>> 4b1a10c67f7aef146bd0d7bf9e6085d0bf35f948
     let markdownPost = new SimpleMDE({
         element: document.getElementById('contentMarkdown'),
         placeholder: 'Nội dung bài đăng...',
@@ -1312,14 +1361,11 @@ $(document).ready(function (e) {
 
     loadFile(e);
     loadImageUserSetting(e);
-    createNewClinic(markdownIntroClinic, converter);
-    deleteClinicById();
-    updateClinic(markdownIntroClinic, converter);
-    showModalInfoClinic();
     showModalSettingUser();
     createNewDoctor();
     deleteDoctorById();
     showModalInfoDoctor();
+    showModalInfoUser();
     updateDoctor();
     deleteSpecializationById();
     showPostsForAdmin();

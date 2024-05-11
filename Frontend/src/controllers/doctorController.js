@@ -1,9 +1,8 @@
-import doctorService from './../services/doctorService';
-import userService from './../services/userService';
-import _ from 'lodash';
-import moment from 'moment';
-import multer from 'multer';
-import { cookie } from 'request';
+import doctorService from "./../services/doctorService";
+import userService from "./../services/userService";
+import _ from "lodash";
+import moment from "moment";
+import multer from "multer";
 
 const MAX_BOOKING = 2;
 
@@ -11,12 +10,13 @@ function stringToDate(_date, _format, _delimiter) {
     let formatLowerCase = _format.toLowerCase();
     let formatItems = formatLowerCase.split(_delimiter);
     let dateItems = _date.split(_delimiter);
-    let monthIndex = formatItems.indexOf('mm');
-    let dayIndex = formatItems.indexOf('dd');
-    let yearIndex = formatItems.indexOf('yyyy');
+    let monthIndex = formatItems.indexOf("mm");
+    let dayIndex = formatItems.indexOf("dd");
+    let yearIndex = formatItems.indexOf("yyyy");
     let month = parseInt(dateItems[monthIndex]);
     month -= 1;
     return new Date(dateItems[yearIndex], month, dateItems[dayIndex]);
+
 }
 
 let getSchedule = async (req, res) => {
@@ -37,53 +37,42 @@ let getSchedule = async (req, res) => {
         // }
         let data = {
             sevenDaySchedule: sevenDaySchedule,
-            doctorId: req.user.id,
+            doctorId: req.user.id
         };
         let schedules = await doctorService.getDoctorSchedules(data);
-        schedules.forEach((x) => {
-            x.date = Date.parse(stringToDate(x.date, 'dd/MM/yyyy', '/'));
-        });
-
-        schedules = _.sortBy(schedules, (x) => x.date);
 
         schedules.forEach((x) => {
-            x.date = moment(x.date).format('DD/MM/YYYY');
+            x.date = Date.parse(stringToDate(x.date, "dd/MM/yyyy", "/"))
         });
-        return res.render('main/users/admins/schedule.ejs', {
+
+        schedules = _.sortBy(schedules, x => x.date);
+
+        schedules.forEach((x) => {
+            x.date = moment(x.date).format("DD/MM/YYYY")
+        });
+
+        return res.render("main/users/admins/schedule.ejs", {
             user: req.user,
             schedules: schedules,
-            sevenDaySchedule: sevenDaySchedule,
-        });
+            sevenDaySchedule: sevenDaySchedule
+        })
     } catch (e) {
-        console.log(e);
+        console.log(e)
     }
 };
 
-let getCreateSchedule = async (req, res) => {
-    let schedule = await userService.getAllCodeService('time');
-    return res.render('main/users/admins/createSchedule.ejs', {
-        user: req.user,
-        schedule: schedule.data,
-    });
+let getCreateSchedule = (req, res) => {
+    return res.render("main/users/admins/createSchedule.ejs", {
+        user: req.user
+    })
 };
 
 let postCreateSchedule = async (req, res) => {
     await doctorService.postCreateSchedule(req.user, req.body.schedule_arr, MAX_BOOKING);
-    // return res.redirect('/doctor/manage/schedule');
     return res.status(200).json({
-        status: 1,
-        message: 'success',
-        redirectTo: '/doctor/manage/schedule', // Đường dẫn bạn muốn chuyển hướng đến
-    });
-};
-let deleteScheduldeByDay = async (req, res) => {
-    let mess = await doctorService.deleteScheduldeByDay(req.user, req.body.date);
-    console.log(req.user);
-    console.log(req.body.date);
-    return res.status(200).json({
-        status: mess.errCode,
-        message: mess.errMessage,
-    });
+        "status": 1,
+        "message": 'success'
+    })
 };
 
 let getScheduleDoctorByDate = async (req, res) => {
@@ -94,10 +83,10 @@ let getScheduleDoctorByDate = async (req, res) => {
         return res.status(200).json({
             status: 1,
             message: data,
-            doctor: doctor,
+            doctor: doctor
         });
     } catch (e) {
-        console.log(e);
+        console.log(e)
         return res.status(500).json(e);
     }
 };
@@ -106,9 +95,9 @@ let getInfoDoctorById = async (req, res) => {
     try {
         let doctor = await doctorService.getInfoDoctorById(req.body.id);
         return res.status(200).json({
-            message: 'success',
-            doctor: doctor,
-        });
+            'message': 'success',
+            'doctor': doctor
+        })
     } catch (e) {
         console.log(e);
         return res.status(500).json(e);
@@ -131,30 +120,31 @@ let getManageAppointment = async (req, res) => {
 
     let data = {
         date: date,
-        doctorId: req.user.id,
+        doctorId: req.user.id
     };
 
     let appointments = await doctorService.getPatientsBookAppointment(data);
     // sort by range time
-    let sort = _.sortBy(appointments, (x) => x.timeBooking);
+    let sort = _.sortBy(appointments, x => x.timeBooking);
     //group by range time
-    let final = _.groupBy(sort, function (x) {
+    let final = _.groupBy(sort, function(x) {
         return x.timeBooking;
     });
 
-    return res.render('main/users/admins/manageAppointment.ejs', {
+    return res.render("main/users/admins/manageAppointment.ejs", {
         user: req.user,
         appointments: final,
         date: date,
-        active: canActive,
-    });
+        active: canActive
+    })
 };
 
 let getManageChart = (req, res) => {
-    return res.render('main/users/admins/manageChartDoctor.ejs', {
-        user: req.user,
-    });
+    return res.render("main/users/admins/manageChartDoctor.ejs", {
+        user: req.user
+    })
 };
+
 
 let postSendFormsToPatient = (req, res) => {
     FileSendPatient(req, res, async (err) => {
@@ -169,12 +159,13 @@ let postSendFormsToPatient = (req, res) => {
             }
         }
         try {
+
             let patient = await doctorService.sendFormsForPatient(req.body.patientId, req.files);
             return res.status(200).json({
                 status: 1,
                 message: 'sent files success',
-                patient: patient,
-            });
+                patient: patient
+            })
         } catch (e) {
             console.log(e);
             return res.status(500).send(e);
@@ -184,18 +175,18 @@ let postSendFormsToPatient = (req, res) => {
 
 let storageFormsSendPatient = multer.diskStorage({
     destination: (req, file, callback) => {
-        callback(null, 'src/public/images/patients/remedy');
+        callback(null, "src/public/images/patients/remedy");
     },
     filename: (req, file, callback) => {
         let imageName = `${Date.now()}-${file.originalname}`;
         callback(null, imageName);
-    },
+    }
 });
 
 let FileSendPatient = multer({
     storage: storageFormsSendPatient,
-    limits: { fileSize: 1048576 * 20 },
-}).array('filesSend');
+    limits: { fileSize: 1048576 * 20 }
+}).array("filesSend");
 
 let postCreateChart = async (req, res) => {
     try {
@@ -215,18 +206,18 @@ let postAutoCreateAllDoctorsSchedule = async (req, res) => {
         console.log(e);
         return res.status(500).json(e);
     }
-};
+}
+
 
 module.exports = {
     getSchedule: getSchedule,
     getCreateSchedule: getCreateSchedule,
     postCreateSchedule: postCreateSchedule,
-    deleteScheduldeByDay: deleteScheduldeByDay,
     getScheduleDoctorByDate: getScheduleDoctorByDate,
     getInfoDoctorById: getInfoDoctorById,
     getManageAppointment: getManageAppointment,
     getManageChart: getManageChart,
     postSendFormsToPatient: postSendFormsToPatient,
     postCreateChart: postCreateChart,
-    postAutoCreateAllDoctorsSchedule: postAutoCreateAllDoctorsSchedule,
+    postAutoCreateAllDoctorsSchedule: postAutoCreateAllDoctorsSchedule
 };

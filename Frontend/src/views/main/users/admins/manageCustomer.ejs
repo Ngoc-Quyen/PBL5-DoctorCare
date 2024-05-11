@@ -2,7 +2,7 @@
 <!-- Page Heading -->
 <div class="d-sm-flex align-items-center justify-content-between mb-4">
     <h1 class="h3 mb-0 text-gray-800">Quản lý bệnh nhân</h1>
-    <a href="/users/manage/user/create" class="d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm"><i
+    <a href="/users/manage/customer/create" class="d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm"><i
                 class="fas fa-plus-circle fa-sm text-white-50"></i> Thêm mới</a>
 </div>
 
@@ -21,20 +21,20 @@
                 </tr>
                 </thead>
                 <tbody>
-                <% users.forEach(function(user) { %>
+                <% customers.forEach(function(customer) { %>
                     <tr>
-                        <td><%= user.name %></td>
+                        <td><%= customer.name %></td>
                         <td>
-                            <% if(user.isActive) { %> Active
-                            <% } else { %> Inactive
+                            <% if(customer.isActive) { %> Hoạt động
+                            <% } else { %> Không hoạt động
                             <% } %>
                         </td>
                         <td class="">
-                            <a class="show-user-info" data-user-id="<%= user.id %>" href="#"
+                            <a class="show-customer-info" data-customer-id="<%= customer.id %>" href="#"
                                title="View info"><i class="fas fa-info-circle"></i></a>
-                            <a class="edit-user-info" href="/users/user/edit/<%= user.id %>"
+                            <a class="edit-customer-info" href="/users/customer/edit/<%= customer.id %>"
                                title="Edit"><i class="fas fa-pen-square mx-3"></i></a>
-                            <a class="delete-user-info" data-user-id="<%= user.id %>" href="#"
+                            <a class="delete-customer-info" data-customer-id="<%= customer.id %>" href="#"
                                title="Delete"><i class="fas fa-trash"></i></a>
                         </td>
                     </tr>
@@ -46,7 +46,7 @@
 </div>
 
 <div class="modal fade " tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true"
-     id="modalInfoDoctor">
+     id="modalInfoCustomer">
     <div class="modal-dialog modal-lg" role="document">
         <div class="modal-content">
             <div class="modal-header">
@@ -60,28 +60,21 @@
                     <div class="col-12">
                         <div class="form-row">
                             <div class="form-group col-7">
-                                <label for="nameDoctor" class="col-form-label text-label">Tên</label>
+                                <label for="nameCustomer" class="col-form-label text-label">Tên</label>
                                 <input type="text" class="form-control" id="nameDoctor" disabled>
                             </div>
                             <div class="form-group col-5">
-                                <label for="phoneDoctor" class="col-form-label text-label">Số điện thoại</label>
+                                <label for="phoneCustomer" class="col-form-label text-label">Số điện thoại</label>
                                 <input type="text" class="form-control" id="phoneDoctor" disabled>
                             </div>
                         </div>
-                        <div class="form-row">
-                            
-                            <div class="form-group col-6">
-                                <label for="specializationDoctor" class="col-form-label text-label">Chuyên khoa</label>
-                                <input type="text" class="form-control" id="specializationDoctor" disabled>
-                            </div>
-                        </div>
                         <div class="form-group">
-                            <label for="addressDoctor" class="col-form-label text-label">Địa chỉ</label>
+                            <label for="addressCustomer" class="col-form-label text-label">Địa chỉ</label>
                             <input type="text" class="form-control" id="addressDoctor" name="addressDoctor" disabled>
                         </div>
                         <div class="form-group">
                             <label class="col-form-label text-label"> Hình ảnh</label>
-                            <div id="imageDoctor"></div>
+                            <div id="imageCustomer"></div>
                         </div>
 
                     </div>
@@ -96,7 +89,7 @@
 <script>
     $(document).ready(function() {
         $("div #featureManage").addClass('show');
-        $("div #featureManage").find($("#aManageUser")).addClass("active");
+        $("div #featureManage").find($("#aManageCustomer")).addClass("active");
         $(".admin-list-posts").removeClass("active");
     })
 </script>
