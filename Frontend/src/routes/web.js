@@ -61,6 +61,8 @@ passport.deserializeUser((id, done) => {
 let initRoutes = (app) => {
     router.get("/all-doctors", home.getPageAllDoctors);
     router.get("/all-specializations", home.getPageAllSpecializations);
+    router.get("/InfoUser", home.getPageInfoUser);
+    router.get("/InfoBooked", home.getPageInfoBooked);
 
     router.get('/webhook', bot.getWebhookFB);
     router.post('/webhook', bot.postWebhookFB);
