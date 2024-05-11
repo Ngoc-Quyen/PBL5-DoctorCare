@@ -145,21 +145,26 @@ let initRoutes = (app) => {
             if (err) {
                 return next(err);
             }
-            // Redirect if it fails
+            // Redirect if authentication fails
             if (!user) {
                 return res.redirect('/login');
             }
-
+    
             req.logIn(user, function(err) {
                 if (err) {
                     return next(err);
                 }
-
+                req.session.user = user;
+    
                 req.session.save(() => {
-                    // Redirect if it succeeds
-                    return res.redirect('/users');
+                    // Check user role after successful login
+                    if (user.roleId === 3) {
+                        return res.redirect('/');
+                    } else {
+                        return res.redirect('/users');
+                    }
                 });
-
+    
             });
         })(req, res, next);
     });

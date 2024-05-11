@@ -2,6 +2,7 @@ import { validationResult } from "express-validator";
 import auth from "../services/authService";
 import user from "../services/userService";
 
+
 let getLogin = (req, res) => {
     return res.render("auth/login.ejs", {
         error: req.flash("error"),
@@ -85,6 +86,7 @@ let checkLoggedIn = (req, res, next) => {
     }
     next();
 };
+
 
 let checkLoggedOut = (req, res, next) => {
     if (req.isAuthenticated()) {
