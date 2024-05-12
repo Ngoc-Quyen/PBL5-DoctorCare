@@ -40,16 +40,16 @@
             
             <% if (user) { %>
                     <div class="col-md-3 d-none d-md-flex justify-content-around align-self-center" id="loggedIn">
-                        <a href="/InfoUser" target="_blank">
+                        <a href="/InfoUser" >
                             <img src="../images/background/User.png" alt="User logo" class="logo">
                         </a>
-                        <a href="/InfoBooked" target="_blank">
+                        <a href="/InfoBooked" >
                             <img src="../images/background/Lichhen.png" alt="Lichhen logo" class="logo">
                         </a>
                         <a href="https://www.facebook.com/profile.php?id=100011010698678" target="_blank">
                             <img src="../images/background/Vector.png" alt="Contact logo" class="logo">
                         </a>
-                        <a href="/logout" target="_blank">
+                        <a href="/logout" >
                             <img src="../images/background/logout.png" alt="Contact logo" class="logo">
                         </a>
                     </div>
@@ -91,19 +91,19 @@
 <section class="mt-1" style="background-color: #ffffff; height: 700px; display: flex; align-items: center;">
   <div class="container" id="container-user">
     <form class="infor-user"></form>
-      <div class="form-container infor-user-container">
+      <div class="form-container infor-user-container1">
         <div style="background-color: #ABF3FD; height: 50px; font-size: 20px;">
          <i class="fa fa-user-circle-o" aria-hidden="true" style="color: #007bff;"></i> 
           Thông tin người dùng
         </div>
        
-        <div class="form-group">
+        <div class="form-group1">
           <img src="/images/users/doctor.jpg" alt="avatar-user"><br>
         </div>
         <div  style="text-align: center;">
             <label for="full-name" style="background-color: #ABF3FD;padding: 5px 15px; display: inline-block;">Nguyễn Văn A</label>
         </div>
-        <div class="form-group-infor">
+        <div class="form-group-infor1">
             <div>
                 <div><i class="fa fa-history" aria-hidden="true" style="color: #007bff;"></i> Lịch sử khám bệnh</div>
                 
@@ -124,26 +124,26 @@
         <div style="background-color: #ABF3FD; height: 50px; font-size: 20px; text-align: center;">
             Thông tin chi tiết
         </div>
-        <div class="form-group">
+        <div class="form-group1">
           <label for="full-name">Họ và tên* :</label>
           <input type="text" id="full-name" name="full-name">
           <span class="error" id="full-name-error"></span>
         </div>
-        <div class="form-group">
+        <div class="form-group1">
           <label for="id-number">Số CMND/CCCD* :</label>
           <input type="text" id="id-number" name="id-number">
           <span class="error" id="id-number-error"></span>
         </div>
-        <div class="form-group">
+        <div class="form-group1">
           <label for="phone-number">Số điện thoại* :</label>
           <input type="text" id="phone-number" name="phone-number">
           <span class="error" id="phone-number-error"></span>
         </div>
-        <div class="form-group">
+        <div class="form-group1">
           <label for="address">Địa chỉ:</label>
           <input type="text" id="address" name="address">
         </div>
-        <div class="form-group gender">
+        <div class="form-group1 gender">
           <label for="gender">Giới tính:</label>
           <input type="radio" id="male" name="gender" value="male">
           <label for="male">Nam</label>
@@ -151,16 +151,21 @@
           <label for="female">Nữ</label>
           <span class="error" id="gender-error"></span>
         </div>
-        <div class="form-group">
+        <div class="form-group1">
           <label for="birthdate">Ngày sinh:</label>
           <input type="date" id="birthdate" name="birthdate">
         </div>
-        <div class="form-group">
+        <div class="form-group1">
           <label for="email">Email:</label>
           <input type="email" id="email" name="email">
           <span class="error" id="email-error"></span>
         </div>
-        <div class="form-group">
+        <div class="form-group1">
+            <label>
+
+            </label>
+        </div>
+        <div class="form-group1">
           <button type="submit" class="btn-submit">Cập nhật</button>
         </div>
       

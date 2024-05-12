@@ -1360,7 +1360,6 @@ $(document).ready(function (e) {
     createNewDoctor();
     deleteDoctorById();
     showModalInfoDoctor();
-    showModalInfoUser();
     updateDoctor();
     deleteSpecializationById();
     showPostsForAdmin();
