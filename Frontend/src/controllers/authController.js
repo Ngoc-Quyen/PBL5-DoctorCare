@@ -13,48 +13,27 @@ let getRegister = (req, res) => {
 };
 
 let postRegister = async (req, res) => {
-    let hasErrors = validationResult(req).array({
-        onlyFirstError: true,
-    });
-    if (!hasErrors.length) {
-        try {
-            // await authService.register(req.body.name, req.body.rg_email, req.body.rg_password, req.protocol, req.get("host")).then(async (user) => {
-            console.log(user);
-            // res.redirect('login');
-            // let linkVerify = `${req.protocol}://${req.get("host")}/verify/${user.local.verifyToken}`;
-            // await authService.register({user}, linkVerify)
-            // .then((message) => {
-            //     req.flash("success", message);
-            //     res.redirect('/login');
-            // })
-            // .catch((err) => {
-            //     console.log(err);
-            // });
-            // }).catch((err) => {
-            //     console.log(err);
-            // });
-        } catch (err) {
-            req.flash('errors', err);
-            res.render('/register', {
-                oldData: req.body,
-            });
+    let customer = {
+        name: req.body.name,
+        phone: req.body.phone,
+        email: req.body.email,
+        password: req.body.password,
+        gender: req.body.gender,
+        address: req.body.address,
+        avatar: 'https://firebasestorage.googleapis.com/v0/b/pbl5-a1f37.appspot.com/o/images%2FavatarUsers%2FavatarPatient%2Favatar-default.png?alt=media&token=f8cd9a9f-d234-4b99-b742-77cf25ca86dd',
+        description: req.body.description,
+    };
+    try {
+        let mess = await user.createNewUser(customer);
+        console.log(mess.errMessage);
+        if (mess.errCode === 0) {
+            return res.redirect('/login');
+        } else {
+            return res.redirect('/register');
         }
-    } else {
-        let errEmail = '',
-            errPassword = '',
-            errPasswordConfirm = '';
-        hasErrors.forEach((err) => {
-            if (err.param === 'rg_email') errEmail = err.msg;
-            if (err.param === 'rg_password') errPassword = err.msg;
-            if (err.param === 'rg_password_again') errPasswordConfirm = err.msg;
-        });
-        res.render('auth/register', {
-            errEmail: errEmail,
-            errPassword: errPassword,
-            errPasswordConfirm: errPasswordConfirm,
-            hasErrors: hasErrors,
-            oldData: req.body,
-        });
+    } catch (err) {
+        console.log(err);
+        return res.status(500).json({ error: err });
     }
 };
 

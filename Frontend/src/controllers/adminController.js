@@ -21,7 +21,6 @@ let getManageDoctor = async (req, res) => {
         doctors: doctors,
     });
 };
-let getManageUser = async (req, res) => {};
 
 let getCreateDoctor = async (req, res) => {
     let specializations = await homeService.getSpecializations();
@@ -214,17 +213,20 @@ let getEditDoctor = async (req, res) => {
 let putUpdateDoctorWithoutFile = async (req, res) => {
     try {
         let item = {
-            id: req.body.id,
+            id: req.body.idDoctor,
             name: req.body.nameDoctor,
             phone: req.body.phoneDoctor,
             address: req.body.addressDoctor,
             description: req.body.introEditDoctor,
             specializationId: req.body.specializationDoctor,
         };
-        await doctorService.updateDoctorInfo(item);
-        return res.status(200).json({
-            message: 'update info doctor successful',
-        });
+        console.log(item);
+        let mess = await doctorService.updateDoctorInfo(item);
+        console.log(mess.errMessage);
+        return res.redirect('/users/manage/doctor');
+        // return res.status(200).json({
+        //     message: 'update info doctor successful',
+        // });
     } catch (e) {
         console.log(e);
         return res.status(500).json(e);
@@ -531,6 +533,30 @@ let postDoneComment = async (req, res) => {
         return res.status(500).json(e);
     }
 };
+let postCreatePatient = async (req, res) => {
+    let patient = {
+        name: req.body.name,
+        phone: req.body.phone,
+        email: req.body.email,
+        password: req.body.password,
+        gender: req.body.gender,
+        address: req.body.address,
+        avatar: req.user.avatar,
+        description: req.body.description,
+    };
+    try {
+        let mess = await userService.createNewUser(patient);
+        console.log(mess.errMessage);
+        if (mess.errCode === 0) {
+            return res.redirect('/users/manage/customer');
+        } else {
+            return res.redirect('users/manage/customer/create');
+        }
+    } catch (err) {
+        console.log(err);
+        return res.status(500).json({ error: err });
+    }
+};
 module.exports = {
     getManageDoctor: getManageDoctor,
     getCreateDoctor: getCreateDoctor,
@@ -561,5 +587,7 @@ module.exports = {
     postChangeStatusPatient: postChangeStatusPatient,
     getLogsPatient: getLogsPatient,
     postDoneComment: postDoneComment,
+
     getCreatePatient: getCreatePatient,
+    postCreatePatient: postCreatePatient,
 };

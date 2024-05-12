@@ -7,7 +7,9 @@
     <!-- Content Row -->
     <div class="row">
         <div class="col-10 mx-auto">
-            <form id="formUpdateDoctor">
+            <form id="formUpdateDoctor" method="POST" action="/users/doctor/edit/<%= doctor.id %>">
+                <input type="text" class="form-control" id="idDoctor" name="idDoctor" placeholder="ID"
+                    value="<%= doctor.id %>" style="display: none;">
                 <div class="form-row">
                     <div class="form-group col-6">
                         <label for="nameDoctor">Tên</label>
@@ -66,7 +68,7 @@
                             <% } %>
                 </div>
 
-                <button type="button" class="btn btn-primary" id="btnUpdateDoctor" data-doctor-id="<%= doctor.id %>">Cập
+                <button type="submit" class="btn btn-primary" id="btnUpdateDoctor" data-doctor-id="<%= doctor.id %>">Cập
                     nhật</button>
             </form>
         </div>

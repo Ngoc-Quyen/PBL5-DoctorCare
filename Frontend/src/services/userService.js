@@ -431,6 +431,55 @@ let updateUserDataFile = async (data, filePath) => {
         }
     });
 };
+let checkUserEmail = (userEmail) => {
+    return new Promise(async (resolve, reject) => {
+        try {
+            let user = await db.User.findOne({
+                where: { email: userEmail },
+            });
+            if (user) {
+                resolve(true);
+            } else {
+                resolve(false);
+            }
+        } catch (error) {
+            reject(error);
+        }
+    });
+};
+let createNewUser = async (data) => {
+    return new Promise(async (resolve, reject) => {
+        try {
+            const emailExists = await checkUserEmail(data.email);
+            if (emailExists) {
+                resolve({
+                    errCode: 1,
+                    errMessage: 'Email đã tồn tại trong hệ thống. Vui lòng sử dụng một email khác.',
+                });
+            }
+            let hashPasswordFromBcrypt = await hashUserPassword(data.password);
+            await db.User.create({
+                email: data.email,
+                password: hashPasswordFromBcrypt,
+                name: data.name,
+                phone: data.phone,
+                birthday: data.birthday,
+                avatar: data.avatar,
+                address: data.address,
+                description: data.description,
+                roleId: '3',
+                isActive: 1,
+            });
+            // console.log(data);
+            resolve({
+                errCode: 0,
+                errMessage: 'OK',
+            });
+        } catch (error) {
+            reject(error);
+        }
+    });
+};
 module.exports = {
     createDoctor: createDoctor,
     getInfoDoctors: getInfoDoctors,
@@ -444,4 +493,6 @@ module.exports = {
     getAllUsers: getAllUsers,
     getAllCodeService: getAllCodeService,
     updateUser: updateUser,
+    updateUserDataFile: updateUserDataFile,
+    createNewUser: createNewUser,
 };
