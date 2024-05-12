@@ -557,6 +557,82 @@ let postCreatePatient = async (req, res) => {
         return res.status(500).json({ error: err });
     }
 };
+let getEditPatient = async (req, res) => {
+    let patient = await doctorService.getPatientForEditPage(req.params.id);
+    let specializations = await homeService.getSpecializations();
+    return res.render('main/users/admins/editCustomer.ejs', {
+        user: req.user,
+        doctor: patient,
+        specializations: specializations,
+    });
+};
+let postEditPatient = async (req, res) => {
+    let data = {
+        id: req.body.idDoctor,
+        name: req.body.nameDoctor,
+        phone: req.body.phoneDoctor,
+        gender: req.body.gender,
+        address: req.body.addressDoctor,
+        description: req.body.introEditDoctor,
+    };
+    let patient = await doctorService.getPatientForEditPage(req.params.id);
+    let specializations = await homeService.getSpecializations();
+    let mess = await userService.updateProfile(data);
+    if (mess.errCode === 0) {
+        return res.redirect('/users/manage/customer');
+    } else {
+        return res.render('main/users/admins/editCustomer.ejs', {
+            user: req.user,
+            doctor: patient,
+            specializations: specializations,
+        });
+    }
+};
+let getEditSpecialization = async (req, res) => {
+    let specialty = await doctorService.getSpecializationById(req.params.id);
+    let specializations = await homeService.getSpecializations();
+
+    return res.render('main/users/admins/editSpecialization.ejs', {
+        user: req.user,
+        specialty: specialty,
+        specializations: specializations,
+    });
+};
+let postEditSpecialization = async (req, res) => {
+    let data = {
+        id: req.body.id,
+        name: req.body.name,
+        description: req.body.description,
+    };
+    let message = await specializationService.updateSpecializationById(data);
+    if (message.errCode === 0) {
+        return res.redirect('/users/manage/specialization');
+    } else {
+        return res.render('main/users/admins/editSpecialization.ejs', {
+            user: req.user,
+            specialty: specialty,
+            specializations: specializations,
+        });
+    }
+};
+let getCreateSpecializationPage = async (req, res) => {
+    return res.render('main/users/admins/createSpecialization.ejs', {
+        user: req.user,
+    });
+};
+let postCreateSpecialization = async (req, res) => {
+    let data = {
+        name: req.body.name,
+        description: req.body.description,
+        image: 'https://firebasestorage.googleapis.com/v0/b/pbl5-a1f37.appspot.com/o/images%2FavatarSpecialties%2F161905-iconkham-chuyen-khoa.png?alt=media&token=361652f1-f901-409d-9fdf-ca9bf2d50128',
+    };
+    let mess = await specializationService.createSpecialization(data);
+    if (mess.errCode === 0) {
+        return res.redirect('/users/manage/specialization');
+    } else {
+        res.redirect('/users/manage/specialization/create');
+    }
+};
 module.exports = {
     getManageDoctor: getManageDoctor,
     getCreateDoctor: getCreateDoctor,
@@ -590,4 +666,11 @@ module.exports = {
 
     getCreatePatient: getCreatePatient,
     postCreatePatient: postCreatePatient,
+    getEditPatient: getEditPatient,
+    postEditPatient: postEditPatient,
+
+    getEditSpecialization: getEditSpecialization,
+    postEditSpecialization: postEditSpecialization,
+    getCreateSpecializationPage: getCreateSpecializationPage,
+    postCreateSpecialization: postCreateSpecialization,
 };

@@ -104,10 +104,17 @@ let initRoutes = (app) => {
     router.get('/posts/search/', home.getPostSearch);
 
     router.get('/users/manage/specialization', auth.checkLoggedIn, admin.getSpecializationPage);
+    router.get('/users/specialization/edit/:id', auth.checkLoggedIn, admin.getEditSpecialization);
+    router.post('/users/specialization/edit/:id', auth.checkLoggedIn, admin.postEditSpecialization);
+    router.get('/users/manage/specialization/create', auth.checkLoggedIn, admin.getCreateSpecializationPage);
+    router.post('/users/manage/specialization/create', auth.checkLoggedIn, admin.postCreateSpecialization);
+
     router.get('/users/manage/customer', auth.checkLoggedIn, admin.getCustomerPage);
     router.get('/users', auth.checkLoggedIn, home.getUserPage);
     router.get('/users/manage/customer/create', auth.checkLoggedIn, admin.getCreatePatient);
     router.post('/users/manage/customer/create', auth.checkLoggedIn, admin.postCreatePatient);
+    router.get('/users/customer/edit/:id', auth.checkLoggedIn, admin.getEditPatient);
+    router.post('/users/customer/edit/:id', auth.checkLoggedIn, admin.postEditPatient);
 
     router.get('/users/manage/bot', auth.checkLoggedIn, admin.getManageBotPage);
     router.get('/users/manage/schedule-for-doctors', auth.checkLoggedIn, admin.getManageCreateScheduleForDoctorsPage);

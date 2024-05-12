@@ -6,6 +6,8 @@ import moment from 'moment';
 import patientService from './patientService';
 import mailer from '../config/mailer';
 import { transMailRemedy } from '../../lang/en';
+import { resolve } from 'path';
+import { reject } from 'bluebird';
 
 var Minizip = require('minizip-asm.js');
 var fs = require('fs');
@@ -290,6 +292,19 @@ let getDoctorForEditPage = (id) => {
         }
     });
 };
+let getPatientForEditPage = (id) => {
+    return new Promise(async (resolve, reject) => {
+        try {
+            let patient = await db.User.findOne({
+                where: { id: id },
+                raw: true,
+            });
+            resolve(patient);
+        } catch (error) {
+            reject(error);
+        }
+    });
+};
 
 let updateDoctorInfo = (data) => {
     return new Promise(async (resolve, reject) => {
@@ -502,4 +517,6 @@ module.exports = {
     getPlacesForDoctor: getPlacesForDoctor,
     sendFormsForPatient: sendFormsForPatient,
     createFeedback: createFeedback,
+    getPatientForEditPage: getPatientForEditPage,
+    getSpecializationById: getSpecializationById,
 };

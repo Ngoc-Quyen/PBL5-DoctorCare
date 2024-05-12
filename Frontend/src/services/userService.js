@@ -431,6 +431,47 @@ let updateUserDataFile = async (data, filePath) => {
         }
     });
 };
+let updateProfile = async (data) => {
+    return new Promise(async (resolve, reject) => {
+        try {
+            if (!data.id) {
+                resolve({
+                    errCode: 2,
+                    errMessage: 'Missing required Parameter!',
+                });
+            }
+            let user = await db.User.findOne({
+                where: { id: data.id },
+                raw: false,
+            });
+            if (!user) {
+                resolve({
+                    errCode: 1,
+                    errMessage: `user's not found!`,
+                });
+            } else {
+                user.name = data.name;
+                user.description = data.description;
+                user.address = data.address;
+                user.phone = data.phone;
+                user.gender = data.gender;
+                // Nếu có file ảnh được upload, gửi ảnh lên Firebase và lấy URL
+                let url = data.avatar;
+                if (url) {
+                    user.avatar = url;
+                }
+                await user.save();
+                resolve({
+                    errCode: 0,
+                    errMessage: 'Update the user success!',
+                    user,
+                });
+            }
+        } catch (error) {
+            reject(error);
+        }
+    });
+};
 let checkUserEmail = (userEmail) => {
     return new Promise(async (resolve, reject) => {
         try {
@@ -495,4 +536,5 @@ module.exports = {
     updateUser: updateUser,
     updateUserDataFile: updateUserDataFile,
     createNewUser: createNewUser,
+    updateProfile: updateProfile,
 };
