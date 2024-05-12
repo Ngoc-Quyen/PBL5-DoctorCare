@@ -23,7 +23,7 @@ let handleCreateSpecialty = async (req, res) => {
 };
 let handleEditSpecialty = async (req, res) => {
     let data = req.body;
-    const file = req.file; // Lấy thông tin về file ảnh từ request
+    let file = req.file; // Lấy thông tin về file ảnh từ request
     let message = await specialtyService.updateSpecialtyData(data, file);
     return res.status(200).json(message);
 };

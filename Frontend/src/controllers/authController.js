@@ -1,60 +1,39 @@
-import { validationResult } from "express-validator";
-import auth from "../services/authService";
-import user from "../services/userService";
-
+import { validationResult } from 'express-validator';
+import auth from '../services/authService';
+import user from '../services/userService';
 
 let getLogin = (req, res) => {
-    return res.render("auth/login.ejs", {
-        error: req.flash("error"),
+    return res.render('auth/login.ejs', {
+        error: req.flash('error'),
     });
 };
 
 let getRegister = (req, res) => {
-    return res.render("auth/register.ejs");
+    return res.render('auth/register.ejs');
 };
 
 let postRegister = async (req, res) => {
-    let hasErrors = validationResult(req).array({
-        onlyFirstError: true
-    });
-    if (!hasErrors.length) {
-        try {
-
-            // await authService.register(req.body.name, req.body.rg_email, req.body.rg_password, req.protocol, req.get("host")).then(async (user) => {
-            console.log(user);
-            // res.redirect('login');
-            // let linkVerify = `${req.protocol}://${req.get("host")}/verify/${user.local.verifyToken}`;
-            // await authService.register({user}, linkVerify)
-            // .then((message) => {
-            //     req.flash("success", message);
-            //     res.redirect('/login');
-            // })
-            // .catch((err) => {
-            //     console.log(err);
-            // });
-            // }).catch((err) => {
-            //     console.log(err);
-            // });
-        } catch (err) {
-            req.flash("errors", err);
-            res.render('/register', {
-                oldData: req.body
-            });
+    let customer = {
+        name: req.body.name,
+        phone: req.body.phone,
+        email: req.body.email,
+        password: req.body.password,
+        gender: req.body.gender,
+        address: req.body.address,
+        avatar: 'https://firebasestorage.googleapis.com/v0/b/pbl5-a1f37.appspot.com/o/images%2FavatarUsers%2FavatarPatient%2Favatar-default.png?alt=media&token=f8cd9a9f-d234-4b99-b742-77cf25ca86dd',
+        description: req.body.description,
+    };
+    try {
+        let mess = await user.createNewUser(customer);
+        console.log(mess.errMessage);
+        if (mess.errCode === 0) {
+            return res.redirect('/login');
+        } else {
+            return res.redirect('/register');
         }
-    } else {
-        let errEmail = '', errPassword = '', errPasswordConfirm = '';
-        hasErrors.forEach((err) => {
-            if (err.param === 'rg_email') errEmail = err.msg;
-            if (err.param === 'rg_password') errPassword = err.msg;
-            if (err.param === 'rg_password_again') errPasswordConfirm = err.msg;
-        });
-        res.render("auth/register", {
-            errEmail: errEmail,
-            errPassword: errPassword,
-            errPasswordConfirm: errPasswordConfirm,
-            hasErrors: hasErrors,
-            oldData: req.body
-        })
+    } catch (err) {
+        console.log(err);
+        return res.status(500).json({ error: err });
     }
 };
 
@@ -64,33 +43,30 @@ let verifyAccount = async (req, res) => {
     try {
         let verifySuccess = await auth.verifyAccount(req.params.token);
         successArr.push(verifySuccess);
-        req.flash("success", successArr);
-        return res.redirect("/login");
-
+        req.flash('success', successArr);
+        return res.redirect('/login');
     } catch (error) {
         console.log(error);
     }
 };
 
 let getLogout = (req, res) => {
-    req.session.destroy(function(err) {
+    req.session.destroy(function (err) {
         console.log(err);
-        return res.redirect("/login");
+        return res.redirect('/login');
     });
-
 };
 
 let checkLoggedIn = (req, res, next) => {
     if (!req.isAuthenticated()) {
-        return res.redirect("/login");
+        return res.redirect('/login');
     }
     next();
 };
 
-
 let checkLoggedOut = (req, res, next) => {
     if (req.isAuthenticated()) {
-        return res.redirect("/users");
+        return res.redirect('/users');
     }
     next();
 };
@@ -136,6 +112,22 @@ let postNewPassword = async (req, res) => {
         return res.redirect('/reset-password');
     }
 };
+let handleEditSpecialty = async (req, res) => {
+    let data = req.body;
+    const filePath = req.file; // Đường dẫn tạm thời của tệp tải lên
+    // console.log('data from authController: ', data);
+    // console.log('req.file: ', filePath);
+    let message = await user.updateUserDataFile(data, filePath);
+    if (message.errCode === 0) {
+        console.log('message: ', message.errMessage);
+        return res.redirect('/users');
+        // Hiển thị thông báo cập nhật thành công
+    } else {
+        console.log('message: ', message.errMessage);
+        return res.redirect('/users');
+        // Hien thi thong bao chưa cập nhật được
+    }
+};
 module.exports = {
     getLogin: getLogin,
     getRegister: getRegister,
@@ -147,5 +139,5 @@ module.exports = {
     getAllCode: getAllCode,
     getResetPasswordPage: getResetPasswordPage,
     postNewPassword: postNewPassword,
-    checkLoggedOut: checkLoggedOut
+    handleEditSpecialty: handleEditSpecialty,
 };
