@@ -1,25 +1,23 @@
-import { validationResult } from "express-validator";
-import auth from "../services/authService";
-import user from "../services/userService";
-
+import { validationResult } from 'express-validator';
+import auth from '../services/authService';
+import user from '../services/userService';
 
 let getLogin = (req, res) => {
-    return res.render("auth/login.ejs", {
-        error: req.flash("error"),
+    return res.render('auth/login.ejs', {
+        error: req.flash('error'),
     });
 };
 
 let getRegister = (req, res) => {
-    return res.render("auth/register.ejs");
+    return res.render('auth/register.ejs');
 };
 
 let postRegister = async (req, res) => {
     let hasErrors = validationResult(req).array({
-        onlyFirstError: true
+        onlyFirstError: true,
     });
     if (!hasErrors.length) {
         try {
-
             // await authService.register(req.body.name, req.body.rg_email, req.body.rg_password, req.protocol, req.get("host")).then(async (user) => {
             console.log(user);
             // res.redirect('login');
@@ -36,25 +34,27 @@ let postRegister = async (req, res) => {
             //     console.log(err);
             // });
         } catch (err) {
-            req.flash("errors", err);
+            req.flash('errors', err);
             res.render('/register', {
-                oldData: req.body
+                oldData: req.body,
             });
         }
     } else {
-        let errEmail = '', errPassword = '', errPasswordConfirm = '';
+        let errEmail = '',
+            errPassword = '',
+            errPasswordConfirm = '';
         hasErrors.forEach((err) => {
             if (err.param === 'rg_email') errEmail = err.msg;
             if (err.param === 'rg_password') errPassword = err.msg;
             if (err.param === 'rg_password_again') errPasswordConfirm = err.msg;
         });
-        res.render("auth/register", {
+        res.render('auth/register', {
             errEmail: errEmail,
             errPassword: errPassword,
             errPasswordConfirm: errPasswordConfirm,
             hasErrors: hasErrors,
-            oldData: req.body
-        })
+            oldData: req.body,
+        });
     }
 };
 
@@ -64,33 +64,30 @@ let verifyAccount = async (req, res) => {
     try {
         let verifySuccess = await auth.verifyAccount(req.params.token);
         successArr.push(verifySuccess);
-        req.flash("success", successArr);
-        return res.redirect("/login");
-
+        req.flash('success', successArr);
+        return res.redirect('/login');
     } catch (error) {
         console.log(error);
     }
 };
 
 let getLogout = (req, res) => {
-    req.session.destroy(function(err) {
+    req.session.destroy(function (err) {
         console.log(err);
-        return res.redirect("/login");
+        return res.redirect('/login');
     });
-
 };
 
 let checkLoggedIn = (req, res, next) => {
     if (!req.isAuthenticated()) {
-        return res.redirect("/login");
+        return res.redirect('/login');
     }
     next();
 };
 
-
 let checkLoggedOut = (req, res, next) => {
     if (req.isAuthenticated()) {
-        return res.redirect("/users");
+        return res.redirect('/users');
     }
     next();
 };
@@ -163,9 +160,5 @@ module.exports = {
     getAllCode: getAllCode,
     getResetPasswordPage: getResetPasswordPage,
     postNewPassword: postNewPassword,
-<<<<<<< HEAD
     handleEditSpecialty: handleEditSpecialty,
-=======
-    checkLoggedOut: checkLoggedOut
->>>>>>> 4b1a10c67f7aef146bd0d7bf9e6085d0bf35f948
 };

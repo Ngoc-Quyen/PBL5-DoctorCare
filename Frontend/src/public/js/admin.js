@@ -60,8 +60,6 @@ function createNewPost(markdown, converter) {
         });
     });
 }
-<<<<<<< HEAD
-
 function deleteClinicById() {
     $('.delete-specific-clinic').bind('click', function (e) {
         e.preventDefault();
@@ -248,8 +246,6 @@ function showModalInfoClinic() {
     });
 }
 
-=======
->>>>>>> 4b1a10c67f7aef146bd0d7bf9e6085d0bf35f948
 function showModalSettingUser() {
     $('.user-setting').on('click', function (e) {
         e.preventDefault();
@@ -347,7 +343,7 @@ function showModalInfoDoctor() {
 }
 
 function showModalInfoCustomer() {
-    $('.show-customer-info').on('click', function(e) {
+    $('.show-customer-info').on('click', function (e) {
         e.preventDefault();
         let id = $(this).data('customer-id');
 
@@ -355,7 +351,7 @@ function showModalInfoCustomer() {
             method: 'POST',
             url: `${window.location.origin}/api/get-info-customer-by-id`,
             data: { id: id },
-            success: function(data) {
+            success: function (data) {
                 $('#imageCustomer').empty();
 
                 $('#nameUser').val(data.user.name);
@@ -369,22 +365,23 @@ function showModalInfoCustomer() {
                 } else {
                     $('#addressCustomer').val('Chưa cập nhật');
                 }
-                
+
                 if (data.user.avatar) {
-                    $('#imageCustomer').prepend(`<img class="img-info-clinic" src="/images/users/${data.customer.avatar}" />`)
+                    $('#imageCustomer').prepend(
+                        `<img class="img-info-clinic" src="/images/users/${data.customer.avatar}" />`
+                    );
                 } else {
-                    $('#imageCustomer').text('Chưa cập nhật')
+                    $('#imageCustomer').text('Chưa cập nhật');
                 }
 
                 $('#modalInfoCustomer').modal('show');
             },
-            error: function(error) {
+            error: function (error) {
                 alertify.error('Đã xảy ra lỗi, vui lòng thử lại sau!');
                 console.log(error);
-            }
+            },
         });
     });
-
 }
 function updateDoctor() {
     $('#btnUpdateDoctor').on('click', function (e) {
@@ -691,7 +688,7 @@ function loadNewPatientsForAdmin() {
             let countPending = data.object.pendingPatients.length;
             let countConfirmed = data.object.confirmedPatients.length;
             let countCanceled = data.object.canceledPatients.length;
-            console.log("0");
+            console.log('0');
             console.log(countPending);
             console.log(countConfirmed);
             console.log(countCanceled);
@@ -1326,14 +1323,12 @@ $(document).ready(function (e) {
     //     $(this).removeData();
     // });
 
-<<<<<<< HEAD
     let markdownIntroClinic = new SimpleMDE({
         element: document.getElementById('intro-clinic'),
         placeholder: 'Nội dung giới thiệu...',
         spellChecker: false,
     });
-=======
->>>>>>> 4b1a10c67f7aef146bd0d7bf9e6085d0bf35f948
+
     let markdownPost = new SimpleMDE({
         element: document.getElementById('contentMarkdown'),
         placeholder: 'Nội dung bài đăng...',

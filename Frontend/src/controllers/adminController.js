@@ -1,13 +1,13 @@
 require('dotenv').config();
-import postService from "../services/postService";
-import patientService from "../services/patientService";
-import homeService from "./../services/homeService";
-import userService from "./../services/userService";
-import specializationService from "./../services/specializationService";
-import customerService from "../services/customerService";
-import doctorService from "./../services/doctorService";
-import chatFBServie from "./../services/chatFBService";
-import multer from "multer";
+import postService from '../services/postService';
+import patientService from '../services/patientService';
+import homeService from './../services/homeService';
+import userService from './../services/userService';
+import specializationService from './../services/specializationService';
+import customerService from '../services/customerService';
+import doctorService from './../services/doctorService';
+import chatFBServie from './../services/chatFBService';
+import multer from 'multer';
 
 const statusNewId = 4;
 const statusPendingId = 3;
@@ -16,41 +16,39 @@ const statusSuccessId = 1;
 
 let getManageDoctor = async (req, res) => {
     let doctors = await userService.getInfoDoctors();
-    return res.render("main/users/admins/manageDoctor.ejs", {
+    return res.render('main/users/admins/manageDoctor.ejs', {
         user: req.user,
         doctors: doctors,
     });
 };
 let getManageUser = async (req, res) => {};
 
-
 let getCreateDoctor = async (req, res) => {
     let specializations = await homeService.getSpecializations();
-    return res.render("main/users/admins/createDoctor.ejs", {
+    return res.render('main/users/admins/createDoctor.ejs', {
         user: req.user,
-        specializations: specializations
+        specializations: specializations,
     });
 };
 let postCreateDoctor = async (req, res) => {
     let doctor = {
-        'name': req.body.name,
-        'phone': req.body.phone,
-        'email': req.body.email,
-        'password': req.body.password,
-        'specializationId': req.body.specialization,
-        'address': req.body.address,
-        'avatar': 'doctor.jpg',
-        'description': req.body.description
+        name: req.body.name,
+        phone: req.body.phone,
+        email: req.body.email,
+        password: req.body.password,
+        specializationId: req.body.specialization,
+        address: req.body.address,
+        avatar: 'doctor.jpg',
+        description: req.body.description,
     };
     try {
         await userService.createDoctor(doctor);
-        return res.status(200).json({ message: 'success' })
+        return res.status(200).json({ message: 'success' });
     } catch (err) {
         console.log(err);
-        return res.status(500).json({ error: err })
+        return res.status(500).json({ error: err });
     }
 };
-<<<<<<< HEAD
 let getCreatePatient = async (req, res) => {
     let specializations = await homeService.getSpecializations();
     return res.render('main/users/admins/createPatient.ejs', {
@@ -182,14 +180,12 @@ let putUpdateClinic = (req, res) => {
         }
     });
 };
-=======
->>>>>>> 4b1a10c67f7aef146bd0d7bf9e6085d0bf35f948
 
 let getSpecializationPage = async (req, res) => {
     let specializations = await specializationService.getAllSpecializations();
-    return res.render("main/users/admins/manageSpecialization.ejs", {
+    return res.render('main/users/admins/manageSpecialization.ejs', {
         user: req.user,
-        specializations: specializations
+        specializations: specializations,
     });
 };
 
@@ -197,9 +193,8 @@ let deleteDoctorById = async (req, res) => {
     try {
         let doctor = await doctorService.deleteDoctorById(req.body.id);
         return res.status(200).json({
-            'message': 'success'
-        })
-
+            message: 'success',
+        });
     } catch (e) {
         console.log(e);
         return res.status(500).json(e);
@@ -209,11 +204,11 @@ let deleteDoctorById = async (req, res) => {
 let getEditDoctor = async (req, res) => {
     let doctor = await doctorService.getDoctorForEditPage(req.params.id);
     let specializations = await homeService.getSpecializations();
-    return res.render("main/users/admins/editDoctor.ejs", {
+    return res.render('main/users/admins/editDoctor.ejs', {
         user: req.user,
         doctor: doctor,
-        specializations: specializations
-    })
+        specializations: specializations,
+    });
 };
 
 let putUpdateDoctorWithoutFile = async (req, res) => {
@@ -224,14 +219,14 @@ let putUpdateDoctorWithoutFile = async (req, res) => {
             phone: req.body.phoneDoctor,
             address: req.body.addressDoctor,
             description: req.body.introEditDoctor,
-            specializationId: req.body.specializationDoctor
+            specializationId: req.body.specializationDoctor,
         };
         await doctorService.updateDoctorInfo(item);
         return res.status(200).json({
-            message: 'update info doctor successful'
+            message: 'update info doctor successful',
         });
     } catch (e) {
-        console.log(e)
+        console.log(e);
         return res.status(500).json(e);
     }
 };
@@ -253,16 +248,15 @@ let putUpdateDoctor = (req, res) => {
                 phone: req.body.phoneDoctor,
                 address: req.body.addressDoctor,
                 description: req.body.introEditDoctor,
-                specializationId: req.body.specializationDoctor
+                specializationId: req.body.specializationDoctor,
             };
             let imageDoctor = req.file;
             item.avatar = imageDoctor.filename;
             let doctor = await doctorService.updateDoctorInfo(item);
             return res.status(200).json({
                 message: 'update doctor info successful',
-                doctor: doctor
+                doctor: doctor,
             });
-
         } catch (e) {
             return res.status(500).send(e);
         }
@@ -271,44 +265,42 @@ let putUpdateDoctor = (req, res) => {
 
 let storageImageDoctor = multer.diskStorage({
     destination: (req, file, callback) => {
-        callback(null, "src/public/images/users");
+        callback(null, 'src/public/images/users');
     },
     filename: (req, file, callback) => {
         let imageName = `${Date.now()}-${file.originalname}`;
         callback(null, imageName);
-    }
+    },
 });
 
 let imageDoctorUploadFile = multer({
     storage: storageImageDoctor,
-    limits: { fileSize: 1048576 * 20 }
-}).single("avatar");
+    limits: { fileSize: 1048576 * 20 },
+}).single('avatar');
 
 let getCustomerPage = async (req, res) => {
     let customers = await customerService.getAllcustomers();
-    return res.render("main/users/admins/manageCustomer.ejs", {
+    return res.render('main/users/admins/manageCustomer.ejs', {
         user: req.user,
-        customers: customers
-    })
+        customers: customers,
+    });
 };
 
 let deleteSpecializationById = async (req, res) => {
     try {
         await specializationService.deleteSpecializationById(req.body.id);
         return res.status(200).json({
-            message: 'delete specialization successful'
+            message: 'delete specialization successful',
         });
-
     } catch (e) {
         console.log(e);
         return res.status(500).json(e);
     }
-
 };
 
 let getManageBotPage = async (req, res) => {
     try {
-        return res.send("Hello word. You'll need a witAI account. More info: please comment on my youtube channel.")
+        return res.send("Hello word. You'll need a witAI account. More info: please comment on my youtube channel.");
         // let entities = await chatFBServie.getWitEntitiesWithExpression();
         // let entityName = await chatFBServie.getWitEntities();
         // return res.render('main/users/admins/manageBot.ejs', {
@@ -319,15 +311,14 @@ let getManageBotPage = async (req, res) => {
     } catch (e) {
         console.log(e);
     }
-
 };
 
 let deletePostById = async (req, res) => {
     try {
         await postService.deletePostById(req.body.id);
         return res.status(200).json({
-            message: 'delete post successful'
-        })
+            message: 'delete post successful',
+        });
     } catch (e) {
         console.log(e);
         return res.status(500).json(e);
@@ -343,9 +334,8 @@ let getEditPost = async (req, res) => {
             doctors: doctors,
             specializations: specializations,
             user: req.user,
-            post: post
+            post: post,
         });
-
     } catch (e) {
         console.log(e);
     }
@@ -361,13 +351,13 @@ let putUpdatePost = async (req, res) => {
             writerId: req.user.id,
             contentMarkdown: req.body.contentMarkdown,
             contentHTML: req.body.contentHTML,
-            updatedAt: Date.now()
+            updatedAt: Date.now(),
         };
 
         await postService.putUpdatePost(data);
         return res.status(200).json({
-            message: 'update post successful'
-        })
+            message: 'update post successful',
+        });
     } catch (e) {
         console.log(e);
         return res.status(500).json(e);
@@ -378,23 +368,22 @@ let getManageCreateScheduleForDoctorsPage = async (req, res) => {
     try {
         return res.render('main/users/admins/manageScheduleForDoctors.ejs', {
             user: req.user,
-        })
+        });
     } catch (e) {
         console.log(e);
     }
-
 };
 let getNewPatients = (req, res) => {
     //render data = js/ getForPatientsTabs
     return res.render('main/users/admins/manageBooking.ejs', {
-        user: req.user
-    })
+        user: req.user,
+    });
 };
 
 let getAllPosts = async (req, res) => {
     try {
         let posts = await postService.getAllPosts();
-        return res.status(200).json({ "data": posts })
+        return res.status(200).json({ data: posts });
     } catch (e) {
         return res.status(500).json(e);
     }
@@ -406,7 +395,7 @@ let getCreatePost = async (req, res) => {
     return res.render('main/users/admins/createPost.ejs', {
         user: req.user,
         doctors: doctors,
-        specializations: specializations
+        specializations: specializations,
     });
 };
 
@@ -418,8 +407,8 @@ let postCreatePost = async (req, res) => {
         let post = await postService.postCreatePost(item);
         return res.status(200).json({
             status: 1,
-            message: post
-        })
+            message: post,
+        });
     } catch (e) {
         return res.status(500).json(e);
     }
@@ -427,16 +416,16 @@ let postCreatePost = async (req, res) => {
 
 let getManagePosts = async (req, res) => {
     try {
-        let role = "";
-        if(req.user){
-            if(req.user.roleId === 1) role = "admin";
+        let role = '';
+        if (req.user) {
+            if (req.user.roleId === 1) role = 'admin';
         }
         let object = await postService.getPostsPagination(1, +process.env.LIMIT_GET_POST, role);
         return res.render('main/users/admins/managePost.ejs', {
             user: req.user,
             posts: object.posts,
-            total: object.total
-        })
+            total: object.total,
+        });
     } catch (e) {
         console.log(e);
         return res.status(500).json(e);
@@ -462,8 +451,8 @@ let getForPatientsTabs = async (req, res) => {
     try {
         let object = await patientService.getForPatientsTabs();
         return res.status(200).json({
-            'message': 'success',
-            'object': object
+            message: 'success',
+            object: object,
         });
     } catch (e) {
         console.log(e);
@@ -479,37 +468,34 @@ let postChangeStatusPatient = async (req, res) => {
         let content = '';
         if (status === 'pending') {
             statusId = statusPendingId;
-            content = "New appointments have been received";
+            content = 'New appointments have been received';
         } else if (status === 'failed') {
             statusId = statusFailedId;
             if (req.body.reason) {
                 content = `Cancel with reason - ${req.body.reason}`;
             }
-
         } else if (status === 'confirmed') {
             statusId = statusSuccessId;
-            content = "The appointment has been successfully booked";
+            content = 'The appointment has been successfully booked';
         }
-
 
         let data = {
             id: id,
             statusId: statusId,
-            updatedAt: Date.now()
+            updatedAt: Date.now(),
         };
 
         let logs = {
             adminId: req.user.id,
             patientId: id,
-            content: content
+            content: content,
         };
 
         let patient = await patientService.changeStatusPatient(data, logs);
         return res.status(200).json({
-            'message': 'success',
-            'patient': patient
-        })
-
+            message: 'success',
+            patient: patient,
+        });
     } catch (e) {
         console.log(e);
         return res.status(500).json(e);
@@ -574,10 +560,6 @@ module.exports = {
     getForPatientsTabs: getForPatientsTabs,
     postChangeStatusPatient: postChangeStatusPatient,
     getLogsPatient: getLogsPatient,
-<<<<<<< HEAD
     postDoneComment: postDoneComment,
     getCreatePatient: getCreatePatient,
-=======
-    postDoneComment: postDoneComment
->>>>>>> 4b1a10c67f7aef146bd0d7bf9e6085d0bf35f948
 };

@@ -1,18 +1,10 @@
-<<<<<<< HEAD
 import bcrypt from 'bcryptjs';
 import db from './../models';
 import helper from '../helper/client';
 import elastic from './../config/elastic';
 import _, { includes } from 'lodash';
 import imgLoadFirebase from '../services/imgLoadFirebase';
-=======
-import bcrypt from "bcryptjs";
-import db from "./../models";
-import helper from "../helper/client";
-import elastic from "./../config/elastic";
-import _ from "lodash";
 
->>>>>>> 4b1a10c67f7aef146bd0d7bf9e6085d0bf35f948
 const Sequelize = require('sequelize');
 const Op = Sequelize.Op;
 
@@ -24,48 +16,49 @@ let salt = 7;
 let createDoctor = (doctor) => {
     doctor.roleId = 2;
     doctor.password = bcrypt.hashSync(doctor.password, salt);
-    return new Promise((async (resolve, reject) => {
+    return new Promise(async (resolve, reject) => {
         let newDoctor = await db.User.create(doctor);
         let item = {
             doctorId: newDoctor.id,
-            specializationId: doctor.specializationId
+            specializationId: doctor.specializationId,
         };
         await db.Doctor_User.create(item);
 
         //create doctor elastic
 
-        resolve(newDoctor)
-    }));
+        resolve(newDoctor);
+    });
 };
 
 let getInfoDoctors = () => {
-    return new Promise((async (resolve, reject) => {
+    return new Promise(async (resolve, reject) => {
         try {
             let doctors = await db.User.findAll({
                 where: { roleId: 2 },
                 include: [
                     { model: db.Doctor_User, required: false },
-                    { model: db.Patient, required: false, where: { statusId: 1 } }
-                ]
+                    { model: db.Patient, required: false, where: { statusId: 1 } },
+                ],
             });
-            await Promise.all(doctors.map(async (doctor) => {
-                if (doctor.Doctor_User) {
-                    let specialization = await helper.getSpecializationById(doctor.Doctor_User.specializationId);
-                    let countBooking = doctor.Patients.length;
-                    doctor.setDataValue('specializationName', specialization.name);
-                    doctor.setDataValue('countBooking', countBooking);
-                } else {
-                    doctor.setDataValue('specializationName', "null");
-                    doctor.setDataValue('countBooking', 0);
-                }
-                return doctor;
-            }));
+            await Promise.all(
+                doctors.map(async (doctor) => {
+                    if (doctor.Doctor_User) {
+                        let specialization = await helper.getSpecializationById(doctor.Doctor_User.specializationId);
+                        let countBooking = doctor.Patients.length;
+                        doctor.setDataValue('specializationName', specialization.name);
+                        doctor.setDataValue('countBooking', countBooking);
+                    } else {
+                        doctor.setDataValue('specializationName', 'null');
+                        doctor.setDataValue('countBooking', 0);
+                    }
+                    return doctor;
+                })
+            );
             resolve(doctors);
         } catch (e) {
             reject(e);
         }
-
-    }));
+    });
 };
 let getInforPatients = () => {
     return new Promise(async (resolve, reject) => {
@@ -107,7 +100,7 @@ let findUserById = (id) => {
         try {
             let user = await db.User.findOne({
                 where: { id: id },
-                attributes: [ 'id', 'name', 'avatar', 'roleId', 'isActive' ]
+                attributes: ['id', 'name', 'avatar', 'roleId', 'isActive'],
             });
             resolve(user);
         } catch (e) {
@@ -120,79 +113,77 @@ function stringToDate(_date, _format, _delimiter) {
     let formatLowerCase = _format.toLowerCase();
     let formatItems = formatLowerCase.split(_delimiter);
     let dateItems = _date.split(_delimiter);
-    let monthIndex = formatItems.indexOf("mm");
-    let dayIndex = formatItems.indexOf("dd");
-    let yearIndex = formatItems.indexOf("yyyy");
+    let monthIndex = formatItems.indexOf('mm');
+    let dayIndex = formatItems.indexOf('dd');
+    let yearIndex = formatItems.indexOf('yyyy');
     let month = parseInt(dateItems[monthIndex]);
     month -= 1;
     return new Date(dateItems[yearIndex], month, dateItems[dayIndex]);
-
 }
 
 let getInfoStatistical = (month) => {
     return new Promise(async (resolve, reject) => {
         try {
-            let startDate = Date.parse(stringToDate(`01/${month}/2020`, "dd/MM/yyyy", "/"));
-            let endDate = Date.parse(stringToDate(`31/${month}/2020`, "dd/MM/yyyy", "/"));
+            let startDate = Date.parse(stringToDate(`01/${month}/2020`, 'dd/MM/yyyy', '/'));
+            let endDate = Date.parse(stringToDate(`31/${month}/2020`, 'dd/MM/yyyy', '/'));
 
             let patients = await db.Patient.findAndCountAll({
-                attributes: [ 'id','doctorId' ],
+                attributes: ['id', 'doctorId'],
                 where: {
                     createdAt: {
-                        [Op.between]: [ startDate, endDate ],
+                        [Op.between]: [startDate, endDate],
                     },
-                }
+                },
             });
 
             let doctors = await db.User.findAndCountAll({
-                attributes: [ 'id' ],
+                attributes: ['id'],
                 where: {
                     roleId: 2,
                     createdAt: {
-                        [Op.between]: [ startDate, endDate ],
-                    }
-                }
+                        [Op.between]: [startDate, endDate],
+                    },
+                },
             });
 
             let posts = await db.Post.findAndCountAll({
-                attributes: [ 'id','writerId' ],
+                attributes: ['id', 'writerId'],
                 where: {
                     forSpecializationId: -1,
                     forDoctorId: -1,
                     createdAt: {
-                        [Op.between]: [ startDate, endDate ],
-                    }
-                }
+                        [Op.between]: [startDate, endDate],
+                    },
+                },
             });
 
             let bestDoctor = '';
 
-            if(+patients.count > 0){
+            if (+patients.count > 0) {
                 let bestDoctorIdArr = _(patients.rows)
-                .groupBy('doctorId')
-                .map((v, doctorId) => ({
-                    doctorId,
-                    patientId: _.map(v, 'id')
-                }))
-                .value();
-                let doctorObject = _.maxBy(bestDoctorIdArr, function(o) {
+                    .groupBy('doctorId')
+                    .map((v, doctorId) => ({
+                        doctorId,
+                        patientId: _.map(v, 'id'),
+                    }))
+                    .value();
+                let doctorObject = _.maxBy(bestDoctorIdArr, function (o) {
                     return o.patientId.length;
                 });
-                 bestDoctor = await db.User.findOne({
+                bestDoctor = await db.User.findOne({
                     where: {
-                        id: doctorObject.doctorId
+                        id: doctorObject.doctorId,
                     },
-                    attributes: ['id', 'name']
+                    attributes: ['id', 'name'],
                 });
-                bestDoctor.setDataValue("count", doctorObject.patientId.length);
+                bestDoctor.setDataValue('count', doctorObject.patientId.length);
             }
-
 
             resolve({
                 patients: patients,
                 doctors: doctors,
                 posts: posts,
-                bestDoctor: bestDoctor
+                bestDoctor: bestDoctor,
             });
         } catch (e) {
             reject(e);
@@ -202,19 +193,19 @@ let getInfoStatistical = (month) => {
 
 let getInfoDoctorChart = (month) => {
     return new Promise(async (resolve, reject) => {
-        try{
-            let startDate = Date.parse(stringToDate(`01/${month}/2024`, "dd/MM/yyyy", "/"));
-            let endDate = Date.parse(stringToDate(`31/${month}/2024`, "dd/MM/yyyy", "/"));
+        try {
+            let startDate = Date.parse(stringToDate(`01/${month}/2024`, 'dd/MM/yyyy', '/'));
+            let endDate = Date.parse(stringToDate(`31/${month}/2024`, 'dd/MM/yyyy', '/'));
             let patients = await db.Patient.findAndCountAll({
-                attributes: [ 'id','doctorId','statusId','isSentForms' ],
+                attributes: ['id', 'doctorId', 'statusId', 'isSentForms'],
                 where: {
                     createdAt: {
-                        [Op.between]: [ startDate, endDate ],
+                        [Op.between]: [startDate, endDate],
                     },
-                }
+                },
             });
-            resolve({patients: patients})
-        }catch (e) {
+            resolve({ patients: patients });
+        } catch (e) {
             reject(e);
         }
     });
@@ -223,8 +214,15 @@ let getInfoDoctorChart = (month) => {
 let createAllDoctorsSchedule = () => {
     return new Promise(async (resolve, reject) => {
         try {
-            let timeArr = ['08:00 - 09:00', '09:00 - 10:00', '10:00 - 11:00', '11:00 - 12:00',
-                '13:00 - 14:00', '14:00 - 15:00', '15:00 - 16:00', '16:00 - 17:00'
+            let timeArr = [
+                '08:00 - 09:00',
+                '09:00 - 10:00',
+                '10:00 - 11:00',
+                '11:00 - 12:00',
+                '13:00 - 14:00',
+                '14:00 - 15:00',
+                '15:00 - 16:00',
+                '16:00 - 17:00',
             ];
             let sevenDaySchedule = [];
             for (let i = 0; i < 7; i++) {
@@ -234,10 +232,10 @@ let createAllDoctorsSchedule = () => {
 
             let doctors = await db.User.findAll({
                 where: {
-                    roleId: 2
+                    roleId: 2,
                 },
                 attributes: ['id', 'name'],
-                raw: true
+                raw: true,
             });
 
             // Check if appointments are created before
@@ -248,8 +246,8 @@ let createAllDoctorsSchedule = () => {
                 where: {
                     doctorId: doctors[0].id,
                     date: sevenDaySchedule[0],
-                    time: timeArr[0]
-                }
+                    time: timeArr[0],
+                },
             });
 
             if (check && check.length > 0) {
@@ -260,24 +258,26 @@ let createAllDoctorsSchedule = () => {
                 if (doctors && doctors.length > 0) {
                     await Promise.all(
                         doctors.map((doctor) => {
-                            sevenDaySchedule.map(day => {
+                            sevenDaySchedule.map((day) => {
                                 timeArr.map(async (time) => {
                                     let schedule = {
                                         doctorId: doctor.id,
                                         date: day,
                                         time: time,
                                         maxBooking: 2,
-                                        sumBooking: 0
+                                        sumBooking: 0,
                                     };
                                     await db.Schedule.create(schedule);
                                 });
                             });
                         })
                     );
-                    resolve("Cuộc hẹn được tạo thành công (trong 7 ngày). Vui lòng kiểm tra cơ sở dữ liệu của bạn (schedule table)");
+                    resolve(
+                        'Cuộc hẹn được tạo thành công (trong 7 ngày). Vui lòng kiểm tra cơ sở dữ liệu của bạn (schedule table)'
+                    );
                 }
             } else {
-                resolve("Các cuộc hẹn bị trùng lặp. Vui lòng kiểm tra cơ sở dữ liệu của bạn (schedule table)");
+                resolve('Các cuộc hẹn bị trùng lặp. Vui lòng kiểm tra cơ sở dữ liệu của bạn (schedule table)');
             }
         } catch (e) {
             reject(e);
@@ -285,15 +285,14 @@ let createAllDoctorsSchedule = () => {
     });
 };
 
-
 let getAllDoctorsSchedule = () => {
     return new Promise(async (resolve, reject) => {
         try {
             let schedules = await db.Schedule.findAll({
                 attributes: ['doctorId', 'date', 'time'],
-                raw: true
+                raw: true,
             });
-            resolve(schedules)
+            resolve(schedules);
         } catch (e) {
             reject(e);
         }
@@ -445,9 +444,4 @@ module.exports = {
     getAllUsers: getAllUsers,
     getAllCodeService: getAllCodeService,
     updateUser: updateUser,
-<<<<<<< HEAD
-    updateUserDataFile: updateUserDataFile,
-=======
-    getAllDoctorsSchedule: getAllDoctorsSchedule
->>>>>>> 4b1a10c67f7aef146bd0d7bf9e6085d0bf35f948
 };
