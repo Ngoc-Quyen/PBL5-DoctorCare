@@ -1,9 +1,8 @@
-import bcrypt from 'bcryptjs';
-import db from './../models';
-import helper from '../helper/client';
-import elastic from './../config/elastic';
-import _, { includes } from 'lodash';
-import imgLoadFirebase from '../services/imgLoadFirebase';
+import bcrypt from "bcryptjs";
+import db from "./../models";
+import helper from "../helper/client";
+import elastic from "./../config/elastic";
+import _ from "lodash";
 
 const Sequelize = require('sequelize');
 const Op = Sequelize.Op;
@@ -444,4 +443,5 @@ module.exports = {
     getAllUsers: getAllUsers,
     getAllCodeService: getAllCodeService,
     updateUser: updateUser,
+    updateUserDataFile: updateUserDataFile
 };

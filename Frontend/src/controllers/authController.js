@@ -160,5 +160,5 @@ module.exports = {
     getAllCode: getAllCode,
     getResetPasswordPage: getResetPasswordPage,
     postNewPassword: postNewPassword,
-    handleEditSpecialty: handleEditSpecialty,
+    handleEditSpecialty: handleEditSpecialty
 };
