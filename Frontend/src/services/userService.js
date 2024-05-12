@@ -83,6 +83,7 @@ let findUserByEmail = (email) => {
         try {
             let user = await db.User.findOne({
                 where: { email: email },
+                raw: true,
             });
             resolve(user);
         } catch (e) {
@@ -100,7 +101,8 @@ let findUserById = (id) => {
         try {
             let user = await db.User.findOne({
                 where: { id: id },
-                attributes: ['id', 'name', 'avatar', 'roleId', 'isActive'],
+                // attributes: ['id', 'name', 'avatar', 'roleId', 'isActive'],
+                extends: ['password'],
             });
             resolve(user);
         } catch (e) {

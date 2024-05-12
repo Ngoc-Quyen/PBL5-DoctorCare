@@ -1,16 +1,16 @@
-require("dotenv").config();
-import homeService from "./../services/homeService";
-import specializationService from "./../services/specializationService";
-import doctorService from "./../services/doctorService";
-import userService from "./../services/userService";
-import postService from "../services/postService";
-import elasticService from "./../services/syncsElaticService";
-import patientService from "./../services/patientService";
-import moment from "moment";
+require('dotenv').config();
+import homeService from './../services/homeService';
+import specializationService from './../services/specializationService';
+import doctorService from './../services/doctorService';
+import userService from './../services/userService';
+import postService from '../services/postService';
+import elasticService from './../services/syncsElaticService';
+import patientService from './../services/patientService';
+import moment from 'moment';
 // striptags to remove HTML
-import striptags from "striptags";
+import striptags from 'striptags';
 
-import multer from "multer";
+import multer from 'multer';
 
 let LIMIT_POST = 5;
 
@@ -24,12 +24,12 @@ let getHomePage = async (req, res) => {
         let specializations = await homeService.getSpecializations();
         let doctors = await userService.getInfoDoctors();
         let posts = await homeService.getPosts(LIMIT_POST);
-        return res.render("main/homepage/homepage.ejs", {
+        return res.render('main/homepage/homepage.ejs', {
             user: req.user,
             specializations: specializations,
             doctors: doctors,
             posts: posts,
-            pageId: process.env.PAGE_ID
+            pageId: process.env.PAGE_ID,
         });
     } catch (e) {
         console.log(e);
@@ -38,10 +38,10 @@ let getHomePage = async (req, res) => {
 };
 
 let getUserPage = (req, res) => {
-    let currentMonth = new Date().getMonth() +1 ;
-    res.render("main/users/home.ejs", {
+    let currentMonth = new Date().getMonth() + 1;
+    res.render('main/users/home.ejs', {
         user: req.user,
-        currentMonth: currentMonth
+        currentMonth: currentMonth,
     });
 };
 
@@ -58,15 +58,14 @@ let getDetailSpecializationPage = async (req, res) => {
         }
 
         let listSpecializations = await specializationService.getAllSpecializations();
-        return res.render("main/homepage/specialization.ejs", {
+        return res.render('main/homepage/specialization.ejs', {
             specialization: object.specialization,
             post: object.post,
             doctors: doctors,
             places: object.places,
             sevenDaySchedule: sevenDaySchedule,
-            listSpecializations: listSpecializations
+            listSpecializations: listSpecializations,
         });
-
     } catch (e) {
         console.log(e);
         return res.render('main/homepage/pageNotFound.ejs');
@@ -87,8 +86,7 @@ let getDetailDoctorPage = async (req, res) => {
         let places = await doctorService.getPlacesForDoctor();
         let postDoctor = await doctorService.getPostForDoctor(req.params.id);
 
-
-        return res.render("main/homepage/doctor.ejs", {
+        return res.render('main/homepage/doctor.ejs', {
             doctor: object.doctor,
             sevenDaySchedule: sevenDaySchedule,
             postDoctor: postDoctor,
@@ -102,16 +100,15 @@ let getDetailDoctorPage = async (req, res) => {
 };
 
 let getBookingPage = (req, res) => {
-    res.render("main/homepage/bookingPage.ejs")
+    res.render('main/homepage/bookingPage.ejs');
 };
-
 
 let getDetailPostPage = async (req, res) => {
     try {
         let post = await postService.getDetailPostPage(req.params.id);
-        res.render("main/homepage/post.ejs", {
-            post: post
-        })
+        res.render('main/homepage/post.ejs', {
+            post: post,
+        });
     } catch (e) {
         console.log(e);
         return res.render('main/homepage/pageNotFound.ejs');
@@ -125,11 +122,11 @@ let getContactPage = (req, res) => {
 let getPostsWithPagination = async (req, res) => {
     let role = 'nope';
     let object = await postService.getPostsPagination(1, +process.env.LIMIT_GET_POST, role);
-    return res.render("main/homepage/allPostsPagination.ejs", {
+    return res.render('main/homepage/allPostsPagination.ejs', {
         posts: object.posts,
         total: object.total,
-        striptags: striptags
-    })
+        striptags: striptags,
+    });
 };
 
 let getPostSearch = async (req, res) => {
@@ -137,7 +134,7 @@ let getPostSearch = async (req, res) => {
     let results = await elasticService.findPostsByTerm(search);
     return res.render('main/homepage/searchPost.ejs', {
         search: search,
-        posts: results.hits.hits
+        posts: results.hits.hits,
     });
 };
 
@@ -146,7 +143,7 @@ let getInfoBookingPage = async (req, res) => {
         let patientId = req.params.id;
         let patient = await patientService.getInfoBooking(patientId);
         return res.render('main/homepage/infoBooking.ejs', {
-            patient: patient
+            patient: patient,
         });
     } catch (e) {
         console.log(e);
@@ -168,8 +165,8 @@ let postBookingDoctorPageWithoutFiles = async (req, res) => {
         return res.status(200).json({
             status: 1,
             message: 'success',
-            patient: patient
-        })
+            patient: patient,
+        });
     } catch (e) {
         console.log(e);
         return res.status(500).json(e);
@@ -190,7 +187,6 @@ let postBookingDoctorPageNormal = (req, res) => {
         }
 
         try {
-
             let item = req.body;
             let imageOldForm = req.files;
             let image = {};
@@ -210,9 +206,8 @@ let postBookingDoctorPageNormal = (req, res) => {
             return res.status(200).json({
                 status: 1,
                 message: 'success',
-                patient: patient
-            })
-
+                patient: patient,
+            });
         } catch (e) {
             console.log(e);
             return res.status(500).send(e);
@@ -222,18 +217,18 @@ let postBookingDoctorPageNormal = (req, res) => {
 
 let storageImageOldForms = multer.diskStorage({
     destination: (req, file, callback) => {
-        callback(null, "src/public/images/patients");
+        callback(null, 'src/public/images/patients');
     },
     filename: (req, file, callback) => {
         let imageName = `${Date.now()}-${file.originalname}`;
         callback(null, imageName);
-    }
+    },
 });
 
 let imageImageOldForms = multer({
     storage: storageImageOldForms,
-    limits: { fileSize: 1048576 * 20 }
-}).array("oldForms");
+    limits: { fileSize: 1048576 * 20 },
+}).array('oldForms');
 
 let getDetailPatientBooking = async (req, res) => {
     try {
@@ -248,8 +243,8 @@ let getDetailPatientBooking = async (req, res) => {
 let getFeedbackPage = async (req, res) => {
     try {
         let doctor = await doctorService.getDoctorForFeedbackPage(req.params.id);
-        return res.render("main/homepage/feedback.ejs", {
-            doctor: doctor
+        return res.render('main/homepage/feedback.ejs', {
+            doctor: doctor,
         });
     } catch (e) {
         console.log(e);
@@ -261,9 +256,9 @@ let postCreateFeedback = async (req, res) => {
     try {
         let feedback = await doctorService.createFeedback(req.body.data);
         return res.status(200).json({
-            message: "send feedback success",
-            feedback: feedback
-        })
+            message: 'send feedback success',
+            feedback: feedback,
+        });
     } catch (e) {
         console.log(e);
         return res.status(500).json(e);
@@ -271,11 +266,11 @@ let postCreateFeedback = async (req, res) => {
 };
 
 let getPageForPatients = (req, res) => {
-    return res.render("main/homepage/forPatients.ejs");
+    return res.render('main/homepage/forPatients.ejs');
 };
 
 let getPageForDoctors = (req, res) => {
-    return res.render("main/homepage/forDoctors.ejs");
+    return res.render('main/homepage/forDoctors.ejs');
 };
 
 let postSearchHomePage = async (req, res) => {
@@ -288,41 +283,38 @@ let postSearchHomePage = async (req, res) => {
     }
 };
 
-
-let getPageAllDoctors = async (req, res)=>{
-    try{
+let getPageAllDoctors = async (req, res) => {
+    try {
         let doctors = await homeService.getDataPageAllDoctors();
-        return res.render("main/homepage/allDoctors.ejs",{
-            doctors: doctors
-        })
-    }catch (e) {
+        return res.render('main/homepage/allDoctors.ejs', {
+            doctors: doctors,
+        });
+    } catch (e) {
         console.log(e);
     }
 };
 
-let getPageAllSpecializations =async (req, res)=>{
-    try{
+let getPageAllSpecializations = async (req, res) => {
+    try {
         let specializations = await homeService.getDataPageAllSpecializations();
-        return res.render("main/homepage/allSpecializations.ejs",{
-            specializations: specializations
-        })
-    }catch (e) {
+        return res.render('main/homepage/allSpecializations.ejs', {
+            specializations: specializations,
+        });
+    } catch (e) {
         console.log(e);
     }
 };
-let getPageInfoUser = async (req, res)=>{
-    try{
-        return res.render("main/homepage/InfoUser.ejs",{
-        })
-    }catch (e) {
+let getPageInfoUser = async (req, res) => {
+    try {
+        return res.render('main/homepage/InfoUser.ejs', {});
+    } catch (e) {
         console.log(e);
     }
 };
-let getPageInfoBooked = async (req, res)=>{
-    try{
-        return res.render("main/homepage/InfoBooked.ejs",{
-        })
-    }catch (e) {
+let getPageInfoBooked = async (req, res) => {
+    try {
+        return res.render('main/homepage/InfoBooked.ejs', {});
+    } catch (e) {
         console.log(e);
     }
 };
@@ -347,7 +339,7 @@ module.exports = {
     getPageForDoctors: getPageForDoctors,
     postSearchHomePage: postSearchHomePage,
     getPageAllDoctors: getPageAllDoctors,
-    getPageInfoUser:getPageInfoUser,
-    getPageInfoBooked:getPageInfoBooked,
-    getPageAllSpecializations: getPageAllSpecializations
+    getPageInfoUser: getPageInfoUser,
+    getPageInfoBooked: getPageInfoBooked,
+    getPageAllSpecializations: getPageAllSpecializations,
 };
