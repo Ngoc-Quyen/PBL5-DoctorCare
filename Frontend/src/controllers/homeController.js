@@ -312,16 +312,14 @@ let getPageAllSpecializations =async (req, res)=>{
 };
 let getPageInfoUser = async (req, res)=>{
     try{
-        return res.render("main/homepage/InfoUser.ejs",{
-        })
+        return res.render("main/homepage/InfoUser.ejs")
     }catch (e) {
         console.log(e);
     }
 };
 let getPageInfoBooked = async (req, res)=>{
     try{
-        return res.render("main/homepage/InfoBooked.ejs",{
-        })
+        return res.render("main/homepage/InfoBooked.ejs")
     }catch (e) {
         console.log(e);
     }

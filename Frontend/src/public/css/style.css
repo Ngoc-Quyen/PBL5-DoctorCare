@@ -964,39 +964,6 @@ h3.show-title-post {
 .btn-design2:focus {
   background-color: #c1ae03;
 }
-
-.btn-noclick {
-  color: black;
-  background-color: #F1B600;
-  /* Thiết lập màu nền là màu vàng */
-}
-
-.btn-cancel {
-  color: black;
-  background-color: #d2d0bc;
-  /* Thiết lập màu nền là màu vàng */
-  height: 35px;
-}
-
-.btn-cancel:hover,
-.btn-cancel:focus {
-  background-color: #979586;
-}
-
-.image-container {
-  position: relative;
-}
-.image-caption {
-  position: absolute;
-  bottom: 0;
-  left: 0;
-  width: 100%;
-  background-color: rgba(56, 180, 211, 0.5);
-  color: rgb(26, 28, 30);
-  text-align: center;
-  padding: 10px;
-}
-
 .mt-1 .container{
   width: 100%;
   height: 80vh;
@@ -1033,14 +1000,14 @@ h3.show-title-post {
   margin-bottom: 10px;
 }
 
-.form-group {
+.form-group1 {
   display: flex;
   align-items: center;
 }
-.form-group input[type="text"],
-.form-group input[type="email"],
-.form-group input[type="date"],
-.form-group textarea {
+.form-group1 input[type="text"],
+.form-group1 input[type="email"],
+.form-group1 input[type="date"],
+.form-group1 textarea {
     flex: 1;
     padding: 6px;
     border: 1px solid #ccc;
@@ -1048,13 +1015,13 @@ h3.show-title-post {
     box-sizing: border-box;
     margin-top: 10px;
 }
-.form-group {
+.form-group1 {
     display: flex;
     justify-content: space-between;
     align-items: center;
 }
 
-.form-group label {
+.form-group1 label {
     flex: 0 0 auto; /* Độ rộng tự động của nhãn */
     margin-right: 10px; /* Khoảng cách giữa nhãn và ô nhập liệu */
     margin-top: 10px;
@@ -1062,14 +1029,13 @@ h3.show-title-post {
     text-align: left;
 }
 
-.infor-user-container {
+.infor-user-container1 {
   display: flex;
   flex-direction: column;
   gap: 10px;
   width: 40%;
   height: 80;
 }
-
 /* Định dạng cho button */
 .btn-submit {
   background-color: #00e1ff;
@@ -1087,20 +1053,21 @@ h3.show-title-post {
 .btn-submit:hover {
   background-color: #ABF3FD;
 }
-.form-group-infor {
+.form-group-infor1 {
   display: table;
   width: 100%;
 }
 
-.form-group-infor > div {
+.form-group-infor1 > div {
   display: table-row;
 }
 
-.form-group-infor > div > div {
+.form-group-infor1 > div > div {
   display: table-cell;
   padding: 10px;
   border: 1px solid #ccc;
 }
+
 .container-booked {
   width: 80%;
   margin: 20px auto;
@@ -1113,14 +1080,14 @@ h3.show-title-post {
   border: 1px solid #ccc; /* You can adjust the color and size of the border */
   padding: 10px; /* Optional: Add padding to the container */
 }
-.form-group img {
+.form-group2 img {
   border-radius: 50%; /* Make the image round */
   display: block; /* Ensure the image is treated as a block element */
     margin: 0 auto; 
 }
 .infor-booked-container .col-md-6{
   display: block;
- 
+
 }
 /* Style for the buttons */
 /* Style for the first button */
@@ -1150,4 +1117,3 @@ h3.show-title-post {
 .btn-cancel-booked:hover {
   filter: brightness(90%); /* Reduce brightness on hover */
 }
-
