@@ -325,6 +325,7 @@ let getAllCodeService = async (typeInput) => {
                 let res = {};
                 let allcode = await db.Allcodes.findAll({
                     where: { type: typeInput },
+                    raw: true,
                 });
                 res.errCode = 0;
                 res.data = allcode;
@@ -508,6 +509,7 @@ let createNewUser = async (data) => {
                 phone: data.phone,
                 birthday: data.birthday,
                 avatar: data.avatar,
+                gender: data.gender,
                 address: data.address,
                 description: data.description,
                 roleId: '3',
@@ -523,6 +525,7 @@ let createNewUser = async (data) => {
         }
     });
 };
+
 module.exports = {
     createDoctor: createDoctor,
     getInfoDoctors: getInfoDoctors,

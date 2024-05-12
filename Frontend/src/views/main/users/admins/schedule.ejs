@@ -24,8 +24,9 @@
                     <tbody>
                         <% sevenDaySchedule.forEach(function(day, index) { %>
                             <tr>
-                                <td>
+                                <td name="dayTime">
                                     <%= day %>
+                                        <input type="text" name="dayTime" value="<%= day %>" style="display: none;">
                                 </td>
                                 <td>
                                     <% schedules.forEach(function(schedule) { %>
@@ -37,10 +38,10 @@
                                                 <% }) %>
                                 </td>
                                 <td class="">
-                                    <a class="edit-doctor-info" href="/doctor/manage/schedule/delete" title="Edit"><i
-                                            class="fas fa-pen-square mx-3"></i></a>
-                                    <a class="delete-doctor-info" href="/doctor/manage/schedule/delete"
-                                        title="Delete"><i class="fas fa-trash"></i></a>
+                                    <!-- <a class="edit-doctor-info" href="#" title="Edit"><i
+                                            class="fas fa-pen-square mx-3"></i></a> -->
+                                    <a class="delete-schedule-info" href="#" title="Delete" id="deleteSchedule"
+                                        data-schedule-day="<%= day%>"><i class="fas fa-trash"></i></a>
                                 </td>
                             </tr>
                             <% }); %>

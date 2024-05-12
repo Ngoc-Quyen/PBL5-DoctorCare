@@ -20,22 +20,13 @@
             <div class="mb-4">
                 <span>Chọn khung thời gian:</span>
                 <div id="lsBtnSchedule">
-                    <button id="time-08-09" type="button" class="btn  btn-light mr-3 my-3 btn-schedule" value="08:00 - 09:00"> 08:00 - 09:00
-                </button>
-                    <button id="time-09-10" type="button" class="btn btn-light mr-3 my-3 btn-schedule" value="09:00 - 10:00"> 09:00 - 10:00
-                </button>
-                    <button id="time-10-11" type="button" class="btn btn-light mr-3 my-3 btn-schedule" value="10:00 - 11:00"> 10:00 - 11:00
-                </button>
-                    <button id="time-11-12" type="button" class="btn btn-light mr-3 my-3 btn-schedule" value="11:00 - 12:00"> 11:00 - 12:00
-                </button>
-                    <button id="time-13-14" type="button" class="btn btn-light mr-3 my-3 btn-schedule" value="13:00 - 14:00"> 13:00 - 14:00
-                </button>
-                    <button id="time-14-15" type="button" class="btn btn-light mr-3 my-3 btn-schedule" value="14:00 - 15:00"> 14:00 - 15:00
-                </button>
-                    <button id="time-15-16" type="button" class="btn btn-light mr-3 my-3 btn-schedule" value="15:00 - 16:00"> 15:00 - 16:00
-                </button>
-                    <button id="time-16-17" type="button" class="btn btn-light mr-3 my-3 btn-schedule" value="16:00 - 17:00"> 16:00 - 17:00
-                </button>
+                    <% for(let i=0; i < listTime.length; i++) { %>
+                        <button id="<%= listTime[i].key %>" type="button" class="btn btn-light mr-3 my-3 btn-schedule"
+                            value="<%= listTime[i].valueVi %>">
+                            <%= listTime[i].valueVi %>
+                        </button>
+
+                        <% } %>
                 </div>
             </div>
 
@@ -61,7 +52,7 @@
     </div>
 
     <script>
-        $(document).ready(function() {
+        $(document).ready(function () {
             $("#liSchedule").addClass('active');
         });
     </script>
