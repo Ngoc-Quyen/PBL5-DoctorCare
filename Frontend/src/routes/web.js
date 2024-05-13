@@ -115,6 +115,8 @@ let initRoutes = (app) => {
     router.post('/users/manage/customer/create', auth.checkLoggedIn, admin.postCreatePatient);
     router.get('/users/customer/edit/:id', auth.checkLoggedIn, admin.getEditPatient);
     router.post('/users/customer/edit/:id', auth.checkLoggedIn, admin.postEditPatient);
+    router.post('/get-info-customer-by-id', customer.getInforCustomerById);
+    router.delete('/users/customer/delete', auth.checkLoggedIn, customer.deleteCustomerById);
 
     router.get('/users/manage/bot', auth.checkLoggedIn, admin.getManageBotPage);
     router.get('/users/manage/schedule-for-doctors', auth.checkLoggedIn, admin.getManageCreateScheduleForDoctorsPage);

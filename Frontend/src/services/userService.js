@@ -25,7 +25,6 @@ let createDoctor = (doctor) => {
         await db.Doctor_User.create(item);
 
         //create doctor elastic
-
         resolve(newDoctor);
     });
 };
@@ -111,6 +110,36 @@ let findUserById = (id) => {
     });
 };
 
+let getUserById = (idUser) => {
+    return new Promise(async (resolve, reject) => {
+        try {
+            if (!idUser) {
+                resolve({
+                    errCode: 1,
+                    errMessage: 'Missing define!',
+                });
+            }
+            let user = await db.User.findOne({
+                where: { id: idUser },
+                extends: 'password',
+            });
+            if (!user) {
+                resolve({
+                    errCode: 0,
+                    errMessage: 'Khong co user nao voi id nay',
+                });
+            } else {
+                resolve({
+                    errCode: 0,
+                    errMessage: 'Success',
+                    data: user,
+                });
+            }
+        } catch (error) {
+            reject(error);
+        }
+    });
+};
 function stringToDate(_date, _format, _delimiter) {
     let formatLowerCase = _format.toLowerCase();
     let formatItems = formatLowerCase.split(_delimiter);
@@ -458,6 +487,7 @@ let updateProfile = async (data) => {
                 user.address = data.address;
                 user.phone = data.phone;
                 user.gender = data.gender;
+                user.birthday = data.birthday;
                 // Nếu có file ảnh được upload, gửi ảnh lên Firebase và lấy URL
                 let url = data.avatar;
                 if (url) {
@@ -525,7 +555,27 @@ let createNewUser = async (data) => {
         }
     });
 };
-
+let deleteUserById = async (idUser) => {
+    return new Promise(async (resolve, reject) => {
+        try {
+            if (!idUser) {
+                resolve({
+                    errCode: 1,
+                    errMessage: 'Missing define!!',
+                });
+            }
+            await db.User.destroy({
+                where: { id: idUser },
+            });
+            resolve({
+                errCode: 0,
+                errMessage: 'success',
+            });
+        } catch (error) {
+            reject(error);
+        }
+    });
+};
 module.exports = {
     createDoctor: createDoctor,
     getInfoDoctors: getInfoDoctors,
@@ -542,4 +592,6 @@ module.exports = {
     updateUserDataFile: updateUserDataFile,
     createNewUser: createNewUser,
     updateProfile: updateProfile,
+    getUserById: getUserById,
+    deleteUserById: deleteUserById,
 };

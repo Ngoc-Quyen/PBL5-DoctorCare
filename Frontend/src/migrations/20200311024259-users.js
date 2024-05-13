@@ -27,7 +27,7 @@ module.exports = {
                 type: Sequelize.STRING,
             },
             birthday: {
-                type: Sequelize.DATEONLY,
+                type: Sequelize.STRING,
             },
             gender: {
                 type: Sequelize.STRING,
@@ -49,11 +49,11 @@ module.exports = {
                 type: Sequelize.DATE,
             },
             updatedAt: {
-                allowNull: true,
+                allowNull: false,
                 type: Sequelize.DATE,
             },
             deletedAt: {
-                allowNull: true,
+                allowNull: false,
                 type: Sequelize.DATE,
             },
         });
