@@ -300,6 +300,41 @@ function deleteDoctorById() {
         });
     });
 }
+function deleteScheduleByDate() {
+    $('.delete-schedule-info').on('click', function (e) {
+        if (!confirm('Xóa thời gian của lịch này?')) {
+            return;
+        }
+
+        let day = $(this).data('schedule-day');
+        let node = this;
+        $.ajax({
+            method: 'DELETE',
+            url: `${window.location.origin}/doctor/delete/schedule`,
+            data: { day: day },
+            success: function (data) {
+                node.closest('tr').remove();
+                if (data.message === 'success') {
+                    alertify.success('Xóa lịch hẹn thành công');
+                    // Chờ 2 giây và sau đó tải lại trang với đường dẫn mới
+                    setTimeout(function () {
+                        window.location.href = '/doctor/manage/schedule'; // Thay thế '/your-new-url' bằng đường dẫn mới bạn muốn tải lại
+                    }, 2000); // 2000 milliseconds = 2 giây
+                } else {
+                    alertify.error(data.message);
+                    // Chờ 2 giây và sau đó tải lại trang với đường dẫn mới
+                    setTimeout(function () {
+                        window.location.href = '/doctor/manage/schedule'; // Thay thế '/your-new-url' bằng đường dẫn mới bạn muốn tải lại
+                    }, 2000); // 2000 milliseconds = 2 giây
+                }
+            },
+            error: function (err) {
+                alertify.error('Đã xảy ra lỗi, vui lòng thử lại sau!');
+                console.log(err);
+            },
+        });
+    });
+}
 
 function showModalInfoDoctor() {
     $('.show-doctor-info').on('click', function (e) {
@@ -594,6 +629,10 @@ function createScheduleByDoctor(scheduleArr) {
                 if (data.status === 1) {
                     alertify.success('Thêm lịch hẹn thành công');
                 }
+                // Chờ 2 giây và sau đó tải lại trang với đường dẫn mới
+                setTimeout(function () {
+                    window.location.href = '/doctor/manage/schedule/create'; // Thay thế '/your-new-url' bằng đường dẫn mới bạn muốn tải lại
+                }, 2000); // 2000 milliseconds = 2 giây
             },
             error: function (error) {
                 alertify.error('Đã xảy ra lỗi, vui lòng thử lại sau!');
@@ -1390,4 +1429,6 @@ $(document).ready(function (e) {
     let month = new Date().getMonth();
     statisticalAdmin(month + 1);
     handleFindStatisticalAdmin();
+
+    deleteScheduleByDate();
 });

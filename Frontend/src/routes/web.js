@@ -131,6 +131,8 @@ let initRoutes = (app) => {
     router.get('/doctor/manage/schedule/create', auth.checkLoggedIn, doctor.getCreateSchedule);
     router.post('/doctor/manage/schedule/create', auth.checkLoggedIn, doctor.postCreateSchedule);
     router.post('/doctor/get-schedule-doctor-by-date', doctor.getScheduleDoctorByDate);
+    router.delete('/doctor/delete/schedule', auth.checkLoggedIn, doctor.deleteScheduleDoctorByDate);
+
     router.get('/doctor/manage/appointment', auth.checkLoggedIn, doctor.getManageAppointment);
     router.get('/doctor/manage/chart', auth.checkLoggedIn, doctor.getManageChart);
     router.post('/doctor/manage/create-chart', auth.checkLoggedIn, doctor.postCreateChart);

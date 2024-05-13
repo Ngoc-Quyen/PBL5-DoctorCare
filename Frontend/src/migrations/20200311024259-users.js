@@ -31,7 +31,7 @@ module.exports = {
             },
             gender: {
                 type: Sequelize.STRING,
-                defaultValue: 'male',
+                defaultValue: 'M',
             },
             description: {
                 type: Sequelize.TEXT,

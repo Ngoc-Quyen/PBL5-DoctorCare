@@ -499,7 +499,40 @@ let createFeedback = (data) => {
         }
     });
 };
-
+let deleteTimeByDate = async (idDoctor, timeDate) => {
+    return new Promise(async (resolve, reject) => {
+        try {
+            if (!timeDate || !idDoctor) {
+                resolve({
+                    errCode: 1,
+                    errMessage: 'khong co idDoctor or ko co ngay.',
+                });
+            }
+            let doctorSchedule = await db.Schedule.findOne({
+                where: { doctorId: idDoctor, date: timeDate },
+            });
+            if (!doctorSchedule) {
+                resolve({
+                    errCode: 2,
+                    errMessage: 'Bac si chua tao lich cua ngay do',
+                });
+            } else {
+                await db.Schedule.destroy({
+                    where: {
+                        doctorId: idDoctor,
+                        date: timeDate,
+                    },
+                });
+                resolve({
+                    errCode: 0,
+                    errMessage: 'Delete success!',
+                });
+            }
+        } catch (error) {
+            reject(error);
+        }
+    });
+};
 module.exports = {
     getDoctorForFeedbackPage: getDoctorForFeedbackPage,
     getDoctorWithSchedule: getDoctorWithSchedule,
@@ -519,4 +552,5 @@ module.exports = {
     createFeedback: createFeedback,
     getPatientForEditPage: getPatientForEditPage,
     getSpecializationById: getSpecializationById,
+    deleteTimeByDate: deleteTimeByDate,
 };
