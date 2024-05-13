@@ -6,46 +6,46 @@ module.exports = {
                 allowNull: false,
                 autoIncrement: true,
                 primaryKey: true,
-                type: Sequelize.INTEGER
+                type: Sequelize.INTEGER,
             },
             doctorId: {
-                type: Sequelize.INTEGER
+                type: Sequelize.INTEGER,
             },
             timeBooking: {
-                type: Sequelize.STRING
+                type: Sequelize.STRING,
             },
             dateBooking: {
-                type: Sequelize.STRING
+                type: Sequelize.STRING,
             },
             name: {
-                type: Sequelize.STRING
+                type: Sequelize.STRING,
             },
             phone: {
-                type: Sequelize.STRING
+                type: Sequelize.STRING,
             },
             content: {
-                type: Sequelize.TEXT
+                type: Sequelize.TEXT,
             },
             status: {
                 type: Sequelize.BOOLEAN,
                 allowNull: false,
-                defaultValue: false
+                defaultValue: false,
             },
             createdAt: {
                 allowNull: false,
-                type: Sequelize.DATE
+                type: Sequelize.DATE,
             },
             updatedAt: {
-                allowNull: true,
-                type: Sequelize.DATE
+                allowNull: false,
+                type: Sequelize.DATE,
             },
             deletedAt: {
-                allowNull: true,
-                type: Sequelize.DATE
-            }
+                allowNull: false,
+                type: Sequelize.DATE,
+            },
         });
     },
     down: (queryInterface, Sequelize) => {
         return queryInterface.dropTable('Comments');
-    }
+    },
 };

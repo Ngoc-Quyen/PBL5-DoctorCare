@@ -266,8 +266,13 @@ function createNewDoctor() {
             url: `${window.location.origin}/admin/doctor/create`,
             data: data,
             success: function (data) {
-                alert('Tạo một bác sĩ mới thành công');
-                window.location.href = `${window.location.origin}/users/manage/doctor`;
+                alertify.success('Thêm Bác sĩ thành công');
+                // Chờ 2 giây và sau đó tải lại trang với đường dẫn mới
+                setTimeout(function () {
+                    window.location.href = '/users/manage/doctor'; // Thay thế '/your-new-url' bằng đường dẫn mới bạn muốn tải lại
+                }, 2000); // 2000 milliseconds = 2 giây
+                // alert('Tạo một bác sĩ mới thành công');
+                // window.location.href = `${window.location.origin}/users/manage/doctor`;
             },
             error: function (error) {
                 alertify.error('Đã xảy ra lỗi, vui lòng thử lại sau!');
@@ -292,6 +297,37 @@ function deleteDoctorById() {
             success: function (data) {
                 node.closest('tr').remove();
                 alertify.success('Xóa thành công');
+                // Chờ 2 giây và sau đó tải lại trang với đường dẫn mới
+                setTimeout(function () {
+                    window.location.href = '/users/manage/doctor'; // Thay thế '/your-new-url' bằng đường dẫn mới bạn muốn tải lại
+                }, 2000); // 2000 milliseconds = 2 giây
+            },
+            error: function (err) {
+                alertify.error('Đã xảy ra lỗi, vui lòng thử lại sau!');
+                console.log(err);
+            },
+        });
+    });
+}
+function deleteCustomerById() {
+    $('.delete-customer-info').on('click', function (e) {
+        if (!confirm('Xóa bệnh nhân này?')) {
+            return;
+        }
+
+        let id = $(this).data('customer-id');
+        let node = this;
+        $.ajax({
+            method: 'DELETE',
+            url: `${window.location.origin}/users/customer/delete`,
+            data: { id: id },
+            success: function (data) {
+                node.closest('tr').remove();
+                alertify.success('Xóa thành công');
+                // Chờ 2 giây và sau đó tải lại trang với đường dẫn mới
+                setTimeout(function () {
+                    window.location.href = '/users/manage/customer'; // Thay thế '/your-new-url' bằng đường dẫn mới bạn muốn tải lại
+                }, 2000); // 2000 milliseconds = 2 giây
             },
             error: function (err) {
                 alertify.error('Đã xảy ra lỗi, vui lòng thử lại sau!');
@@ -381,15 +417,14 @@ function showModalInfoCustomer() {
     $('.show-customer-info').on('click', function (e) {
         e.preventDefault();
         let id = $(this).data('customer-id');
-
         $.ajax({
             method: 'POST',
-            url: `${window.location.origin}/api/get-info-customer-by-id`,
+            url: `${window.location.origin}/get-info-customer-by-id`,
             data: { id: id },
             success: function (data) {
                 $('#imageCustomer').empty();
 
-                $('#nameUser').val(data.user.name);
+                $('#nameCustomer').val(data.user.name);
                 if (data.user.phone) {
                     $('#phoneCustomer').val(data.user.phone);
                 } else {
@@ -400,20 +435,16 @@ function showModalInfoCustomer() {
                 } else {
                     $('#addressCustomer').val('Chưa cập nhật');
                 }
-
-                if (data.user.avatar) {
-                    $('#imageCustomer').prepend(
-                        `<img class="img-info-clinic" src="/images/users/${data.customer.avatar}" />`
-                    );
+                if (data?.user?.avatar) {
+                    $('#imageCustomer').prepend(`<img class="img-info-clinic" src="${data?.user?.avatar}" />`);
                 } else {
                     $('#imageCustomer').text('Chưa cập nhật');
                 }
-
                 $('#modalInfoCustomer').modal('show');
             },
             error: function (error) {
-                alertify.error('Đã xảy ra lỗi, vui lòng thử lại sau!');
                 console.log(error);
+                alertify.error('Đã xảy ra lỗi, vui lòng thử lại sau!');
             },
         });
     });
@@ -438,6 +469,22 @@ function updateDoctor() {
             }
             handleUpdateDoctorWithoutFile(data);
         }
+        $.ajax({
+            method: 'POST',
+            url: `${window.location.origin}/users/doctor/edit/:id`,
+            data: data,
+            success: function (data) {
+                alertify.success('Cập nhật thông tin thành công');
+                // Chờ 2 giây và sau đó tải lại trang với đường dẫn mới
+                setTimeout(function () {
+                    window.location.href = '/users/doctor/edit/:id'; // Thay thế '/your-new-url' bằng đường dẫn mới bạn muốn tải lại
+                }, 2000); // 2000 milliseconds = 2 giây
+            },
+            error: function (error) {
+                alertify.error('Đã xảy ra lỗi, vui lòng thử lại sau!');
+                console.log(error);
+            },
+        });
     });
 }
 
@@ -1431,4 +1478,6 @@ $(document).ready(function (e) {
     handleFindStatisticalAdmin();
 
     deleteScheduleByDate();
+    showModalInfoCustomer();
+    deleteCustomerById();
 });

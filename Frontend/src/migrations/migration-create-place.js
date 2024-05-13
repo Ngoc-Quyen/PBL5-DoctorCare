@@ -6,27 +6,26 @@ module.exports = {
                 allowNull: false,
                 autoIncrement: true,
                 primaryKey: true,
-                type: Sequelize.INTEGER
+                type: Sequelize.INTEGER,
             },
             name: {
-                type: Sequelize.STRING
+                type: Sequelize.STRING,
             },
             createdAt: {
                 allowNull: false,
-                type: Sequelize.DATE
+                type: Sequelize.DATE,
             },
             updatedAt: {
-                allowNull: true,
-                type: Sequelize.DATE
+                allowNull: false,
+                type: Sequelize.DATE,
             },
             deletedAt: {
-                allowNull: true,
-                type: Sequelize.DATE
+                allowNull: false,
+                type: Sequelize.DATE,
             },
-
         });
     },
     down: (queryInterface, Sequelize) => {
         return queryInterface.dropTable('Places');
-    }
+    },
 };

@@ -6,41 +6,41 @@ module.exports = {
                 allowNull: false,
                 autoIncrement: true,
                 primaryKey: true,
-                type: Sequelize.INTEGER
+                type: Sequelize.INTEGER,
             },
             patientId: {
-                type: Sequelize.INTEGER
+                type: Sequelize.INTEGER,
             },
             historyBreath: {
-                type: Sequelize.TEXT
+                type: Sequelize.TEXT,
             },
             placeId: {
-                type: Sequelize.INTEGER
+                type: Sequelize.INTEGER,
             },
             oldForms: {
-                type: Sequelize.TEXT
+                type: Sequelize.TEXT,
             },
             sendForms: {
-                type: Sequelize.TEXT
+                type: Sequelize.TEXT,
             },
             moreInfo: {
-                type: Sequelize.TEXT
+                type: Sequelize.TEXT,
             },
             createdAt: {
                 allowNull: false,
-                type: Sequelize.DATE
+                type: Sequelize.DATE,
             },
             updatedAt: {
-                allowNull: true,
-                type: Sequelize.DATE
+                allowNull: false,
+                type: Sequelize.DATE,
             },
             deletedAt: {
-                allowNull: true,
-                type: Sequelize.DATE
-            }
+                allowNull: false,
+                type: Sequelize.DATE,
+            },
         });
     },
     down: (queryInterface, Sequelize) => {
         return queryInterface.dropTable('ExtraInfos');
-    }
+    },
 };

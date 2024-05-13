@@ -6,16 +6,16 @@ module.exports = {
                 allowNull: false,
                 autoIncrement: true,
                 primaryKey: true,
-                type: Sequelize.INTEGER
+                type: Sequelize.INTEGER,
             },
             title: {
-                type: Sequelize.STRING
+                type: Sequelize.STRING,
             },
             contentMarkdown: {
-                type: Sequelize.TEXT
+                type: Sequelize.TEXT,
             },
             contentHTML: {
-                type: Sequelize.TEXT
+                type: Sequelize.TEXT,
             },
             forDoctorId: {
                 type: Sequelize.INTEGER,
@@ -34,23 +34,23 @@ module.exports = {
                 allowNull: true,
             },
             image: {
-                type: Sequelize.STRING
+                type: Sequelize.STRING,
             },
             createdAt: {
                 allowNull: false,
-                type: Sequelize.DATE
+                type: Sequelize.DATE,
             },
             updatedAt: {
-                allowNull: true,
-                type: Sequelize.DATE
+                allowNull: false,
+                type: Sequelize.DATE,
             },
             deletedAt: {
-                allowNull: true,
-                type: Sequelize.DATE
-            }
+                allowNull: false,
+                type: Sequelize.DATE,
+            },
         });
     },
     down: (queryInterface, Sequelize) => {
         return queryInterface.dropTable('Posts');
-    }
+    },
 };

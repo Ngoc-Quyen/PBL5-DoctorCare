@@ -36,8 +36,10 @@ let postCreateDoctor = async (req, res) => {
         email: req.body.email,
         password: req.body.password,
         specializationId: req.body.specialization,
+        birthday: req.body.birthday,
+        gender: req.body.gender,
         address: req.body.address,
-        avatar: 'doctor.jpg',
+        avatar: 'https://firebasestorage.googleapis.com/v0/b/pbl5-a1f37.appspot.com/o/images%2FavatarUsers%2FavatarDoctor%2Fdoctor.jpg?alt=media&token=2cdf2069-2bf9-4a02-afff-ccbb33dd7402',
         description: req.body.description,
     };
     try {
@@ -220,13 +222,12 @@ let putUpdateDoctorWithoutFile = async (req, res) => {
             description: req.body.introEditDoctor,
             specializationId: req.body.specializationDoctor,
         };
-        console.log(item);
         let mess = await doctorService.updateDoctorInfo(item);
-        console.log(mess.errMessage);
-        return res.redirect('/users/manage/doctor');
-        // return res.status(200).json({
-        //     message: 'update info doctor successful',
-        // });
+        if (mess.errCode === 0) {
+            return res.redirect('/users/manage/doctor');
+        } else {
+            return res.redirect('/users/doctor/edit/:id');
+        }
     } catch (e) {
         console.log(e);
         return res.status(500).json(e);
@@ -574,6 +575,7 @@ let postEditPatient = async (req, res) => {
         gender: req.body.gender,
         address: req.body.addressDoctor,
         description: req.body.introEditDoctor,
+        birthday: req.body.birthday,
     };
     let patient = await doctorService.getPatientForEditPage(req.params.id);
     let specializations = await homeService.getSpecializations();
