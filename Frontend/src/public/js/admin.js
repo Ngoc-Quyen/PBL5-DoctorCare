@@ -537,6 +537,10 @@ function deleteSpecializationById() {
             success: function (data) {
                 node.closest('tr').remove();
                 alertify.success('Xóa thành công');
+                // Chờ 2 giây và sau đó tải lại trang với đường dẫn mới
+                setTimeout(function () {
+                    window.location.href = '/users/manage/specialization'; // Thay thế '/your-new-url' bằng đường dẫn mới bạn muốn tải lại
+                }, 2000); // 2000 milliseconds = 2 giây
             },
             error: function (err) {
                 alertify.error('Đã xảy ra lỗi, vui lòng thử lại sau!');
