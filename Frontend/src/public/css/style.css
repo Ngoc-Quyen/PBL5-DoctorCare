@@ -1118,3 +1118,12 @@ h3.show-title-post {
   filter: brightness(90%); /* Reduce brightness on hover */
 }
 
+.card.shadow.mb-4 {
+  width: 100%; /* Định kích thước chiều rộng để phù hợp với phần tử chứa */
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  height: 80vh;
+ 
+  /* Bạn có thể không cần thiết lập kích thước chiều cao, nó sẽ tự động co dãn theo nội dung */
+}
