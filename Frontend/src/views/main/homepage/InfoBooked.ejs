@@ -39,112 +39,194 @@
             </div>
             
             <% if (user) { %>
-                <div class="col-md-3 d-none d-md-flex justify-content-around align-self-center" id="loggedIn">
-                    <a href="/InfoUser">
-                        <img src="../images/background/User.png" alt="User logo" class="logo">
-                    </a>
-                    <a href="/InfoBooked">
-                        <img src="../images/background/Lichhen.png" alt="Lichhen logo" class="logo">
-                    </a>
-                    <a href="https://www.facebook.com/profile.php?id=100011010698678" target="_blank">
-                        <img src="../images/background/Vector.png" alt="Contact logo" class="logo">
-                    </a>
-                    <a href="/logout">
-                        <img src="../images/background/logout.png" alt="Contact logo" class="logo">
-                    </a>
-                </div>
-            <% } else { %>
-                <div class="col-md-3 mt-3 d-none d-md-flex justify-content-around align-self-center" id="notLoggedIn">
-                    <div class="d-flex flex-column">
-                        <a href="/login" class="btn btn-design1 ">Đăng nhập</a>
+                    <div class="col-md-3 d-none d-md-flex justify-content-around align-self-center" id="loggedIn">
+                        <a href="/InfoUser" >
+                            <img src="../images/background/User.png" alt="User logo" class="logo">
+                        </a>
+                        <a href="/InfoBooked" >
+                            <img src="../images/background/Lichhen.png" alt="Lichhen logo" class="logo">
+                        </a>
+                        <a href="https://www.facebook.com/profile.php?id=100011010698678" target="_blank">
+                            <img src="../images/background/Vector.png" alt="Contact logo" class="logo">
+                        </a>
+                        <a href="/logout" >
+                            <img src="../images/background/logout.png" alt="Contact logo" class="logo">
+                        </a>
                     </div>
-                    <div class="d-flex flex-column">
-                        <a href="/register" class="btn btn-design2 ">Đăng ký</a>
+                <% } else { %>
+                    <div class="col-md-3 mt-3 d-none d-md-flex justify-content-around align-self-center" id="notLoggedIn">
+                        <div class="d-flex flex-column">
+                            <a href="/login" class="btn btn-design1 ">Đăng nhập</a>
+                        </div>
+                        <div class="d-flex flex-column">
+                            <a href="/register" class="btn btn-design2 ">Đăng ký</a>
+                        </div>
+                        <a href="https://www.facebook.com/profile.php?id=100011010698678" target="_blank">
+                            <img src="../images/background/Vector.png" alt="Contact logo" class="logo">
+                        </a>
                     </div>
-                    <a href="https://www.facebook.com/profile.php?id=100011010698678" target="_blank">
-                        <img src="../images/background/Vector.png" alt="Contact logo" class="logo">
-                    </a>
-                </div>
-            <% } %>
+                <% } %>
         </div>
     </div>
 </section>
+
+
+
 <section class="detail-info-specialization">
-    <div class="container">
-        <div class="container">
-            <div class="row">
-                <div class="col-12 mt-3">
-                    <a class="text-decoration-none" href="/"><i class="fa fa-home" aria-hidden="true"></i></a><span aria-hidden="true">&raquo;</span>
-                    <span style="text-transform: uppercase; font-size: 16px;">
-                        Lịch hẹn đã đặt
-                    </span>
-                </div>
-            </div>
-        </div>
-    </div>
-  </section>
+  <div class="container">
+      <div class="container">
+          <div class="row">
+              <div class="col-12 mt-3">
+                  <a class="text-decoration-none" href="/"><i class="fa fa-home" aria-hidden="true"></i></a><span aria-hidden="true">&raquo;</span>
+                  <span style="text-transform: uppercase">
+                      Lịch sử khám
+                  </span>
+              </div>
+          </div>
+      </div>
+  </div>
+</section>
+
 
 <section class="mt-1" style="background-color: #ffffff; height: 700px; display: flex; align-items: center;">
-    <div class="container" id="container-booked">
-        <div class="form-group2 infor-booked-container">
-          <div class="row">
-            <div class="col-md-4">
-              <div class="form-group2">
-                <img src="/images/users/doctor.jpg" alt="avatar-user"><br>
-              </div>
-              <div style="text-align: center;">
-                <label for="full-name" style="color: #007bff; display: inline-block;font-size: 18px;">Nguyễn Văn A</label>
-              </div>
-              <div class="form-group-infor2">
-                <div><i class="fa fa-clock-o" aria-hidden="true" style="color: chocolate;"></i> 9:00-9:15</div>
-                <div><i class="fa fa-calendar" aria-hidden="true" style="color: chocolate;"></i> 10/05/2024</div>
-              </div>   
-            </div>
-            <div class="col-md-6" style="margin-left: 20px;">
-              <div>
-                Đặt lịch hẹn thành công!
-                Cảm ơn bạn đã đặt chuyến thăm khám từ DoctorCare. Hệ
-                thống đã ghi lại cuộc hẹn. Nhân viên hỗ trợ sẽ gọi điện xác nhận
-                trong vòng 24h sau khi đặt vé.
-                Cần hỗ trợ vui lòng liên hệ hotline: 911 911
-              </div>
-              <div class="form-group2" style="margin-top: 50px;">
-                <div>
-                  <button class="btn-booked" onclick="" >Đã đặt khám</button>
-                </div>
-                <div>
-                  <button class="btn-cancel-booked" onclick="">Hủy lịch hẹn</button>
-                </div>
-              </div>
-            </div>
-          </div>            
+  <div class="container" id="container-user">
+    <form class="infor-user"></form>
+    <div class="form-container infor-user-container1">
+        <div style="background-color: #ABF3FD; height: 50px; font-size: 20px;">
+         <i class="fa fa-user-circle-o" aria-hidden="true" style="color: #007bff;"></i> 
+          Thông tin người dùng
         </div>
-        
-      </div>
-</section>
-  
-
-
-</section>
-<footer class="sec-foot">
-    <div class="container">
-        <div class="row">
-            <div class="col-md-6">
-                <h4>Liên kết</h6>
-                <ul class="footer-links">
-                    <li><a href="/">Trang chủ</a></li>
-                    <li><a href="/all-specializations">Chuyên khoa</a></li>
-                    <li><a href="/all-doctors %>">Bác sĩ</a></li>
-                    <li><a href="/all-posts">Hỏi đáp cộng đồng</a></li>
-                </ul>
+       
+        <div class="form-group1">
+          <img src="/images/users/doctor.jpg" alt="avatar-user"><br>
+        </div>
+        <div  style="text-align: center;">
+            <label for="full-name" style="background-color: #ABF3FD;padding: 5px 15px; display: inline-block;">Nguyễn Văn A</label>
+        </div>
+        <div class="form-group-infor1">
+            <div>
+                <div><i class="fa fa-history" aria-hidden="true" style="color: #007bff;"></i> Lịch sử khám bệnh</div>
+                
+               
             </div>
-            <div class="col-md-6">
-                <h4>Thông tin liên hệ</h6>
-                <p>Địa chỉ: 64 Nguyễn Lương Bằng, Hòa Khánh, Liên Chiểu, Đà Nẵng</p>
-                <p>Website: <a href="http://DoctorCare.com">http://DoctorCare.com</a></p>
-                <p>Email: <a href="mailto:Doctorcare@gmail.com">Doctorcare@gmail.com</a></p>
-                <p>Số điện thoại: 0123 456 789</p>
+            <div>
+                <!-- Nội dung hàng thứ hai ở đây -->
+                <div><i class="fa fa-info-circle" aria-hidden="true" style="color: #007bff;"></i> Thông tin cá nhân</div>
+            </div>
+            <div>
+                <!-- Nội dung hàng thứ ba ở đây -->
+                 <div><i class="fa fa-unlock-alt" aria-hidden="true" style="color: #007bff;"></i> Đổi mật khẩu</div>
+            </div>
+        </div>
+     
+      </div>
+    
+    <div class="form-container infor-user-detail">
+        <div class="card-header py-3">
+            <ul class="nav nav-tabs" id="myTab" role="tablist">
+                <li class="nav-item">
+                    <a class="nav-link active" id="patient-new-tab" data-toggle="tab" href="#newPatients" role="tab"
+                       aria-controls="home" aria-selected="true">Lịch hẹn (<span id="count-new"></span>) </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" id="patient-need-confirm-tab" data-toggle="tab" href="#patientsNeedConfirm"
+                       role="tab"
+                       aria-controls="profile" aria-selected="false">Đã khám(<span id="count-need"></span>) </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" id="patient-confirmed-tab" data-toggle="tab" href="#patientConfirmed" role="tab"
+                       aria-controls="contact" aria-selected="false">Đã hủy(<span id="count-confirmed"></span>) </a>
+                </li>
+                
+            </ul>
+        </div>
+        <div class="card-body">
+            <div class="table-responsive">
+                <div class="tab-content" id="myTabContent">
+                    <div class="tab-pane fade show active" id="newPatients" role="tabpanel"
+                         aria-labelledby="patient-new-tab">
+                        <table class="table table-bordered" id="tableNewPatients" width="100%" cellspacing="0">
+                            <thead>
+    
+                            <tr>
+                                <th>Ngày khám</th>
+                                <th>Bác sĩ </th>
+                                <th>Chuyên khoa</th>
+                                <th>Gio khám</th>
+                                <th class="w-25">Hành động</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+    
+                            </tbody>
+                        </table>
+                    </div>
+                    <div class="tab-pane fade" id="patientsNeedConfirm" role="tabpanel"
+                         aria-labelledby="patient-need-confirm-tab">
+                        <table class="table table-bordered" id="tableNeedConfirmPatients" width="100%" cellspacing="0">
+                            <thead>
+                            <tr>
+                                <th>Ngày khám</th>
+                                <th>Bác sĩ </th>
+                                <th>Chuyên khoa</th>
+                                <th>Gio khám</th>
+                                <th class="w-25">Hành động</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+    
+                            </tbody>
+                        </table>
+    
+                    </div>
+                    <div class="tab-pane fade" id="patientConfirmed" role="tabpanel"
+                         aria-labelledby="patient-confirmed-tab">
+                        <table class="table table-bordered" id="tableConfirmedPatients" width="100%" cellspacing="0">
+                            <thead>
+                            <tr>
+                                <th>Ngày khám</th>
+                                <th>Bác sĩ </th>
+                                <th>Chuyên khoa</th>
+                                <th>Gio khám</th>
+                                <th class="w-25">Hành động</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+    
+                            </tbody>
+                        </table>
+    
+                    </div>
+                    
+                </div>
+    
             </div>
         </div>
     </div>
+     
+    </form>
+  </div>
+  
+</section>
+<footer class="sec-foot">
+  <div class="container">
+      <div class="row">
+          <div class="col-md-6">
+              <h4>Liên kết</h6>
+              <ul class="footer-links">
+                  <li><a href="/">Trang chủ</a></li>
+                  <li><a href="/all-specializations">Chuyên khoa</a></li>
+                  <li><a href="/all-doctors %>">Bác sĩ</a></li>
+                  <li><a href="/all-posts">Hỏi đáp cộng đồng</a></li>
+              </ul>
+          </div>
+          <div class="col-md-6">
+              <h4>Thông tin liên hệ</h6>
+              <p>Địa chỉ: 64 Nguyễn Lương Bằng, Hòa Khánh, Liên Chiểu, Đà Nẵng</p>
+              <p>Website: <a href="http://DoctorCare.com">http://DoctorCare.com</a></p>
+              <p>Email: <a href="mailto:Doctorcare@gmail.com">Doctorcare@gmail.com</a></p>
+              <p>Số điện thoại: 0123 456 789</p>
+          </div>
+      </div>
+  </div>
 </footer>
