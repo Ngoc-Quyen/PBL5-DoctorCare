@@ -72,6 +72,10 @@ let initRoutes = (app) => {
     router.get('/all-specializations', home.getPageAllSpecializations);
     router.get('/InfoUser', home.getPageInfoUser);
     router.get('/InfoBooked', home.getPageInfoBooked);
+    router.get('/cancel', home.getPageCancel);
+    router.get('/canceled', home.getPageCanceled);
+    router.get('/changePass', home.getPageChangePass);
+
 
     router.get('/webhook', bot.getWebhookFB);
     router.post('/webhook', bot.postWebhookFB);

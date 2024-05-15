@@ -311,6 +311,27 @@ let getPageInfoUser = async (req, res) => {
         console.log(e);
     }
 };
+let getPageChangePass = async (req, res) => {
+    try {
+        return res.render('main/homepage/changePass.ejs', {});
+    } catch (e) {
+        console.log(e);
+    }
+};
+let getPageCancel = async (req, res) => {
+    try {
+        return res.render('main/homepage/cancel.ejs', {});
+    } catch (e) {
+        console.log(e);
+    }
+};
+let getPageCanceled = async (req, res) => {
+    try {
+        return res.render('main/homepage/canceled.ejs', {});
+    } catch (e) {
+        console.log(e);
+    }
+};
 let getPageInfoBooked = async (req, res) => {
     try {
         return res.render('main/homepage/InfoBooked.ejs', {});
@@ -342,4 +363,7 @@ module.exports = {
     getPageInfoUser: getPageInfoUser,
     getPageInfoBooked: getPageInfoBooked,
     getPageAllSpecializations: getPageAllSpecializations,
+    getPageCancel: getPageCancel,
+    getPageCanceled: getPageCanceled,
+    getPageChangePass: getPageChangePass,
 };
