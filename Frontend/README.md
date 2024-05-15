@@ -101,3 +101,5 @@ Các quy trình sử dụng web (frontend)
 
 -   Thống kê:
     |\_\_ Thống kê (main/user/admins/manageChartDoctor.ejs)
+
+IP máy Ngọc Quyên: 192.168.1.39

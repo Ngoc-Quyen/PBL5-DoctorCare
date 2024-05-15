@@ -30,12 +30,20 @@
                                 </td>
                                 <td>
                                     <% schedules.forEach(function(schedule) { %>
-                                        <% if(schedule.date===day) { %>
-                                            <button class="btn btn-outline-warning mr-3 mt-1 mb-3">
+                                        <% if(schedule.date===day) { if(schedule.sumBooking !=="0" ) { %>
+                                            <button class="btn btn-primary mr-3 mt-1 mb-3">
                                                 <%= schedule.time %>
                                             </button>
-                                            <% } %>
-                                                <% }) %>
+                                            <% } else { %>
+                                                <button class="btn btn-outline-warning mr-3 mt-1 mb-3">
+                                                    <%= schedule.time %>
+                                                </button>
+
+                                                <%} %>
+
+
+                                                    <% } %>
+                                                        <% }) %>
                                 </td>
                                 <td class="">
                                     <!-- <a class="edit-doctor-info" href="#" title="Edit"><i

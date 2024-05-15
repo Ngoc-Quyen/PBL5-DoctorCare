@@ -4,7 +4,7 @@ import _ from 'lodash';
 import moment from 'moment';
 import multer from 'multer';
 
-const MAX_BOOKING = 2;
+const MAX_BOOKING = 1;
 
 function stringToDate(_date, _format, _delimiter) {
     let formatLowerCase = _format.toLowerCase();

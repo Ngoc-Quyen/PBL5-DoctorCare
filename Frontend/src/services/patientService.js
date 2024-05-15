@@ -1,8 +1,15 @@
 import db from './../models';
 import mailer from './../config/mailer';
-import { transMailBookingNew, transMailBookingSuccess, transMailBookingFailed } from '../../lang/en';
+import {
+    transMailBookingNew,
+    transMailBookingSuccess,
+    transMailBookingFailed,
+    mailEnd,
+    transMailRemedy,
+} from '../../lang/en';
 import helper from '../helper/client';
 import { reject, resolve } from 'bluebird';
+import { where } from 'sequelize';
 
 const statusPendingId = 3;
 const statusFailedId = 2;
@@ -81,7 +88,7 @@ let getForPatientsTabs = async (idDoctor) => {
     });
 };
 
-let changeStatusPatient = (data, logs) => {
+let changeStatusPatient = (data, logs, historyBreath, moreInfo) => {
     return new Promise(async (resolve, reject) => {
         try {
             let patient = await db.Patient.findOne({
@@ -92,7 +99,6 @@ let changeStatusPatient = (data, logs) => {
                 where: { id: patient.doctorId },
                 attributes: ['name', 'avatar'],
             });
-
             //update tổng số lượt đặt bác sĩ khi status = thành công
             if (data.statusId === statusSuccessId) {
                 let schedule = await db.Schedule.findOne({
@@ -119,7 +125,7 @@ let changeStatusPatient = (data, logs) => {
             let log = await db.AdminLog.create(logs);
 
             //send email
-            if (data.statusId === statusSuccessId) {
+            if (data.statusId === statusPendingId) {
                 let dataSend = {
                     time: patient.timeBooking,
                     date: patient.dateBooking,
@@ -143,6 +149,16 @@ let changeStatusPatient = (data, logs) => {
                     transMailBookingFailed.subject,
                     transMailBookingFailed.template(dataSend)
                 );
+            }
+            if (data.statusId === statusSuccessId) {
+                let dataSend = {
+                    time: patient.timeBooking,
+                    date: patient.dateBooking,
+                    doctor: doctor.name,
+                    moreInfo: moreInfo,
+                    result: historyBreath,
+                };
+                await mailer.sendEmailNormal(patient.email, mailEnd.subject, mailEnd.template(dataSend));
             }
 
             resolve(patient);
@@ -216,7 +232,6 @@ let createNewPatient = (data) => {
                         console.log('An error occurs when sending an email to: ' + patient.email);
                         console.log(isEmailSend);
                     }
-
                     resolve(patient);
                 } else {
                     resolve('Max booking');

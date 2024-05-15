@@ -883,6 +883,10 @@ function handleBtnNewPatientOk() {
             success: function (data) {
                 let patient = data.patient;
                 addNewRowTablePending(patient);
+                alertify.success('Đã xác nhận lịch hẹn thành công');
+                setTimeout(function () {
+                    window.location.href = '/admin/get-new-patients'; // Thay thế '/your-new-url' bằng đường dẫn mới bạn muốn tải lại
+                }, 2000);
             },
             error: function (error) {
                 console.log(error);
@@ -1119,6 +1123,10 @@ function handleCancelBtn() {
             success: function (data) {
                 let patient = data.patient;
                 addNewRowTableCanceled(patient);
+                alertify.success('Đã hủy lịch hẹn thành công');
+                setTimeout(function () {
+                    window.location.href = '/admin/get-new-patients'; // Thay thế '/your-new-url' bằng đường dẫn mới bạn muốn tải lại
+                }, 2000);
             },
             error: function (error) {
                 console.log(error);
