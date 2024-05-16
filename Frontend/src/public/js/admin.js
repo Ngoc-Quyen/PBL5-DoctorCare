@@ -799,10 +799,10 @@ function loadNewPatientsForAdmin() {
             data.object.newPatients.forEach((patient) => {
                 htmlNew += `
                 <tr>
-                    <td> ${patient.dateBooking}  </td>
-                    <td> ${patient.doctorId}     </td>
-                    <td> ${patient.email}     </td> 
-                    <td>${patient.timeBooking} </td>
+                <td> ${patient.id} - ${patient.name}   </td>
+                <td> ${patient.phone}     </td>
+                <td> ${patient.email}     </td>
+                <td>${patient.dateBooking} (${patient.timeBooking})   </td>
                     <td> 
                     <button type="button"  data-patient-id="${patient.id}" class="ml-3 btn btn-primary btn-new-patient-ok"> Chấp nhận</button>
                     <button  type="button" data-patient-id="${patient.id}" class="ml-3 btn btn-danger btn-new-patient-cancel"> Hủy </button>
