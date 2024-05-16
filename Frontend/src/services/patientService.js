@@ -14,19 +14,30 @@ let getInfoBooking = (id) => {
         try {
             let patient = await db.Patient.findOne({
                 where: { id: id },
-                attributes: ['id', 'doctorId', 'timeBooking', 'dateBooking']
+                attributes: ['id', 'userId', 'doctorId', 'timeBooking', 'dateBooking'],
+                include: [{
+                    model: db.User,
+                    as: 'doctor',
+                    attributes: ['name', 'avatar']
+                }]
+
             });
 
             if (!patient) {
                 reject(`Can't get patient with id = ${id}`);
             }
-            let doctor = await db.User.findOne({
-                where: { id: patient.doctorId },
-                attributes: ['name', 'avatar']
-            });
+            // let doctor = await db.User.findOne({
+            //     where: { id: patient.doctorId },
+            //     attributes: ['name', 'avatar']
+            // });
 
-            patient.setDataValue('doctorName', doctor.name);
-            patient.setDataValue('doctorAvatar', doctor.avatar);
+
+            // patient.setDataValue('doctorName', doctor.name);
+            // patient.setDataValue('doctorAvatar', doctor.avatar);
+            // patient.setDataValue('patientTime', patient.timeBooking);
+            // patient.setDataValue('patientDate', patient.dateBooking);
+            patient.setDataValue('doctorName', patient.doctor.name);
+            patient.setDataValue('doctorAvatar', patient.doctor.avatar);
             patient.setDataValue('patientTime', patient.timeBooking);
             patient.setDataValue('patientDate', patient.dateBooking);
             resolve(patient);
@@ -36,19 +47,23 @@ let getInfoBooking = (id) => {
     });
 };
 
-let getForPatientsTabs = () => {
+let getForPatientsTabs = async(idDoctor) => {
     return new Promise(async(resolve, reject) => {
         try {
             let newPatients = await db.Patient.findAll({
                 where: {
-                    statusId: statusNewId
+                    statusId: statusNewId,
+                    doctorId: idDoctor,
                 },
-                order: [['updatedAt', 'DESC']],
+                order: [
+                    ['updatedAt', 'DESC']
+                ],
             });
 
             let pendingPatients = await db.Patient.findAll({
                 where: {
-                    statusId: statusPendingId
+                    statusId: statusPendingId,
+                    doctorId: idDoctor,
                 },
                 order: [
                     ['updatedAt', 'DESC']
@@ -57,7 +72,8 @@ let getForPatientsTabs = () => {
 
             let confirmedPatients = await db.Patient.findAll({
                 where: {
-                    statusId: statusSuccessId
+                    statusId: statusSuccessId,
+                    doctorId: idDoctor,
                 },
                 order: [
                     ['updatedAt', 'DESC']
@@ -66,7 +82,8 @@ let getForPatientsTabs = () => {
 
             let canceledPatients = await db.Patient.findAll({
                 where: {
-                    statusId: statusFailedId
+                    statusId: statusFailedId,
+                    doctorId: idDoctor,
                 },
                 order: [
                     ['updatedAt', 'DESC']
@@ -77,8 +94,102 @@ let getForPatientsTabs = () => {
                 newPatients: newPatients,
                 pendingPatients: pendingPatients,
                 confirmedPatients: confirmedPatients,
-                canceledPatients: canceledPatients
+                canceledPatients: canceledPatients,
             });
+        } catch (e) {
+            reject(e);
+        }
+    });
+};
+
+let getForPatientForUser = async(idUser) => {
+    return new Promise(async(resolve, reject) => {
+        try {
+            let newPatients = await db.Patient.findAll({
+                where: {
+                    statusId: statusNewId,
+                    userId: idUser,
+                },
+                order: [
+                    ['updatedAt', 'DESC']
+                ],
+            });
+
+            let pendingPatients = await db.Patient.findAll({
+                where: {
+                    statusId: statusPendingId,
+                    userId: idUser,
+                },
+                order: [
+                    ['updatedAt', 'DESC']
+                ],
+            });
+
+            let confirmedPatients = await db.Patient.findAll({
+                where: {
+                    statusId: statusSuccessId,
+                    userId: idUser,
+                },
+                order: [
+                    ['updatedAt', 'DESC']
+                ],
+            });
+
+            let canceledPatients = await db.Patient.findAll({
+                where: {
+                    statusId: statusFailedId,
+                    userId: idUser,
+                },
+                order: [
+                    ['updatedAt', 'DESC']
+                ],
+            });
+
+            resolve({
+                newPatients: newPatients,
+                pendingPatients: pendingPatients,
+                confirmedPatients: confirmedPatients,
+                canceledPatients: canceledPatients,
+            });
+        } catch (e) {
+            reject(e);
+        }
+    });
+};
+let changeStatusPatientForUser = (data, logs) => {
+    return new Promise(async(resolve, reject) => {
+        try {
+            let patient = await db.Patient.findOne({
+                where: { id: data.id },
+            });
+
+            let user = await db.User.findOne({
+                where: { id: patient.UserId },
+                attributes: ['name', 'avatar', 'id'],
+            });
+
+            //update tổng số lượt đặt bác sĩ khi status = thành công
+            if (data.statusId === statusSuccessId) {
+                let schedule = await db.Schedule.findOne({
+                    where: { userId: patient.userId, time: patient.timeBooking, date: patient.dateBooking },
+                });
+
+                let sum = +schedule.sumBooking;
+                await schedule.update({ sumBooking: sum + 1 });
+            }
+
+            //update tổng số lượt cho user khi status = hủy
+            if (data.statusId === statusFailedId) {
+                let schedule = await db.Schedule.findOne({
+                    where: { userId: patient.userId, time: patient.timeBooking, date: patient.dateBooking },
+                });
+
+                let sum = +schedule.sumBooking;
+                await schedule.update({ sumBooking: sum - 1 });
+            }
+
+            await patient.update(data);
+            resolve(patient);
         } catch (e) {
             reject(e);
         }
@@ -88,9 +199,8 @@ let getForPatientsTabs = () => {
 let changeStatusPatient = (data, logs) => {
     return new Promise(async(resolve, reject) => {
         try {
-
             let patient = await db.Patient.findOne({
-                where: { id: data.id }
+                where: { id: data.id },
             });
 
             let doctor = await db.User.findOne({
@@ -98,11 +208,10 @@ let changeStatusPatient = (data, logs) => {
                 attributes: ['name', 'avatar'],
             });
 
-
             //update tổng số lượt đặt bác sĩ khi status = thành công
             if (data.statusId === statusSuccessId) {
                 let schedule = await db.Schedule.findOne({
-                    where: { doctorId: patient.doctorId, time: patient.timeBooking, date: patient.dateBooking }
+                    where: { doctorId: patient.doctorId, time: patient.timeBooking, date: patient.dateBooking },
                 });
 
                 let sum = +schedule.sumBooking;
@@ -112,13 +221,12 @@ let changeStatusPatient = (data, logs) => {
             //update tổng số lượt đặt bác sĩ khi status = hủy
             if (data.statusId === statusFailedId) {
                 let schedule = await db.Schedule.findOne({
-                    where: { doctorId: patient.doctorId, time: patient.timeBooking, date: patient.dateBooking }
+                    where: { doctorId: patient.doctorId, time: patient.timeBooking, date: patient.dateBooking },
                 });
 
                 let sum = +schedule.sumBooking;
                 await schedule.update({ sumBooking: sum - 1 });
             }
-
 
             await patient.update(data);
 
@@ -130,18 +238,26 @@ let changeStatusPatient = (data, logs) => {
                 let dataSend = {
                     time: patient.timeBooking,
                     date: patient.dateBooking,
-                    doctor: doctor.name
+                    doctor: doctor.name,
                 };
-                await mailer.sendEmailNormal(patient.email, transMailBookingSuccess.subject, transMailBookingSuccess.template(dataSend));
+                await mailer.sendEmailNormal(
+                    patient.email,
+                    transMailBookingSuccess.subject,
+                    transMailBookingSuccess.template(dataSend)
+                );
             }
             if (data.statusId === statusFailedId && patient.email) {
                 let dataSend = {
                     time: patient.timeBooking,
                     date: patient.dateBooking,
                     doctor: doctor.name,
-                    reason: log.content
+                    reason: log.content,
                 };
-                await mailer.sendEmailNormal(patient.email, transMailBookingFailed.subject, transMailBookingFailed.template(dataSend));
+                await mailer.sendEmailNormal(
+                    patient.email,
+                    transMailBookingFailed.subject,
+                    transMailBookingFailed.template(dataSend)
+                );
             }
 
             resolve(patient);
@@ -156,9 +272,9 @@ let isBookAble = async(doctorId, date, time) => {
         where: {
             doctorId: doctorId,
             date: date,
-            time: time
+            time: time,
         },
-        attributes: ['id', 'doctorId', 'date', 'time', 'maxBooking', 'sumBooking']
+        attributes: ['id', 'doctorId', 'date', 'time', 'maxBooking', 'sumBooking'],
     });
 
     if (schedule) {
@@ -168,14 +284,13 @@ let isBookAble = async(doctorId, date, time) => {
 };
 
 let createNewPatient = (data) => {
-    return new Promise((async(resolve, reject) => {
+    return new Promise(async(resolve, reject) => {
         try {
-
             let schedule = await db.Schedule.findOne({
                 where: {
                     doctorId: data.doctorId,
                     date: data.dateBooking,
-                    time: data.timeBooking
+                    time: data.timeBooking,
                 },
             }).then(async(schedule) => {
                 if (schedule && schedule.sumBooking < schedule.maxBooking) {
@@ -189,14 +304,14 @@ let createNewPatient = (data) => {
 
                     let doctor = await db.User.findOne({
                         where: { id: patient.doctorId },
-                        attributes: ['name', 'avatar']
+                        attributes: ['name', 'avatar'],
                     });
 
                     //update logs
                     let logs = {
                         patientId: patient.id,
-                        content: "The patient made an appointment from the system ",
-                        createdAt: Date.now()
+                        content: 'The patient made an appointment from the system ',
+                        createdAt: Date.now(),
                     };
 
                     await db.AdminLog.create(logs);
@@ -204,7 +319,7 @@ let createNewPatient = (data) => {
                     let dataSend = {
                         time: patient.timeBooking,
                         date: patient.dateBooking,
-                        doctor: doctor.name
+                        doctor: doctor.name,
                     };
 
                     let isEmailSend = await mailer.sendEmailNormal(
@@ -219,15 +334,13 @@ let createNewPatient = (data) => {
 
                     resolve(patient);
                 } else {
-                    resolve("Max booking")
+                    resolve('Max booking');
                 }
-
             });
-
         } catch (e) {
             reject(e);
         }
-    }));
+    });
 };
 
 let getDetailPatient = (id) => {
@@ -235,9 +348,9 @@ let getDetailPatient = (id) => {
         try {
             let patient = await db.Patient.findOne({
                 where: { id: id },
-                include: { model: db.ExtraInfo, required: false }
+                include: { model: db.ExtraInfo, required: false },
             });
-            resolve(patient)
+            resolve(patient);
         } catch (e) {
             reject(e);
         }
@@ -249,23 +362,25 @@ let getLogsPatient = (id) => {
         try {
             let logs = await db.AdminLog.findAll({
                 where: {
-                    patientId: id
-                }
+                    patientId: id,
+                },
             });
 
             if (logs.length) {
-                await Promise.all(logs.map(async(log) => {
-                    if (log.adminId) {
-                        let admin = await db.User.findOne({
-                            where: { id: log.adminId },
-                            attributes: ['name']
-                        });
-                        log.setDataValue('adminName', admin.name);
-                    } else {
-                        log.setDataValue('adminName', '');
-                    }
-                    return log;
-                }));
+                await Promise.all(
+                    logs.map(async(log) => {
+                        if (log.adminId) {
+                            let admin = await db.User.findOne({
+                                where: { id: log.adminId },
+                                attributes: ['name'],
+                            });
+                            log.setDataValue('adminName', admin.name);
+                        } else {
+                            log.setDataValue('adminName', '');
+                        }
+                        return log;
+                    })
+                );
             }
             resolve(logs);
         } catch (e) {
@@ -279,22 +394,46 @@ let getComments = () => {
         try {
             let comments = await db.Comment.findAll({
                 where: {
-                    status: false
-                }
+                    status: false,
+                },
             });
             resolve(comments);
-
         } catch (e) {
-            reject(e)
+            reject(e);
+        }
+    });
+};
+let updateExtrainfos = async(id, historyBreath, moreInfo) => {
+    return new Promise(async(resolve, reject) => {
+        try {
+            let extrainfos = await db.ExtraInfo.findOne({
+                where: {
+                    patientId: id,
+                },
+            });
+            if (!extrainfos) {
+                return res.status(200).json({
+                    message: 'khong co patient trong bang extrainfor!!',
+                });
+            }
+            extrainfos.historyBreath = historyBreath;
+            extrainfos.moreInfo = moreInfo;
+            await extrainfos.save();
+            resolve(extrainfos);
+        } catch (error) {
+            reject(error);
         }
     });
 };
 module.exports = {
     getInfoBooking: getInfoBooking,
     getForPatientsTabs: getForPatientsTabs,
+    getForPatientForUser: getForPatientForUser,
     changeStatusPatient: changeStatusPatient,
+    changeStatusPatientForUser: changeStatusPatientForUser,
     createNewPatient: createNewPatient,
     getDetailPatient: getDetailPatient,
     getLogsPatient: getLogsPatient,
-    getComments: getComments
+    getComments: getComments,
+    updateExtrainfos: updateExtrainfos,
 };

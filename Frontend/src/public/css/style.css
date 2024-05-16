@@ -507,6 +507,12 @@ footer span {
     background-color: #2a96a5;
 }
 
+.detail-info-specialization {
+    height: 50px;
+    background-color: #e6e6ee;
+    margin-bottom: 30px;
+}
+
 .doctor-schedule .doctor-time {
     font-size: 80%;
     border-radius: 5px;
