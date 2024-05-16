@@ -155,9 +155,9 @@ function stringToDate(_date, _format, _delimiter) {
 let getInfoStatistical = (month) => {
     return new Promise(async (resolve, reject) => {
         try {
-            let startDate = Date.parse(stringToDate(`01/${month}/2020`, 'dd/MM/yyyy', '/'));
-            let endDate = Date.parse(stringToDate(`31/${month}/2020`, 'dd/MM/yyyy', '/'));
-
+            let year = moment().year();
+            let startDate = Date.parse(stringToDate(`01/${month}/${year}`, 'dd/MM/yyyy', '/'));
+            let endDate = Date.parse(stringToDate(`31/${month}/${year}`, 'dd/MM/yyyy', '/'));
             let patients = await db.Patient.findAndCountAll({
                 attributes: ['id', 'doctorId'],
                 where: {
@@ -207,9 +207,9 @@ let getInfoStatistical = (month) => {
                     },
                     attributes: ['id', 'name'],
                 });
-                bestDoctor.setDataValue('count', doctorObject.patientId.length);
+                // Thêm giá trị 'count' trực tiếp vào đối tượng Sequelize
+                bestDoctor.dataValues.count = doctorObject.patientId.length;
             }
-
             resolve({
                 patients: patients,
                 doctors: doctors,
@@ -222,7 +222,7 @@ let getInfoStatistical = (month) => {
     });
 };
 
-let getInfoDoctorChart = (month) => {
+let getInfoDoctorChart = async (month, doctorId) => {
     return new Promise(async (resolve, reject) => {
         try {
             let startDate = Date.parse(stringToDate(`01/${month}/2024`, 'dd/MM/yyyy', '/'));
@@ -233,6 +233,7 @@ let getInfoDoctorChart = (month) => {
                     createdAt: {
                         [Op.between]: [startDate, endDate],
                     },
+                    doctorId: doctorId,
                 },
             });
             resolve({ patients: patients });

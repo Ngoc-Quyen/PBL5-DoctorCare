@@ -203,7 +203,8 @@ let FileSendPatient = multer({
 
 let postCreateChart = async (req, res) => {
     try {
-        let object = await userService.getInfoDoctorChart(req.body.month);
+        let doctorId = await req.user.id;
+        let object = await userService.getInfoDoctorChart(req.body.month, doctorId);
         return res.status(200).json(object);
     } catch (e) {
         console.log(e);
