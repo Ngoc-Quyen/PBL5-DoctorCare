@@ -452,7 +452,8 @@ let getPostsPagination = async (req, res) => {
 
 let getForPatientsTabs = async (req, res) => {
     try {
-        let object = await patientService.getForPatientsTabs();
+        let idDoctor = req.user.id;
+        let object = await patientService.getForPatientsTabs(idDoctor);
         return res.status(200).json({
             message: 'success',
             object: object,
@@ -467,6 +468,8 @@ let postChangeStatusPatient = async (req, res) => {
     try {
         let id = req.body.patientId;
         let status = req.body.status;
+        let historyBreath = req.body.historyBreath;
+        let moreInfo = req.body.moreInfo;
         let statusId = '';
         let content = '';
         if (status === 'pending') {
@@ -495,9 +498,11 @@ let postChangeStatusPatient = async (req, res) => {
         };
 
         let patient = await patientService.changeStatusPatient(data, logs);
+        let extrainfor = await patientService.updateExtrainfos(id, historyBreath, moreInfo);
         return res.status(200).json({
             message: 'success',
             patient: patient,
+            extrainfos: extrainfor,
         });
     } catch (e) {
         console.log(e);

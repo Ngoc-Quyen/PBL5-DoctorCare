@@ -91,10 +91,10 @@ let updateSpecializationById = (data) => {
                 specialization.name = data.name;
                 specialization.description = data.description;
                 // Nếu có file ảnh được upload, gửi ảnh lên Firebase và lấy URL
-                let url = data.image;
-                if (url) {
-                    specialization.image = url;
-                }
+                // let url = data.image;
+                // if (url) {
+                //     specialization.image = url;
+                // }
                 await specialization.save();
                 resolve({
                     errCode: 0,

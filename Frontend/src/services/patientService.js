@@ -1,8 +1,8 @@
-import db from "./../models";
-import mailer from "./../config/mailer";
-import { transMailBookingNew, transMailBookingSuccess, transMailBookingFailed } from "../../lang/en";
-import helper from "../helper/client";
-
+import db from './../models';
+import mailer from './../config/mailer';
+import { transMailBookingNew, transMailBookingSuccess, transMailBookingFailed } from '../../lang/en';
+import helper from '../helper/client';
+import { reject, resolve } from 'bluebird';
 
 const statusPendingId = 3;
 const statusFailedId = 2;
@@ -43,9 +43,7 @@ let getForPatientsTabs = () => {
                 where: {
                     statusId: statusNewId
                 },
-                order: [
-                    ['updatedAt', 'DESC']
-                ],
+                order: [['updatedAt', 'DESC']],
             });
 
             let pendingPatients = await db.Patient.findAll({
@@ -209,9 +207,13 @@ let createNewPatient = (data) => {
                         doctor: doctor.name
                     };
 
-                    let isEmailSend = await mailer.sendEmailNormal(patient.email, transMailBookingNew.subject, transMailBookingNew.template(dataSend));
+                    let isEmailSend = await mailer.sendEmailNormal(
+                        patient.email,
+                        transMailBookingNew.subject,
+                        transMailBookingNew.template(dataSend)
+                    );
                     if (!isEmailSend) {
-                        console.log("An error occurs when sending an email to: " + patient.email);
+                        console.log('An error occurs when sending an email to: ' + patient.email);
                         console.log(isEmailSend);
                     }
 
