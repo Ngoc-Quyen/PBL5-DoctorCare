@@ -89,31 +89,34 @@
             <div class="container">
                 <div class="row">
                     <div class="col-8 mx-auto">
-                        <h2>Đặt lịch hẹn thành công!</h2>
+                        <h2>Hủy lịch hẹn thành công!</h2>
                         <hr>
                         <div class="booking-success row">
                             <div class="right-booking col-3 d-flex flex-column ">
-                                <img src="<%= patient.getDataValue('doctorAvatar')%>">
-                                <div class="mt-2">
-                                    <%= patient.getDataValue('doctorName')%>
+                                <div class="form-group1">
+                                    <!-- <img src="/images/users/doctor.jpg" alt="avatar-user"> -->
+                                    <img src="/images/users/doctor.jpg"><br>
+                                </div>
+                                <div style="text-align: center;">
+                                    <label for="full-name" style="background-color: #ABF3FD; padding: 5px 15px; display: inline-block;">
+                                        <%= user.name %>
+                                        <input type="hidden" id="full-name" name="full-name" value="<%= user.name %>">
+                                    </label>
+                
                                 </div>
                             </div>
                             <div class="left-booking col-9 mt-3">
-                                <div> Cảm ơn bạn đã đặt chuyến thăm khám từ DoctorCare. Hệ thống đã ghi lại cuộc hẹn.
-                                    Nhân viên hỗ trợ sẽ gọi điện xác nhận trong vòng 24h sau khi đặt vé.</div>
+                                <div> 
+                                    Đã hủy lịch hẹn thành công !!! Cảm ơn bạn đã đặt chuyến thăm khám từ DoctorCare.
+                                   
+                                    </div>
                                 <div class="mt-2">Cần hỗ trợ vui lòng liên hệ hotline: 0123 456 789 </div>
                                 <div class="col-md-12 d-none d-md-flex justify-content-between">
                                     <div class="d-flex flex-column">
-                                        <button class="btn btn-noclick">Đã đặt khám</button>
+                                        <button class="btn btn-noclick">Liên hệ hỗ trợ</button>
                                     </div>
-                                    <div class="d-flex flex-column">
-                                        <button class="btn btn-cancel" onclick="redirectToCancelPage()">Hủy</button>
-                                    </div>
-                                    <script>
-                                        function redirectToCancelPage() {
-                                            window.location.href = "/";
-                                        }
-                                    </script>
+                                    
+                                    
                                 </div>
                             </div>
                         </div>

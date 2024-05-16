@@ -782,10 +782,7 @@ function loadNewPatientsForAdmin() {
             let countPending = data.object.pendingPatients.length;
             let countConfirmed = data.object.confirmedPatients.length;
             let countCanceled = data.object.canceledPatients.length;
-            console.log('0');
-            console.log(countPending);
-            console.log(countConfirmed);
-            console.log(countCanceled);
+
             $('#count-new').text(`${countNew}`);
             $('#count-need').text(`${countPending}`);
             $('#count-confirmed').text(`${countConfirmed}`);
@@ -887,6 +884,10 @@ function handleBtnNewPatientOk() {
             success: function(data) {
                 let patient = data.patient;
                 addNewRowTablePending(patient);
+                alertify.success('Đã xác nhận lịch hẹn thành công');
+                setTimeout(function () {
+                    window.location.href = '/admin/get-new-patients'; // Thay thế '/your-new-url' bằng đường dẫn mới bạn muốn tải lại
+                }, 2000);
             },
             error: function(error) {
                 console.log(error);
@@ -1123,6 +1124,10 @@ function handleCancelBtn() {
             success: function(data) {
                 let patient = data.patient;
                 addNewRowTableCanceled(patient);
+                alertify.success('Đã hủy lịch hẹn thành công');
+                setTimeout(function () {
+                    window.location.href = '/admin/get-new-patients'; // Thay thế '/your-new-url' bằng đường dẫn mới bạn muốn tải lại
+                }, 2000);
             },
             error: function(error) {
                 console.log(error);
@@ -1393,11 +1398,11 @@ function statisticalAdmin(month) {
             } else {
                 $('#bestDoctor').text(`${data.bestDoctor.name} (${data.bestDoctor.count})`);
             }
-            if (data.bestAdmin === '') {
-                $('#bestAdmin').text(`Không có thông tin`);
-            } else {
-                $('#bestAdmin').text(`${data.bestAdmin.name} (${data.bestAdmin.count})`);
-            }
+            // if (data.bestAdmin === '') {
+            //     $('#bestAdmin').text(`Không có thông tin`);
+            // } else {
+            //     $('#bestAdmin').text(`${data.bestAdmin.name} (${data.bestAdmin.count})`);
+            // }
         },
         error: function(error) {
             alertify.error('Đã xảy ra lỗi khi lấy thông tin thống kê, vui lòng thử lại sau');

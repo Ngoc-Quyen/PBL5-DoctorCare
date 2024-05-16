@@ -1,15 +1,15 @@
-import bcrypt from 'bcryptjs';
-import db from './../models';
-import helper from '../helper/client';
-import elastic from './../config/elastic';
-import _, { includes } from 'lodash';
-import imgLoadFirebase from '../services/imgLoadFirebase';
+import bcrypt from "bcryptjs";
+import db from "./../models";
+import helper from "../helper/client";
+import elastic from "./../config/elastic";
+import _ from "lodash";
 
 const Sequelize = require('sequelize');
 const Op = Sequelize.Op;
 
 import moment from 'moment';
 import { reject, resolve } from 'bluebird';
+import { use } from 'passport';
 
 let salt = 7;
 
@@ -155,9 +155,9 @@ function stringToDate(_date, _format, _delimiter) {
 let getInfoStatistical = (month) => {
     return new Promise(async (resolve, reject) => {
         try {
-            let startDate = Date.parse(stringToDate(`01/${month}/2020`, 'dd/MM/yyyy', '/'));
-            let endDate = Date.parse(stringToDate(`31/${month}/2020`, 'dd/MM/yyyy', '/'));
-
+            let year = moment().year();
+            let startDate = Date.parse(stringToDate(`01/${month}/${year}`, 'dd/MM/yyyy', '/'));
+            let endDate = Date.parse(stringToDate(`31/${month}/${year}`, 'dd/MM/yyyy', '/'));
             let patients = await db.Patient.findAndCountAll({
                 attributes: ['id', 'doctorId'],
                 where: {
@@ -207,9 +207,9 @@ let getInfoStatistical = (month) => {
                     },
                     attributes: ['id', 'name'],
                 });
-                bestDoctor.setDataValue('count', doctorObject.patientId.length);
+                // Thêm giá trị 'count' trực tiếp vào đối tượng Sequelize
+                bestDoctor.dataValues.count = doctorObject.patientId.length;
             }
-
             resolve({
                 patients: patients,
                 doctors: doctors,
@@ -222,7 +222,7 @@ let getInfoStatistical = (month) => {
     });
 };
 
-let getInfoDoctorChart = (month) => {
+let getInfoDoctorChart = async (month, doctorId) => {
     return new Promise(async (resolve, reject) => {
         try {
             let startDate = Date.parse(stringToDate(`01/${month}/2024`, 'dd/MM/yyyy', '/'));
@@ -233,6 +233,7 @@ let getInfoDoctorChart = (month) => {
                     createdAt: {
                         [Op.between]: [startDate, endDate],
                     },
+                    doctorId: doctorId,
                 },
             });
             resolve({ patients: patients });
@@ -488,6 +489,7 @@ let updateProfile = async (data) => {
                 user.phone = data.phone;
                 user.gender = data.gender;
                 user.birthday = data.birthday;
+                user.isActive = data.isActive;
                 // Nếu có file ảnh được upload, gửi ảnh lên Firebase và lấy URL
                 let url = data.avatar;
                 if (url) {
@@ -576,6 +578,31 @@ let deleteUserById = async (idUser) => {
         }
     });
 };
+let getUserByPhone = async (phone) => {
+    return new Promise(async (resolve, reject) => {
+        try {
+            let customers = await db.User.findAll({
+                where: {
+                    phone: phone,
+                },
+            });
+            if (customers) {
+                resolve({
+                    errCode: 0,
+                    errMessage: 'success',
+                    customers: customers,
+                });
+            } else {
+                resolve({
+                    errCode: 1,
+                    errMessage: 'Khong co user voi so dien thoai nay',
+                });
+            }
+        } catch (error) {
+            reject(error);
+        }
+    });
+};
 module.exports = {
     createDoctor: createDoctor,
     getInfoDoctors: getInfoDoctors,
@@ -594,4 +621,5 @@ module.exports = {
     updateProfile: updateProfile,
     getUserById: getUserById,
     deleteUserById: deleteUserById,
+    getUserByPhone: getUserByPhone,
 };

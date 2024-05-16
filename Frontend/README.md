@@ -101,3 +101,7 @@ Các quy trình sử dụng web (frontend)
 
 -   Thống kê:
     |\_\_ Thống kê (main/user/admins/manageChartDoctor.ejs)
+
+Admin: - Quản lý tài khoản bệnh nhân, bác sĩ - Quản lý chuyên khoa - Bệnh nhân chỉ đặt lịch hẹn thì ko đổ dữ liệu vào admin
+
+Bác sĩ: - Quản lý lịch hẹn

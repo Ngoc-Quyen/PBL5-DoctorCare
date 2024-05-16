@@ -4,7 +4,7 @@ import _ from 'lodash';
 import moment from 'moment';
 import multer from 'multer';
 
-const MAX_BOOKING = 2;
+const MAX_BOOKING = 1;
 
 function stringToDate(_date, _format, _delimiter) {
     let formatLowerCase = _format.toLowerCase();
@@ -203,7 +203,8 @@ let FileSendPatient = multer({
 
 let postCreateChart = async (req, res) => {
     try {
-        let object = await userService.getInfoDoctorChart(req.body.month);
+        let doctorId = await req.user.id;
+        let object = await userService.getInfoDoctorChart(req.body.month, doctorId);
         return res.status(200).json(object);
     } catch (e) {
         console.log(e);

@@ -31,7 +31,7 @@ app.use(bodyParser.urlencoded({ extended: true }));
 session.configSession(app);
 
 configViewEngine(app);
-app.use(function(req, res, next) {
+app.use(function (req, res, next) {
     res.locals.user = req.session.user;
     next();
 });
@@ -43,4 +43,4 @@ app.use(passPort.session());
 initRoutes(app);
 
 let port = process.env.PORT;
-app.listen(port || 8080, () => console.log(`Doctors care app is running on port ${port}!`));
+app.listen(port || 6868, '0.0.0.0', () => console.log(`Doctors care app is running on port ${port}!`));

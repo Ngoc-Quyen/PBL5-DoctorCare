@@ -89,25 +89,36 @@
             <div class="container">
                 <div class="row">
                     <div class="col-8 mx-auto">
-                        <h2>Đặt lịch hẹn thành công!</h2>
+                        <h2>Bạn muốn hủy lịch hẹn</h2>
                         <hr>
                         <div class="booking-success row">
-                            <div class="right-booking col-3 d-flex flex-column ">
-                                <img src="<%= patient.getDataValue('doctorAvatar')%>">
-                                <div class="mt-2">
-                                    <%= patient.getDataValue('doctorName')%>
-                                </div>
-                            </div>
                             <div class="left-booking col-9 mt-3">
-                                <div> Cảm ơn bạn đã đặt chuyến thăm khám từ DoctorCare. Hệ thống đã ghi lại cuộc hẹn.
-                                    Nhân viên hỗ trợ sẽ gọi điện xác nhận trong vòng 24h sau khi đặt vé.</div>
-                                <div class="mt-2">Cần hỗ trợ vui lòng liên hệ hotline: 0123 456 789 </div>
+                                <div>Vui lòng chọn lý do: </div>
+                                <div class="mt-2">
+                                    <form>
+                                        <input type="radio" id="option1" name="options" value="option1">
+                                        <label for="option1">Tôi muốn đi khám gấp nên không cần đặt lịch nữa</label><br>
+                                        <input type="radio" id="option2" name="options" value="option2">
+                                        <label for="option2">Tôi muốn tham khảo thêm nhiều cơ sở y tế khác</label><br>
+                                        <input type="radio" id="option3" name="options" value="option3">
+                                        <label for="option3">Chưa sắp xếp được thời gian, tôi sẽ đặt lại lịch sau</label><br>
+                                        <input type="radio" id="option4" name="options" value="option4">
+                                        <label for="option4">Tôi muốn đổi thời gian đặt lịch </label><br>
+                                        <input type="radio" id="option5" name="options" value="option5">
+                                        <label for="option5">Tôi muốn xem thêm thông tin</label><br>
+                                        <input type="radio" id="option6" name="options" value="option6">
+                                        <label for="option6">Tôi không muốn đặt lịch khám nữa</label><br>
+                                        <input type="radio" id="option6" name="options" value="option7">
+                                        <label for="option7">khác...</label><br>
+                                      </form>
+                                      
+                                </div>
                                 <div class="col-md-12 d-none d-md-flex justify-content-between">
                                     <div class="d-flex flex-column">
-                                        <button class="btn btn-noclick">Đã đặt khám</button>
+                                        <button class="btn btn-noclick">Xác nhận</button>
                                     </div>
                                     <div class="d-flex flex-column">
-                                        <button class="btn btn-cancel" onclick="redirectToCancelPage()">Hủy</button>
+                                        <button class="btn btn-cancel" onclick="redirectToCancelPage()">Quay lại</button>
                                     </div>
                                     <script>
                                         function redirectToCancelPage() {
