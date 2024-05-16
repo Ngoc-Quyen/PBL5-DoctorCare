@@ -1,20 +1,25 @@
 'use strict';
+/** @type {import('sequelize-cli').Migration} */
 module.exports = {
-    up: (queryInterface, Sequelize) => {
-        return queryInterface.createTable('AdminLogs', {
+    async up(queryInterface, Sequelize) {
+        await queryInterface.createTable('allcodes', {
             id: {
                 allowNull: false,
                 autoIncrement: true,
                 primaryKey: true,
                 type: Sequelize.INTEGER,
             },
-            patientId: {
-                type: Sequelize.INTEGER,
+            key: {
+                type: Sequelize.STRING,
             },
-            adminId: {
-                type: Sequelize.INTEGER,
+            type: {
+                type: Sequelize.STRING,
             },
-            content: {
+
+            valueEn: {
+                type: Sequelize.STRING,
+            },
+            valueVi: {
                 type: Sequelize.STRING,
             },
             createdAt: {
@@ -25,13 +30,9 @@ module.exports = {
                 allowNull: false,
                 type: Sequelize.DATE,
             },
-            deletedAt: {
-                allowNull: false,
-                type: Sequelize.DATE,
-            },
         });
     },
-    down: (queryInterface, Sequelize) => {
-        return queryInterface.dropTable('AdminLogs');
+    async down(queryInterface, Sequelize) {
+        await queryInterface.dropTable('allcode');
     },
 };

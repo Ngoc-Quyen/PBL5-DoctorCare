@@ -6,31 +6,31 @@ module.exports = {
                 allowNull: false,
                 autoIncrement: true,
                 primaryKey: true,
-                type: Sequelize.INTEGER
+                type: Sequelize.INTEGER,
             },
             doctorId: {
                 allowNull: false,
-                type: Sequelize.INTEGER
+                type: Sequelize.INTEGER,
             },
             specializationId: {
                 allowNull: false,
-                type: Sequelize.INTEGER
+                type: Sequelize.INTEGER,
             },
             createdAt: {
                 allowNull: false,
-                type: Sequelize.DATE
+                type: Sequelize.DATE,
             },
             updatedAt: {
-                allowNull: true,
-                type: Sequelize.DATE
+                allowNull: false,
+                type: Sequelize.DATE,
             },
             deletedAt: {
-                allowNull: true,
-                type: Sequelize.DATE
-            }
+                allowNull: false,
+                type: Sequelize.DATE,
+            },
         });
     },
     down: (queryInterface, Sequelize) => {
         return queryInterface.dropTable('Doctor_Users');
-    }
+    },
 };

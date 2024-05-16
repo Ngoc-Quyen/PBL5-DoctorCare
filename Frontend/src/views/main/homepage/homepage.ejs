@@ -39,16 +39,16 @@
                 </div>
                 <% if (user) { %>
                     <div class="col-md-3 d-none d-md-flex justify-content-around align-self-center" id="loggedIn">
-                        <a href="/InfoUser" target="_blank">
+                        <a href="/InfoUser">
                             <img src="../images/background/User.png" alt="User logo" class="logo">
                         </a>
-                        <a href="/InfoBooked" target="_blank">
+                        <a href="/InfoBooked" >
                             <img src="../images/background/Lichhen.png" alt="Lichhen logo" class="logo">
                         </a>
                         <a href="https://www.facebook.com/profile.php?id=100011010698678" target="_blank">
                             <img src="../images/background/Vector.png" alt="Contact logo" class="logo">
                         </a>
-                        <a href="/logout" target="_blank">
+                        <a href="/logout" >
                             <img src="../images/background/logout.png" alt="Contact logo" class="logo">
                         </a>
                     </div>
@@ -171,18 +171,32 @@
     <section class="sec-post">
         <!-- Phần "Hỏi đáp cộng đồng" -->
         <div class="post-community">
-            <a class="post-image "  href="/all-posts">
-                <img src="../images/background/community.png" alt="Community Image">
-                <div class = "image-caption">Hỏi đáp cộng đồng</div>
+            <a class="post-image" " href="/all-posts">
+                <div>
+                    <img src="/images/background/community.png" style="border-radius: 10%;" alt="Community Image">                    
+                </div>
+                <div class="image-caption" style="text-align: center;">Hỏi đáp cộng đồng</div>
             </a>
+           
         </div>
+        
 
         <div class="background-right">
             <div class="support-method">
-                <h2>Cách thức hỗ trợ</h2>
-                <h4>Số điện thoại: 0123 456 789</h4>
-                <a href="https://m.me/your_facebook_page"><img src="../images/icons/messenger.png" alt="Messenger"></a>
-                <a href="https://zalo.me/your_zalo_page"><img src="../images/icons/zalo.png" alt="Zalo"></a>
+                <h2 style="color: aliceblue;">Cách thức hỗ trợ</h2>
+                <h4 style="color: aliceblue;"><i class="fa fa-volume-control-phone" aria-hidden="true" style="color: white;"></i>  0123 456 789</h4>
+                <div class="wrapper">
+                    <div class="mess-contact"  style="color: aliceblue;">
+                        <a href="https://m.me/your_facebook_page"><img src="../images/icons/messenger.png" alt="Messenger"></a>
+                        
+                    </div>
+                    <div class="zalo-contact" >
+                        <a href="https://zalo.me/your_zalo_page"><img src="../images/icons/zalo.png" alt="Zalo"></a>
+                    </div>
+
+                </div>
+                
+               
             </div>
         </div>
     </section>

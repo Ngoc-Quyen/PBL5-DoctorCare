@@ -6,68 +6,68 @@ module.exports = {
                 allowNull: false,
                 autoIncrement: true,
                 primaryKey: true,
-                type: Sequelize.INTEGER
+                type: Sequelize.INTEGER,
             },
             doctorId: {
                 allowNull: false,
-                type: Sequelize.INTEGER
+                type: Sequelize.INTEGER,
             },
             statusId: {
                 allowNull: false,
-                type: Sequelize.INTEGER
+                type: Sequelize.INTEGER,
             },
             name: {
-                type: Sequelize.STRING
+                type: Sequelize.STRING,
             },
             phone: {
-                type: Sequelize.STRING
+                type: Sequelize.STRING,
             },
             dateBooking: {
-                type: Sequelize.STRING
+                type: Sequelize.STRING,
             },
             timeBooking: {
-                type: Sequelize.STRING
+                type: Sequelize.STRING,
             },
             email: {
-                type: Sequelize.STRING
+                type: Sequelize.STRING,
             },
             gender: {
-                type: Sequelize.STRING
+                type: Sequelize.STRING,
             },
             year: {
-                type: Sequelize.STRING
+                type: Sequelize.STRING,
             },
             address: {
-                type: Sequelize.TEXT
+                type: Sequelize.TEXT,
             },
             description: {
-                type: Sequelize.TEXT
+                type: Sequelize.TEXT,
             },
             isSentForms: {
                 type: Sequelize.BOOLEAN,
                 allowNull: false,
-                defaultValue: false
+                defaultValue: false,
             },
             isTakeCare: {
                 type: Sequelize.BOOLEAN,
                 allowNull: false,
-                defaultValue: false
+                defaultValue: false,
             },
             createdAt: {
                 allowNull: false,
-                type: Sequelize.DATE
+                type: Sequelize.DATE,
             },
             updatedAt: {
-                allowNull: true,
-                type: Sequelize.DATE
+                allowNull: false,
+                type: Sequelize.DATE,
             },
             deletedAt: {
-                allowNull: true,
-                type: Sequelize.DATE
-            }
+                allowNull: false,
+                type: Sequelize.DATE,
+            },
         });
     },
     down: (queryInterface, Sequelize) => {
         return queryInterface.dropTable('Patients');
-    }
+    },
 };

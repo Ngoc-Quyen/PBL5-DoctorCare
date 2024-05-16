@@ -6,56 +6,59 @@ module.exports = {
                 allowNull: false,
                 autoIncrement: true,
                 primaryKey: true,
-                type: Sequelize.INTEGER
+                type: Sequelize.INTEGER,
             },
             name: {
-                type: Sequelize.STRING
+                type: Sequelize.STRING,
             },
             email: {
-                type: Sequelize.STRING
+                type: Sequelize.STRING,
             },
             password: {
-                type: Sequelize.STRING
+                type: Sequelize.STRING,
             },
             address: {
-                type: Sequelize.STRING
+                type: Sequelize.STRING,
             },
             phone: {
-                type: Sequelize.STRING
+                type: Sequelize.STRING,
             },
             avatar: {
-                type: Sequelize.STRING
+                type: Sequelize.STRING,
+            },
+            birthday: {
+                type: Sequelize.STRING,
             },
             gender: {
                 type: Sequelize.STRING,
-                defaultValue: 'male'
+                defaultValue: 'M',
             },
             description: {
-                type: Sequelize.TEXT
+                type: Sequelize.TEXT,
             },
             roleId: {
                 allowNull: false,
-                type: Sequelize.INTEGER
+                type: Sequelize.INTEGER,
             },
             isActive: {
                 type: Sequelize.TINYINT(1),
-                defaultValue: true
+                defaultValue: true,
             },
             createdAt: {
                 allowNull: false,
-                type: Sequelize.DATE
+                type: Sequelize.DATE,
             },
             updatedAt: {
-                allowNull: true,
-                type: Sequelize.DATE
+                allowNull: false,
+                type: Sequelize.DATE,
             },
             deletedAt: {
-                allowNull: true,
-                type: Sequelize.DATE
-            }
+                allowNull: false,
+                type: Sequelize.DATE,
+            },
         });
     },
     down: (queryInterface, Sequelize) => {
         return queryInterface.dropTable('Users');
-    }
+    },
 };

@@ -6,39 +6,39 @@ module.exports = {
                 allowNull: false,
                 autoIncrement: true,
                 primaryKey: true,
-                type: Sequelize.INTEGER
+                type: Sequelize.INTEGER,
             },
             doctorId: {
                 allowNull: false,
-                type: Sequelize.INTEGER
+                type: Sequelize.INTEGER,
             },
             date: {
-                type: Sequelize.STRING
+                type: Sequelize.STRING,
             },
             time: {
-                type: Sequelize.STRING
+                type: Sequelize.STRING,
             },
             maxBooking: {
-                type: Sequelize.STRING
+                type: Sequelize.STRING,
             },
             sumBooking: {
-                type: Sequelize.STRING
+                type: Sequelize.STRING,
             },
             createdAt: {
                 allowNull: false,
-                type: Sequelize.DATE
+                type: Sequelize.DATE,
             },
             updatedAt: {
-                allowNull: true,
-                type: Sequelize.DATE
+                allowNull: false,
+                type: Sequelize.DATE,
             },
             deletedAt: {
-                allowNull: true,
-                type: Sequelize.DATE
+                allowNull: false,
+                type: Sequelize.DATE,
             },
         });
     },
     down: (queryInterface, Sequelize) => {
         return queryInterface.dropTable('Schedules');
-    }
+    },
 };

@@ -9,6 +9,7 @@ const Op = Sequelize.Op;
 
 import moment from 'moment';
 import { reject, resolve } from 'bluebird';
+import { use } from 'passport';
 
 let salt = 7;
 
@@ -24,7 +25,6 @@ let createDoctor = (doctor) => {
         await db.Doctor_User.create(item);
 
         //create doctor elastic
-
         resolve(newDoctor);
     });
 };
@@ -82,6 +82,7 @@ let findUserByEmail = (email) => {
         try {
             let user = await db.User.findOne({
                 where: { email: email },
+                raw: true,
             });
             resolve(user);
         } catch (e) {
@@ -99,7 +100,8 @@ let findUserById = (id) => {
         try {
             let user = await db.User.findOne({
                 where: { id: id },
-                attributes: ['id', 'name', 'avatar', 'roleId', 'isActive'],
+                // attributes: ['id', 'name', 'avatar', 'roleId', 'isActive'],
+                extends: ['password'],
             });
             resolve(user);
         } catch (e) {
@@ -108,6 +110,36 @@ let findUserById = (id) => {
     });
 };
 
+let getUserById = (idUser) => {
+    return new Promise(async (resolve, reject) => {
+        try {
+            if (!idUser) {
+                resolve({
+                    errCode: 1,
+                    errMessage: 'Missing define!',
+                });
+            }
+            let user = await db.User.findOne({
+                where: { id: idUser },
+                extends: 'password',
+            });
+            if (!user) {
+                resolve({
+                    errCode: 0,
+                    errMessage: 'Khong co user nao voi id nay',
+                });
+            } else {
+                resolve({
+                    errCode: 0,
+                    errMessage: 'Success',
+                    data: user,
+                });
+            }
+        } catch (error) {
+            reject(error);
+        }
+    });
+};
 function stringToDate(_date, _format, _delimiter) {
     let formatLowerCase = _format.toLowerCase();
     let formatItems = formatLowerCase.split(_delimiter);
@@ -123,9 +155,9 @@ function stringToDate(_date, _format, _delimiter) {
 let getInfoStatistical = (month) => {
     return new Promise(async (resolve, reject) => {
         try {
-            let startDate = Date.parse(stringToDate(`01/${month}/2020`, 'dd/MM/yyyy', '/'));
-            let endDate = Date.parse(stringToDate(`31/${month}/2020`, 'dd/MM/yyyy', '/'));
-
+            let year = moment().year();
+            let startDate = Date.parse(stringToDate(`01/${month}/${year}`, 'dd/MM/yyyy', '/'));
+            let endDate = Date.parse(stringToDate(`31/${month}/${year}`, 'dd/MM/yyyy', '/'));
             let patients = await db.Patient.findAndCountAll({
                 attributes: ['id', 'doctorId'],
                 where: {
@@ -175,9 +207,9 @@ let getInfoStatistical = (month) => {
                     },
                     attributes: ['id', 'name'],
                 });
-                bestDoctor.setDataValue('count', doctorObject.patientId.length);
+                // Thêm giá trị 'count' trực tiếp vào đối tượng Sequelize
+                bestDoctor.dataValues.count = doctorObject.patientId.length;
             }
-
             resolve({
                 patients: patients,
                 doctors: doctors,
@@ -190,7 +222,7 @@ let getInfoStatistical = (month) => {
     });
 };
 
-let getInfoDoctorChart = (month) => {
+let getInfoDoctorChart = async (month, doctorId) => {
     return new Promise(async (resolve, reject) => {
         try {
             let startDate = Date.parse(stringToDate(`01/${month}/2024`, 'dd/MM/yyyy', '/'));
@@ -201,6 +233,7 @@ let getInfoDoctorChart = (month) => {
                     createdAt: {
                         [Op.between]: [startDate, endDate],
                     },
+                    doctorId: doctorId,
                 },
             });
             resolve({ patients: patients });
@@ -322,6 +355,7 @@ let getAllCodeService = async (typeInput) => {
                 let res = {};
                 let allcode = await db.Allcodes.findAll({
                     where: { type: typeInput },
+                    raw: true,
                 });
                 res.errCode = 0;
                 res.data = allcode;
@@ -430,6 +464,145 @@ let updateUserDataFile = async (data, filePath) => {
         }
     });
 };
+let updateProfile = async (data) => {
+    return new Promise(async (resolve, reject) => {
+        try {
+            if (!data.id) {
+                resolve({
+                    errCode: 2,
+                    errMessage: 'Missing required Parameter!',
+                });
+            }
+            let user = await db.User.findOne({
+                where: { id: data.id },
+                raw: false,
+            });
+            if (!user) {
+                resolve({
+                    errCode: 1,
+                    errMessage: `user's not found!`,
+                });
+            } else {
+                user.name = data.name;
+                user.description = data.description;
+                user.address = data.address;
+                user.phone = data.phone;
+                user.gender = data.gender;
+                user.birthday = data.birthday;
+                user.isActive = data.isActive;
+                // Nếu có file ảnh được upload, gửi ảnh lên Firebase và lấy URL
+                let url = data.avatar;
+                if (url) {
+                    user.avatar = url;
+                }
+                await user.save();
+                resolve({
+                    errCode: 0,
+                    errMessage: 'Update the user success!',
+                    user,
+                });
+            }
+        } catch (error) {
+            reject(error);
+        }
+    });
+};
+let checkUserEmail = (userEmail) => {
+    return new Promise(async (resolve, reject) => {
+        try {
+            let user = await db.User.findOne({
+                where: { email: userEmail },
+            });
+            if (user) {
+                resolve(true);
+            } else {
+                resolve(false);
+            }
+        } catch (error) {
+            reject(error);
+        }
+    });
+};
+let createNewUser = async (data) => {
+    return new Promise(async (resolve, reject) => {
+        try {
+            const emailExists = await checkUserEmail(data.email);
+            if (emailExists) {
+                resolve({
+                    errCode: 1,
+                    errMessage: 'Email đã tồn tại trong hệ thống. Vui lòng sử dụng một email khác.',
+                });
+            }
+            let hashPasswordFromBcrypt = await hashUserPassword(data.password);
+            await db.User.create({
+                email: data.email,
+                password: hashPasswordFromBcrypt,
+                name: data.name,
+                phone: data.phone,
+                birthday: data.birthday,
+                avatar: data.avatar,
+                gender: data.gender,
+                address: data.address,
+                description: data.description,
+                roleId: '3',
+                isActive: 1,
+            });
+            // console.log(data);
+            resolve({
+                errCode: 0,
+                errMessage: 'OK',
+            });
+        } catch (error) {
+            reject(error);
+        }
+    });
+};
+let deleteUserById = async (idUser) => {
+    return new Promise(async (resolve, reject) => {
+        try {
+            if (!idUser) {
+                resolve({
+                    errCode: 1,
+                    errMessage: 'Missing define!!',
+                });
+            }
+            await db.User.destroy({
+                where: { id: idUser },
+            });
+            resolve({
+                errCode: 0,
+                errMessage: 'success',
+            });
+        } catch (error) {
+            reject(error);
+        }
+    });
+};
+let getUserByPhone = async (phone) => {
+    return new Promise(async (resolve, reject) => {
+        try {
+            let customers = await db.User.findAll({
+                where: {
+                    phone: phone,
+                },
+            });
+            if (customers) {
+                resolve({
+                    errCode: 0,
+                    errMessage: 'success',
+                    customers: customers,
+                });
+            } else {
+                resolve({
+                    errCode: 1,
+                    errMessage: 'Khong co user voi so dien thoai nay',
+                });
+            }
+        } catch (error) {
+            reject(error);
+        }
+    });
+};
 module.exports = {
     createDoctor: createDoctor,
     getInfoDoctors: getInfoDoctors,
@@ -443,5 +616,10 @@ module.exports = {
     getAllUsers: getAllUsers,
     getAllCodeService: getAllCodeService,
     updateUser: updateUser,
-    updateUserDataFile: updateUserDataFile
+    updateUserDataFile: updateUserDataFile,
+    createNewUser: createNewUser,
+    updateProfile: updateProfile,
+    getUserById: getUserById,
+    deleteUserById: deleteUserById,
+    getUserByPhone: getUserByPhone,
 };
