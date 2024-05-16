@@ -76,7 +76,6 @@ let initRoutes = (app) => {
     router.get('/canceled', home.getPageCanceled);
     router.get('/changePass', home.getPageChangePass);
 
-
     router.get('/webhook', bot.getWebhookFB);
     router.post('/webhook', bot.postWebhookFB);
 
@@ -132,6 +131,7 @@ let initRoutes = (app) => {
     router.put('/admin/doctor/update-without-file', auth.checkLoggedIn, admin.putUpdateDoctorWithoutFile);
     router.put('/admin/doctor/update', auth.checkLoggedIn, admin.putUpdateDoctor);
     router.post('/users/doctor/edit/:id', auth.checkLoggedIn, admin.putUpdateDoctorWithoutFile);
+    // router.get('/users/manage/customer?phone=', auth.checkLoggedIn);
 
     router.get('/doctor/manage/schedule', doctor.getSchedule);
     router.get('/doctor/manage/schedule/create', auth.checkLoggedIn, doctor.getCreateSchedule);

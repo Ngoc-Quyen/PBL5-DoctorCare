@@ -2,6 +2,16 @@
     <!-- Page Heading -->
     <div class="d-sm-flex align-items-center justify-content-between mb-4">
         <h1 class="h3 mb-0 text-gray-800">Quản lý bệnh nhân</h1>
+        <div class="my-3">
+            <form method="GET">
+                <div class="form-row">
+                    <input id="phoneUser" name="phone" value="" placeholder="Số điện thoại" type="text"
+                        class="form-control col-8 mr-4">
+                    <button class="btn btn-primary" type="submit">Tìm</button>
+                </div>
+
+            </form>
+        </div>
         <a href="/users/manage/customer/create" class="d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm"><i
                 class="fas fa-plus-circle fa-sm text-white-50"></i> Thêm mới</a>
     </div>
@@ -16,6 +26,7 @@
                     <thead>
                         <tr>
                             <th>Tên</th>
+                            <th>Số điện thoại</th>
                             <th>Tình trạng</th>
                             <th>Hành động</th>
                         </tr>
@@ -25,6 +36,9 @@
                             <tr>
                                 <td>
                                     <%= customer.name %>
+                                </td>
+                                <td>
+                                    <%= customer.phone %>
                                 </td>
                                 <td>
                                     <% if(customer.isActive) { %> Hoạt động
@@ -38,6 +52,7 @@
                                         title="Edit"><i class="fas fa-pen-square mx-3"></i></a>
                                     <a class="delete-customer-info" data-customer-id="<%= customer.id %>" href="#"
                                         title="Delete"><i class="fas fa-trash"></i></a>
+
                                 </td>
                             </tr>
                             <% }) %>

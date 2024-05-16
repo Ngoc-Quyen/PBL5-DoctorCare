@@ -1,23 +1,24 @@
-import db from "../models";
-import removeMd from "remove-markdown";
-import syncElastic from "./syncsElaticService";
-import helper from "../helper/client";
+import db from '../models';
+import removeMd from 'remove-markdown';
+import syncElastic from './syncsElaticService';
+import helper from '../helper/client';
+import { reject, resolve } from 'bluebird';
+import { where } from 'sequelize';
 
 let getAllcustomers = () => {
     return new Promise(async (resolve, reject) => {
         try {
             let customers = await db.User.findAll({
-                where: { roleId: 3 }
+                where: { roleId: 3 },
             });
 
             resolve(customers);
-
         } catch (e) {
             reject(e);
         }
     });
 };
-module.exports = {
-    getAllcustomers: getAllcustomers
-};
 
+module.exports = {
+    getAllcustomers: getAllcustomers,
+};

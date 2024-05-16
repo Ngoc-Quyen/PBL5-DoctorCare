@@ -10,6 +10,7 @@ const Op = Sequelize.Op;
 
 import moment from 'moment';
 import { reject, resolve } from 'bluebird';
+import { use } from 'passport';
 
 let salt = 7;
 
@@ -489,6 +490,7 @@ let updateProfile = async (data) => {
                 user.phone = data.phone;
                 user.gender = data.gender;
                 user.birthday = data.birthday;
+                user.isActive = data.isActive;
                 // Nếu có file ảnh được upload, gửi ảnh lên Firebase và lấy URL
                 let url = data.avatar;
                 if (url) {
@@ -577,6 +579,31 @@ let deleteUserById = async (idUser) => {
         }
     });
 };
+let getUserByPhone = async (phone) => {
+    return new Promise(async (resolve, reject) => {
+        try {
+            let customers = await db.User.findAll({
+                where: {
+                    phone: phone,
+                },
+            });
+            if (customers) {
+                resolve({
+                    errCode: 0,
+                    errMessage: 'success',
+                    customers: customers,
+                });
+            } else {
+                resolve({
+                    errCode: 1,
+                    errMessage: 'Khong co user voi so dien thoai nay',
+                });
+            }
+        } catch (error) {
+            reject(error);
+        }
+    });
+};
 module.exports = {
     createDoctor: createDoctor,
     getInfoDoctors: getInfoDoctors,
@@ -595,4 +622,5 @@ module.exports = {
     updateProfile: updateProfile,
     getUserById: getUserById,
     deleteUserById: deleteUserById,
+    getUserByPhone: getUserByPhone,
 };

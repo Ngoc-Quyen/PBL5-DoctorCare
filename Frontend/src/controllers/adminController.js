@@ -221,6 +221,7 @@ let putUpdateDoctorWithoutFile = async (req, res) => {
             address: req.body.addressDoctor,
             description: req.body.introEditDoctor,
             specializationId: req.body.specializationDoctor,
+            isActive: req.body.isActive,
         };
         let mess = await doctorService.updateDoctorInfo(item);
         if (mess.errCode === 0) {
@@ -580,6 +581,7 @@ let postEditPatient = async (req, res) => {
         address: req.body.addressDoctor,
         description: req.body.introEditDoctor,
         birthday: req.body.birthday,
+        isActive: req.body.isActive,
     };
     let patient = await doctorService.getPatientForEditPage(req.params.id);
     let specializations = await homeService.getSpecializations();
@@ -639,6 +641,10 @@ let postCreateSpecialization = async (req, res) => {
         res.redirect('/users/manage/specialization/create');
     }
 };
+let getUserByPhone = async (req, res) => {
+    let phoneUser = req.body.phone;
+    let message = await userService.getUserByPhone(phoneUser);
+};
 module.exports = {
     getManageDoctor: getManageDoctor,
     getCreateDoctor: getCreateDoctor,
@@ -679,4 +685,6 @@ module.exports = {
     postEditSpecialization: postEditSpecialization,
     getCreateSpecializationPage: getCreateSpecializationPage,
     postCreateSpecialization: postCreateSpecialization,
+
+    getUserByPhone: getUserByPhone,
 };

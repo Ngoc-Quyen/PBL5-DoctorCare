@@ -1,31 +1,33 @@
-import db from "../models";
-import removeMd from "remove-markdown";
-import syncElastic from "./syncsElaticService";
-import helper from "../helper/client";
+import db from '../models';
+import removeMd from 'remove-markdown';
+import syncElastic from './syncsElaticService';
+import helper from '../helper/client';
 
 let getAllPosts = () => {
-    return new Promise((async (resolve, reject) => {
+    return new Promise(async (resolve, reject) => {
         try {
             let posts = await db.Post.findAll({
-                attributes: [ 'id', 'title', 'writerId', 'createdAt' ],
+                attributes: ['id', 'title', 'writerId', 'createdAt'],
             });
-            await Promise.all(posts.map(async (post) => {
-                let user = await helper.getcustomerById(post.writerId);
-                let dateClient = helper.convertDateClient(post.createdAt);
-                post.setDataValue('writerName', user.name);
-                post.setDataValue('dateClient', dateClient);
-                return post;
-            }));
+            await Promise.all(
+                posts.map(async (post) => {
+                    let user = await helper.getcustomerById(post.writerId);
+                    let dateClient = helper.convertDateClient(post.createdAt);
+                    post.setDataValue('writerName', user.name);
+                    post.setDataValue('dateClient', dateClient);
+                    return post;
+                })
+            );
 
             resolve(posts);
         } catch (e) {
             reject(e);
         }
-    }));
+    });
 };
 
 let postCreatePost = (item) => {
-    return new Promise((async (resolve, reject) => {
+    return new Promise(async (resolve, reject) => {
         try {
             let post = await db.Post.create(item);
 
@@ -35,10 +37,10 @@ let postCreatePost = (item) => {
                 let plainText = removeMd(item.contentMarkdown);
                 plainText.replace(/(?:\r\n|\r|\\n)/g, ' ');
                 let data = {
-                    'postId': post.id,
-                    'writerId': post.writerId,
-                    'title': item.title,
-                    'content': plainText,
+                    postId: post.id,
+                    writerId: post.writerId,
+                    title: item.title,
+                    content: plainText,
                 };
                 await syncElastic.createPost(data);
             }
@@ -46,15 +48,15 @@ let postCreatePost = (item) => {
         } catch (e) {
             reject(e);
         }
-    }));
+    });
 };
 
 let getDetailPostPage = (id) => {
-    return new Promise((async (resolve, reject) => {
+    return new Promise(async (resolve, reject) => {
         try {
             let post = await db.Post.findOne({
                 where: { id: id },
-                attributes: [ 'id', 'title', 'contentHTML', 'contentMarkdown', 'forDoctorId', 'forSpecializationId' ]
+                attributes: ['id', 'title', 'contentHTML', 'contentMarkdown', 'forDoctorId', 'forSpecializationId'],
             });
             if (!post) {
                 reject(`Can't get post with id=${id}`);
@@ -63,51 +65,59 @@ let getDetailPostPage = (id) => {
         } catch (e) {
             reject(e);
         }
-    }));
+    });
 };
 
 let getPostsPagination = (page, limit, role) => {
     return new Promise(async (resolve, reject) => {
         try {
-            let posts = "";
+            let posts = '';
             //only get bài đăng y khoa
-            if (role === "admin") {
+            if (role === 'admin') {
                 posts = await db.Post.findAndCountAll({
                     offset: (page - 1) * limit,
                     limit: limit,
-                    attributes: [ 'id', 'title', 'contentMarkdown', 'contentHTML', 'createdAt', 'writerId' ],
-                    order: [
-                        [ 'createdAt', 'DESC' ]
-                    ],
+                    attributes: ['id', 'title', 'contentMarkdown', 'contentHTML', 'createdAt', 'writerId', 'updatedAt'],
+                    order: [['createdAt', 'DESC']],
                 });
             } else {
                 posts = await db.Post.findAndCountAll({
                     where: {
                         forDoctorId: -1,
-                        forSpecializationId: -1
+                        forSpecializationId: -1,
                     },
                     offset: (page - 1) * limit,
                     limit: limit,
-                    attributes: [ 'id', 'title', 'contentMarkdown', 'contentHTML', 'createdAt', 'writerId' ],
-                    order: [
-                        [ 'createdAt', 'DESC' ]
-                    ],
+                    attributes: ['id', 'title', 'contentMarkdown', 'contentHTML', 'createdAt', 'writerId', 'updatedAt'],
+                    order: [['createdAt', 'DESC']],
                 });
             }
 
             let total = Math.ceil(posts.count / limit);
 
-            await Promise.all(posts.rows.map(async (post) => {
-                let user = await helper.getcustomerById(post.writerId);
-                let dateClient = helper.convertDateClient(post.createdAt);
-                post.setDataValue('writerName', user.name);
-                post.setDataValue('dateClient', dateClient);
-                return post;
-            }));
-
+            await Promise.all(
+                posts.rows.map(async (post) => {
+                    let user = await helper.getcustomerById(post.writerId);
+                    let dateClient = helper.convertDateClient(post.createdAt);
+                    post.setDataValue('writerName', user.name);
+                    post.setDataValue('dateClient', dateClient);
+                    return post;
+                })
+            );
+            // let users = await Promise.all(
+            //     posts.rows.map(async (post) => {
+            //         let user = await db.User.findOne({
+            //             where: {
+            //                 id: post.writerId,
+            //             },
+            //         });
+            //         return user; // return the user object from the map function
+            //     })
+            // );
+            // console.log('users from postService: ', users); // log the array of user objects
             resolve({
                 posts: posts,
-                total: total
+                total: total,
             });
         } catch (e) {
             reject(e);
@@ -120,7 +130,7 @@ let deletePostById = (id) => {
         try {
             let post = await db.Post.findOne({
                 where: { id: id },
-                attributes: [ 'id', 'forDoctorId', 'forSpecializationId']
+                attributes: ['id', 'forDoctorId', 'forSpecializationId'],
             });
 
             // chỉ delete bài đăng y khoa
@@ -142,7 +152,7 @@ let putUpdatePost = (item) => {
         try {
             let post = await db.Post.findOne({
                 where: { id: item.id },
-                attributes: [ 'id', 'forDoctorId', 'forSpecializationId' ]
+                attributes: ['id', 'forDoctorId', 'forSpecializationId'],
             });
             await post.update(item);
 
@@ -152,10 +162,10 @@ let putUpdatePost = (item) => {
                 let plainText = removeMd(item.contentMarkdown);
                 plainText.replace(/(?:\r\n|\r|\\n)/g, ' ');
                 let data = {
-                    'postId': post.id,
-                    'writerId': post.writerId,
-                    'title': item.title,
-                    'content': plainText,
+                    postId: post.id,
+                    writerId: post.writerId,
+                    title: item.title,
+                    content: plainText,
                 };
                 await syncElastic.updatePost(data);
             }
@@ -171,12 +181,12 @@ let doneComment = (id) => {
     return new Promise(async (resolve, reject) => {
         try {
             let comment = await db.Comment.findOne({
-                where: { id: id }
+                where: { id: id },
             });
             await comment.update({ status: true });
             resolve(comment);
         } catch (e) {
-            reject(e)
+            reject(e);
         }
     });
 };
@@ -188,5 +198,5 @@ module.exports = {
     getPostsPagination: getPostsPagination,
     deletePostById: deletePostById,
     putUpdatePost: putUpdatePost,
-    doneComment: doneComment
+    doneComment: doneComment,
 };
