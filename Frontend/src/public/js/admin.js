@@ -778,10 +778,7 @@ function loadNewPatientsForAdmin() {
             let countPending = data.object.pendingPatients.length;
             let countConfirmed = data.object.confirmedPatients.length;
             let countCanceled = data.object.canceledPatients.length;
-            console.log('0');
-            console.log(countPending);
-            console.log(countConfirmed);
-            console.log(countCanceled);
+
             $('#count-new').text(`${countNew}`);
             $('#count-need').text(`${countPending}`);
             $('#count-confirmed').text(`${countConfirmed}`);
@@ -1397,11 +1394,11 @@ function statisticalAdmin(month) {
             } else {
                 $('#bestDoctor').text(`${data.bestDoctor.name} (${data.bestDoctor.count})`);
             }
-            if (data.bestAdmin === '') {
-                $('#bestAdmin').text(`Không có thông tin`);
-            } else {
-                $('#bestAdmin').text(`${data.bestAdmin.name} (${data.bestAdmin.count})`);
-            }
+            // if (data.bestAdmin === '') {
+            //     $('#bestAdmin').text(`Không có thông tin`);
+            // } else {
+            //     $('#bestAdmin').text(`${data.bestAdmin.name} (${data.bestAdmin.count})`);
+            // }
         },
         error: function (error) {
             alertify.error('Đã xảy ra lỗi khi lấy thông tin thống kê, vui lòng thử lại sau');
