@@ -18,7 +18,7 @@ function stringToDate(_date, _format, _delimiter) {
     return new Date(dateItems[yearIndex], month, dateItems[dayIndex]);
 }
 
-let getSchedule = async (req, res) => {
+let getSchedule = async(req, res) => {
     try {
         let sevenDaySchedule = [];
         for (let i = 0; i < 7; i++) {
@@ -60,7 +60,7 @@ let getSchedule = async (req, res) => {
     }
 };
 
-let getCreateSchedule = async (req, res) => {
+let getCreateSchedule = async(req, res) => {
     let listTime = await userService.getAllCodeService('TIME');
     return res.render('main/users/admins/createSchedule.ejs', {
         user: req.user,
@@ -68,7 +68,7 @@ let getCreateSchedule = async (req, res) => {
     });
 };
 
-let postCreateSchedule = async (req, res) => {
+let postCreateSchedule = async(req, res) => {
     await doctorService.postCreateSchedule(req.user, req.body.schedule_arr, MAX_BOOKING);
     return res.status(200).json({
         status: 1,
@@ -76,7 +76,7 @@ let postCreateSchedule = async (req, res) => {
     });
 };
 
-let getScheduleDoctorByDate = async (req, res) => {
+let getScheduleDoctorByDate = async(req, res) => {
     try {
         let object = await doctorService.getScheduleDoctorByDate(req.body.doctorId, req.body.date);
         let data = object.schedule;
@@ -91,7 +91,7 @@ let getScheduleDoctorByDate = async (req, res) => {
         return res.status(500).json(e);
     }
 };
-let deleteScheduleDoctorByDate = async (req, res) => {
+let deleteScheduleDoctorByDate = async(req, res) => {
     let doctorId = req.user.id;
     let dateTime = req.body.day;
     let message = await doctorService.deleteTimeByDate(doctorId, dateTime);
@@ -106,7 +106,7 @@ let deleteScheduleDoctorByDate = async (req, res) => {
         });
     }
 };
-let getInfoDoctorById = async (req, res) => {
+let getInfoDoctorById = async(req, res) => {
     try {
         let doctor = await doctorService.getInfoDoctorById(req.body.id);
         return res.status(200).json({
@@ -119,7 +119,7 @@ let getInfoDoctorById = async (req, res) => {
     }
 };
 
-let getManageAppointment = async (req, res) => {
+let getManageAppointment = async(req, res) => {
     // let date = "30/03/2020";
     let currentDate = moment().format('DD/MM/YYYY');
     let canActive = false;
@@ -142,7 +142,7 @@ let getManageAppointment = async (req, res) => {
     // sort by range time
     let sort = _.sortBy(appointments, (x) => x.timeBooking);
     //group by range time
-    let final = _.groupBy(sort, function (x) {
+    let final = _.groupBy(sort, function(x) {
         return x.timeBooking;
     });
 
@@ -161,7 +161,7 @@ let getManageChart = (req, res) => {
 };
 
 let postSendFormsToPatient = (req, res) => {
-    FileSendPatient(req, res, async (err) => {
+    FileSendPatient(req, res, async(err) => {
         if (err) {
             console.log(err);
             if (err.message) {
@@ -201,7 +201,7 @@ let FileSendPatient = multer({
     limits: { fileSize: 1048576 * 20 },
 }).array('filesSend');
 
-let postCreateChart = async (req, res) => {
+let postCreateChart = async(req, res) => {
     try {
         let doctorId = await req.user.id;
         let object = await userService.getInfoDoctorChart(req.body.month, doctorId);
@@ -212,7 +212,7 @@ let postCreateChart = async (req, res) => {
     }
 };
 
-let postAutoCreateAllDoctorsSchedule = async (req, res) => {
+let postAutoCreateAllDoctorsSchedule = async(req, res) => {
     try {
         let data = await userService.createAllDoctorsSchedule();
         return res.status(200).json(data);
