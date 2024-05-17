@@ -151,14 +151,19 @@ let getInfoBookingPage = async(req, res) => {
     }
 };
 
-let postBookingDoctorPageWithoutFiles = async(req, res) => {
+let postBookingDoctorPageWithoutFiles = async (req, res) => {
     try {
+        if (!req.session.userId) {
+            return res.status(401).json({ message: 'User not authenticated' });
+        }
+
         let item = req.body;
-        item.statusId = statusNewId;
+        item.statusId = statusNewId; // Giả sử statusNewId được định nghĩa trước đó
+        item.userId = req.session.userId; // Lấy userId từ session
         item.historyBreath = req.body.breath;
         item.moreInfo = req.body.extraOldForms;
         if (item.places === 'none') item.placeId = 0;
-        item.placeId = item.places;
+        else item.placeId = item.places; // Tránh ghi đè placeId
         item.createdAt = Date.now();
 
         let patient = await patientService.createNewPatient(item);
@@ -174,7 +179,7 @@ let postBookingDoctorPageWithoutFiles = async(req, res) => {
 };
 
 let postBookingDoctorPageNormal = (req, res) => {
-    imageImageOldForms(req, res, async(err) => {
+    imageImageOldForms(req, res, async (err) => {
         if (err) {
             console.log(err);
             if (err.message) {
@@ -194,11 +199,20 @@ let postBookingDoctorPageNormal = (req, res) => {
                 image[index] = x.filename;
             });
 
-            item.statusId = statusNewId;
+            // Kiểm tra nếu userId có trong session
+            if (!req.session.userId) {
+                return res.status(401).json({ message: 'User not authenticated' });
+            }
+
+            item.statusId = statusNewId; // Giả sử statusNewId được định nghĩa trước đó
+            item.userId = req.session.userId; // Lấy userId từ session
             item.historyBreath = req.body.breath;
             item.moreInfo = req.body.extraOldForms;
-            if (item.places === 'none') item.placeId = 0;
-            item.placeId = item.places;
+            if (item.places === 'none') {
+                item.placeId = 0;
+            } else {
+                item.placeId = item.places; // Tránh ghi đè placeId
+            }
             item.oldForms = JSON.stringify(image);
             item.createdAt = Date.now();
 
@@ -214,6 +228,7 @@ let postBookingDoctorPageNormal = (req, res) => {
         }
     });
 };
+
 
 let storageImageOldForms = multer.diskStorage({
     destination: (req, file, callback) => {

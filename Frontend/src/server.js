@@ -28,13 +28,29 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 
 //config session
-session.configSession(app);
+// session.configSession(app);
 
+// configViewEngine(app);
+// app.use(function (req, res, next) {
+//     res.locals.user = req.session.user;
+//     req.session.userId = userId;
+//     next();
+// });
+
+// config session
+session.configSession(app);
 configViewEngine(app);
+
+// Middleware để lưu userId vào session sau khi user đăng nhập
 app.use(function (req, res, next) {
+    if (req.session.user) {
+        req.session.userId = req.session.user.id;
+    }
     res.locals.user = req.session.user;
     next();
 });
+
+
 
 // config Passportjs
 app.use(passPort.initialize());
