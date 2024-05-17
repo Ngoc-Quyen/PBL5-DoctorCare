@@ -60,6 +60,7 @@ function createNewPost(markdown, converter) {
         });
     });
 }
+
 function deleteClinicById() {
     $('.delete-specific-clinic').bind('click', function (e) {
         e.preventDefault();
@@ -309,6 +310,7 @@ function deleteDoctorById() {
         });
     });
 }
+
 function deleteCustomerById() {
     $('.delete-customer-info').on('click', function (e) {
         if (!confirm('Xóa bệnh nhân này?')) {
@@ -336,6 +338,7 @@ function deleteCustomerById() {
         });
     });
 }
+
 function deleteScheduleByDate() {
     $('.delete-schedule-info').on('click', function (e) {
         if (!confirm('Xóa thời gian của lịch này?')) {
@@ -435,7 +438,7 @@ function showModalInfoCustomer() {
                 } else {
                     $('#addressCustomer').val('Chưa cập nhật');
                 }
-                if (data?.user?.avatar) {
+                if (data.user.avatar) {
                     $('#imageCustomer').prepend(`<img class="img-info-clinic" src="${data?.user?.avatar}" />`);
                 } else {
                     $('#imageCustomer').text('Chưa cập nhật');
@@ -449,6 +452,7 @@ function showModalInfoCustomer() {
         });
     });
 }
+
 function updateDoctor() {
     $('#btnUpdateDoctor').on('click', function (e) {
         let doctorId = $('#btnUpdateDoctor').data('doctor-id');
@@ -792,10 +796,10 @@ function loadNewPatientsForAdmin() {
             data.object.newPatients.forEach((patient) => {
                 htmlNew += `
                 <tr>
-                    <td> ${patient.id} - ${patient.name}   </td>
-                    <td> ${patient.phone}     </td>
-                    <td> ${patient.email}     </td>
-                    <td>${patient.dateBooking} (${patient.timeBooking})   </td>
+                <td> ${patient.id} - ${patient.name}   </td>
+                <td> ${patient.phone}     </td>
+                <td> ${patient.email}     </td>
+                <td>${patient.dateBooking} (${patient.timeBooking})   </td>
                     <td> 
                     <button type="button"  data-patient-id="${patient.id}" class="ml-3 btn btn-primary btn-new-patient-ok"> Chấp nhận</button>
                     <button  type="button" data-patient-id="${patient.id}" class="ml-3 btn btn-danger btn-new-patient-cancel"> Hủy </button>

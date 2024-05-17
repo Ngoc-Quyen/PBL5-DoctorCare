@@ -2,6 +2,7 @@
 module.exports = (sequelize, DataTypes) => {
     const Patient = sequelize.define('Patient', {
         doctorId: DataTypes.INTEGER,
+        userId: DataTypes.INTEGER,
         statusId: DataTypes.INTEGER,
         name: DataTypes.STRING,
         phone: DataTypes.STRING,
@@ -20,6 +21,7 @@ module.exports = (sequelize, DataTypes) => {
     }, {});
     Patient.associate = function(models) {
         models.Patient.belongsTo(models.User, { foreignKey: 'doctorId' });
+        models.Patient.belongsTo(models.User, { foreignKey: 'userId' });
         models.Patient.belongsTo(models.Status, { foreignKey: 'statusId' });
         models.Patient.hasOne(models.ExtraInfo);
         models.Patient.hasMany(models.AdminLog);

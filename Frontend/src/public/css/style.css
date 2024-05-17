@@ -507,6 +507,12 @@ footer span {
     background-color: #2a96a5;
 }
 
+.detail-info-specialization {
+    height: 50px;
+    background-color: #e6e6ee;
+    margin-bottom: 30px;
+}
+
 .doctor-schedule .doctor-time {
     font-size: 80%;
     border-radius: 5px;
@@ -1150,118 +1156,73 @@ h3.show-title-post {
 }
 
 .col-md-12-buttons {
-    margin-top: 20px; /* Add space above the buttons */
+    margin-top: 20px;
+    /* Add space above the buttons */
 }
+
 
 /* Style for the buttons container on larger screens */
+
 .col-md-12-buttons {
     display: flex;
-    justify-content: flex-end; /* Align buttons to the right */
+    justify-content: flex-end;
+    /* Align buttons to the right */
 }
+
 
 /* Style for individual button containers */
+
 .col-md-12-buttons .d-flex {
-    margin-left: 10px; /* Add space between buttons */
+    margin-left: 10px;
+    /* Add space between buttons */
 }
 
+
 /* Style for the "Đã đặt khám" button */
+
 .btn-noclick {
-    background-color: #ccc; /* Grey background */
-    color: #fff; /* White text */
-    border: none; /* No border */
-    padding: 10px 20px; /* Padding */
-    cursor: not-allowed; /* Disabled cursor */
+    background-color: #0b60e9;
+    /* Grey background */
+    color: #fff;
+    /* White text */
+    border: none;
+    /* No border */
+    padding: 10px 20px;
+    /* Padding */
+    cursor: not-allowed;
+    /* Disabled cursor */
 }
 
 .btn-noclick:hover {
-    background-color: #999; /* Darker grey on hover */
+    background-color: #999999;
+    /* Darker grey on hover */
 }
 
+
 /* Style for the "Hủy" button */
+
 .btn-cancel {
-    background-color: #dc3545; /* Red background */
-    color: #fff; /* White text */
-    border: none; /* No border */
-    padding: 10px 20px; /* Padding */
-    cursor: pointer; /* Pointer cursor */
+    background-color: #dc3545;
+    /* Red background */
+    color: #fff;
+    /* White text */
+    border: none;
+    /* No border */
+    padding: 10px 20px;
+    /* Padding */
+    cursor: pointer;
+    /* Pointer cursor */
 }
 
 .btn-cancel:hover {
-    background-color: #c82333; /* Darker red on hover */
-}
-.post-community {
-    border-radius: 10px; /* Góc bo tròn */
-    padding: 10px; /* Khoảng trống bên trong viền */
-    max-width: 500px; /* Điều chỉnh chiều rộng tối đa nếu cần */
-    height: 300px;
-    margin: 0 auto; /* Canh giữa div .post-community */
-    text-align: center; /* Canh giữa nội dung ngang */
-    /* Hiệu ứng đổ bóng */
-    box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.5); /* offsetX, offsetY, blurRadius, spreadRadius, color */
-    
-
+    background-color: #c82333;
+    /* Darker red on hover */
 }
 
-
-
-.image-container {
-    width: 400%; /* Ensures the container takes full width */
-    display: inline-block;
-   
+.wrapper1 {
+    display: flex; /* Sử dụng flexbox để căn chỉnh các biểu tượng */
 }
 
-.post-image img {
-    border-radius: 5%; /* Rounded corners for the image */
-    width: 450px; /* Ensures the image is responsive */
-    height: auto; /* Maintains aspect ratio */
-    
-}
-
-.image-caption {
-    text-align: center; /* Centers the caption text */
-    margin-top: 10px; /* Space between image and caption */
-}
-
-
-.background-right{
-    border-radius: 10px; /* Góc bo tròn */
-    padding: 10px; /* Khoảng trống bên trong viền */
-    max-width: 500px; /* Điều chỉnh chiều rộng tối đa nếu cần */
-    height: 300px;
-    margin: 0 auto; /* Canh giữa div .post-community */
-    text-align: center; /* Canh giữa nội dung ngang */
-    /* Hiệu ứng đổ bóng */
-    box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.5); /* offsetX, offsetY, blurRadius, spreadRadius, color */
-    background-color: #00BAEE;
-    
-}
-
-
-.wrapper {
-    display: flex;
-    justify-content: space-between; /* Canh trái và phải */
-    
-}
-.wrapper .mess-contact{
-    background-color: aliceblue;
-    width: 170px;
-    height: 170px;
-    border-radius: 10px;
-    margin-left: 30px;
-   
-    display: flex;
-    justify-content: center; /* Canh giữa theo chiều ngang */
-    align-items: center;
-    
-}
-
-.wrapper .zalo-contact{
-    background-color: aliceblue;
-    width: 170px;
-    height: 170px;
-    border-radius: 10px;
-    margin-right: 30px;
-    display: flex;
-    justify-content: center; /* Canh giữa theo chiều ngang */
-    align-items: center;
+.contact-icon1 {
+    margin-right: 10px; /* Khoảng cách giữa các biểu tượng */
 }

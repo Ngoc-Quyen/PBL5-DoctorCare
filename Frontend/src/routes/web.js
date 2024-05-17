@@ -20,15 +20,14 @@ let router = express.Router();
 let LocalStrategy = passportLocal.Strategy;
 
 passport.use(
-    new LocalStrategy(
-        {
+    new LocalStrategy({
             usernameField: 'email',
             passwordField: 'password',
             passReqToCallback: true,
         },
-        async (req, email, password, done) => {
+        async(req, email, password, done) => {
             try {
-                await userService.findUserByEmail(email).then(async (user) => {
+                await userService.findUserByEmail(email).then(async(user) => {
                     if (!user) {
                         return done(null, false, req.flash('error', 'Email không tồn tại'));
                     }
@@ -70,11 +69,11 @@ passport.deserializeUser((id, done) => {
 let initRoutes = (app) => {
     router.get('/all-doctors', home.getPageAllDoctors);
     router.get('/all-specializations', home.getPageAllSpecializations);
-    router.get('/InfoUser', home.getPageInfoUser);
+    router.get('/InfoUser', customer.getPageInfoUser);
     router.get('/InfoBooked', home.getPageInfoBooked);
-    router.get('/cancel', home.getPageCancel);
-    router.get('/canceled', home.getPageCanceled);
-    router.get('/changePass', home.getPageChangePass);
+    // router.get('/cancel', home.getPageCancel);
+    // router.get('/canceled', home.getPageCanceled);
+    // router.get('/changePass', home.getPageChangePass);
 
     router.get('/webhook', bot.getWebhookFB);
     router.post('/webhook', bot.postWebhookFB);
@@ -164,6 +163,11 @@ let initRoutes = (app) => {
     router.post('/admin/done-comment', auth.checkLoggedIn, admin.postDoneComment);
     router.post('/admin/manage/booking-date', auth.checkLoggedIn, admin.getForPatientsByDateTabs);
 
+    router.post('/user/get-patients-for-user', auth.checkLoggedIn, customer.getForPatientForUser);
+    router.post('/user/change-status-patient-for -user', auth.checkLoggedIn, customer.postChangeStatusPatientForUser);
+    // router.post('/user/get-patients-for-user', auth.checkLoggedIn, admin.getForPatientsTabs);
+    // router.post('/user/change-status-patient-for -user', auth.checkLoggedIn, customer.postChangeStatusPatientForUser);
+
     router.post('/api/get-info-doctor-by-id', doctor.getInfoDoctorById);
     router.post('/api/get-detail-patient-by-id', home.getDetailPatientBooking);
 
@@ -173,8 +177,8 @@ let initRoutes = (app) => {
 
     router.get('/login', auth.checkLoggedOut, auth.getLogin);
 
-    router.post('/login', function (req, res, next) {
-        passport.authenticate('local', function (err, user, info) {
+    router.post('/login', function(req, res, next) {
+        passport.authenticate('local', function(err, user, info) {
             if (err) {
                 return next(err);
             }
@@ -183,7 +187,7 @@ let initRoutes = (app) => {
                 return res.redirect('/login');
             }
 
-            req.logIn(user, function (err) {
+            req.logIn(user, function(err) {
                 if (err) {
                     return next(err);
                 }
