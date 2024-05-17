@@ -8,6 +8,7 @@ import customerService from '../services/customerService';
 import doctorService from './../services/doctorService';
 import chatFBServie from './../services/chatFBService';
 import multer from 'multer';
+import moment from 'moment';
 
 const statusNewId = 4;
 const statusPendingId = 3;
@@ -379,8 +380,20 @@ let getManageCreateScheduleForDoctorsPage = async (req, res) => {
 };
 let getNewPatients = (req, res) => {
     //render data = js/ getForPatientsTabs
+    let currentDate = moment().format('DD/MM/YYYY');
+    let date = '';
+    let canActive = false;
+    if (req.query.dateDoctorAppointment) {
+        date = req.query.dateDoctorAppointment;
+        if (date === currentDate) canActive = true;
+    } else {
+        //get currentDate
+        date = currentDate;
+        canActive = true;
+    }
     return res.render('main/users/admins/manageBooking.ejs', {
         user: req.user,
+        date: date,
     });
 };
 
@@ -455,6 +468,32 @@ let getForPatientsTabs = async (req, res) => {
     try {
         let idDoctor = req.user.id;
         let object = await patientService.getForPatientsTabs(idDoctor);
+        return res.status(200).json({
+            message: 'success',
+            object: object,
+        });
+    } catch (e) {
+        console.log(e);
+        return res.status(500).json(e);
+    }
+};
+let getForPatientsByDateTabs = async (req, res) => {
+    try {
+        let currentDate = moment().format('DD/MM/YYYY');
+        let canActive = false;
+        let date = '';
+        if (req.query.dateDoctorAppointment) {
+            date = req.query.dateDoctorAppointment;
+            if (date === currentDate) canActive = true;
+        } else {
+            //get currentDate
+            date = currentDate;
+            canActive = true;
+        }
+
+        console.log('date from admincontroller: ', date);
+        let idDoctor = req.user.id;
+        let object = await patientService.getForPatientsByDateTabs(idDoctor, date);
         return res.status(200).json({
             message: 'success',
             object: object,
@@ -687,4 +726,5 @@ module.exports = {
     postCreateSpecialization: postCreateSpecialization,
 
     getUserByPhone: getUserByPhone,
+    getForPatientsByDateTabs: getForPatientsByDateTabs,
 };

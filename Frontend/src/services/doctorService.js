@@ -383,6 +383,22 @@ let getPatientsBookAppointment = (data) => {
         }
     });
 };
+let getPatientBooking = async (data) => {
+    return new Promise(async (resolve, reject) => {
+        try {
+            let patients = await db.Patient.findAll({
+                where: {
+                    doctorId: data.doctorId,
+                    dateBooking: data.date,
+                },
+                raw: true,
+            });
+            resolve(patients);
+        } catch (error) {
+            reject(error);
+        }
+    });
+};
 
 let getDoctorSchedules = (data) => {
     return new Promise(async (resolve, reject) => {
@@ -586,4 +602,5 @@ module.exports = {
     getSpecializationById: getSpecializationById,
     deleteTimeByDate: deleteTimeByDate,
     getScheduleDoctorByDateSumBooking: getScheduleDoctorByDateSumBooking,
+    getPatientBooking: getPatientBooking,
 };

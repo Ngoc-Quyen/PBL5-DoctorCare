@@ -162,6 +162,7 @@ let initRoutes = (app) => {
     router.post('/admin/change-status-patient', auth.checkLoggedIn, admin.postChangeStatusPatient);
     router.post('/admin/get-logs-patient', auth.checkLoggedIn, admin.getLogsPatient);
     router.post('/admin/done-comment', auth.checkLoggedIn, admin.postDoneComment);
+    router.post('/admin/manage/booking-date', auth.checkLoggedIn, admin.getForPatientsByDateTabs);
 
     router.post('/api/get-info-doctor-by-id', doctor.getInfoDoctorById);
     router.post('/api/get-detail-patient-by-id', home.getDetailPatientBooking);

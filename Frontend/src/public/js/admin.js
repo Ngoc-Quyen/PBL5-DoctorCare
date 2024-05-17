@@ -858,6 +858,101 @@ function loadNewPatientsForAdmin() {
         },
     });
 }
+function loadPatientsByDate() {
+    $('#btn-search-date').on('click', function (e) {
+        $.ajax({
+            url: `${window.location.origin}/admin/manage/booking-date`,
+            method: 'POST',
+            success: function (data) {
+                console.log('data: ', data);
+                let countNew = data.object.newPatients.length;
+                let countPending = data.object.pendingPatients.length;
+                let countConfirmed = data.object.confirmedPatients.length;
+                let countCanceled = data.object.canceledPatients.length;
+                console.log(countNew);
+                console.log(countPending);
+                console.log(countConfirmed);
+                console.log(countCanceled);
+                $('#count-new').text(`${countNew}`);
+                $('#count-need').text(`${countPending}`);
+                $('#count-confirmed').text(`${countConfirmed}`);
+                $('#count-canceled').text(`${countCanceled}`);
+
+                let htmlNew,
+                    htmlPending,
+                    htmlConfirmed,
+                    htmlCanceled = '';
+                // Đổ dữ liệu ở lịch hẹn mới
+                data.object.newPatients.forEach((patient) => {
+                    htmlNew += `
+                    <tr>
+                        <td> ${patient.id} - ${patient.name}   </td>
+                        <td> ${patient.phone}     </td>
+                        <td> ${patient.email}     </td>
+                        <td>${patient.dateBooking} (${patient.timeBooking})   </td>
+                        <td> 
+                        <button type="button"  data-patient-id="${patient.id}" class="ml-3 btn btn-primary btn-new-patient-ok"> Chấp nhận</button>
+                        <button  type="button" data-patient-id="${patient.id}" class="ml-3 btn btn-danger btn-new-patient-cancel"> Hủy </button>
+                        </td>
+                    </tr>
+                    `;
+                });
+                // đổ dữ liệu chỗ đã chấp nhận
+                data.object.pendingPatients.forEach((patient) => {
+                    htmlPending += `
+                    <tr>
+                        <td> ${patient.id} - ${patient.name}   </td>
+                        <td> ${patient.phone}     </td>
+                        <td> ${patient.email}     </td>
+                        <td>${patient.dateBooking} (${patient.timeBooking})   </td>
+                        <td> 
+                        <button  data-patient-id="${patient.id}"  class="ml-3 btn btn-warning btn-pending-patient">Xác nhận</button>
+                        <button  type="button" data-patient-id="${patient.id}" class="ml-3 btn btn-danger btn-pending-patient-cancel"> Hủy </button>
+                        </td>
+                    </tr>
+                    `;
+                });
+                // Đổ dữ liệu chỗ đã khám
+                data.object.confirmedPatients.forEach((patient) => {
+                    htmlConfirmed += `
+                    <tr>
+                        <td> ${patient.id} - ${patient.name}   </td>
+                        <td> ${patient.phone}     </td>
+                        <td> ${patient.email}     </td>
+                        <td>${patient.dateBooking} (${patient.timeBooking})   </td>
+                        <td> 
+                        <button  type="button" data-patient-id="${patient.id}"  class="ml-3 btn btn-info btn-confirmed-patient"> Thông tin</button>
+                        </td>
+                    </tr>
+                    `;
+                });
+                // Đổ dữ liệu chỗ đã hủy
+                data.object.canceledPatients.forEach((patient) => {
+                    htmlCanceled += `
+                    <tr>
+                        <td> ${patient.id} - ${patient.name}   </td>
+                        <td> ${patient.phone}     </td>
+                        <td> ${patient.email}     </td>
+                        <td>${patient.dateBooking} (${patient.timeBooking})   </td>
+                        <td> 
+                        <button   data-patient-id="${patient.id}"  class="ml-3 btn btn-primary btn-history-cancel-patient">Lịch sử</button>
+                        </td>
+                    </tr>
+                    `;
+                });
+
+                $('#tableNewPatients tbody').append(htmlNew);
+                $('#tableNeedConfirmPatients tbody').append(htmlPending);
+                $('#tableConfirmedPatients tbody').append(htmlConfirmed);
+                $('#tableCancelPatients tbody').append(htmlCanceled);
+            },
+            error: function (error) {
+                console.log(error);
+                alertify.error('Đã xảy ra lỗi, vui lòng thử lại sau!');
+            },
+        });
+    });
+}
 
 function handleBtnNewPatientOk() {
     $('#tableNewPatients').on('click', '.btn-new-patient-ok', function (e) {
@@ -1430,7 +1525,7 @@ $(document).ready(function (e) {
         spellChecker: false,
     });
     let converter = new showdown.Converter();
-    //create datepicker, doctor create schedule
+    // //create datepicker, doctor create schedule
     $('#datepicker').datepicker({
         format: 'dd/mm/yyyy',
         weekStart: 1,
@@ -1489,4 +1584,5 @@ $(document).ready(function (e) {
     deleteScheduleByDate();
     showModalInfoCustomer();
     deleteCustomerById();
+    loadPatientsByDate();
 });
