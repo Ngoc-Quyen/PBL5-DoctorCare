@@ -267,16 +267,16 @@ let getFeedbackPage = async(req, res) => {
     }
 };
 
-let postCreateFeedback = async(req, res) => {
+let postCreateFeedback = async (req, res) => {
     try {
         let feedback = await doctorService.createFeedback(req.body.data);
         return res.status(200).json({
-            message: 'send feedback success',
-            feedback: feedback,
+            message: "Send feedback success",
+            feedback: feedback
         });
     } catch (e) {
         console.log(e);
-        return res.status(500).json(e);
+        return res.status(500).json({ error: "Failed to save feedback to database" });
     }
 };
 

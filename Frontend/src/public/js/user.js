@@ -26,8 +26,6 @@ function loadNewPatientsForUser() {
             data.object.newPatients.forEach((patient) => {
                 htmlNew += `
                 <tr>
-                    <td> ${patient.id} </td>
-                  
                     <td> ${patient.name}</td>
                     <td> ${patient.dateBooking}     </td>
                     <td> ${patient.timeBooking}  </td>
@@ -42,7 +40,6 @@ function loadNewPatientsForUser() {
             data.object.pendingPatients.forEach((patient) => {
                 htmlPending += `
                 <tr>
-                <td> ${patient.id} </td>
                 <td> ${patient.email}     </td>
                 <td> ${patient.dateBooking}     </td>
                 <td> ${patient.timeBooking}   </td>
@@ -56,7 +53,6 @@ function loadNewPatientsForUser() {
             data.object.confirmedPatients.forEach((patient) => {
                 htmlConfirmed += `
                 <tr>
-                <td> ${patient.id} </td>
                 <td> ${patient.email}     </td>
                 <td> ${patient.dateBooking}     </td>
                 <td> ${patient.timeBooking}   </td>
@@ -70,7 +66,6 @@ function loadNewPatientsForUser() {
             data.object.canceledPatients.forEach((patient) => {
                 htmlCanceled += `
                 <tr>
-                    <td> ${patient.id} </td>
                 <td> ${patient.email}     </td>
                 <td> ${patient.dateBooking}     </td>
                 <td> ${patient.timeBooking}   </td>
