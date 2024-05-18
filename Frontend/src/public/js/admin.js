@@ -868,15 +868,11 @@ function loadPatientsByDate() {
             url: `${window.location.origin}/admin/manage/booking-date`,
             method: 'POST',
             success: function (data) {
-                console.log('data: ', data);
                 let countNew = data.object.newPatients.length;
                 let countPending = data.object.pendingPatients.length;
                 let countConfirmed = data.object.confirmedPatients.length;
                 let countCanceled = data.object.canceledPatients.length;
-                console.log(countNew);
-                console.log(countPending);
-                console.log(countConfirmed);
-                console.log(countCanceled);
+
                 $('#count-new').text(`${countNew}`);
                 $('#count-need').text(`${countPending}`);
                 $('#count-confirmed').text(`${countConfirmed}`);
@@ -1137,7 +1133,6 @@ function handleAfterCallingPatient() {
                 moreInfo: patientMoreInfo,
             },
             success: function (data) {
-                console.log(data);
                 let patient = data.patient;
                 addNewRowTableConfirmed(patient);
                 alertify.success('Xác nhận thành công!');
@@ -1466,7 +1461,7 @@ function doneComment() {
                 data: { commentId: commentId },
                 success: function (data) {
                     node.closest('tr').remove();
-                    console.log(data);
+
                     alertify.success('Đã lưu thành công phần bình luận');
                 },
                 error: function (error) {
@@ -1506,6 +1501,27 @@ function statisticalAdmin(month) {
     });
 }
 
+function showUserByPhone() {
+    $('#btnSearch').on('click', function (e) {
+        e.preventDefault();
+        // Lấy giá trị từ trường nhập phoneUser
+        var phone = $('#phoneUser').val();
+        // Tạo dữ liệu gửi đi
+        var data = {
+            phone: phone,
+        };
+        $.ajax({
+            method: 'POST',
+            url: `${window.location.origin}/users/manage/customer?phone=${phone}`,
+            data: data,
+            success: function (data) {},
+            error: function (error) {
+                alertify.error('Đã xảy ra lỗi, vui lòng thử lại sau!');
+                console.log(error);
+            },
+        });
+    });
+}
 function handleFindStatisticalAdmin() {
     $('#findStatisticalAdmin').on('click', function () {
         statisticalAdmin($('#monthAnalyse').val());

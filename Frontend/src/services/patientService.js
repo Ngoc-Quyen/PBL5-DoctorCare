@@ -374,6 +374,52 @@ let updateExtrainfos = async (id, historyBreath, moreInfo) => {
         }
     });
 };
+let getForPatientForUser = async (idUser) => {
+    return new Promise(async (resolve, reject) => {
+        try {
+            let newPatients = await db.Patient.findAll({
+                where: {
+                    statusId: statusNewId,
+                    userId: idUser,
+                },
+                order: [['updatedAt', 'DESC']],
+            });
+
+            let pendingPatients = await db.Patient.findAll({
+                where: {
+                    statusId: statusPendingId,
+                    userId: idUser,
+                },
+                order: [['updatedAt', 'DESC']],
+            });
+
+            let confirmedPatients = await db.Patient.findAll({
+                where: {
+                    statusId: statusSuccessId,
+                    userId: idUser,
+                },
+                order: [['updatedAt', 'DESC']],
+            });
+
+            let canceledPatients = await db.Patient.findAll({
+                where: {
+                    statusId: statusFailedId,
+                    userId: idUser,
+                },
+                order: [['updatedAt', 'DESC']],
+            });
+
+            resolve({
+                newPatients: newPatients,
+                pendingPatients: pendingPatients,
+                confirmedPatients: confirmedPatients,
+                canceledPatients: canceledPatients,
+            });
+        } catch (e) {
+            reject(e);
+        }
+    });
+};
 module.exports = {
     getInfoBooking: getInfoBooking,
     getForPatientsTabs: getForPatientsTabs,
@@ -384,4 +430,5 @@ module.exports = {
     getComments: getComments,
     updateExtrainfos: updateExtrainfos,
     getForPatientsByDateTabs: getForPatientsByDateTabs,
+    getForPatientForUser: getForPatientForUser,
 };

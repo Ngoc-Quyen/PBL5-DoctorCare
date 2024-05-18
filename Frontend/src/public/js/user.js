@@ -2,21 +2,15 @@ function loadNewPatientsForUser() {
     $.ajax({
         url: `${window.location.origin}/user/get-patients-for-user`,
         method: 'POST',
-        success: function(data) {
-            console.log(data);
+        success: function (data) {
             let countNew = data.object.newPatients.length;
             let countPending = data.object.pendingPatients.length;
             let countConfirmed = data.object.confirmedPatients.length;
             let countCanceled = data.object.canceledPatients.length;
-            console.log('0');
-            console.log(countPending);
-            console.log(countConfirmed);
-            console.log(countCanceled);
             $('#count-new').text(`${countNew}`);
             $('#count-need').text(`${countPending}`);
             $('#count-confirmed').text(`${countConfirmed}`);
             $('#count-canceled').text(`${countCanceled}`);
-
 
             let htmlNew,
                 htmlPending,
@@ -27,7 +21,6 @@ function loadNewPatientsForUser() {
                 htmlNew += `
                 <tr>
                     <td> ${patient.id} </td>
-                  
                     <td> ${patient.name}</td>
                     <td> ${patient.dateBooking}     </td>
                     <td> ${patient.timeBooking}  </td>
@@ -86,7 +79,7 @@ function loadNewPatientsForUser() {
             $('#tableConfirmedPatients tbody').append(htmlConfirmed);
             $('#tableCancelPatients tbody').append(htmlCanceled);
         },
-        error: function(error) {
+        error: function (error) {
             console.log(error);
             alertify.error('Đã xảy ra lỗi, vui lòng thử lại sau!');
         },
@@ -131,11 +124,9 @@ function addNewRowTableCanceled(patient) {
 function convertStringToDateClient(string) {
     return moment(Date.parse(string)).format('DD/MM/YYYY, HH:mm A');
 }
-$(document).ready(function(e) {
-
+$(document).ready(function (e) {
     loadNewPatientsForUser();
     addNewRowTableConfirmed();
     addNewRowTableCanceled();
     convertStringToDateClient();
-
-})
+});

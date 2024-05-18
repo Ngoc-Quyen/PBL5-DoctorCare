@@ -555,6 +555,17 @@ let postCreateSpecialization = async (req, res) => {
         res.redirect('/users/manage/specialization/create');
     }
 };
+
+let getUserByPhone = async (req, res) => {
+    let phone = req.body.phone;
+    console.log('phone: ', phone);
+    let listUser = await userService.getUserByPhone(phone);
+    console.log(listUser.customers);
+    return res.render('main/users/admins/manageCustomer.ejs', {
+        user: req.user,
+        customers: listUser.customers,
+    });
+};
 module.exports = {
     getManageDoctor: getManageDoctor,
     getCreateDoctor: getCreateDoctor,
@@ -596,4 +607,5 @@ module.exports = {
     getCreateSpecializationPage: getCreateSpecializationPage,
     postCreateSpecialization: postCreateSpecialization,
     getForPatientsByDateTabs: getForPatientsByDateTabs,
+    getUserByPhone: getUserByPhone,
 };
