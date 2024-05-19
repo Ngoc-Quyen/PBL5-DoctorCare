@@ -122,12 +122,17 @@ let getContactPage = (req, res) => {
 let getPostsWithPagination = async(req, res) => {
     let role = 'nope';
     let object = await postService.getPostsPagination(1, +process.env.LIMIT_GET_POST, role);
+
+    // In ra giá trị của biến object
+    console.log(object);
+
     return res.render('main/homepage/allPostsPagination.ejs', {
         posts: object.posts,
         total: object.total,
         striptags: striptags,
     });
 };
+
 
 let getPostSearch = async(req, res) => {
     let search = req.query.keyword;
@@ -151,7 +156,7 @@ let getInfoBookingPage = async(req, res) => {
     }
 };
 
-let postBookingDoctorPageWithoutFiles = async (req, res) => {
+let postBookingDoctorPageWithoutFiles = async(req, res) => {
     try {
         if (!req.session.userId) {
             return res.status(401).json({ message: 'User not authenticated' });
@@ -179,7 +184,7 @@ let postBookingDoctorPageWithoutFiles = async (req, res) => {
 };
 
 let postBookingDoctorPageNormal = (req, res) => {
-    imageImageOldForms(req, res, async (err) => {
+    imageImageOldForms(req, res, async(err) => {
         if (err) {
             console.log(err);
             if (err.message) {
@@ -267,7 +272,7 @@ let getFeedbackPage = async(req, res) => {
     }
 };
 
-let postCreateFeedback = async (req, res) => {
+let postCreateFeedback = async(req, res) => {
     try {
         let feedback = await doctorService.createFeedback(req.body.data);
         return res.status(200).json({
@@ -327,8 +332,23 @@ let getPageInfoBooked = async(req, res) => {
         console.log(e);
     }
 };
-
+let getPageCancel = async(req, res) => {
+    try {
+        return res.render('main/homepage/cancel.ejs', {});
+    } catch (e) {
+        console.log(e);
+    }
+};
+let getPageCanceled = async(req, res) => {
+    try {
+        return res.render('main/homepage/canceled.ejs', {});
+    } catch (e) {
+        console.log(e);
+    }
+};
 module.exports = {
+    getPageCancel: getPageCancel,
+    getPageCanceled: getPageCanceled,
     getHomePage: getHomePage,
     getUserPage: getUserPage,
     getDetailSpecializationPage: getDetailSpecializationPage,

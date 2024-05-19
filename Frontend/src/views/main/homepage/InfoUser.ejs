@@ -107,7 +107,7 @@
                         <div><i class="fa fa-history" aria-hidden="true" style="color: #007bff;"></i> <a href="#" onclick="showDetail('medicalHistory')">Lịch sử khám bệnh</a></div>
                     </div>
                     <div>
-                        <div><i class="fa fa-unlock-alt" aria-hidden="true" style="color: #007bff;"></i> <a onclick="showDetail('changePassword')">Đổi mật khẩu</a></div>
+                        <div><i class="fa fa-unlock-alt" aria-hidden="true" style="color: #007bff;"></i> <a href="#" onclick="showDetail('changePassword')">Đổi mật khẩu</a></div>
                     </div>
                 </div>
             </div>
@@ -299,3 +299,49 @@
             document.getElementById(section).style.display = 'block';
         }
     </script>
+
+    <!-- Modal detail info patient-->
+    <div class="modal fade " tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true" id="modalDetailPatient1">
+        <div class="modal-dialog mw-100 w-75" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">Thông tin bệnh nhân</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <div class="row">
+                        <div class="form-group col-4">
+                            <label class="col-form-label text-label" for="patientName">Tên:</label>
+                            <input type="text" class="form-control" id="patientName" name="patientName" readonly>
+                        </div>
+                        <div class="form-group col-4">
+                            <label class="col-form-label text-label" for="patientPhone">Số điện thoại:</label>
+                            <input type="text" class="form-control" id="patientPhone" name="patientPhone" readonly>
+                        </div>
+                        <div class="form-group col-4">
+                            <label class="col-form-label text-label" for="patientEmail">Email:</label>
+                            <input type="email" class="form-control" id="patientEmail" name="patientEmail" readonly>
+                        </div>
+                        <div class="form-group col-2">
+                            <label class="col-form-label text-label" for="patientDate">Ngày:</label>
+                            <input type="text" class="form-control" id="patientDate" name="patientDate" readonly>
+                        </div>
+                        <div class="form-group col-2">
+                            <label class="col-form-label text-label" for="patientTime">Giờ:</label>
+                            <input type="text" class="form-control" id="patientTime" name="patientTime" readonly>
+                        </div>
+                        <div class="form-group col-4">
+                            <label class="col-form-label text-label" for="patientDoctor">Bác sĩ:</label>
+                            <input type="text" class="form-control" id="patientDoctor" name="patientDoctor" readonly>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="ml-3 btn btn-secondary" id="btn-cancel-patient" data-dismiss="modal">Hủy</button>
+                    <button type="button" class="btn btn-primary" id="btn-confirm-patient-done">Xác nhận</button>
+                </div>
+            </div>
+        </div>
+    </div>

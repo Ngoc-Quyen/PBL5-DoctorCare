@@ -71,8 +71,8 @@ let initRoutes = (app) => {
     router.get('/all-specializations', home.getPageAllSpecializations);
     router.get('/InfoUser', customer.getPageInfoUser);
     router.get('/InfoBooked', home.getPageInfoBooked);
-    // router.get('/cancel', home.getPageCancel);
-    // router.get('/canceled', home.getPageCanceled);
+    router.get('/cancel', home.getPageCancel);
+    router.get('/canceled', home.getPageCanceled);
     // router.get('/changePass', home.getPageChangePass);
 
     router.get('/webhook', bot.getWebhookFB);
@@ -163,7 +163,7 @@ let initRoutes = (app) => {
     router.post('/admin/done-comment', auth.checkLoggedIn, admin.postDoneComment);
 
     router.post('/user/get-patients-for-user', auth.checkLoggedIn, customer.getForPatientForUser);
-    router.post('/user/change-status-patient-for -user', auth.checkLoggedIn, customer.postChangeStatusPatientForUser);
+    router.post('/user/change-status-patient-for-user', auth.checkLoggedIn, customer.postChangeStatusPatientForUser);
     // router.post('/user/get-patients-for-user', auth.checkLoggedIn, admin.getForPatientsTabs);
     // router.post('/user/change-status-patient-for -user', auth.checkLoggedIn, customer.postChangeStatusPatientForUser);
 
