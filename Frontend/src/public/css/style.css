@@ -112,8 +112,8 @@ body a {
     background-color: #fff;
     background-size: cover;
     background-repeat: no-repeat;
-    background-image: url("../images/bg.png");
     background-position: center center;
+    animation: slideShow 10s infinite;
 }
 
 .sec-header .img-header .header-search {
@@ -134,6 +134,19 @@ body a {
 .sec-header .img-header .header-search input:focus {
     outline: none;
 }
+
+@keyframes slideShow {
+    0% { background-image: url("../images/bg1.jpg"); }
+    20% { background-image: url("../images/bg1.jpg"); }
+    25% { background-image: url("../images/bg2.jpg"); }
+    45% { background-image: url("../images/bg2.jpg"); }
+    50% { background-image: url("../images/bg3.png"); }
+    70% { background-image: url("../images/bg3.png"); }
+    75% { background-image: url("../images/bg4.png"); }
+    95% { background-image: url("../images/bg4.png"); }
+    100% { background-image: url("../images/bg1.jpg"); }
+}
+
 
 .sec-header .content-header {
     width: 1300px;
