@@ -113,6 +113,7 @@ let initRoutes = (app) => {
     router.post('/users/manage/specialization/create', auth.checkLoggedIn, admin.postCreateSpecialization);
 
     router.get('/users/manage/customer', auth.checkLoggedIn, admin.getCustomerPage);
+    router.post('/users/manage/customer', auth.checkLoggedIn, admin.getUserByPhone);
     router.get('/users', auth.checkLoggedIn, home.getUserPage);
     router.get('/users/manage/customer/create', auth.checkLoggedIn, admin.getCreatePatient);
     router.post('/users/manage/customer/create', auth.checkLoggedIn, admin.postCreatePatient);

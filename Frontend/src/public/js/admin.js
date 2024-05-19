@@ -1501,33 +1501,39 @@ function statisticalAdmin(month) {
     });
 }
 
-function showUserByPhone() {
-    $('#btnSearch').on('click', function (e) {
-        e.preventDefault();
-        // Lấy giá trị từ trường nhập phoneUser
-        var phone = $('#phoneUser').val();
-        // Tạo dữ liệu gửi đi
-        var data = {
-            phone: phone,
-        };
-        $.ajax({
-            method: 'POST',
-            url: `${window.location.origin}/users/manage/customer?phone=${phone}`,
-            data: data,
-            success: function (data) {},
-            error: function (error) {
-                alertify.error('Đã xảy ra lỗi, vui lòng thử lại sau!');
-                console.log(error);
-            },
-        });
-    });
-}
 function handleFindStatisticalAdmin() {
     $('#findStatisticalAdmin').on('click', function () {
         statisticalAdmin($('#monthAnalyse').val());
     });
 }
-
+function searchCustomerByPhone() {
+    $('btnSearch').on('click', function () {
+        event.preventDefault(); // Ngăn chặn hành động mặc định của thẻ <a>
+        console.log('Button clicked'); // Thêm dòng này để kiểm tra
+        let phone = document.getElementById('phone').value;
+        console.log('ham nay dc goi');
+        fetch(`${window.location.origin}/users/manage/customer`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({ phone: phone }),
+        })
+            .then((response) => {
+                if (!response.ok) {
+                    throw new Error('Network response was not ok');
+                }
+                return response.json();
+            })
+            .then((data) => {
+                // Xử lý dữ liệu nhận được từ server (ví dụ: hiển thị lên giao diện)
+                console.log(data);
+            })
+            .catch((error) => {
+                console.error('Error:', error);
+            });
+    });
+}
 $(document).ready(function (e) {
     // $('.modal').on('hidden.bs.modal', function(e) {
     //     $(this).removeData();

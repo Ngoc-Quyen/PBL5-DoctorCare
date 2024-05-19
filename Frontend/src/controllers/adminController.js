@@ -159,10 +159,17 @@ let imageDoctorUploadFile = multer({
 }).single('avatar');
 
 let getCustomerPage = async (req, res) => {
-    let customers = await customerService.getAllcustomers();
+    let phone = req.body.phone;
+    let customers = '';
+    if (!phone) {
+        customers = await customerService.getAllcustomers();
+    } else {
+        customers = await customerService.getUserByPhone(phone);
+    }
     return res.render('main/users/admins/manageCustomer.ejs', {
         user: req.user,
         customers: customers,
+        phone: phone,
     });
 };
 
@@ -564,6 +571,7 @@ let getUserByPhone = async (req, res) => {
     return res.render('main/users/admins/manageCustomer.ejs', {
         user: req.user,
         customers: listUser.customers,
+        phone: phone,
     });
 };
 module.exports = {
