@@ -26,7 +26,7 @@ let getInfoBooking = (id) => {
             });
 
             patient.setDataValue('doctorName', doctor.name);
-            // patient.setDataValue('doctorAvatar', doctor.avatar);
+            patient.setDataValue('doctorAvatar', doctor.avatar);
             patient.setDataValue('patientTime', patient.timeBooking);
             patient.setDataValue('patientDate', patient.dateBooking);
             resolve(patient);
@@ -153,19 +153,19 @@ let changeStatusPatientForUser = (data, logs) => {
             });
 
             let user = await db.User.findOne({
-                where: { id: patient.UserId },
+                where: { id: patient.userId },
                 attributes: ['name', 'avatar', 'id'],
             });
 
-            //update tổng số lượt đặt bác sĩ khi status = thành công
-            if (data.statusId === statusSuccessId) {
-                let schedule = await db.Schedule.findOne({
-                    where: { userId: patient.userId, time: patient.timeBooking, date: patient.dateBooking },
-                });
+            // //update tổng số lượt đặt bác sĩ khi status = thành công
+            // if (data.statusId === statusSuccessId) {
+            //     let schedule = await db.Schedule.findOne({
+            //         where: { userId: patient.userId, time: patient.timeBooking, date: patient.dateBooking },
+            //     });
 
-                let sum = +schedule.sumBooking;
-                await schedule.update({ sumBooking: sum + 1 });
-            }
+            //     let sum = +schedule.sumBooking;
+            //     await schedule.update({ sumBooking: sum + 1 });
+            // }
 
             //update tổng số lượt cho user khi status = hủy
             if (data.statusId === statusFailedId) {
@@ -188,6 +188,7 @@ let changeStatusPatientForUser = (data, logs) => {
 let changeStatusPatient = (data, logs) => {
     return new Promise(async(resolve, reject) => {
         try {
+
 
             let patient = await db.Patient.findOne({
                 where: { id: data.id }
@@ -279,20 +280,32 @@ let createNewPatient = (data) => {
                 },
             }).then(async(schedule) => {
                 if (schedule && schedule.sumBooking < schedule.maxBooking) {
-                    let patient = await db.Patient.create(data);
+                    let patient = await db.Patient.create({
+                        statusId: data.statusId,
+                        userId: data.userId, // Đảm bảo userId được lưu vào
+                        historyBreath: data.historyBreath,
+                        moreInfo: data.moreInfo,
+                        placeId: data.placeId,
+                        createdAt: data.createdAt,
+                        doctorId: data.doctorId,
+                        dateBooking: data.dateBooking,
+                        timeBooking: data.timeBooking,
+                        email: data.email,
+                        oldForms: data.oldForms // Đảm bảo oldForms được lưu vào nếu có
+                    });
                     data.patientId = patient.id;
                     await db.ExtraInfo.create(data);
 
-                    //tăng sumBooking
+                    // Tăng sumBooking
                     let sum = +schedule.sumBooking;
                     await schedule.update({ sumBooking: sum + 1 });
 
                     let doctor = await db.User.findOne({
-                        where: { id: patient.doctorId },
+                        where: { id: data.doctorId },
                         attributes: ['name', 'avatar']
                     });
 
-                    //update logs
+                    // Cập nhật logs
                     let logs = {
                         patientId: patient.id,
                         content: "The patient made an appointment from the system ",
@@ -329,6 +342,8 @@ let createNewPatient = (data) => {
         }
     }));
 };
+
+
 
 let getDetailPatient = (id) => {
     return new Promise(async(resolve, reject) => {

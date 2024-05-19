@@ -1218,3 +1218,11 @@ h3.show-title-post {
     background-color: #c82333;
     /* Darker red on hover */
 }
+
+.wrapper1 {
+    display: flex; /* Sử dụng flexbox để căn chỉnh các biểu tượng */
+}
+
+.contact-icon1 {
+    margin-right: 10px; /* Khoảng cách giữa các biểu tượng */
+}
