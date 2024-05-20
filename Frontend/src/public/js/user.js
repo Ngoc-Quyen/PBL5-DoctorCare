@@ -131,11 +131,15 @@ function addNewRowTableCanceled(patient) {
 function convertStringToDateClient(string) {
     return moment(Date.parse(string)).format('DD/MM/YYYY, HH:mm A');
 }
+
+
+
 $(document).ready(function(e) {
 
     loadNewPatientsForUser();
     addNewRowTableConfirmed();
     addNewRowTableCanceled();
     convertStringToDateClient();
+    
 
 })

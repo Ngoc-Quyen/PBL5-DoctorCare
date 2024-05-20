@@ -43,9 +43,9 @@
                         <a href="/InfoUser" >
                             <img src="../images/background/User.png" alt="User logo" class="logo">
                         </a>
-                        <a href="/InfoBooked" >
+                        <!-- <a href="/InfoBooked" >
                             <img src="../images/background/Lichhen.png" alt="Lichhen logo" class="logo">
-                        </a>
+                        </a> -->
                         <a href="https://www.facebook.com/profile.php?id=100011010698678" target="_blank">
                             <img src="../images/background/Vector.png" alt="Contact logo" class="logo">
                         </a>
@@ -115,7 +115,7 @@
                                 </div>
                                 <div class="col-md-12 d-none d-md-flex justify-content-between">
                                     <div class="d-flex flex-column">
-                                        <button class="btn btn-noclick">Xác nhận</button>
+                                        <button class="btn btn-noclick" onclick="redirectToCancel()">Xác nhận</button>
                                     </div>
                                     <div class="d-flex flex-column">
                                         <button class="btn btn-cancel" onclick="redirectToCancelPage()">Quay lại</button>
@@ -123,6 +123,10 @@
                                     <script>
                                         function redirectToCancelPage() {
                                             window.location.href = "/";
+                                        }
+                                        function redirectToCancel(){
+                                            // cập nhật statusId == 2
+                                            window.location.href = "/canceled";
                                         }
                                     </script>
                                 </div>

@@ -312,6 +312,20 @@ let getPageInfoBooked = async(req, res) => {
         console.log(e);
     }
 };
+let getPageCancel = async (req, res) => {
+    try {
+        return res.render('main/homepage/cancel.ejs', {});
+    } catch (e) {
+        console.log(e);
+    }
+};
+let getPageCanceled = async (req, res) => {
+    try {
+        return res.render('main/homepage/canceled.ejs', {});
+    } catch (e) {
+        console.log(e);
+    }
+};
 
 module.exports = {
     getHomePage: getHomePage,
@@ -333,6 +347,8 @@ module.exports = {
     getPageForDoctors: getPageForDoctors,
     postSearchHomePage: postSearchHomePage,
     getPageAllDoctors: getPageAllDoctors,
+    getPageCancel: getPageCancel,
+    getPageCanceled: getPageCanceled,
 
     getPageInfoBooked: getPageInfoBooked,
     getPageAllSpecializations: getPageAllSpecializations,
