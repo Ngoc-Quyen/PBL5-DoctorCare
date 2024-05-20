@@ -72,6 +72,7 @@ let initRoutes = (app) => {
     router.get('/all-specializations', home.getPageAllSpecializations);
     router.get('/InfoUser', customer.getPageInfoUser);
     router.get('/InfoBooked', home.getPageInfoBooked);
+
     // router.get('/cancel', home.getPageCancel);
     // router.get('/canceled', home.getPageCanceled);
     // router.get('/changePass', home.getPageChangePass);
@@ -218,8 +219,9 @@ let initRoutes = (app) => {
     router.get('/allcode', auth.getAllCode);
     router.get('/reset-password', auth.getResetPasswordPage);
     router.post('/forgot-password/set-new-password', auth.postNewPassword);
+    router.post('/users/change-password', customer.postChangePass);
+    router.post('/check-current-password', customer.postCheckCurrentPass);
     router.post('/users/update-user', upload.single('avatar'), auth.handleEditSpecialty);
-    return app.use('/', router);
     return app.use('/', router);
 };
 module.exports = initRoutes;

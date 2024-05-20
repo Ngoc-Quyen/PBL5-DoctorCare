@@ -25,7 +25,7 @@ function loadNewPatientsForUser() {
                     <td> ${patient.dateBooking}     </td>
                     <td> ${patient.timeBooking}  </td>
                     <td> 
-                    <button type="button"  data-patient-id="${patient.id}" class="ml-3 btn btn-primary btn-new-patient-ok"> Chi tiết</button>
+                    <button type="button"  data-patient-id="${patient.id}" class="ml-3 btn btn-primary btn-new-patient-ok1"> Chi tiết</button>
                     <button  type="button" data-patient-id="${patient.id}" class="ml-3 btn btn-danger btn-new-patient-cancel"> Hủy </button>
                     </td>
                 </tr>
@@ -128,4 +128,57 @@ $(document).ready(function (e) {
     // addNewRowTableConfirmed();
     // addNewRowTableCanceled();
     // convertStringToDateClient();
+});
+
+function convertStringToDateClient(string) {
+    return moment(Date.parse(string)).format('DD/MM/YYYY, HH:mm A');
+}
+
+function callAjaxRenderModalInfo(patientId, option) {
+    $.ajax({
+        method: 'POST',
+        url: `${window.location.origin}/api/get-detail-patient-by-id`,
+        data: { patientId: patientId },
+        success: function (data) {
+            $('#patientName').val(data.name);
+            $('#btn-confirm-patient-done').attr('data-patient-id', data.id);
+            $('#patientPhone').val(data.phone);
+            $('#patientEmail').val(data.email);
+            $('#patientDate').val(data.dateBooking);
+            $('#patientTime').val(data.timeBooking);
+            $('#patientReason').text(data.description);
+            $('#patientAddress').text(data.address);
+            if (data.ExtraInfo) {
+                $('#patientHistoryBreath').text(data.ExtraInfo.historyBreath);
+                $('#patientMoreInfo').text(data.ExtraInfo.moreInfo);
+            }
+            if (option) {
+                $('#btn-confirm-patient-done').css('display', 'none');
+                $('#btn-cancel-patient').text('OK');
+            }
+
+            $('#modalDetailPatient1').modal('show');
+        },
+        error: function (err) {
+            console.log(err);
+            alertify.error('Đã xảy ra lỗi, vui lòng thử lại sau!');
+        },
+    });
+}
+
+function handleBtnNewPatientOk1() {
+    $('#tableNewPatients').on('click', '.btn-new-patient-ok1', function (e) {
+        let patientId = $(this).data('patient-id');
+        let option = true;
+        callAjaxRenderModalInfo(patientId, option);
+    });
+}
+$(document).ready(function (e) {
+    handleBtnNewPatientOk1();
+    loadNewPatientsForUser();
+    addNewRowTableConfirmed();
+    addNewRowTableCanceled();
+    convertStringToDateClient();
+
+    callAjaxRenderModalInfo();
 });

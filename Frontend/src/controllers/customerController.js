@@ -122,11 +122,50 @@ let getForPatientForUser = async(req, res) => {
         return res.status(500).json(e);
     }
 };
+let postChangePass = async (req, res) => {
+    try {
+        const { currentPass, newPass, confirmPass } = req.body;
+
+        const message = await userService.updatePassword(req.user.email, currentPass, newPass, confirmPass);
+
+        if (message.errCode === 0) {
+            return res.redirect('/InfoUser');
+        } else {
+            return res.status(400).json({ message: message.errMessage });
+        }
+    } catch (error) {
+        console.log("Error updating password:", error);
+        return res.status(500).json({ error: "Internal server error" });
+    }
+};
+
+let postCheckCurrentPass = async (req, res) => {
+    try {
+        const { currentPass } = req.body;
+        const email = req.user.email; // Assumes email is stored in req.user
+
+        const result = await userService.checkCurrentPassword(email, currentPass);
+
+        if (result.correct) {
+            return res.json({ correct: true });
+        } else {
+            return res.json({ correct: false });
+        }
+    } catch (error) {
+        console.error("Error checking current password:", error);
+        return res.status(500).json({ error: "Internal server error." });
+    }
+};
+
 module.exports = {
     getManageCustomersPage: getManageCustomersPage,
     getInforCustomerById: getInforCustomerById,
     postChangeStatusPatientForUser: postChangeStatusPatientForUser,
     deleteCustomerById: deleteCustomerById,
     getPageInfoUser: getPageInfoUser,
-    getForPatientForUser: getForPatientForUser
+    getForPatientForUser: getForPatientForUser,
+    postChangePass: postChangePass,
+    postCheckCurrentPass: postCheckCurrentPass,
+   
+    
 };

@@ -12,7 +12,7 @@ import { reject } from 'bluebird';
 var Minizip = require('minizip-asm.js');
 var fs = require('fs');
 const PATH_ZIP = 'src/public/images/patients/remedy/zip';
-let maxBooking = 2;
+let maxBooking = 1;
 const statusPendingId = 3;
 const statusFailedId = 2;
 const statusSuccessId = 1;
@@ -77,6 +77,7 @@ let getDoctorWithSchedule = (id, currentDate) => {
         }
     });
 };
+
 
 let getPostForDoctor = (id) => {
     return new Promise(async (resolve, reject) => {

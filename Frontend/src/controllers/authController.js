@@ -112,6 +112,7 @@ let postNewPassword = async (req, res) => {
         return res.redirect('/reset-password');
     }
 };
+
 let handleEditSpecialty = async (req, res) => {
     let data = req.body;
     const filePath = req.file; // Đường dẫn tạm thời của tệp tải lên
@@ -139,5 +140,6 @@ module.exports = {
     getAllCode: getAllCode,
     getResetPasswordPage: getResetPasswordPage,
     postNewPassword: postNewPassword,
-    handleEditSpecialty: handleEditSpecialty
+    handleEditSpecialty: handleEditSpecialty,
+    
 };
