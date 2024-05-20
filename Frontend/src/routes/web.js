@@ -73,7 +73,7 @@ let initRoutes = (app) => {
     router.get('/InfoBooked', home.getPageInfoBooked);
     router.get('/cancel', home.getPageCancel);
     router.get('/canceled', home.getPageCanceled);
-    router.get('/changePass', home.getPageChangePass);
+  //  router.get('/changePass', home.getPageChangePass);
 
     router.get('/webhook', bot.getWebhookFB);
     router.post('/webhook', bot.postWebhookFB);
@@ -119,6 +119,10 @@ let initRoutes = (app) => {
     router.post('/users/customer/edit/:id', auth.checkLoggedIn, admin.postEditPatient);
     router.post('/get-info-customer-by-id', customer.getInforCustomerById);
     router.delete('/users/customer/delete', auth.checkLoggedIn, customer.deleteCustomerById);
+
+    
+  
+    
 
     router.get('/users/manage/bot', auth.checkLoggedIn, admin.getManageBotPage);
     router.get('/users/manage/schedule-for-doctors', auth.checkLoggedIn, admin.getManageCreateScheduleForDoctorsPage);
@@ -173,6 +177,7 @@ let initRoutes = (app) => {
     router.delete('/admin/delete/doctor', auth.checkLoggedIn, admin.deleteDoctorById);
     router.delete('/admin/delete/specialization', auth.checkLoggedIn, admin.deleteSpecializationById);
     router.delete('/admin/delete/post', auth.checkLoggedIn, admin.deletePostById);
+    
 
     router.get('/login', auth.checkLoggedOut, auth.getLogin);
 
@@ -215,8 +220,10 @@ let initRoutes = (app) => {
     router.get('/allcode', auth.getAllCode);
     router.get('/reset-password', auth.getResetPasswordPage);
     router.post('/forgot-password/set-new-password', auth.postNewPassword);
+    router.post('/users/change-password', customer.postChangePass);
+    router.post('/check-current-password', customer.postCheckCurrentPass);
     router.post('/users/update-user', upload.single('avatar'), auth.handleEditSpecialty);
     return app.use('/', router);
-    return app.use('/', router);
+  
 };
 module.exports = initRoutes;

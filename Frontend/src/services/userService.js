@@ -603,6 +603,97 @@ let getUserByPhone = async (phone) => {
         }
     });
 };
+let updatePassword = (email, currentPass, newPass, confirmPass) => {
+    return new Promise(async (resolve, reject) => {
+        try {
+            if (!email || !currentPass || !newPass || !confirmPass) {
+                resolve({
+                    errCode: 2,
+                    errMessage: 'Missing required parameters: email, currentPass, newPass, confirmPass',
+                });
+                return;
+            }
+
+            let user = await db.User.findOne({ where: { email } });
+
+            if (!user) {
+                resolve({
+                    errCode: 1,
+                    errMessage: 'User not found!',
+                });
+                return;
+            }
+
+            bcrypt.compare(currentPass, user.password, (err, passwordMatch) => {
+                if (err) {
+                    reject(err);
+                    return;
+                }
+
+                if (!passwordMatch) {
+                    resolve({
+                        errCode: 3,
+                        errMessage: 'Current password is incorrect!',
+                    });
+                    return;
+                }
+
+                if (newPass !== confirmPass) {
+                    resolve({
+                        errCode: 4,
+                        errMessage: 'New password and confirm password do not match!',
+                    });
+                    return;
+                }
+
+                bcrypt.hash(newPass, salt, async (err, hashedPassword) => {
+                    if (err) {
+                        reject(err);
+                        return;
+                    }
+
+                    await user.update({ password: hashedPassword });
+
+                    resolve({
+                        errCode: 0,
+                        errMessage: 'Password updated successfully!',
+                    });
+                });
+            });
+        } catch (error) {
+            resolve({
+                errCode: 5,
+                errMessage: `Error updating password: ${error.message}`,
+            });
+        }
+    });
+};
+
+let checkCurrentPassword = (email, currentPass) => {
+    return new Promise(async (resolve, reject) => {
+        try {
+            let user = await db.User.findOne({ where: { email } });
+
+            if (!user) {
+                resolve({ correct: false });
+                return;
+            }
+
+            bcrypt.compare(currentPass, user.password, (err, passwordMatch) => {
+                if (err) {
+                    reject(err);
+                    return;
+                }
+
+                resolve({ correct: passwordMatch });
+            });
+        } catch (error) {
+            console.error("Error checking current password:", error);
+            resolve({ correct: false });
+        }
+    });
+};
+
 module.exports = {
     createDoctor: createDoctor,
     getInfoDoctors: getInfoDoctors,
@@ -622,4 +713,6 @@ module.exports = {
     getUserById: getUserById,
     deleteUserById: deleteUserById,
     getUserByPhone: getUserByPhone,
+    updatePassword: updatePassword,
+    checkCurrentPassword: checkCurrentPassword,
 };

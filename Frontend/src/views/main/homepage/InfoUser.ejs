@@ -45,9 +45,9 @@
                         <a href="/InfoUser">
                             <img src="../images/background/User.png" alt="User logo" class="logo">
                         </a>
-                        <a href="/InfoBooked">
+                        <!-- <a href="/InfoBooked">
                             <img src="../images/background/Lichhen.png" alt="Lichhen logo" class="logo">
-                        </a>
+                        </a> -->
                         <a href="https://www.facebook.com/profile.php?id=100011010698678" target="_blank">
                             <img src="../images/background/Vector.png" alt="Contact logo" class="logo">
                         </a>
@@ -110,16 +110,18 @@
                         <div><i class="fa fa-history" aria-hidden="true" style="color: #007bff;"></i> <a href="#" onclick="showDetail('medicalHistory')">Lịch sử khám bệnh</a></div>
                     </div>
                     <div>
-                        <div><i class="fa fa-unlock-alt" aria-hidden="true" style="color: #007bff;"></i> <a onclick="showDetail('changePassword')">Đổi mật khẩu</a></div>
+                        <div><i class="fa fa-unlock-alt" aria-hidden="true" style="color: #007bff;"></i> <a href="#" onclick="showDetail('changePassword')">Đổi mật khẩu</a></div>
                     </div>
                 </div>
             </div>
+            
 
             <div class="form-container infor-user-detail" id="detail-content" style="overflow: auto;">
                 <div style="background-color: #ABF3FD; height: 50px; font-size: 20px; text-align: center;" id="detail-header">
                     Thông tin chi tiết
                 </div>
                 <div id="personalInfo" class="detail-section">
+                    <form id="formUpdateUser" method="POST" action="/users/customer/edit/<%= user.id %>">
                     <div class="form-group1">
                         <label for="full-name">Họ và tên :</label>
                         <input type="text" id="full-name" name="full-name" placeholder="<%= user.name %>" value="<%= user.name %>">
@@ -154,10 +156,16 @@
                         <input type="date" id="birthdate" name="birthdate" placeholder="<%= user.birthday %>" value="<%= user.birthday %>" readonly>
                     </div>
                     <div class="form-group1">
-                        <button type="submit" class="btn-submit" style="margin-top: 30px;">Cập nhật</button>
-
+                        <button type="submit" class="btn-submit" style="margin-top: 30px;"> <a href="#" onclick=""></a>Cập nhật</button> 
+                        <!-- <button type="submit" class="btn btn-primary" style="margin-left: 300px; margin-top: 50px;" id="btnUpdateDoctor" data-doctor-id="<%= user.id %>">Cập
+                            nhật</button> -->
+                            <!-- <button type="submit" class="btn btn-primary" style="margin-left: 300px; margin-top: 50px;" id="btnUpdateUser" data-doctor-id="<%= user.id %>">Cập
+                                nhật</button> -->
+                            
                     </div>
+                    </form>
                 </div>
+                
 
                 <div id="medicalHistory" class="detail-section" style="display:none;">
 
@@ -255,8 +263,45 @@
                         </div>
                     </div>
                 </div>
+                
+                <div id="detail-medical" class="detail-section" style="display:none; text-align: center; background-color: #dbdbdd;border: 2px solid #000;">
+                    <h2>Hồ sơ bệnh án</h2>
+                    <div class="form-group1">
+                        <label for="full-name">Bác sĩ phụ trách: </label>
+                        <input type="text" id="full-name" name="full-name" placeholder="" value="">
+                        <span class="error" id="full-name-error"></span>
+                    </div>
+                    <div class="form-group1">
+                        <label for="specializationDoctor" >Chuyên khoa: </label>
+                        <input type="text" id="specializationDoctor" value="" placeholder="">
+                    </div>
+                    <div class="form-group1">
+                        <label for="days">Ngày khám: </label>
+                        <input type="date" id="days" name="days" placeholder="" value="" readonly>
+                       <label for="time">Giờ khám:</label>
+                       <input type="time" name="tỉme" id="" value="" readonly>
+                    </div>
+                    <div class="form-group1">
+                        <label for="TC">Triệu chứng: </label>
+                        <input type="text" id="TC" name="TC" placeholder="" value="">
+                    </div>
+                    <div class="form-group1">
+                        <label for="CD">Chẩn đoán: </label>
+                        <input type="text" id="CD" name="CD" placeholder="" value="">
+                    </div>
+                    <div class="form-group1">
+                        <label for="type-k">Loại khám/xét nghiệm: </label>
+                        <input type="text" id="type-k" name="type-k" placeholder="" value="" readonly>
+                    </div>
+                    <div class="form-group1">
+                        <label for="kq">Kết quả: </label>
+                        <input type="text" id="kq" name="kq" placeholder="" value="" readonly>
+                    </div>
 
-                <div id="changePassword" class="detail-section" style="display:none;">
+                </div>
+
+
+                <!-- <div id="changePassword" class="detail-section" style="display:none;">
                     <div class="form-group1">
                         <label for="current-password">Mật khẩu hiện tại:</label>
                         <input type="password" id="current-password" name="current-password" placeholder="Nhập mật khẩu hiện tại">
@@ -272,7 +317,98 @@
                     <div class="form-group1">
                         <button type="submit" class="btn-submit">Đổi mật khẩu</button>
                     </div>
+                </div> -->
+               
+                <div id="changePassword" class="detail-section" style="display:none;">
+                    <form method="POST" action="/users/change-password" id="form-change-pass">
+                        <div class="form-group col-6 mx-auto">
+                            <h2 style="font-family:Arial, Helvetica, sans-serif">Đặt lại mật khẩu mới</h2>
+                            <div class="input-group mb-3 mt-3">
+                                <div class="input-group-prepend">
+                                    <span class="input-group-text fa fa-eye"></span>
+                                </div>
+                                <input type="password" class="form-control" id="form-current-password" 
+                                    placeholder="Mật khẩu hiện tại" name="currentPass" required>
+                            </div>
+                            <div class="input-group mb-2">
+                                <div class="input-group-prepend">
+                                    <span class="input-group-text fa fa-lock"></span>
+                                </div>
+                                <input type="password" class="form-control" id="form-password"
+                                    placeholder="Mật khẩu mới" name="newPass" required>
+                            </div>
+                            <div class="input-group mb-2">
+                                <div class="input-group-prepend">
+                                    <span class="input-group-text fa fa-lock"></span>
+                                </div>
+                                <input type="password" class="form-control" id="form-confirm-password"
+                                    placeholder="Xác nhận lại mật khẩu" name="confirmPass" required>
+                            </div>
+                            <button type="submit" id="btn-change-password" class="mt-2 btn btn-primary" style="width: 100px;height: 50px;">Xác nhận</button>
+                        </div>
+                    </form>
+                    <script>
+                        document.getElementById("form-change-pass").addEventListener("submit", async function(event) {
+                      
+                        const currentPass = document.getElementById("form-current-password").value;
+                        const newPass = document.getElementById("form-password").value;
+                        const confirmPass = document.getElementById("form-confirm-password").value;
+
+                        // Kiểm tra mật khẩu hiện tại
+                        if (!currentPass) {
+                            event.preventDefault();
+                            alert('Vui lòng nhập mật khẩu hiện tại.');
+                            return;
+                        }
+
+                        // Kiểm tra xem mật khẩu mới và xác nhận mật khẩu có khớp không
+                        if (newPass !== confirmPass) {
+                            event.preventDefault();
+                            alert('Mật khẩu không khớp. Vui lòng thử lại.');
+                            return;
+                        }
+
+                        // Kiểm tra độ mạnh của mật khẩu
+                        const minLength = 8;
+                        const hasUpperCase = /[A-Z]/.test(newPass);
+                        const hasLowerCase = /[a-z]/.test(newPass);
+                        const hasNumbers = /[0-9]/.test(newPass);
+                        const hasSpecialChars = /[!@#$%^&*(),.?":{}|<>]/.test(newPass);
+
+                        if (newPass.length < minLength || !hasUpperCase || !hasLowerCase || !hasNumbers || !hasSpecialChars) {
+                            event.preventDefault();
+                            alert('Mật khẩu phải có ít nhất ' + minLength + ' ký tự, bao gồm chữ hoa, chữ thường, số và ký tự đặc biệt.');
+                            return;
+                        }
+
+                        // Xác thực mật khẩu hiện tại trước khi gửi form
+                        let response = await fetch("/check-current-password", {
+                            method: "POST",
+                            headers: {
+                                "Content-Type": "application/json"
+                            },
+                            body: JSON.stringify({ currentPassword: currentPass })
+                        });
+
+                        let result = await response.json();
+
+                        if (result.correct) {
+                            // Nếu mật khẩu hiện tại đúng, tiến hành gửi form để cập nhật mật khẩu mới
+                            document.getElementById("error-message").innerHTML = ""; // Xóa thông báo lỗi nếu có
+                            document.getElementById("form-change-pass").submit(); // Gửi form
+                        } else {
+                            // Nếu mật khẩu hiện tại không đúng, hiển thị thông báo lỗi
+                            document.getElementById("error-message").innerHTML = "Current password is incorrect.";
+                        }
+                    });
+
+                    </script>
+                
+                   
                 </div>
+                
+                
+            </div>
             </div>
         </div>
     </section>
