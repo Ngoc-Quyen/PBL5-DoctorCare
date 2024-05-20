@@ -1,8 +1,8 @@
-import bcrypt from "bcryptjs";
-import db from "./../models";
-import helper from "../helper/client";
-import elastic from "./../config/elastic";
-import _ from "lodash";
+import bcrypt from 'bcryptjs';
+import db from './../models';
+import helper from '../helper/client';
+import elastic from './../config/elastic';
+import _ from 'lodash';
 
 const Sequelize = require('sequelize');
 const Op = Sequelize.Op;
@@ -585,6 +585,7 @@ let getUserByPhone = async (phone) => {
                 where: {
                     phone: phone,
                 },
+                raw: true,
             });
             if (customers) {
                 resolve({

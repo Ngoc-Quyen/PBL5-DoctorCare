@@ -26,7 +26,11 @@ let getInfoBooking = (id) => {
             });
 
             patient.setDataValue('doctorName', doctor.name);
+<<<<<<< HEAD
             // patient.setDataValue('doctorAvatar', doctor.avatar);
+=======
+            patient.setDataValue('doctorAvatar', doctor.avatar);
+>>>>>>> 739653c60a0c603a0a692e0957a28a1033a63a68
             patient.setDataValue('patientTime', patient.timeBooking);
             patient.setDataValue('patientDate', patient.dateBooking);
             resolve(patient);
@@ -335,7 +339,12 @@ let getDetailPatient = (id) => {
         try {
             let patient = await db.Patient.findOne({
                 where: { id: id },
+<<<<<<< HEAD
                 include: { model: db.ExtraInfo, required: false }
+=======
+                include: { model: db.ExtraInfo, required: false },
+                include: { model: db.User, required: false }
+>>>>>>> 739653c60a0c603a0a692e0957a28a1033a63a68
             });
             resolve(patient)
         } catch (e) {

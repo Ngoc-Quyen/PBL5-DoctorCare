@@ -10,6 +10,7 @@ let getAllcustomers = () => {
         try {
             let customers = await db.User.findAll({
                 where: { roleId: 3 },
+                raw: true,
             });
 
             resolve(customers);
@@ -18,7 +19,23 @@ let getAllcustomers = () => {
         }
     });
 };
-
+let getCustomerByPhone = async (phone) => {
+    return new Promise(async (resolve, reject) => {
+        try {
+            let customers = await db.User.findAll({
+                where: {
+                    roleId: 3,
+                    phone: phone,
+                },
+                raw: true,
+            });
+            resolve(customers);
+        } catch (error) {
+            reject(error);
+        }
+    });
+};
 module.exports = {
     getAllcustomers: getAllcustomers,
+    getCustomerByPhone: getCustomerByPhone,
 };

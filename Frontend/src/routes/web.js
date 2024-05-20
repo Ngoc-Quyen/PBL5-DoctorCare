@@ -20,14 +20,15 @@ let router = express.Router();
 let LocalStrategy = passportLocal.Strategy;
 
 passport.use(
-    new LocalStrategy({
+    new LocalStrategy(
+        {
             usernameField: 'email',
             passwordField: 'password',
             passReqToCallback: true,
         },
-        async(req, email, password, done) => {
+        async (req, email, password, done) => {
             try {
-                await userService.findUserByEmail(email).then(async(user) => {
+                await userService.findUserByEmail(email).then(async (user) => {
                     if (!user) {
                         return done(null, false, req.flash('error', 'Email không tồn tại'));
                     }
@@ -71,9 +72,15 @@ let initRoutes = (app) => {
     router.get('/all-specializations', home.getPageAllSpecializations);
     router.get('/InfoUser', customer.getPageInfoUser);
     router.get('/InfoBooked', home.getPageInfoBooked);
+<<<<<<< HEAD
     router.get('/cancel', home.getPageCancel);
     router.get('/canceled', home.getPageCanceled);
   //  router.get('/changePass', home.getPageChangePass);
+=======
+    // router.get('/cancel', home.getPageCancel);
+    // router.get('/canceled', home.getPageCanceled);
+    // router.get('/changePass', home.getPageChangePass);
+>>>>>>> 739653c60a0c603a0a692e0957a28a1033a63a68
 
     router.get('/webhook', bot.getWebhookFB);
     router.post('/webhook', bot.postWebhookFB);
@@ -112,6 +119,7 @@ let initRoutes = (app) => {
     router.post('/users/manage/specialization/create', auth.checkLoggedIn, admin.postCreateSpecialization);
 
     router.get('/users/manage/customer', auth.checkLoggedIn, admin.getCustomerPage);
+    router.post('/users/manage/customer', auth.checkLoggedIn, admin.getUserByPhone);
     router.get('/users', auth.checkLoggedIn, home.getUserPage);
     router.get('/users/manage/customer/create', auth.checkLoggedIn, admin.getCreatePatient);
     router.post('/users/manage/customer/create', auth.checkLoggedIn, admin.postCreatePatient);
@@ -134,7 +142,7 @@ let initRoutes = (app) => {
     router.put('/admin/doctor/update-without-file', auth.checkLoggedIn, admin.putUpdateDoctorWithoutFile);
     router.put('/admin/doctor/update', auth.checkLoggedIn, admin.putUpdateDoctor);
     router.post('/users/doctor/edit/:id', auth.checkLoggedIn, admin.putUpdateDoctorWithoutFile);
-    // router.get('/users/manage/customer?phone=', auth.checkLoggedIn);
+    router.post('/users/manage/customer?phone=${phone}', auth.checkLoggedIn, admin.getUserByPhone);
 
     router.get('/doctor/manage/schedule', doctor.getSchedule);
     router.get('/doctor/manage/schedule/create', auth.checkLoggedIn, doctor.getCreateSchedule);
@@ -165,6 +173,7 @@ let initRoutes = (app) => {
     router.post('/admin/change-status-patient', auth.checkLoggedIn, admin.postChangeStatusPatient);
     router.post('/admin/get-logs-patient', auth.checkLoggedIn, admin.getLogsPatient);
     router.post('/admin/done-comment', auth.checkLoggedIn, admin.postDoneComment);
+    router.post('/admin/manage/booking-date', auth.checkLoggedIn, admin.getForPatientsByDateTabs);
 
     router.post('/user/get-patients-for-user', auth.checkLoggedIn, customer.getForPatientForUser);
     router.post('/user/change-status-patient-for -user', auth.checkLoggedIn, customer.postChangeStatusPatientForUser);
@@ -181,8 +190,8 @@ let initRoutes = (app) => {
 
     router.get('/login', auth.checkLoggedOut, auth.getLogin);
 
-    router.post('/login', function(req, res, next) {
-        passport.authenticate('local', function(err, user, info) {
+    router.post('/login', function (req, res, next) {
+        passport.authenticate('local', function (err, user, info) {
             if (err) {
                 return next(err);
             }
@@ -191,7 +200,7 @@ let initRoutes = (app) => {
                 return res.redirect('/login');
             }
 
-            req.logIn(user, function(err) {
+            req.logIn(user, function (err) {
                 if (err) {
                     return next(err);
                 }

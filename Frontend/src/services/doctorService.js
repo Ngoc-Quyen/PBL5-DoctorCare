@@ -12,7 +12,7 @@ import { reject } from 'bluebird';
 var Minizip = require('minizip-asm.js');
 var fs = require('fs');
 const PATH_ZIP = 'src/public/images/patients/remedy/zip';
-let maxBooking = 2;
+let maxBooking = 1;
 const statusPendingId = 3;
 const statusFailedId = 2;
 const statusSuccessId = 1;
@@ -77,6 +77,7 @@ let getDoctorWithSchedule = (id, currentDate) => {
         }
     });
 };
+
 
 let getPostForDoctor = (id) => {
     return new Promise(async (resolve, reject) => {
@@ -383,6 +384,22 @@ let getPatientsBookAppointment = (data) => {
         }
     });
 };
+let getPatientBooking = async (data) => {
+    return new Promise(async (resolve, reject) => {
+        try {
+            let patients = await db.Patient.findAll({
+                where: {
+                    doctorId: data.doctorId,
+                    dateBooking: data.date,
+                },
+                raw: true,
+            });
+            resolve(patients);
+        } catch (error) {
+            reject(error);
+        }
+    });
+};
 
 let getDoctorSchedules = (data) => {
     return new Promise(async (resolve, reject) => {
@@ -500,15 +517,14 @@ let createFeedback = (data) => {
         try {
             let doctorId = data.doctorId;
             let phone = data.feedbackPhone;
-            //check patient
-
+            // Kiểm tra bệnh nhân
             let patient = await db.Patient.findOne({
                 where: {
                     doctorId: doctorId,
                     phone: phone,
-                    statusId: statusSuccessId,
+                    statusId: statusSuccessId
                 },
-                attributes: ['name', 'timeBooking', 'dateBooking'],
+                attributes: ['name', 'timeBooking', 'dateBooking']
             });
 
             if (patient) {
@@ -519,18 +535,22 @@ let createFeedback = (data) => {
                     dateBooking: patient.dateBooking,
                     phone: phone,
                     content: data.feedbackContent,
-                    createdAt: Date.now(),
+                    createdAt: Date.now()
                 };
                 let cm = await db.Comment.create(feedback);
                 resolve(cm);
             } else {
-                resolve('patient not exist');
+                reject('Patient does not exist or does not meet criteria');
             }
+
         } catch (e) {
             reject(e);
         }
     });
 };
+
+
+
 let deleteTimeByDate = async (idDoctor, timeDate) => {
     return new Promise(async (resolve, reject) => {
         try {
@@ -586,4 +606,5 @@ module.exports = {
     getSpecializationById: getSpecializationById,
     deleteTimeByDate: deleteTimeByDate,
     getScheduleDoctorByDateSumBooking: getScheduleDoctorByDateSumBooking,
+    getPatientBooking: getPatientBooking,
 };

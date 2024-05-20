@@ -14,9 +14,9 @@ module.exports = {
             historyBreath: {
                 type: Sequelize.TEXT,
             },
-            placeId: {
-                type: Sequelize.INTEGER,
-            },
+            // placeId: {
+            //     type: Sequelize.INTEGER,
+            // },
             oldForms: {
                 type: Sequelize.TEXT,
             },
