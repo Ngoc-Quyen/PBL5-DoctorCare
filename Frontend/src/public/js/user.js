@@ -83,47 +83,49 @@ function loadNewPatientsForUser() {
     });
 }
 
-function addNewRowTableConfirmed(patient) {
-    let htmlConfirmed = `
-                <tr>
-                <td> ${patient.id} </td>
-                <td> ${patient.email}     </td>
-                <td> ${patient.dateBooking}     </td>
-                    <td> ${convertStringToDateClient(patient.updatedAt)}     </td>
-                    <td> 
-                    <button  type="button" data-patient-id="${
-                        patient.id
-                    }"  class="ml-3 btn btn-info btn-confirmed-patient"> Thông tin</button>
-                    </td>
-                </tr>
-                `;
-    $('#tableConfirmedPatients tbody').prepend(htmlConfirmed);
-}
+// function addNewRowTableConfirmed(patient) {
+//     console.log('patient from user.js: ', patient);
 
-function addNewRowTableCanceled(patient) {
-    let htmlPending = `
-                  <tr>
-                    <td> ${patient.id} - ${patient.name}   </td>
-                    <td> ${patient.phone}     </td>
-                    <td> ${patient.email}     </td>
-                    <td> ${convertStringToDateClient(patient.updatedAt)} </td>
-                    <td> 
-                    <button   data-patient-id="${
-                        patient.id
-                    }"  class="ml-3 btn btn-primary btn-history-cancel-patient">Lịch sử</button>
-                    </td>
-                </tr>
-               
-                `;
-    $('#tableCancelPatients tbody').prepend(htmlPending);
-}
+//     let htmlConfirmed = `
+//                 <tr>
+//                 <td> ${patient.id} </td>
+//                 <td> ${patient.email}     </td>
+//                 <td> ${patient.dateBooking}     </td>
+//                     <td> ${convertStringToDateClient(patient.updatedAt)}     </td>
+//                     <td>
+//                     <button  type="button" data-patient-id="${
+//                         patient.id
+//                     }"  class="ml-3 btn btn-info btn-confirmed-patient"> Thông tin</button>
+//                     </td>
+//                 </tr>
+//                 `;
+//     $('#tableConfirmedPatients tbody').prepend(htmlConfirmed);
+// }
 
-function convertStringToDateClient(string) {
-    return moment(Date.parse(string)).format('DD/MM/YYYY, HH:mm A');
-}
+// function addNewRowTableCanceled(patient) {
+//     let htmlPending = `
+//                   <tr>
+//                     <td> ${patient.id} - ${patient.name}   </td>
+//                     <td> ${patient.phone}     </td>
+//                     <td> ${patient.email}     </td>
+//                     <td> ${convertStringToDateClient(patient.updatedAt)} </td>
+//                     <td>
+//                     <button   data-patient-id="${
+//                         patient.id
+//                     }"  class="ml-3 btn btn-primary btn-history-cancel-patient">Lịch sử</button>
+//                     </td>
+//                 </tr>
+
+//                 `;
+//     $('#tableCancelPatients tbody').prepend(htmlPending);
+// }
+
+// function convertStringToDateClient(string) {
+//     return moment(Date.parse(string)).format('DD/MM/YYYY, HH:mm A');
+// }
 $(document).ready(function (e) {
     loadNewPatientsForUser();
-    addNewRowTableConfirmed();
-    addNewRowTableCanceled();
-    convertStringToDateClient();
+    // addNewRowTableConfirmed();
+    // addNewRowTableCanceled();
+    // convertStringToDateClient();
 });

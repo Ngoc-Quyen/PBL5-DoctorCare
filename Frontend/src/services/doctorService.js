@@ -372,7 +372,7 @@ let getPatientsBookAppointment = (data) => {
                 where: {
                     doctorId: data.doctorId,
                     dateBooking: data.date,
-                    statusId: statusSuccessId,
+                    statusId: statusNewId,
                 },
                 order: [['updatedAt', 'ASC']],
                 attributes: ['id', 'name', 'gender', 'timeBooking', 'description', 'isSentForms'],
@@ -521,9 +521,9 @@ let createFeedback = (data) => {
                 where: {
                     doctorId: doctorId,
                     phone: phone,
-                    statusId: statusSuccessId
+                    statusId: statusSuccessId,
                 },
-                attributes: ['name', 'timeBooking', 'dateBooking']
+                attributes: ['name', 'timeBooking', 'dateBooking'],
             });
 
             if (patient) {
@@ -534,21 +534,18 @@ let createFeedback = (data) => {
                     dateBooking: patient.dateBooking,
                     phone: phone,
                     content: data.feedbackContent,
-                    createdAt: Date.now()
+                    createdAt: Date.now(),
                 };
                 let cm = await db.Comment.create(feedback);
                 resolve(cm);
             } else {
                 reject('Patient does not exist or does not meet criteria');
             }
-
         } catch (e) {
             reject(e);
         }
     });
 };
-
-
 
 let deleteTimeByDate = async (idDoctor, timeDate) => {
     return new Promise(async (resolve, reject) => {

@@ -2,6 +2,17 @@
     <!-- Page Heading -->
     <div class="d-sm-flex align-items-center justify-content-between mb-4">
         <h1 class="h3 mb-0 text-gray-800">Quản lý lịch hẹn</h1>
+        <div class="my-3">
+            <label for="dateDoctorAppointment">Thời gian </label>
+            <form method="GET" action="/admin/get-new-patients">
+                <div class="form-row">
+                    <input id="dateDoctorAppointment" name="dateDoctorAppointment" value="<%= date %>" type="text"
+                        class="form-control col-6 mr-4">
+                    <button class="btn btn-primary" type="submit">Tìm</button>
+                </div>
+
+            </form>
+        </div>
     </div>
 
     <!-- Content Row -->
@@ -9,25 +20,30 @@
         <div class="card-header py-3">
             <ul class="nav nav-tabs" id="myTab" role="tablist">
                 <li class="nav-item">
-                    <a class="nav-link active" id="patient-new-tab" data-toggle="tab" href="#newPatients" role="tab" aria-controls="home" aria-selected="true">Lịch hẹn mới (<span id="count-new"></span>) </a>
+                    <a class="nav-link active" id="patient-new-tab" data-toggle="tab" href="#newPatients" role="tab"
+                        aria-controls="home" aria-selected="true">Lịch hẹn mới (<span id="count-new"></span>) </a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" id="patient-need-confirm-tab" data-toggle="tab" href="#patientsNeedConfirm" role="tab" aria-controls="profile" aria-selected="false">Đã chấp nhận(<span
+                    <a class="nav-link" id="patient-need-confirm-tab" data-toggle="tab" href="#patientsNeedConfirm"
+                        role="tab" aria-controls="profile" aria-selected="false">Đã chấp nhận(<span
                             id="count-need"></span>) </a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" id="patient-confirmed-tab" data-toggle="tab" href="#patientConfirmed" role="tab" aria-controls="contact" aria-selected="false">Đã khám(<span id="count-confirmed"></span>)
+                    <a class="nav-link" id="patient-confirmed-tab" data-toggle="tab" href="#patientConfirmed" role="tab"
+                        aria-controls="contact" aria-selected="false">Đã khám(<span id="count-confirmed"></span>)
                     </a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" id="patient-cancel-tab" data-toggle="tab" href="#patientCanceled" role="tab" aria-controls="contact" aria-selected="false">Đã hủy(<span id="count-canceled"></span>) </a>
+                    <a class="nav-link" id="patient-cancel-tab" data-toggle="tab" href="#patientCanceled" role="tab"
+                        aria-controls="contact" aria-selected="false">Đã hủy(<span id="count-canceled"></span>) </a>
                 </li>
             </ul>
         </div>
         <div class="card-body">
             <div class="table-responsive">
                 <div class="tab-content" id="myTabContent">
-                    <div class="tab-pane fade show active" id="newPatients" role="tabpanel" aria-labelledby="patient-new-tab">
+                    <div class="tab-pane fade show active" id="newPatients" role="tabpanel"
+                        aria-labelledby="patient-new-tab">
                         <table class="table table-bordered" id="tableNewPatients" width="100%" cellspacing="0">
                             <thead>
 
@@ -44,7 +60,8 @@
                             </tbody>
                         </table>
                     </div>
-                    <div class="tab-pane fade" id="patientsNeedConfirm" role="tabpanel" aria-labelledby="patient-need-confirm-tab">
+                    <div class="tab-pane fade" id="patientsNeedConfirm" role="tabpanel"
+                        aria-labelledby="patient-need-confirm-tab">
                         <table class="table table-bordered" id="tableNeedConfirmPatients" width="100%" cellspacing="0">
                             <thead>
                                 <tr>
@@ -61,7 +78,8 @@
                         </table>
 
                     </div>
-                    <div class="tab-pane fade" id="patientConfirmed" role="tabpanel" aria-labelledby="patient-confirmed-tab">
+                    <div class="tab-pane fade" id="patientConfirmed" role="tabpanel"
+                        aria-labelledby="patient-confirmed-tab">
                         <table class="table table-bordered" id="tableConfirmedPatients" width="100%" cellspacing="0">
                             <thead>
                                 <tr>
@@ -78,7 +96,8 @@
                         </table>
 
                     </div>
-                    <div class="tab-pane fade" id="patientCanceled" role="tabpanel" aria-labelledby="patient-cancel-tab">
+                    <div class="tab-pane fade" id="patientCanceled" role="tabpanel"
+                        aria-labelledby="patient-cancel-tab">
                         <table class="table table-bordered" id="tableCancelPatients" width="100%" cellspacing="0">
                             <thead>
                                 <tr>
@@ -102,7 +121,8 @@
     </div>
 
     <!-- Modal detail info patient-->
-    <div class="modal fade " tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true" id="modalDetailPatient">
+    <div class="modal fade " tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true"
+        id="modalDetailPatient">
         <div class="modal-dialog mw-100 w-75" role="document">
             <div class="modal-content">
                 <div class="modal-header">
@@ -149,7 +169,8 @@
                         <div class="form-group col-6">
                             <label class="col-form-label text-label" for="patientHistoryBreath">Kết quả chuẩn
                                 đoán:</label>
-                            <textarea class="form-control" name="patientHistoryBreath" id="patientHistoryBreath"></textarea>
+                            <textarea class="form-control" name="patientHistoryBreath"
+                                id="patientHistoryBreath"></textarea>
                         </div>
 
                         <div class="form-group col-6">
@@ -164,7 +185,8 @@
                     </div>
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="ml-3 btn btn-secondary" id="btn-cancel-patient" data-dismiss="modal">Hủy</button>
+                    <button type="button" class="ml-3 btn btn-secondary" id="btn-cancel-patient"
+                        data-dismiss="modal">Hủy</button>
                     <button type="button" class="btn btn-primary" id="btn-confirm-patient-done">Xác nhận</button>
                 </div>
             </div>
@@ -172,7 +194,8 @@
     </div>
 
     <!-- Modal cancel booking-->
-    <div class="modal fade" id="modalCancelBooking" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal fade" id="modalCancelBooking" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+        aria-hidden="true">
         <div class="modal-dialog" role="document">
             <div class="modal-content">
                 <div class="modal-header">
@@ -184,19 +207,22 @@
                 <div class="modal-body">
                     <form id="formCancelBooking">
                         <div class="form-check">
-                            <input class="form-check-input" type="radio" name="reasonCancel" id="inputDefaultReason" value="reason1" checked>
+                            <input class="form-check-input" type="radio" name="reasonCancel" id="inputDefaultReason"
+                                value="reason1" checked>
                             <label class="form-check-label" for="exampleRadios1">
                                 Lịch hẹn không đúng
                             </label>
                         </div>
                         <div class="form-check">
-                            <input class="form-check-input" type="radio" name="reasonCancel" id="exampleRadios2" value="reason2">
+                            <input class="form-check-input" type="radio" name="reasonCancel" id="exampleRadios2"
+                                value="reason2">
                             <label class="form-check-label" for="exampleRadios2">
                                 Bệnh nhân hủy lịch
                             </label>
                         </div>
                         <div class="form-check disabled">
-                            <input class="form-check-input" type="radio" name="reasonCancel" id="exampleRadios3" value="reason3">
+                            <input class="form-check-input" type="radio" name="reasonCancel" id="exampleRadios3"
+                                value="reason3">
                             <label class="form-check-label" for="exampleRadios3">
                                 Lý do khác <input type="text" id="otherReason">
                             </label>
@@ -212,7 +238,8 @@
     </div>
 
     <!-- Modal history cancel booking -->
-    <div class="modal fade" id="modalHistoryBooking" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal fade" id="modalHistoryBooking" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+        aria-hidden="true">
         <div class="modal-dialog  mw-100 w-75" role="document">
             <div class="modal-content">
                 <div class="modal-header">
@@ -240,14 +267,15 @@
                     </fieldset>
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" id="btn-view-history" data-dismiss="modal">Đóng</button>
+                    <button type="button" class="btn btn-secondary" id="btn-view-history"
+                        data-dismiss="modal">Đóng</button>
                 </div>
             </div>
         </div>
     </div>
 
     <script>
-        $(document).ready(function() {
+        $(document).ready(function () {
             $(".admin-list-patients").addClass("active");
         })
     </script>

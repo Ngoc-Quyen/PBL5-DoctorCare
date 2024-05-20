@@ -261,7 +261,6 @@ let getManageCreateScheduleForDoctorsPage = async (req, res) => {
     }
 };
 let getNewPatients = (req, res) => {
-    //render data = js/ getForPatientsTabs
     let currentDate = moment().format('DD/MM/YYYY');
     let date = '';
     let canActive = false;
@@ -348,6 +347,19 @@ let getPostsPagination = async (req, res) => {
 
 let getForPatientsTabs = async (req, res) => {
     try {
+        let currentDate = moment().format('DD/MM/YYYY');
+        console.log('currentDate: ', currentDate);
+        let date = '';
+        let canActive = false;
+        if (req.query.dateDoctorAppointment) {
+            date = req.query.dateDoctorAppointment;
+            if (date === currentDate) canActive = true;
+        } else {
+            //get currentDate
+            date = currentDate;
+            canActive = true;
+        }
+        console.log('query from  :', req.body);
         let idDoctor = req.user.id;
         let object = await patientService.getForPatientsTabs(idDoctor);
         return res.status(200).json({

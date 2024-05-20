@@ -132,7 +132,6 @@ let getManageAppointment = async (req, res) => {
         date = currentDate;
         canActive = true;
     }
-
     let data = {
         date: date,
         doctorId: req.user.id,
