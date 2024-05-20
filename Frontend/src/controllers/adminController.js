@@ -101,9 +101,10 @@ let putUpdateDoctorWithoutFile = async (req, res) => {
         };
         let mess = await doctorService.updateDoctorInfo(item);
         if (mess.errCode === 0) {
-            return res.redirect('/users/manage/doctor');
+            return res.status(200).json(mess);
+            // return res.redirect('/users/manage/doctor');
         } else {
-            return res.redirect('/users/doctor/edit/:id');
+            return res.status(200).json(mess);
         }
     } catch (e) {
         console.log(e);
@@ -166,6 +167,7 @@ let getCustomerPage = async (req, res) => {
     } else {
         customers = await customerService.getUserByPhone(phone);
     }
+
     return res.render('main/users/admins/manageCustomer.ejs', {
         user: req.user,
         customers: customers,
@@ -348,7 +350,6 @@ let getPostsPagination = async (req, res) => {
 let getForPatientsTabs = async (req, res) => {
     try {
         let currentDate = moment().format('DD/MM/YYYY');
-        console.log('currentDate: ', currentDate);
         let date = '';
         let canActive = false;
         if (req.query.dateDoctorAppointment) {
@@ -359,7 +360,6 @@ let getForPatientsTabs = async (req, res) => {
             date = currentDate;
             canActive = true;
         }
-        console.log('query from  :', req.body);
         let idDoctor = req.user.id;
         let object = await patientService.getForPatientsTabs(idDoctor);
         return res.status(200).json({
@@ -577,14 +577,22 @@ let postCreateSpecialization = async (req, res) => {
 
 let getUserByPhone = async (req, res) => {
     let phone = req.body.phone;
-    console.log('phone: ', phone);
-    let listUser = await userService.getUserByPhone(phone);
-    console.log(listUser.customers);
-    return res.render('main/users/admins/manageCustomer.ejs', {
-        user: req.user,
-        customers: listUser.customers,
-        phone: phone,
-    });
+    let listUser = '';
+    if (phone !== '') {
+        listUser = await customerService.getCustomerByPhone(phone);
+    } else {
+        listUser = await customerService.getAllcustomers(phone);
+    }
+    return res.status(200).json(listUser);
+    // return res.render('main/users/admins/manageCustomer.ejs', {
+    //     user: req.user,
+    //     customers: listUser.customers,
+    //     phone: phone,
+    // });
+};
+let getDoctorBy = async (req, res) => {
+    let giatri = req.body.thongtin;
+    let loai = req.body.selectedValue;
 };
 module.exports = {
     getManageDoctor: getManageDoctor,
@@ -628,4 +636,6 @@ module.exports = {
     postCreateSpecialization: postCreateSpecialization,
     getForPatientsByDateTabs: getForPatientsByDateTabs,
     getUserByPhone: getUserByPhone,
+
+    getDoctorBy: getDoctorBy,
 };

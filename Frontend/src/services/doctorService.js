@@ -78,7 +78,6 @@ let getDoctorWithSchedule = (id, currentDate) => {
     });
 };
 
-
 let getPostForDoctor = (id) => {
     return new Promise(async (resolve, reject) => {
         try {
@@ -575,6 +574,34 @@ let deleteTimeByDate = async (idDoctor, timeDate) => {
                 resolve({
                     errCode: 0,
                     errMessage: 'Delete success!',
+                });
+            }
+        } catch (error) {
+            reject(error);
+        }
+    });
+};
+let getDoctorBy = async (dulieu, loai) => {
+    return new Promise(async (resolve, reject) => {
+        try {
+            let listDoctorId = '';
+            let listDoctors = '';
+            if (!dulieu || loai) {
+                resolve({
+                    errCode: 1,
+                    errMessage: 'khong co thong tin de tim kiem',
+                });
+            }
+            if (loai === 'specializationId') {
+                specialization = await db.Sequelize.findAll({
+                    where: {
+                        name: {
+                            [db.Sequelize.Op.like]: `%${dulieu}%`, // Use like operator to match part of the value
+                        },
+                    },
+                });
+                listDoctorId = await db.Doctor_User.findAll({
+                    where: { specializationId: specialization.id },
                 });
             }
         } catch (error) {

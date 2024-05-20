@@ -129,56 +129,54 @@ $(document).ready(function (e) {
     // addNewRowTableCanceled();
     // convertStringToDateClient();
 });
+// function convertStringToDateClient(string) {
+//     return moment(Date.parse(string)).format('DD/MM/YYYY, HH:mm A');
+// }
+// function handleBtnNewPatientOk1() {
+//     $('#tableNewPatients').on('click', '.btn-new-patient-ok1', function (e) {
+//         let patientId = $(this).data('patient-id');
+//         let option = true;
+//         callAjaxRenderModalInfo(patientId, option);
+//     });
+// }
+// function callAjaxRenderModalInfo(patientId, option) {
+//     $.ajax({
+//         method: 'POST',
+//         url: `${window.location.origin}/api/get-detail-patient-by-id`,
+//         data: { patientId: patientId },
+//         success: function (data) {
+//             $('#patientName').val(data.name);
+//             $('#btn-confirm-patient-done').attr('data-patient-id', data.id);
+//             $('#patientPhone').val(data.phone);
+//             $('#patientEmail').val(data.email);
+//             $('#patientDate').val(data.dateBooking);
+//             $('#patientTime').val(data.timeBooking);
+//             $('#patientReason').text(data.description);
+//             $('#patientAddress').text(data.address);
+//             if (data.ExtraInfo) {
+//                 $('#patientHistoryBreath').text(data.ExtraInfo.historyBreath);
+//                 $('#patientMoreInfo').text(data.ExtraInfo.moreInfo);
+//             }
+//             if (option) {
+//                 $('#btn-confirm-patient-done').css('display', 'none');
+//                 $('#btn-cancel-patient').text('OK');
+//             }
 
-function convertStringToDateClient(string) {
-    return moment(Date.parse(string)).format('DD/MM/YYYY, HH:mm A');
-}
+//             $('#modalDetailPatient1').modal('show');
+//         },
+//         error: function (err) {
+//             console.log(err);
+//             alertify.error('Đã xảy ra lỗi, vui lòng thử lại sau!');
+//         },
+//     });
+// }
 
-function callAjaxRenderModalInfo(patientId, option) {
-    $.ajax({
-        method: 'POST',
-        url: `${window.location.origin}/api/get-detail-patient-by-id`,
-        data: { patientId: patientId },
-        success: function (data) {
-            $('#patientName').val(data.name);
-            $('#btn-confirm-patient-done').attr('data-patient-id', data.id);
-            $('#patientPhone').val(data.phone);
-            $('#patientEmail').val(data.email);
-            $('#patientDate').val(data.dateBooking);
-            $('#patientTime').val(data.timeBooking);
-            $('#patientReason').text(data.description);
-            $('#patientAddress').text(data.address);
-            if (data.ExtraInfo) {
-                $('#patientHistoryBreath').text(data.ExtraInfo.historyBreath);
-                $('#patientMoreInfo').text(data.ExtraInfo.moreInfo);
-            }
-            if (option) {
-                $('#btn-confirm-patient-done').css('display', 'none');
-                $('#btn-cancel-patient').text('OK');
-            }
+// $(document).ready(function (e) {
+//     handleBtnNewPatientOk1();
+//     loadNewPatientsForUser();
+//     addNewRowTableConfirmed();
+//     addNewRowTableCanceled();
+//     convertStringToDateClient();
 
-            $('#modalDetailPatient1').modal('show');
-        },
-        error: function (err) {
-            console.log(err);
-            alertify.error('Đã xảy ra lỗi, vui lòng thử lại sau!');
-        },
-    });
-}
-
-function handleBtnNewPatientOk1() {
-    $('#tableNewPatients').on('click', '.btn-new-patient-ok1', function (e) {
-        let patientId = $(this).data('patient-id');
-        let option = true;
-        callAjaxRenderModalInfo(patientId, option);
-    });
-}
-$(document).ready(function (e) {
-    handleBtnNewPatientOk1();
-    loadNewPatientsForUser();
-    addNewRowTableConfirmed();
-    addNewRowTableCanceled();
-    convertStringToDateClient();
-
-    callAjaxRenderModalInfo();
-});
+//     callAjaxRenderModalInfo();
+// });

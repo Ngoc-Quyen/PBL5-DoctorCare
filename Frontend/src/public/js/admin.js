@@ -311,8 +311,37 @@ function deleteDoctorById() {
     });
 }
 
-function deleteCustomerById() {
-    $('.delete-customer-info').on('click', function (e) {
+// function deleteCustomerById() {
+//     $('.delete-customer-info').on('click', function (e) {
+//         if (!confirm('Xóa bệnh nhân này?')) {
+//             return;
+//         }
+
+//         let id = $(this).data('customer-id');
+//         let node = this;
+//         $.ajax({
+//             method: 'DELETE',
+//             url: `${window.location.origin}/users/customer/delete`,
+//             data: { id: id },
+//             success: function (data) {
+//                 node.closest('tr').remove();
+//                 alertify.success('Xóa thành công');
+//                 // Chờ 2 giây và sau đó tải lại trang với đường dẫn mới
+//                 setTimeout(function () {
+//                     window.location.href = '/users/manage/customer'; // Thay thế '/your-new-url' bằng đường dẫn mới bạn muốn tải lại
+//                 }, 2000); // 2000 milliseconds = 2 giây
+//             },
+//             error: function (err) {
+//                 alertify.error('Đã xảy ra lỗi, vui lòng thử lại sau!');
+//                 console.log(err);
+//             },
+//         });
+//     });
+// }
+// hàm delete customer by Id
+$(document).ready(function () {
+    // Event delegation to handle click events for dynamically added elements
+    $(document).on('click', '.delete-customer-info', function (e) {
         if (!confirm('Xóa bệnh nhân này?')) {
             return;
         }
@@ -337,7 +366,7 @@ function deleteCustomerById() {
             },
         });
     });
-}
+});
 
 function deleteScheduleByDate() {
     $('.delete-schedule-info').on('click', function (e) {
@@ -416,8 +445,47 @@ function showModalInfoDoctor() {
     });
 }
 
-function showModalInfoCustomer() {
-    $('.show-customer-info').on('click', function (e) {
+// function showModalInfoCustomer() {
+//     $('.show-customer-info').on('click', function (e) {
+//         e.preventDefault();
+//         let id = $(this).data('customer-id');
+//         $.ajax({
+//             method: 'POST',
+//             url: `${window.location.origin}/get-info-customer-by-id`,
+//             data: { id: id },
+//             success: function (data) {
+//                 $('#imageCustomer').empty();
+
+//                 $('#nameCustomer').val(data.user.name);
+//                 if (data.user.phone) {
+//                     $('#phoneCustomer').val(data.user.phone);
+//                 } else {
+//                     $('#phoneCustomer').val('Chưa cập nhật');
+//                 }
+//                 if (data.user.address) {
+//                     $('#addressCustomer').val(data.user.address);
+//                 } else {
+//                     $('#addressCustomer').val('Chưa cập nhật');
+//                 }
+//                 if (data.user.avatar) {
+//                     $('#imageCustomer').prepend(`<img class="img-info-clinic" src="${data?.user?.avatar}" />`);
+//                 } else {
+//                     $('#imageCustomer').text('Chưa cập nhật');
+//                 }
+//                 $('#modalInfoCustomer').modal('show');
+//             },
+//             error: function (error) {
+//                 console.log(error);
+//                 alertify.error('Đã xảy ra lỗi, vui lòng thử lại sau!');
+//             },
+//         });
+//     });
+// }
+
+// hàm show customer item
+$(document).ready(function () {
+    // Event delegation to handle click events for dynamically added elements
+    $(document).on('click', '.show-customer-info', function (e) {
         e.preventDefault();
         let id = $(this).data('customer-id');
         $.ajax({
@@ -451,7 +519,7 @@ function showModalInfoCustomer() {
             },
         });
     });
-}
+});
 
 function updateDoctor() {
     $('#btnUpdateDoctor').on('click', function (e) {
@@ -478,11 +546,20 @@ function updateDoctor() {
             url: `${window.location.origin}/users/doctor/edit/:id`,
             data: data,
             success: function (data) {
-                alertify.success('Cập nhật thông tin thành công');
-                // Chờ 2 giây và sau đó tải lại trang với đường dẫn mới
-                setTimeout(function () {
-                    window.location.href = '/users/doctor/edit/:id'; // Thay thế '/your-new-url' bằng đường dẫn mới bạn muốn tải lại
-                }, 2000); // 2000 milliseconds = 2 giây
+                if (data.errCode === 0) {
+                    alertify.success('Cập nhật thông tin thành công');
+                    // Chờ 2 giây và sau đó tải lại trang với đường dẫn mới
+                    setTimeout(function () {
+                        window.location.href = '/users/doctor/edit/:id'; // Thay thế '/your-new-url' bằng đường dẫn mới bạn muốn tải lại
+                    }, 2000); // 2000 milliseconds = 2 giây
+                } else {
+                    alertify.success('Đã xảy ra lỗi khi cập nhật');
+                    // Chờ 2 giây và sau đó tải lại trang với đường dẫn mới
+                    console.log(data.errMessage);
+                    setTimeout(function () {
+                        window.location.href = '/users/doctor/edit/:id'; // Thay thế '/your-new-url' bằng đường dẫn mới bạn muốn tải lại
+                    }, 2000); // 2000 milliseconds = 2 giây
+                }
             },
             error: function (error) {
                 alertify.error('Đã xảy ra lỗi, vui lòng thử lại sau!');
@@ -1507,33 +1584,70 @@ function handleFindStatisticalAdmin() {
     });
 }
 function searchCustomerByPhone() {
-    $('btnSearch').on('click', function () {
+    $('#btnSearch').on('click', function () {
         event.preventDefault(); // Ngăn chặn hành động mặc định của thẻ <a>
-        console.log('Button clicked'); // Thêm dòng này để kiểm tra
         let phone = document.getElementById('phone').value;
-        console.log('ham nay dc goi');
-        fetch(`${window.location.origin}/users/manage/customer`, {
+        $.ajax({
             method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-            },
-            body: JSON.stringify({ phone: phone }),
-        })
-            .then((response) => {
-                if (!response.ok) {
-                    throw new Error('Network response was not ok');
-                }
-                return response.json();
-            })
-            .then((data) => {
-                // Xử lý dữ liệu nhận được từ server (ví dụ: hiển thị lên giao diện)
+            url: `${window.location.origin}/users/manage/customer`,
+            data: { phone },
+            success: function (data) {
                 console.log(data);
-            })
-            .catch((error) => {
-                console.error('Error:', error);
-            });
+                updateCustomerTable(data); // Assuming 'customers' is the key in the response
+            },
+            error: function (error) {
+                alertify.error('Đã xảy ra lỗi khi lấy thông tin thống kê, vui lòng thử lại sau');
+                console.log(error);
+            },
+        });
     });
 }
+function updateCustomerTable(customers) {
+    const tbody = $('#dataTable tbody');
+    tbody.empty(); // Clear existing table rows
+
+    customers.forEach(function (customer) {
+        const row = `<tr>
+                        <td>${customer.name}</td>
+                        <td>${customer.phone}</td>
+                        <td>${customer.isActive ? 'Hoạt động' : 'Không hoạt động'}</td>
+                        <td class="">
+                        <a class="show-customer-info" data-customer-id="${customer.id}" href="#"
+                        title="View info"><i class="fas fa-info-circle"></i></a>
+                            <a class="edit-customer-info" href="/users/customer/edit/${
+                                customer.id
+                            }" title="Edit"><i class="fas fa-pen-square mx-3"></i></a>
+                            <a class="delete-customer-info" data-customer-id="${
+                                customer.id
+                            }" href="#" title="Delete"><i class="fas fa-trash"></i></a>
+                        </td>
+                    </tr>`;
+        tbody.append(row);
+    });
+}
+
+function searchDoctorBy() {
+    $('#btnSearchDoctor').on('click', function () {
+        event.preventDefault(); // Ngăn chặn hành động mặc định của thẻ <a>
+        let thongtin = document.getElementById('thongtin').value;
+        // Get the selected value from the select element
+        let selectedValue = $('#specializationDoctor').val();
+        $.ajax({
+            method: 'POST',
+            url: `${window.location.origin}/users/manage/doctor`,
+            data: { thongtin: thongtin, selectedValue: selectedValue },
+            success: function (data) {
+                console.log(data);
+                updateCustomerTable(data); // Assuming 'customers' is the key in the response
+            },
+            error: function (error) {
+                alertify.error('Đã xảy ra lỗi khi lấy thông tin thống kê, vui lòng thử lại sau');
+                console.log(error);
+            },
+        });
+    });
+}
+
 $(document).ready(function (e) {
     // $('.modal').on('hidden.bs.modal', function(e) {
     //     $(this).removeData();
@@ -1608,7 +1722,8 @@ $(document).ready(function (e) {
     handleFindStatisticalAdmin();
 
     deleteScheduleByDate();
-    showModalInfoCustomer();
-    deleteCustomerById();
+    // showModalInfoCustomer();
+    // deleteCustomerById();
     loadPatientsByDate();
+    searchCustomerByPhone();
 });
