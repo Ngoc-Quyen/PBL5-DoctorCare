@@ -8,6 +8,7 @@ import mailer from '../config/mailer';
 import { transMailRemedy } from '../../lang/en';
 import { resolve } from 'path';
 import { reject } from 'bluebird';
+import helper from '../helper/client';
 
 var Minizip = require('minizip-asm.js');
 var fs = require('fs');
@@ -581,34 +582,61 @@ let deleteTimeByDate = async (idDoctor, timeDate) => {
         }
     });
 };
-let getDoctorBy = async (dulieu, loai) => {
+let getInfoDoctorsByCriteria = (dulieu, loai) => {
     return new Promise(async (resolve, reject) => {
         try {
-            let listDoctorId = '';
-            let listDoctors = '';
-            if (!dulieu || loai) {
-                resolve({
-                    errCode: 1,
-                    errMessage: 'khong co thong tin de tim kiem',
+            let criteria = { roleId: 2 }; // Default criteria for doctor role
+            if (loai === 'phone') {
+                criteria.phone = { [Op.like]: `%${dulieu}%` };
+            } else if (loai === 'name') {
+                criteria.name = { [Op.like]: `%${dulieu}%` };
+            } else if (loai === 'specializationId') {
+                // Assuming you have a Sequelize model named `Specialization`
+                const specialization = await db.Specialization.findOne({
+                    where: { name: { [Op.like]: `%${dulieu}%` } },
                 });
+                if (specialization) {
+                    criteria['$Doctor_User.specializationId$'] = specialization.id;
+                } else {
+                    // If specialization not found, return empty array
+                    resolve([]);
+                    return;
+                }
+            } else {
+                reject(new Error('Invalid criteria'));
+                return;
             }
-            if (loai === 'specializationId') {
-                specialization = await db.Sequelize.findAll({
-                    where: {
-                        name: {
-                            [db.Sequelize.Op.like]: `%${dulieu}%`, // Use like operator to match part of the value
-                        },
-                    },
-                });
-                listDoctorId = await db.Doctor_User.findAll({
-                    where: { specializationId: specialization.id },
-                });
-            }
-        } catch (error) {
-            reject(error);
+
+            let doctors = await db.User.findAll({
+                where: criteria,
+                include: [
+                    { model: db.Doctor_User, required: false },
+                    { model: db.Patient, required: false, where: { statusId: 1 } },
+                ],
+            });
+
+            await Promise.all(
+                doctors.map(async (doctor) => {
+                    if (doctor.Doctor_User) {
+                        let specialization = await helper.getSpecializationById(doctor.Doctor_User.specializationId);
+                        let countBooking = doctor.Patients.length;
+                        doctor.setDataValue('specializationName', specialization.name);
+                        doctor.setDataValue('countBooking', countBooking);
+                    } else {
+                        doctor.setDataValue('specializationName', 'null');
+                        doctor.setDataValue('countBooking', 0);
+                    }
+                    return doctor;
+                })
+            );
+
+            resolve(doctors);
+        } catch (e) {
+            reject(e);
         }
     });
 };
+
 module.exports = {
     getDoctorForFeedbackPage: getDoctorForFeedbackPage,
     getDoctorWithSchedule: getDoctorWithSchedule,
@@ -631,4 +659,5 @@ module.exports = {
     deleteTimeByDate: deleteTimeByDate,
     getScheduleDoctorByDateSumBooking: getScheduleDoctorByDateSumBooking,
     getPatientBooking: getPatientBooking,
+    getInfoDoctorsByCriteria: getInfoDoctorsByCriteria,
 };

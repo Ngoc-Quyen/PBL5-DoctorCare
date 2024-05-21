@@ -1638,7 +1638,7 @@ function searchDoctorBy() {
             data: { thongtin: thongtin, selectedValue: selectedValue },
             success: function (data) {
                 console.log(data);
-                updateCustomerTable(data); // Assuming 'customers' is the key in the response
+                updateDoctorTable(data); // Assuming 'customers' is the key in the response
             },
             error: function (error) {
                 alertify.error('Đã xảy ra lỗi khi lấy thông tin thống kê, vui lòng thử lại sau');
@@ -1647,7 +1647,32 @@ function searchDoctorBy() {
         });
     });
 }
-
+function updateDoctorTable(doctors) {
+    const tbody = $('#dataTable tbody');
+    tbody.empty(); // Clear existing table rows
+    console.log('doctors from admin.js: ', doctors);
+    doctors.forEach(function (doctor) {
+        const row = `<tr>
+                        <td>${doctor.name}</td>
+                        <td>${doctor.phone}</td>
+                        <td>
+                            ${doctor.specializationName}
+                        </td>
+                        <td>${doctor.isActive ? 'Hoạt động' : 'Không hoạt động'}</td>
+                        <td class="">
+                        <a class="show-doctor-info" data-doctor-id="${doctor.id}" href="#"
+                        title="View info"><i class="fas fa-info-circle"></i></a>
+                            <a class="edit-doctor-info" href="/users/doctor/edit/${
+                                doctor.id
+                            }" title="Edit"><i class="fas fa-pen-square mx-3"></i></a>
+                            <a class="delete-doctor-info" data-doctor-id="${
+                                doctor.id
+                            }" href="#" title="Delete"><i class="fas fa-trash"></i></a>
+                        </td>
+                    </tr>`;
+        tbody.append(row);
+    });
+}
 $(document).ready(function (e) {
     // $('.modal').on('hidden.bs.modal', function(e) {
     //     $(this).removeData();
@@ -1726,4 +1751,5 @@ $(document).ready(function (e) {
     // deleteCustomerById();
     loadPatientsByDate();
     searchCustomerByPhone();
+    searchDoctorBy();
 });

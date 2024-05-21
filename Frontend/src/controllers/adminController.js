@@ -591,8 +591,15 @@ let getUserByPhone = async (req, res) => {
     // });
 };
 let getDoctorBy = async (req, res) => {
-    let giatri = req.body.thongtin;
-    let loai = req.body.selectedValue;
+    try {
+        let giatri = req.body.thongtin;
+        let loai = req.body.selectedValue;
+        let doctors = await doctorService.getInfoDoctorsByCriteria(giatri, loai);
+        return res.status(200).json(doctors);
+    } catch (error) {
+        console.log(error);
+        return res.status(500).json(error);
+    }
 };
 module.exports = {
     getManageDoctor: getManageDoctor,
