@@ -1673,6 +1673,41 @@ function updateDoctorTable(doctors) {
         tbody.append(row);
     });
 }
+// hàm show speciality item
+$(document).ready(function () {
+    // Event delegation to handle click events for dynamically added elements
+    $(document).on('click', '.info-specialization', function (e) {
+        e.preventDefault();
+        let id = $(this).data('specialization-id');
+        $.ajax({
+            method: 'POST',
+            url: `${window.location.origin}/get-info-speciality-by-id`,
+            data: { id: id },
+            success: function (data) {
+                $('#imageSpeciality').empty();
+
+                $('#nameSpeciality').val(data.specialization.name);
+                if (data.specialization.description) {
+                    $('#descriptionSpeciality').val(data.specialization.description);
+                } else {
+                    $('#descriptionSpeciality').val('Chưa cập nhật');
+                }
+                if (data.specialization.image) {
+                    $('#imageSpeciality').prepend(
+                        `<img class="img-info-clinic" src="${data?.specialization?.image}" />`
+                    );
+                } else {
+                    $('#imageSpeciality').text('Chưa cập nhật');
+                }
+                $('#modalInfoSpeciality').modal('show');
+            },
+            error: function (error) {
+                console.log(error);
+                alertify.error('Đã xảy ra lỗi, vui lòng thử lại sau!');
+            },
+        });
+    });
+});
 $(document).ready(function (e) {
     // $('.modal').on('hidden.bs.modal', function(e) {
     //     $(this).removeData();

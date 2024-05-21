@@ -601,6 +601,16 @@ let getDoctorBy = async (req, res) => {
         return res.status(500).json(error);
     }
 };
+let getSpecializationById = async (req, res) => {
+    try {
+        let speId = req.body.id;
+        let object = await specializationService.getSpecializationById(speId);
+        return res.status(200).json(object);
+    } catch (error) {
+        console.log(error);
+        return res.status(500).json(error);
+    }
+};
 module.exports = {
     getManageDoctor: getManageDoctor,
     getCreateDoctor: getCreateDoctor,
@@ -645,4 +655,5 @@ module.exports = {
     getUserByPhone: getUserByPhone,
 
     getDoctorBy: getDoctorBy,
+    getSpecializationById: getSpecializationById,
 };

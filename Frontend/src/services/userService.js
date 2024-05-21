@@ -225,8 +225,9 @@ let getInfoStatistical = (month) => {
 let getInfoDoctorChart = async (month, doctorId) => {
     return new Promise(async (resolve, reject) => {
         try {
-            let startDate = Date.parse(stringToDate(`01/${month}/2024`, 'dd/MM/yyyy', '/'));
-            let endDate = Date.parse(stringToDate(`31/${month}/2024`, 'dd/MM/yyyy', '/'));
+            let year = moment().year();
+            let startDate = Date.parse(stringToDate(`01/${month}/${year}`, 'dd/MM/yyyy', '/'));
+            let endDate = Date.parse(stringToDate(`31/${month}/${year}`, 'dd/MM/yyyy', '/'));
             let patients = await db.Patient.findAndCountAll({
                 attributes: ['id', 'doctorId', 'statusId', 'isSentForms'],
                 where: {
@@ -689,7 +690,7 @@ let checkCurrentPassword = (email, currentPass) => {
                 resolve({ correct: passwordMatch });
             });
         } catch (error) {
-            console.error("Error checking current password:", error);
+            console.error('Error checking current password:', error);
             resolve({ correct: false });
         }
     });

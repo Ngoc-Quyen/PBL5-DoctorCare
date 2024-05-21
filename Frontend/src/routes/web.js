@@ -112,6 +112,7 @@ let initRoutes = (app) => {
     router.post('/users/specialization/edit/:id', auth.checkLoggedIn, admin.postEditSpecialization);
     router.get('/users/manage/specialization/create', auth.checkLoggedIn, admin.getCreateSpecializationPage);
     router.post('/users/manage/specialization/create', auth.checkLoggedIn, admin.postCreateSpecialization);
+    router.post('/get-info-speciality-by-id', admin.getSpecializationById);
 
     router.get('/users/manage/customer', auth.checkLoggedIn, admin.getCustomerPage);
     router.post('/users/manage/customer', auth.checkLoggedIn, admin.getUserByPhone);
