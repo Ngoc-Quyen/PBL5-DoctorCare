@@ -1079,14 +1079,15 @@ function callAjaxRenderModalInfo(patientId, option) {
         url: `${window.location.origin}/api/get-detail-patient-by-id`,
         data: { patientId: patientId },
         success: function (data) {
-            $('#patientName').val(data.name);
-            $('#btn-confirm-patient-done').attr('data-patient-id', data.id);
-            $('#patientPhone').val(data.phone);
-            $('#patientEmail').val(data.email);
-            $('#patientDate').val(data.dateBooking);
-            $('#patientTime').val(data.timeBooking);
-            $('#patientReason').text(data.description);
-            $('#patientAddress').text(data.address);
+            $('#patientName').val(data.patient.name);
+            $('#btn-confirm-patient-done').attr('data-patient-id', data.patient.id);
+            $('#patientPhone').val(data.patient.phone);
+            $('#patientEmail').val(data.patient.email);
+            $('#patientDate').val(data.patient.dateBooking);
+            $('#patientTime').val(data.patient.timeBooking);
+            $('#patientReason').text(data.patient.description);
+            $('#patientAddress').text(data.patient.address);
+            console.log('data.ExtraInfo from admin.js: ', data.ExtraInfo);
             if (data.ExtraInfo) {
                 $('#patientHistoryBreath').text(data.ExtraInfo.historyBreath);
                 $('#patientMoreInfo').text(data.ExtraInfo.moreInfo);

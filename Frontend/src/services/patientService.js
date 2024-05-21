@@ -1,8 +1,15 @@
 import db from './../models';
 import mailer from './../config/mailer';
-import { transMailBookingNew, transMailBookingSuccess, transMailBookingFailed } from '../../lang/en';
+import {
+    transMailBookingNew,
+    transMailBookingSuccess,
+    transMailBookingFailed,
+    mailEnd,
+    transMailRemedy,
+} from '../../lang/en';
 import helper from '../helper/client';
 import { reject, resolve } from 'bluebird';
+import { where } from 'sequelize';
 
 const statusPendingId = 3;
 const statusFailedId = 2;
@@ -169,7 +176,7 @@ let changeStatusPatientForUser = (data, logs) => {
     });
 };
 
-let changeStatusPatient = (data, logs) => {
+let changeStatusPatient = (data, logs, historyBreath, moreInfo) => {
     return new Promise(async (resolve, reject) => {
         try {
             let patient = await db.Patient.findOne({
@@ -207,7 +214,7 @@ let changeStatusPatient = (data, logs) => {
             let log = await db.AdminLog.create(logs);
 
             //send email
-            if (data.statusId === statusSuccessId) {
+            if (data.statusId === statusPendingId) {
                 let dataSend = {
                     time: patient.timeBooking,
                     date: patient.dateBooking,
@@ -231,6 +238,16 @@ let changeStatusPatient = (data, logs) => {
                     transMailBookingFailed.subject,
                     transMailBookingFailed.template(dataSend)
                 );
+            }
+            if (data.statusId === statusSuccessId) {
+                let dataSend = {
+                    time: patient.timeBooking,
+                    date: patient.dateBooking,
+                    doctor: doctor.name,
+                    moreInfo: moreInfo,
+                    result: historyBreath,
+                };
+                await mailer.sendEmailNormal(patient.email, mailEnd.subject, mailEnd.template(dataSend));
             }
 
             resolve(patient);
@@ -378,6 +395,52 @@ let getComments = () => {
         }
     });
 };
+let updateExtrainfos = async (id, historyBreath, moreInfo) => {
+    return new Promise(async (resolve, reject) => {
+        try {
+            let extrainfos = await db.ExtraInfo.findOne({
+                where: {
+                    patientId: id,
+                },
+            });
+            if (!extrainfos) {
+                return res.status(200).json({
+                    message: 'khong co patient trong bang extrainfor!!',
+                });
+            }
+            extrainfos.historyBreath = historyBreath;
+            extrainfos.moreInfo = moreInfo;
+            await extrainfos.save();
+            resolve(extrainfos);
+        } catch (error) {
+            reject(error);
+        }
+    });
+};
+let getExtanInfoByPatientId = async (patientId) => {
+    return new Promise(async (resolve, reject) => {
+        try {
+            if (!patientId) {
+                resolve({
+                    errCode: 1,
+                    errMessage: 'Khong co patientId trong ExtanInfo',
+                });
+            }
+            let extrainfos = await db.ExtraInfo.findOne({
+                where: {
+                    patientId: patientId,
+                },
+            });
+            resolve({
+                errCode: 0,
+                errMessage: 'success',
+                extrainfos: extrainfos,
+            });
+        } catch (error) {
+            reject(error);
+        }
+    });
+};
 module.exports = {
     getInfoBooking: getInfoBooking,
     getForPatientsTabs: getForPatientsTabs,
@@ -388,4 +451,6 @@ module.exports = {
     getDetailPatient: getDetailPatient,
     getLogsPatient: getLogsPatient,
     getComments: getComments,
+    updateExtrainfos: updateExtrainfos,
+    getExtanInfoByPatientId: getExtanInfoByPatientId,
 };

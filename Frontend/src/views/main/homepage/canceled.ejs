@@ -40,35 +40,34 @@
 
                 <% if (user) { %>
                     <div class="col-md-3 d-none d-md-flex justify-content-around align-self-center" id="loggedIn">
-                        <a href="/InfoUser" >
+                        <a href="/InfoUser">
                             <img src="../images/background/User.png" alt="User logo" class="logo">
                         </a>
-<<<<<<< HEAD
                         <!-- <a href="/InfoBooked" >
                             <img src="../images/background/Lichhen.png" alt="Lichhen logo" class="logo">
                         </a> -->
-=======
->>>>>>> 739653c60a0c603a0a692e0957a28a1033a63a68
+
                         <a href="https://www.facebook.com/profile.php?id=100011010698678" target="_blank">
                             <img src="../images/background/Vector.png" alt="Contact logo" class="logo">
                         </a>
-                        <a href="/logout" >
+                        <a href="/logout">
                             <img src="../images/background/logout.png" alt="Contact logo" class="logo">
                         </a>
                     </div>
-                <% } else { %>
-                    <div class="col-md-3 mt-3 d-none d-md-flex justify-content-around align-self-center" id="notLoggedIn">
-                        <div class="d-flex flex-column">
-                            <a href="/login" class="btn btn-design1 ">Đăng nhập</a>
+                    <% } else { %>
+                        <div class="col-md-3 mt-3 d-none d-md-flex justify-content-around align-self-center"
+                            id="notLoggedIn">
+                            <div class="d-flex flex-column">
+                                <a href="/login" class="btn btn-design1 ">Đăng nhập</a>
+                            </div>
+                            <div class="d-flex flex-column">
+                                <a href="/register" class="btn btn-design2 ">Đăng ký</a>
+                            </div>
+                            <a href="https://www.facebook.com/profile.php?id=100011010698678" target="_blank">
+                                <img src="../images/background/Vector.png" alt="Contact logo" class="logo">
+                            </a>
                         </div>
-                        <div class="d-flex flex-column">
-                            <a href="/register" class="btn btn-design2 ">Đăng ký</a>
-                        </div>
-                        <a href="https://www.facebook.com/profile.php?id=100011010698678" target="_blank">
-                            <img src="../images/background/Vector.png" alt="Contact logo" class="logo">
-                        </a>
-                    </div>
-                <% } %>
+                        <% } %>
 
             </div>
         </div>
@@ -78,10 +77,11 @@
             <div class="container">
                 <div class="row">
                     <div class="col-12 mt-3">
-                        <a class="text-decoration-none" href="/"><i class="fa fa-home" aria-hidden="true"></i></a><span aria-hidden="true">&raquo;</span>
+                        <a class="text-decoration-none" href="/"><i class="fa fa-home" aria-hidden="true"></i></a><span
+                            aria-hidden="true">&raquo;</span>
                         <span style="text-transform: uppercase">
-                      Thông tin đặt khám
-                  </span>
+                            Thông tin đặt khám
+                        </span>
                     </div>
                 </div>
             </div>
@@ -101,25 +101,27 @@
                                     <img src="/images/users/doctor.jpg"><br>
                                 </div>
                                 <div style="text-align: center;">
-                                    <label for="full-name" style="background-color: #ABF3FD; padding: 5px 15px; display: inline-block;">
+                                    <label for="full-name"
+                                        style="background-color: #ABF3FD; padding: 5px 15px; display: inline-block;">
                                         <%= user.name %>
-                                        <input type="hidden" id="full-name" name="full-name" value="<%= user.name %>">
+                                            <input type="hidden" id="full-name" name="full-name"
+                                                value="<%= user.name %>">
                                     </label>
-                
+
                                 </div>
                             </div>
                             <div class="left-booking col-9 mt-3">
-                                <div> 
+                                <div>
                                     Đã hủy lịch hẹn thành công !!! Cảm ơn bạn đã đặt chuyến thăm khám từ DoctorCare.
-                                   
-                                    </div>
+
+                                </div>
                                 <div class="mt-2">Cần hỗ trợ vui lòng liên hệ hotline: 0123 456 789 </div>
                                 <div class="col-md-12 d-none d-md-flex justify-content-between">
                                     <div class="d-flex flex-column">
                                         <button class="btn btn-noclick">Liên hệ hỗ trợ</button>
                                     </div>
-                                    
-                                    
+
+
                                 </div>
                             </div>
                         </div>

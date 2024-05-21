@@ -45,12 +45,10 @@
                         <a href="/InfoUser">
                             <img src="../images/background/User.png" alt="User logo" class="logo">
                         </a>
-<<<<<<< HEAD
                         <!-- <a href="/InfoBooked">
                             <img src="../images/background/Lichhen.png" alt="Lichhen logo" class="logo">
                         </a> -->
-=======
->>>>>>> 739653c60a0c603a0a692e0957a28a1033a63a68
+
                         <a href="https://www.facebook.com/profile.php?id=100011010698678" target="_blank">
                             <img src="../images/background/Vector.png" alt="Contact logo" class="logo">
                         </a>
@@ -117,16 +115,12 @@
                                 onclick="showDetail('medicalHistory')">Lịch sử khám bệnh</a></div>
                     </div>
                     <div>
-<<<<<<< HEAD
-                        <div><i class="fa fa-unlock-alt" aria-hidden="true" style="color: #007bff;"></i> <a href="#" onclick="showDetail('changePassword')">Đổi mật khẩu</a></div>
-=======
-                        <div><i class="fa fa-unlock-alt" aria-hidden="true" style="color: #007bff;"></i> <a href="#" 
+                        <div><i class="fa fa-unlock-alt" aria-hidden="true" style="color: #007bff;"></i> <a href="#"
                                 onclick="showDetail('changePassword')">Đổi mật khẩu</a></div>
->>>>>>> 739653c60a0c603a0a692e0957a28a1033a63a68
                     </div>
                 </div>
             </div>
-            
+
 
             <div class="form-container infor-user-detail" id="detail-content" style="overflow: auto;">
                 <div style="background-color: #ABF3FD; height: 50px; font-size: 20px; text-align: center;"
@@ -135,56 +129,57 @@
                 </div>
                 <div id="personalInfo" class="detail-section">
                     <form id="formUpdateUser" method="POST" action="/users/customer/edit/<%= user.id %>">
-                    <div class="form-group1">
-                        <label for="full-name">Họ và tên :</label>
-                        <input type="text" id="full-name" name="full-name" placeholder="<%= user.name %>"
-                            value="<%= user.name %>">
-                        <span class="error" id="full-name-error"></span>
-                    </div>
-                    <div class="form-group1">
-                        <label for="email">Email :</label>
-                        <input type="email" id="email" name="email" placeholder="<%= user.email %>"
-                            value="<%= user.email %>" readonly>
-                        <span class="error" id="email-error"></span>
-                    </div>
-                    <div class="form-group1">
-                        <label for="phone-number">Số điện thoại :</label>
-                        <input type="text" id="phone-number" name="phone-number" placeholder="<%= user.phone %>"
-                            value="<%= user.phone %>">
-                        <span class="error" id="phone-number-error"></span>
-                    </div>
-                    <div class="form-group1">
-                        <label for="address">Địa chỉ:</label>
-                        <input type="text" id="address" name="address" placeholder="<%= user.address %>"
-                            value="<%= user.address %>">
-                    </div>
-                    <div class="form-group1 gender">
-                        <label for="gender">Giới tính:</label>
-                        <input type="radio" id="male" name="gender" value="M" <% if(user.gender==='M' ) { %> checked
-                        <% } %> disabled>
-                            <label for="male">Nam</label>
-                            <input type="radio" id="female" name="gender" value="F" <% if(user.gender==='F' ) { %>
-                            checked
+                        <div class="form-group1">
+                            <label for="full-name">Họ và tên :</label>
+                            <input type="text" id="full-name" name="full-name" placeholder="<%= user.name %>"
+                                value="<%= user.name %>">
+                            <span class="error" id="full-name-error"></span>
+                        </div>
+                        <div class="form-group1">
+                            <label for="email">Email :</label>
+                            <input type="email" id="email" name="email" placeholder="<%= user.email %>"
+                                value="<%= user.email %>" readonly>
+                            <span class="error" id="email-error"></span>
+                        </div>
+                        <div class="form-group1">
+                            <label for="phone-number">Số điện thoại :</label>
+                            <input type="text" id="phone-number" name="phone-number" placeholder="<%= user.phone %>"
+                                value="<%= user.phone %>">
+                            <span class="error" id="phone-number-error"></span>
+                        </div>
+                        <div class="form-group1">
+                            <label for="address">Địa chỉ:</label>
+                            <input type="text" id="address" name="address" placeholder="<%= user.address %>"
+                                value="<%= user.address %>">
+                        </div>
+                        <div class="form-group1 gender">
+                            <label for="gender">Giới tính:</label>
+                            <input type="radio" id="male" name="gender" value="M" <% if(user.gender==='M' ) { %> checked
                             <% } %> disabled>
-                                <label for="female">Nữ</label>
-                                <span class="error" id="gender-error"></span>
-                    </div>
-                    <div class="form-group1">
-                        <label for="birthdate">Ngày sinh:</label>
-                        <input type="date" id="birthdate" name="birthdate" placeholder="<%= user.birthday %>"
-                            value="<%= user.birthday %>" readonly>
-                    </div>
-                    <div class="form-group1">
-                        <button type="submit" class="btn-submit" style="margin-top: 30px;"> <a href="#" onclick=""></a>Cập nhật</button> 
-                        <!-- <button type="submit" class="btn btn-primary" style="margin-left: 300px; margin-top: 50px;" id="btnUpdateDoctor" data-doctor-id="<%= user.id %>">Cập
+                                <label for="male">Nam</label>
+                                <input type="radio" id="female" name="gender" value="F" <% if(user.gender==='F' ) { %>
+                                checked
+                                <% } %> disabled>
+                                    <label for="female">Nữ</label>
+                                    <span class="error" id="gender-error"></span>
+                        </div>
+                        <div class="form-group1">
+                            <label for="birthdate">Ngày sinh:</label>
+                            <input type="date" id="birthdate" name="birthdate" placeholder="<%= user.birthday %>"
+                                value="<%= user.birthday %>" readonly>
+                        </div>
+                        <div class="form-group1">
+                            <button type="submit" class="btn-submit" style="margin-top: 30px;"> <a href="#"
+                                    onclick=""></a>Cập nhật</button>
+                            <!-- <button type="submit" class="btn btn-primary" style="margin-left: 300px; margin-top: 50px;" id="btnUpdateDoctor" data-doctor-id="<%= user.id %>">Cập
                             nhật</button> -->
                             <!-- <button type="submit" class="btn btn-primary" style="margin-left: 300px; margin-top: 50px;" id="btnUpdateUser" data-doctor-id="<%= user.id %>">Cập
                                 nhật</button> -->
-                            
-                    </div>
+
+                        </div>
                     </form>
                 </div>
-                
+
 
                 <div id="medicalHistory" class="detail-section" style="display:none;">
 
@@ -294,8 +289,9 @@
                         </div>
                     </div>
                 </div>
-                
-                <div id="detail-medical" class="detail-section" style="display:none; text-align: center; background-color: #dbdbdd;border: 2px solid #000;">
+
+                <div id="detail-medical" class="detail-section"
+                    style="display:none; text-align: center; background-color: #dbdbdd;border: 2px solid #000;">
                     <h2>Hồ sơ bệnh án</h2>
                     <div class="form-group1">
                         <label for="full-name">Bác sĩ phụ trách: </label>
@@ -303,14 +299,14 @@
                         <span class="error" id="full-name-error"></span>
                     </div>
                     <div class="form-group1">
-                        <label for="specializationDoctor" >Chuyên khoa: </label>
+                        <label for="specializationDoctor">Chuyên khoa: </label>
                         <input type="text" id="specializationDoctor" value="" placeholder="">
                     </div>
                     <div class="form-group1">
                         <label for="days">Ngày khám: </label>
                         <input type="date" id="days" name="days" placeholder="" value="" readonly>
-                       <label for="time">Giờ khám:</label>
-                       <input type="time" name="tỉme" id="" value="" readonly>
+                        <label for="time">Giờ khám:</label>
+                        <input type="time" name="tỉme" id="" value="" readonly>
                     </div>
                     <div class="form-group1">
                         <label for="TC">Triệu chứng: </label>
@@ -351,7 +347,7 @@
                         <button type="submit" class="btn-submit">Đổi mật khẩu</button>
                     </div>
                 </div> -->
-               
+
                 <div id="changePassword" class="detail-section" style="display:none;">
                     <form method="POST" action="/users/change-password" id="form-change-pass">
                         <div class="form-group col-6 mx-auto">
@@ -360,7 +356,7 @@
                                 <div class="input-group-prepend">
                                     <span class="input-group-text fa fa-eye"></span>
                                 </div>
-                                <input type="password" class="form-control" id="form-current-password" 
+                                <input type="password" class="form-control" id="form-current-password"
                                     placeholder="Mật khẩu hiện tại" name="currentPass" required>
                             </div>
                             <div class="input-group mb-2">
@@ -377,72 +373,73 @@
                                 <input type="password" class="form-control" id="form-confirm-password"
                                     placeholder="Xác nhận lại mật khẩu" name="confirmPass" required>
                             </div>
-                            <button type="submit" id="btn-change-password" class="mt-2 btn btn-primary" style="width: 100px;height: 50px;">Xác nhận</button>
+                            <button type="submit" id="btn-change-password" class="mt-2 btn btn-primary"
+                                style="width: 100px;height: 50px;">Xác nhận</button>
                         </div>
                     </form>
                     <script>
-                        document.getElementById("form-change-pass").addEventListener("submit", async function(event) {
-                      
-                        const currentPass = document.getElementById("form-current-password").value;
-                        const newPass = document.getElementById("form-password").value;
-                        const confirmPass = document.getElementById("form-confirm-password").value;
+                        document.getElementById("form-change-pass").addEventListener("submit", async function (event) {
 
-                        // Kiểm tra mật khẩu hiện tại
-                        if (!currentPass) {
-                            event.preventDefault();
-                            alert('Vui lòng nhập mật khẩu hiện tại.');
-                            return;
-                        }
+                            const currentPass = document.getElementById("form-current-password").value;
+                            const newPass = document.getElementById("form-password").value;
+                            const confirmPass = document.getElementById("form-confirm-password").value;
 
-                        // Kiểm tra xem mật khẩu mới và xác nhận mật khẩu có khớp không
-                        if (newPass !== confirmPass) {
-                            event.preventDefault();
-                            alert('Mật khẩu không khớp. Vui lòng thử lại.');
-                            return;
-                        }
+                            // Kiểm tra mật khẩu hiện tại
+                            if (!currentPass) {
+                                event.preventDefault();
+                                alert('Vui lòng nhập mật khẩu hiện tại.');
+                                return;
+                            }
 
-                        // Kiểm tra độ mạnh của mật khẩu
-                        const minLength = 8;
-                        const hasUpperCase = /[A-Z]/.test(newPass);
-                        const hasLowerCase = /[a-z]/.test(newPass);
-                        const hasNumbers = /[0-9]/.test(newPass);
-                        const hasSpecialChars = /[!@#$%^&*(),.?":{}|<>]/.test(newPass);
+                            // Kiểm tra xem mật khẩu mới và xác nhận mật khẩu có khớp không
+                            if (newPass !== confirmPass) {
+                                event.preventDefault();
+                                alert('Mật khẩu không khớp. Vui lòng thử lại.');
+                                return;
+                            }
 
-                        if (newPass.length < minLength || !hasUpperCase || !hasLowerCase || !hasNumbers || !hasSpecialChars) {
-                            event.preventDefault();
-                            alert('Mật khẩu phải có ít nhất ' + minLength + ' ký tự, bao gồm chữ hoa, chữ thường, số và ký tự đặc biệt.');
-                            return;
-                        }
+                            // Kiểm tra độ mạnh của mật khẩu
+                            const minLength = 8;
+                            const hasUpperCase = /[A-Z]/.test(newPass);
+                            const hasLowerCase = /[a-z]/.test(newPass);
+                            const hasNumbers = /[0-9]/.test(newPass);
+                            const hasSpecialChars = /[!@#$%^&*(),.?":{}|<>]/.test(newPass);
 
-                        // Xác thực mật khẩu hiện tại trước khi gửi form
-                        let response = await fetch("/check-current-password", {
-                            method: "POST",
-                            headers: {
-                                "Content-Type": "application/json"
-                            },
-                            body: JSON.stringify({ currentPassword: currentPass })
+                            if (newPass.length < minLength || !hasUpperCase || !hasLowerCase || !hasNumbers || !hasSpecialChars) {
+                                event.preventDefault();
+                                alert('Mật khẩu phải có ít nhất ' + minLength + ' ký tự, bao gồm chữ hoa, chữ thường, số và ký tự đặc biệt.');
+                                return;
+                            }
+
+                            // Xác thực mật khẩu hiện tại trước khi gửi form
+                            let response = await fetch("/check-current-password", {
+                                method: "POST",
+                                headers: {
+                                    "Content-Type": "application/json"
+                                },
+                                body: JSON.stringify({ currentPassword: currentPass })
+                            });
+
+                            let result = await response.json();
+
+                            if (result.correct) {
+                                // Nếu mật khẩu hiện tại đúng, tiến hành gửi form để cập nhật mật khẩu mới
+                                document.getElementById("error-message").innerHTML = ""; // Xóa thông báo lỗi nếu có
+                                document.getElementById("form-change-pass").submit(); // Gửi form
+                            } else {
+                                // Nếu mật khẩu hiện tại không đúng, hiển thị thông báo lỗi
+                                document.getElementById("error-message").innerHTML = "Current password is incorrect.";
+                            }
                         });
 
-                        let result = await response.json();
-
-                        if (result.correct) {
-                            // Nếu mật khẩu hiện tại đúng, tiến hành gửi form để cập nhật mật khẩu mới
-                            document.getElementById("error-message").innerHTML = ""; // Xóa thông báo lỗi nếu có
-                            document.getElementById("form-change-pass").submit(); // Gửi form
-                        } else {
-                            // Nếu mật khẩu hiện tại không đúng, hiển thị thông báo lỗi
-                            document.getElementById("error-message").innerHTML = "Current password is incorrect.";
-                        }
-                    });
-
                     </script>
-                
-                   
+
+
                 </div>
-                
-                
+
+
             </div>
-            </div>
+        </div>
         </div>
     </section>
 
@@ -477,7 +474,8 @@
     </script>
 
     <!-- Modal detail info patient-->
-    <div class="modal fade " tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true" id="modalDetailPatient1">
+    <div class="modal fade " tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true"
+        id="modalDetailPatient1">
         <div class="modal-dialog mw-100 w-75" role="document">
             <div class="modal-content">
                 <div class="modal-header">
@@ -515,7 +513,8 @@
                     </div>
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="ml-3 btn btn-secondary" id="btn-cancel-patient" data-dismiss="modal">Hủy</button>
+                    <button type="button" class="ml-3 btn btn-secondary" id="btn-cancel-patient"
+                        data-dismiss="modal">Hủy</button>
                     <button type="button" class="btn btn-primary" id="btn-confirm-patient-done">Xác nhận</button>
                 </div>
             </div>

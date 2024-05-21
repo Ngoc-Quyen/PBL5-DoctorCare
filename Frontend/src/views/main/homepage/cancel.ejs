@@ -40,35 +40,34 @@
 
                 <% if (user) { %>
                     <div class="col-md-3 d-none d-md-flex justify-content-around align-self-center" id="loggedIn">
-                        <a href="/InfoUser" >
+                        <a href="/InfoUser">
                             <img src="../images/background/User.png" alt="User logo" class="logo">
                         </a>
-<<<<<<< HEAD
                         <!-- <a href="/InfoBooked" >
                             <img src="../images/background/Lichhen.png" alt="Lichhen logo" class="logo">
                         </a> -->
-=======
->>>>>>> 739653c60a0c603a0a692e0957a28a1033a63a68
+
                         <a href="https://www.facebook.com/profile.php?id=100011010698678" target="_blank">
                             <img src="../images/background/Vector.png" alt="Contact logo" class="logo">
                         </a>
-                        <a href="/logout" >
+                        <a href="/logout">
                             <img src="../images/background/logout.png" alt="Contact logo" class="logo">
                         </a>
                     </div>
-                <% } else { %>
-                    <div class="col-md-3 mt-3 d-none d-md-flex justify-content-around align-self-center" id="notLoggedIn">
-                        <div class="d-flex flex-column">
-                            <a href="/login" class="btn btn-design1 ">Đăng nhập</a>
+                    <% } else { %>
+                        <div class="col-md-3 mt-3 d-none d-md-flex justify-content-around align-self-center"
+                            id="notLoggedIn">
+                            <div class="d-flex flex-column">
+                                <a href="/login" class="btn btn-design1 ">Đăng nhập</a>
+                            </div>
+                            <div class="d-flex flex-column">
+                                <a href="/register" class="btn btn-design2 ">Đăng ký</a>
+                            </div>
+                            <a href="https://www.facebook.com/profile.php?id=100011010698678" target="_blank">
+                                <img src="../images/background/Vector.png" alt="Contact logo" class="logo">
+                            </a>
                         </div>
-                        <div class="d-flex flex-column">
-                            <a href="/register" class="btn btn-design2 ">Đăng ký</a>
-                        </div>
-                        <a href="https://www.facebook.com/profile.php?id=100011010698678" target="_blank">
-                            <img src="../images/background/Vector.png" alt="Contact logo" class="logo">
-                        </a>
-                    </div>
-                <% } %>
+                        <% } %>
 
             </div>
         </div>
@@ -78,10 +77,11 @@
             <div class="container">
                 <div class="row">
                     <div class="col-12 mt-3">
-                        <a class="text-decoration-none" href="/"><i class="fa fa-home" aria-hidden="true"></i></a><span aria-hidden="true">&raquo;</span>
+                        <a class="text-decoration-none" href="/"><i class="fa fa-home" aria-hidden="true"></i></a><span
+                            aria-hidden="true">&raquo;</span>
                         <span style="text-transform: uppercase">
-                      Thông tin đặt khám
-                  </span>
+                            Thông tin đặt khám
+                        </span>
                     </div>
                 </div>
             </div>
@@ -104,7 +104,8 @@
                                         <input type="radio" id="option2" name="options" value="option2">
                                         <label for="option2">Tôi muốn tham khảo thêm nhiều cơ sở y tế khác</label><br>
                                         <input type="radio" id="option3" name="options" value="option3">
-                                        <label for="option3">Chưa sắp xếp được thời gian, tôi sẽ đặt lại lịch sau</label><br>
+                                        <label for="option3">Chưa sắp xếp được thời gian, tôi sẽ đặt lại lịch
+                                            sau</label><br>
                                         <input type="radio" id="option4" name="options" value="option4">
                                         <label for="option4">Tôi muốn đổi thời gian đặt lịch </label><br>
                                         <input type="radio" id="option5" name="options" value="option5">
@@ -113,21 +114,22 @@
                                         <label for="option6">Tôi không muốn đặt lịch khám nữa</label><br>
                                         <input type="radio" id="option6" name="options" value="option7">
                                         <label for="option7">khác...</label><br>
-                                      </form>
-                                      
+                                    </form>
+
                                 </div>
                                 <div class="col-md-12 d-none d-md-flex justify-content-between">
                                     <div class="d-flex flex-column">
                                         <button class="btn btn-noclick" onclick="redirectToCancel()">Xác nhận</button>
                                     </div>
                                     <div class="d-flex flex-column">
-                                        <button class="btn btn-cancel" onclick="redirectToCancelPage()">Quay lại</button>
+                                        <button class="btn btn-cancel" onclick="redirectToCancelPage()">Quay
+                                            lại</button>
                                     </div>
                                     <script>
                                         function redirectToCancelPage() {
                                             window.location.href = "/";
                                         }
-                                        function redirectToCancel(){
+                                        function redirectToCancel() {
                                             // cập nhật statusId == 2
                                             window.location.href = "/canceled";
                                         }
