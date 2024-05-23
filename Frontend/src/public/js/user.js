@@ -68,9 +68,9 @@ function loadNewPatientsForUser() {
                 <td> ${patient.name}     </td>
                 <td> ${patient.dateBooking}     </td>
                 <td> ${patient.timeBooking}   </td>
-                    <td> 
-                    <button   data-patient-id="${patient.id}"  class="ml-3 btn btn-primary btn-history-cancel-patient">Lịch sử</button>
-                    </td>
+                <td> 
+                <button type="button"  data-patient-id="${patient.id}" class="ml-3 btn btn-primary btn-new-patient-ok4"> Lịch sử</button>
+                </td>
                 </tr>
                 `;
             });
@@ -215,7 +215,9 @@ function callAjaxRenderModalInfo(patientId, option, modalId) {
             modal.find('#patientDate').val(data.dateBooking);
             modal.find('#patientTime').val(data.timeBooking);
             modal.find('#patientReason').val(data.description);
+            modal.find('#patientDoctor').val('chưa in ra được tên doctor');
             modal.find('#patientAddress').text(data.address);
+            // modal.find('#patientDoctor').val(data.id.getDatavalue('doctorName'));
             let formattedDate = formatDate(data.updatedAt);
             modal.find('#patientTimeUpdate').val(formattedDate);
             // modal.find('#patientTimeUpdate').val(data.updatedAt);
@@ -264,7 +266,7 @@ function handleBtnNewPatientOk3() {
     $('#tableConfirmedPatients').on('click', '.btn-new-patient-ok3', function(e) {
         let patientId = $(this).data('patient-id');
         let option = true;
-        callAjaxRenderModalInfo(patientId, option, '#modalCancelBooking');
+        callAjaxRenderModalInfo(patientId, option, '#modalResultlPatient');
     });
 }
 
@@ -276,6 +278,13 @@ function handleBtnNewPatientCancel1() {
     });
 }
 
+function handleBtnNewPatientOk4() {
+    $('#tableCancelPatients').on('click', '.btn-new-patient-ok4', function(e) {
+        let patientId = $(this).data('patient-id');
+        let option = true;
+        callAjaxRenderModalInfo(patientId, option, '#modalResultlPatient');
+    });
+}
 
 
 function reserModal1() {
@@ -387,6 +396,7 @@ function handleCancelBtnForUser() {
 $(document).ready(function(e) {
     handleCancelBtnForUser();
     reserModal1();
+    handleBtnNewPatientOk4();
     handleBtnNewPatientOk3();
     handleBtnNewPatientOk2();
     handleBtnNewPatientOk1();
@@ -395,5 +405,6 @@ $(document).ready(function(e) {
     callAjaxRenderModalInfo();
     formatDate(dateString);
     handleBtnNewPatientCancel1();
+
 
 })
