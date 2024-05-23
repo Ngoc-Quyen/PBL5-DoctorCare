@@ -83,17 +83,17 @@
                         <div>Chuyên khoa: <span>
                                 <%= specialization.name %>
                             </span></div>
-                            <% if (user) { %>
-                                <div class="mt-2">
-                                    <a href="/feedback/<%= doctor.id %>" class="btn-feedback text-decoration-none">Gửi ý kiến sau khi đi khám bác sĩ</a>
-                                </div>
+                        <% if (user) { %>
+                            <div class="mt-2">
+                                <a href="/feedback/<%= doctor.id %>" class="btn-feedback text-decoration-none">Gửi ý kiến sau khi đi khám bác sĩ</a>
+                            </div>
                             <% } else { %>
                                 <div class="mt-2">
                                     <button type="button" class="btn-feedback text-decoration-none" data-toggle="modal" data-target="#loginModal">
                                         Gửi ý kiến sau khi đi khám bác sĩ
                                     </button>
                                 </div>
-                            
+
                                 <!-- Modal -->
                                 <div class="modal fade" id="loginModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
                                     <div class="modal-dialog" role="document">
@@ -112,8 +112,8 @@
                                         </div>
                                     </div>
                                 </div>
-                            <% } %>
-                            
+                                <% } %>
+
                     </div>
 
                 </div>
@@ -174,7 +174,7 @@
 
                                 </select>
                             </div>
-                            <div id="div-schedule-id" class="doctor-schedule d-flex flex-row  flex-wrap text-decoration-none">
+                            <div id="div-schedule-id" class="doctor-schedule d-flex flex-row  flex-wrap text-decoration-none" style="overflow: auto;">
                                 <% if(doctor.Schedules.length===0){ %>
                                     <div>
                                         Bác sĩ "
@@ -278,7 +278,7 @@
                                             Email không hợp lệ
                                         </div>
                                     </div>
-                                    
+
                                     <div class="form-group">
                                         <input type="text" class="form-control" id="year" name="year" placeholder="Năm sinh">
                                     </div>

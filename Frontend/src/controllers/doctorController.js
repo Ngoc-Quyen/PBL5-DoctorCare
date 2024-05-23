@@ -153,6 +153,30 @@ let getManageAppointment = async(req, res) => {
         active: canActive,
     });
 };
+let getScheduleByDate = async(req, res) => {
+    let currentDate = moment().format('DD/MM/YYYY');
+    let canActive = false;
+    let date = '';
+    if (req.query.dateDoctorAppointment) {
+        date = req.query.dateDoctorAppointment;
+        if (date === currentDate) canActive = true;
+    } else {
+        //get currentDate
+        date = currentDate;
+        canActive = true;
+    }
+    let data = {
+        date: date,
+        doctorId: req.user.id,
+    };
+    console.log('date from doctorController: ', date);
+    let patients = await doctorService.getPatientBooking(data);
+    return res.render('main/users/admins/manageBooking.ejs', {
+        user: req.user,
+        date: date,
+        patient: patients,
+    });
+};
 
 let getManageChart = (req, res) => {
     return res.render('main/users/admins/manageChartDoctor.ejs', {
@@ -234,4 +258,5 @@ module.exports = {
     postCreateChart: postCreateChart,
     postAutoCreateAllDoctorsSchedule: postAutoCreateAllDoctorsSchedule,
     deleteScheduleDoctorByDate: deleteScheduleDoctorByDate,
+    getScheduleByDate: getScheduleByDate,
 };

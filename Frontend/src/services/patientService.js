@@ -280,32 +280,20 @@ let createNewPatient = (data) => {
                 },
             }).then(async(schedule) => {
                 if (schedule && schedule.sumBooking < schedule.maxBooking) {
-                    let patient = await db.Patient.create({
-                        statusId: data.statusId,
-                        userId: data.userId, // Đảm bảo userId được lưu vào
-                        historyBreath: data.historyBreath,
-                        moreInfo: data.moreInfo,
-                        placeId: data.placeId,
-                        createdAt: data.createdAt,
-                        doctorId: data.doctorId,
-                        dateBooking: data.dateBooking,
-                        timeBooking: data.timeBooking,
-                        email: data.email,
-                        oldForms: data.oldForms // Đảm bảo oldForms được lưu vào nếu có
-                    });
+                    let patient = await db.Patient.create(data);
                     data.patientId = patient.id;
                     await db.ExtraInfo.create(data);
 
-                    // Tăng sumBooking
+                    //tăng sumBooking
                     let sum = +schedule.sumBooking;
                     await schedule.update({ sumBooking: sum + 1 });
 
                     let doctor = await db.User.findOne({
-                        where: { id: data.doctorId },
+                        where: { id: patient.doctorId },
                         attributes: ['name', 'avatar']
                     });
 
-                    // Cập nhật logs
+                    //update logs
                     let logs = {
                         patientId: patient.id,
                         content: "The patient made an appointment from the system ",
@@ -343,14 +331,13 @@ let createNewPatient = (data) => {
     }));
 };
 
-
-
 let getDetailPatient = (id) => {
     return new Promise(async(resolve, reject) => {
         try {
             let patient = await db.Patient.findOne({
                 where: { id: id },
-                include: { model: db.ExtraInfo, required: false }
+                include: { model: db.ExtraInfo, required: false },
+                include: { model: db.User, required: false }
             });
             resolve(patient)
         } catch (e) {

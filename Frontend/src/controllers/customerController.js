@@ -104,6 +104,7 @@ let getPageInfoUser = async(req, res) => {
     try {
         return res.render('main/homepage/InfoUser.ejs', {
             user: req.user,
+            formatDate: formatDate // Truyền hàm formatDate vào view
         });
     } catch (e) {
         console.log(e);
@@ -122,6 +123,12 @@ let getForPatientForUser = async(req, res) => {
         return res.status(500).json(e);
     }
 };
+
+const formatDate = (date) => {
+    let parts = date.split('-');
+    return `${parts[2]}/${parts[1]}/${parts[0]}`; // Định dạng dd/mm/yyyy
+};
+
 module.exports = {
     getManageCustomersPage: getManageCustomersPage,
     getInforCustomerById: getInforCustomerById,

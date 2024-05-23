@@ -21,13 +21,14 @@
 
     <hr class="sidebar-divider">
 
-    <% if(user.roleId === 1 ) { %>
+    <% if(user.roleId===1 ) { %>
         <!-- Admin -->
         <div class="sidebar-heading">
             Admins
         </div>
         <li class="nav-item">
-            <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#featureManage" aria-expanded="true" aria-controls="collapseTwo">
+            <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#featureManage"
+                aria-expanded="true" aria-controls="collapseTwo">
                 <i class="fas fa-users-cog"></i>
                 <span>Người dùng</span>
             </a>
@@ -40,16 +41,19 @@
             </div>
         </li>
         <li class="nav-item">
-            <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseUtilities" aria-expanded="true" aria-controls="collapseUtilities">
+            <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseUtilities"
+                aria-expanded="true" aria-controls="collapseUtilities">
                 <i class="fas fa-fw fa-wrench"></i>
                 <span>Khác</span>
             </a>
-            <div id="collapseUtilities" class="collapse" aria-labelledby="headingUtilities" data-parent="#accordionSidebar">
+            <div id="collapseUtilities" class="collapse" aria-labelledby="headingUtilities"
+                data-parent="#accordionSidebar">
                 <div class="bg-white py-2 collapse-inner rounded">
                     <h6 class="collapse-header">Khác</h6>
-                    <a class="collapse-item" id="aManageSpecialization" href="/users/manage/specialization">Chuyên khoa</a>
+                    <a class="collapse-item" id="aManageSpecialization" href="/users/manage/specialization">Chuyên
+                        khoa</a>
                     <a class="collapse-item" id="aManagePosts" href="/admin/manage/posts">Bài đăng</a>
-                    <a class="collapse-item" id="aManageCreateScheduleDoctors" href="/users/manage/schedule-for-doctors">Tạo cuộc hẹn</a>
+                    <!-- <a class="collapse-item" id="aManageCreateScheduleDoctors" href="/users/manage/schedule-for-doctors">Tạo cuộc hẹn</a> -->
                 </div>
             </div>
         </li>
@@ -60,7 +64,7 @@
 
         <% } %>
 
-            <% if(user.roleId === 2 ) { %>
+            <% if(user.roleId===2 ) { %>
                 <!-- Doctors -->
                 <div class="sidebar-heading">
                     Bác sĩ
