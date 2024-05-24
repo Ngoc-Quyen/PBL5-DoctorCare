@@ -188,6 +188,7 @@ function callAjaxRenderModalInfo(patientId, option, modalId) {
         success: function(data) {
             // Xác định modal hiện tại
             let modal = $(modalId);
+
             // Hàm formatDate
             function formatDate(dateString) {
                 let date = new Date(dateString);
@@ -207,6 +208,7 @@ function callAjaxRenderModalInfo(patientId, option, modalId) {
 
                 return `${day}/${month}/${year} (${hours}:${minutes}:${seconds})`;
             }
+
             // Đặt dữ liệu vào các trường trong modal
             modal.find('#patientName').val(data.name);
             modal.find('#btn-confirm-patient-done').attr('data-patient-id', data.id);
@@ -214,13 +216,12 @@ function callAjaxRenderModalInfo(patientId, option, modalId) {
             modal.find('#patientEmail').val(data.email);
             modal.find('#patientDate').val(data.dateBooking);
             modal.find('#patientTime').val(data.timeBooking);
-            modal.find('#patientReason').val(data.description);
-            modal.find('#patientDoctor').val('chưa in ra được tên doctor');
+            modal.find('#patientReason1').val(data.description);
             modal.find('#patientAddress').text(data.address);
-            // modal.find('#patientDoctor').val(data.id.getDatavalue('doctorName'));
+            // console.log('data.ExtraInfo từ user: ', data.ExtraInfo);
+
             let formattedDate = formatDate(data.updatedAt);
             modal.find('#patientTimeUpdate').val(formattedDate);
-            // modal.find('#patientTimeUpdate').val(data.updatedAt);
 
             if (data.ExtraInfo) {
                 modal.find('#patientHistoryBreath').text(data.ExtraInfo.historyBreath);
@@ -232,6 +233,39 @@ function callAjaxRenderModalInfo(patientId, option, modalId) {
                 modal.find('#btn-cancel-patient').text('OK');
             }
 
+            // Gọi AJAX để lấy thông tin bác sĩ
+            $.ajax({
+                method: 'POST',
+                url: `${window.location.origin}/user/get-Doctor-patient`,
+                data: { patientId: patientId },
+                success: function(data) {
+                    // Đặt tên bác sĩ vào trường thích hợp trong modal
+                    modal.find('#patientDoctor').val(data.doctorName);
+                    modal.find('#patientReason').val(data.contentCancel);
+                    modal.find('#patientHistoryBreath').val(data.resultPatient);
+                    modal.find('#patientMoreInfo').val(data.moreInfoPatient);
+
+                },
+                error: function(err) {
+                    console.log(err);
+                    alertify.error('Không thể lấy thông tin bác sĩ, vui lòng thử lại sau!');
+                },
+            });
+            // Gọi AJAX để lấy thông tin lý do hủy lịch
+            // $.ajax({
+            //     method: 'POST',
+            //     url: `${window.location.origin}/user/get-logs-patient`,
+            //     data: { patientId: patientId },
+            //     success: function(data) {
+            //         modal.find('#patientReason').val(data.content);
+
+            //     },
+            //     error: function(err) {
+            //         console.log(err);
+            //         alertify.error('Không thể lấy thông tin lý do hủy, vui lòng thử lại sau!');
+            //     },
+            // });
+
             modal.modal('show'); // Chỉ hiển thị modal xác định
         },
         error: function(err) {
@@ -240,6 +274,7 @@ function callAjaxRenderModalInfo(patientId, option, modalId) {
         },
     });
 }
+
 
 function formatDate(dateString) {
     let parts = dateString.split('-');
