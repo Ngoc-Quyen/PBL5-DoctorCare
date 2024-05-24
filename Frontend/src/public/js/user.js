@@ -282,7 +282,7 @@ function handleBtnNewPatientOk4() {
     $('#tableCancelPatients').on('click', '.btn-new-patient-ok4', function(e) {
         let patientId = $(this).data('patient-id');
         let option = true;
-        callAjaxRenderModalInfo(patientId, option, '#modalResultlPatient');
+        callAjaxRenderModalInfo(patientId, option, '#modalHistoryBooking1');
     });
 }
 
