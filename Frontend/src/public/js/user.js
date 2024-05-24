@@ -233,7 +233,7 @@ function callAjaxRenderModalInfo(patientId, option, modalId) {
                 modal.find('#btn-cancel-patient').text('OK');
             }
 
-            // Gọi AJAX để lấy thông tin bác sĩ
+            // Gọi AJAX để lấy thông tin thêm
             $.ajax({
                 method: 'POST',
                 url: `${window.location.origin}/user/get-Doctor-patient`,
@@ -251,20 +251,6 @@ function callAjaxRenderModalInfo(patientId, option, modalId) {
                     alertify.error('Không thể lấy thông tin bác sĩ, vui lòng thử lại sau!');
                 },
             });
-            // Gọi AJAX để lấy thông tin lý do hủy lịch
-            // $.ajax({
-            //     method: 'POST',
-            //     url: `${window.location.origin}/user/get-logs-patient`,
-            //     data: { patientId: patientId },
-            //     success: function(data) {
-            //         modal.find('#patientReason').val(data.content);
-
-            //     },
-            //     error: function(err) {
-            //         console.log(err);
-            //         alertify.error('Không thể lấy thông tin lý do hủy, vui lòng thử lại sau!');
-            //     },
-            // });
 
             modal.modal('show'); // Chỉ hiển thị modal xác định
         },
