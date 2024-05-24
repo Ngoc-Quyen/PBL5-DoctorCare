@@ -20,6 +20,14 @@ let getInfoBooking = (id) => {
             if (!patient) {
                 reject(`Can't get patient with id = ${id}`);
             }
+            let reasonCancel = await db.AdminLog.findOne({
+                where: { patientId: patient.id },
+                attributes: ['id', 'content', 'updatedAt']
+            });
+            let historyResult = await db.ExtraInfo.findOne({
+                where: { patientId: patient.id },
+                attributes: ['id', 'historyBreath', 'moreInfo']
+            });
             let doctor = await db.User.findOne({
                 where: { id: patient.doctorId },
                 attributes: ['name', 'avatar']
@@ -29,6 +37,9 @@ let getInfoBooking = (id) => {
             patient.setDataValue('doctorAvatar', doctor.avatar);
             patient.setDataValue('patientTime', patient.timeBooking);
             patient.setDataValue('patientDate', patient.dateBooking);
+            patient.setDataValue('contentCancel', reasonCancel.content);
+            patient.setDataValue('resultPatient', historyResult.historyBreath);
+            patient.setDataValue('moreInfoPatient', historyResult.moreInfo);
             resolve(patient);
         } catch (e) {
             reject(e);
@@ -391,6 +402,31 @@ let getComments = () => {
         }
     });
 };
+let getExtanInfoByPatientId = async(patientId) => {
+    return new Promise(async(resolve, reject) => {
+        try {
+            if (!patientId) {
+                resolve({
+                    errCode: 1,
+                    errMessage: 'Khong co patientId trong ExtanInfo',
+                });
+            }
+            let extrainfos = await db.ExtraInfo.findOne({
+                where: {
+                    patientId: patientId,
+                },
+            });
+            resolve({
+                errCode: 0,
+                errMessage: 'success',
+                extrainfos: extrainfos,
+            });
+        } catch (error) {
+            reject(error);
+        }
+    });
+};
+
 module.exports = {
     getInfoBooking: getInfoBooking,
     getForPatientsTabs: getForPatientsTabs,
@@ -400,5 +436,6 @@ module.exports = {
     createNewPatient: createNewPatient,
     getDetailPatient: getDetailPatient,
     getLogsPatient: getLogsPatient,
-    getComments: getComments
+    getComments: getComments,
+    getExtanInfoByPatientId: getExtanInfoByPatientId
 };

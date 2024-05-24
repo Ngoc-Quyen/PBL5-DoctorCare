@@ -128,12 +128,31 @@ const formatDate = (date) => {
     let parts = date.split('-');
     return `${parts[2]}/${parts[1]}/${parts[0]}`; // Định dạng dd/mm/yyyy
 };
-
+let getInfoBooking = async(req, res) => {
+    try {
+        let logs = await patientService.getInfoBooking(req.body.patientId);
+        return res.status(200).json(logs);
+    } catch (e) {
+        console.log(e);
+        return res.status(500).json(e);
+    }
+};
+let getLogsPatient = async(req, res) => {
+    try {
+        let logs = await patientService.getLogsPatient(req.body.patientId);
+        return res.status(200).json(logs);
+    } catch (e) {
+        console.log(e);
+        return res.status(500).json(e);
+    }
+};
 module.exports = {
     getManageCustomersPage: getManageCustomersPage,
     getInforCustomerById: getInforCustomerById,
     postChangeStatusPatientForUser: postChangeStatusPatientForUser,
     deleteCustomerById: deleteCustomerById,
     getPageInfoUser: getPageInfoUser,
-    getForPatientForUser: getForPatientForUser
+    getForPatientForUser: getForPatientForUser,
+    getInfoBooking: getInfoBooking,
+    getLogsPatient: getLogsPatient
 };
