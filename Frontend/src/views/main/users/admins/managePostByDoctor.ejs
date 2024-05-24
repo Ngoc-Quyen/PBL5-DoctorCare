@@ -29,8 +29,9 @@
                                 <td>
                                     <%= post.id %>
                                 </td>
-                                <td style="color: <%= post.isActive === 1 ? 'blue' : 'black' %>;">
-                                    <%= post.title %>
+                                <td <% /* eslint-disable css-propertyvalueexpected */ %> style="color: <%=
+                                        post.isActive===1 ? 'blue' : 'black' %>;">
+                                        <%= post.title %>
                                 </td>
 
                                 <td>
