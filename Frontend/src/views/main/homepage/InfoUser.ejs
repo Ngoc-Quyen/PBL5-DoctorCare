@@ -53,7 +53,8 @@
                         </a>
                     </div>
                     <% } else { %>
-                        <div class="col-md-3 mt-3 d-none d-md-flex justify-content-around align-self-center" id="notLoggedIn">
+                        <div class="col-md-3 mt-3 d-none d-md-flex justify-content-around align-self-center"
+                            id="notLoggedIn">
                             <div class="d-flex flex-column">
                                 <a href="/login" class="btn btn-design1 ">Đăng nhập</a>
                             </div>
@@ -74,7 +75,8 @@
             <div class="container">
                 <div class="row">
                     <div class="col-12 mt-3">
-                        <a class="text-decoration-none" href="/"><i class="fa fa-home" aria-hidden="true"></i></a><span aria-hidden="true">&raquo;</span>
+                        <a class="text-decoration-none" href="/"><i class="fa fa-home" aria-hidden="true"></i></a><span
+                            aria-hidden="true">&raquo;</span>
                         <span style="text-transform: uppercase">Thông tin người dùng</span>
                     </div>
                 </div>
@@ -101,54 +103,64 @@
 
                 <div class="form-group-infor1">
                     <div>
-                        <div><i class="fa fa-info-circle" aria-hidden="true" style="color: #007bff;"></i> <a href="#" onclick="showDetail('personalInfo')">Thông tin cá nhân</a></div>
+                        <div><i class="fa fa-info-circle" aria-hidden="true" style="color: #007bff;"></i> <a href="#"
+                                onclick="showDetail('personalInfo')">Thông tin cá nhân</a></div>
                     </div>
                     <div>
-                        <div><i class="fa fa-history" aria-hidden="true" style="color: #007bff;"></i> <a href="#" onclick="showDetail('medicalHistory')">Lịch sử khám bệnh</a></div>
+                        <div><i class="fa fa-history" aria-hidden="true" style="color: #007bff;"></i> <a href="#"
+                                onclick="showDetail('medicalHistory')">Lịch sử khám bệnh</a></div>
                     </div>
                     <div>
-                        <div><i class="fa fa-unlock-alt" aria-hidden="true" style="color: #007bff;"></i> <a href="#" onclick="showDetail('changePassword')">Đổi mật khẩu</a></div>
+                        <div><i class="fa fa-unlock-alt" aria-hidden="true" style="color: #007bff;"></i> <a href="#"
+                                onclick="showDetail('changePassword')">Đổi mật khẩu</a></div>
                     </div>
                 </div>
             </div>
 
             <div class="form-container infor-user-detail" id="detail-content" style="overflow: auto;">
-                <div style="background-color: #ABF3FD; height: 50px; font-size: 20px; text-align: center;" id="detail-header">
+                <div style="background-color: #ABF3FD; height: 50px; font-size: 20px; text-align: center;"
+                    id="detail-header">
                     Thông tin chi tiết
                 </div>
                 <div id="personalInfo" class="detail-section">
                     <div class="form-group1">
                         <label for="full-name">Họ và tên :</label>
-                        <input type="text" id="full-name" name="full-name" placeholder="<%= user.name %>" value="<%= user.name %>">
+                        <input type="text" id="full-name" name="full-name" placeholder="<%= user.name %>"
+                            value="<%= user.name %>">
                         <span class="error" id="full-name-error"></span>
                     </div>
                     <div class="form-group1">
                         <label for="email">Email :</label>
-                        <input type="email" id="email" name="email" placeholder="<%= user.email %>" value="<%= user.email %>" readonly>
+                        <input type="email" id="email" name="email" placeholder="<%= user.email %>"
+                            value="<%= user.email %>" readonly>
                         <span class="error" id="email-error"></span>
                     </div>
                     <div class="form-group1">
                         <label for="phone-number">Số điện thoại :</label>
-                        <input type="text" id="phone-number" name="phone-number" placeholder="<%= user.phone %>" value="<%= user.phone %>">
+                        <input type="text" id="phone-number" name="phone-number" placeholder="<%= user.phone %>"
+                            value="<%= user.phone %>">
                         <span class="error" id="phone-number-error"></span>
                     </div>
                     <div class="form-group1">
                         <label for="address">Địa chỉ:</label>
-                        <input type="text" id="address" name="address" placeholder="<%= user.address %>" value="<%= user.address %>">
+                        <input type="text" id="address" name="address" placeholder="<%= user.address %>"
+                            value="<%= user.address %>">
                     </div>
                     <div class="form-group1 gender">
                         <label for="gender">Giới tính:</label>
                         <input type="radio" id="male" name="gender" value="M" <% if(user.gender==='M' ) { %> checked
                         <% } %> disabled>
                             <label for="male">Nam</label>
-                            <input type="radio" id="female" name="gender" value="F" <% if(user.gender==='F' ) { %> checked
+                            <input type="radio" id="female" name="gender" value="F" <% if(user.gender==='F' ) { %>
+                            checked
                             <% } %> disabled>
                                 <label for="female">Nữ</label>
                                 <span class="error" id="gender-error"></span>
                     </div>
                     <div class="form-group1">
                         <label for="birthdate">Ngày sinh:</label>
-                        <input type="text" id="birthdate" name="birthdate" value="<%= formatDate(user.birthday) %>" readonly>
+                        <input type="text" id="birthdate" name="birthdate" value="<%= formatDate(user.birthday) %>"
+                            readonly>
                     </div>
                     <div class="form-group1">
                         <button type="submit" class="btn-submit" style="margin-top: 30px;">Cập nhật</button>
@@ -161,19 +173,24 @@
                     <div class="card-header py-3">
                         <ul class="nav nav-tabs" id="myTab" role="tablist">
                             <li class="nav-item">
-                                <a class="nav-link active" id="patient-new-tab" data-toggle="tab" href="#newPatients" role="tab" aria-controls="home" aria-selected="true">Lịch hẹn mới (<span
+                                <a class="nav-link active" id="patient-new-tab" data-toggle="tab" href="#newPatients"
+                                    role="tab" aria-controls="home" aria-selected="true">Lịch hẹn mới (<span
                                         id="count-new"></span>) </a>
                             </li>
                             <li class="nav-item">
-                                <a class="nav-link " id="patient-need-confirm-tab" data-toggle="tab" href="#patientsNeedConfirm" role="tab" aria-controls="profile" aria-selected="false">Đã chấp nhận(<span id="count-need"></span>) </a>
+                                <a class="nav-link " id="patient-need-confirm-tab" data-toggle="tab"
+                                    href="#patientsNeedConfirm" role="tab" aria-controls="profile"
+                                    aria-selected="false">Đã chấp nhận(<span id="count-need"></span>) </a>
                             </li>
                             <li class="nav-item">
-                                <a class="nav-link" id="patient-confirmed-tab" data-toggle="tab" href="#patientConfirmed" role="tab" aria-controls="contact" aria-selected="false">Đã
+                                <a class="nav-link" id="patient-confirmed-tab" data-toggle="tab"
+                                    href="#patientConfirmed" role="tab" aria-controls="contact" aria-selected="false">Đã
                                     khám(<span id="count-confirmed"></span>)
                                 </a>
                             </li>
                             <li class="nav-item">
-                                <a class="nav-link" id="patient-cancel-tab" data-toggle="tab" href="#patientCanceled" role="tab" aria-controls="contact" aria-selected="false">Đã hủy(<span
+                                <a class="nav-link" id="patient-cancel-tab" data-toggle="tab" href="#patientCanceled"
+                                    role="tab" aria-controls="contact" aria-selected="false">Đã hủy(<span
                                         id="count-canceled"></span>) </a>
                             </li>
                         </ul>
@@ -181,8 +198,10 @@
                     <div class="card-body">
                         <div class="table-responsive">
                             <div class="tab-content" id="myTabContent">
-                                <div class="tab-pane fade show active" id="newPatients" role="tabpanel" aria-labelledby="patient-new-tab">
-                                    <table class="table table-bordered" id="tableNewPatients" width="100%" cellspacing="0">
+                                <div class="tab-pane fade show active" id="newPatients" role="tabpanel"
+                                    aria-labelledby="patient-new-tab">
+                                    <table class="table table-bordered" id="tableNewPatients" width="100%"
+                                        cellspacing="0">
                                         <thead>
 
                                             <tr>
@@ -198,8 +217,10 @@
                                         </tbody>
                                     </table>
                                 </div>
-                                <div class="tab-pane fade" id="patientsNeedConfirm" role="tabpanel" aria-labelledby="patient-need-confirm-tab">
-                                    <table class="table table-bordered" id="tableNeedConfirmPatients" width="100%" cellspacing="0">
+                                <div class="tab-pane fade" id="patientsNeedConfirm" role="tabpanel"
+                                    aria-labelledby="patient-need-confirm-tab">
+                                    <table class="table table-bordered" id="tableNeedConfirmPatients" width="100%"
+                                        cellspacing="0">
                                         <thead>
                                             <tr>
                                                 <th>Tên</th>
@@ -214,8 +235,10 @@
                                     </table>
 
                                 </div>
-                                <div class="tab-pane fade" id="patientConfirmed" role="tabpanel" aria-labelledby="patient-confirmed-tab">
-                                    <table class="table table-bordered" id="tableConfirmedPatients" width="100%" cellspacing="0">
+                                <div class="tab-pane fade" id="patientConfirmed" role="tabpanel"
+                                    aria-labelledby="patient-confirmed-tab">
+                                    <table class="table table-bordered" id="tableConfirmedPatients" width="100%"
+                                        cellspacing="0">
                                         <thead>
                                             <tr>
                                                 <th>Tên</th>
@@ -230,8 +253,10 @@
                                     </table>
 
                                 </div>
-                                <div class="tab-pane fade" id="patientCanceled" role="tabpanel" aria-labelledby="patient-cancel-tab">
-                                    <table class="table table-bordered" id="tableCancelPatients" width="100%" cellspacing="0">
+                                <div class="tab-pane fade" id="patientCanceled" role="tabpanel"
+                                    aria-labelledby="patient-cancel-tab">
+                                    <table class="table table-bordered" id="tableCancelPatients" width="100%"
+                                        cellspacing="0">
                                         <thead>
                                             <tr>
                                                 <th>Tên</th>
@@ -255,7 +280,8 @@
                 <div id="changePassword" class="detail-section" style="display:none;">
                     <div class="form-group1">
                         <label for="current-password">Mật khẩu hiện tại:</label>
-                        <input type="password" id="current-password" name="current-password" placeholder="Nhập mật khẩu hiện tại">
+                        <input type="password" id="current-password" name="current-password"
+                            placeholder="Nhập mật khẩu hiện tại">
                     </div>
                     <div class="form-group1">
                         <label for="new-password">Mật khẩu mới:</label>
@@ -263,7 +289,8 @@
                     </div>
                     <div class="form-group1">
                         <label for="confirm-password">Xác nhận mật khẩu mới:</label>
-                        <input type="password" id="confirm-password" name="confirm-password" placeholder="Xác nhận mật khẩu mới">
+                        <input type="password" id="confirm-password" name="confirm-password"
+                            placeholder="Xác nhận mật khẩu mới">
                     </div>
                     <div class="form-group1">
                         <button type="submit" class="btn-submit">Đổi mật khẩu</button>
@@ -304,7 +331,8 @@
     </script>
 
     <!-- Modal detail info patient-->
-    <div class="modal fade " tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true" id="modalDetailPatient1">
+    <div class="modal fade " tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true"
+        id="modalDetailPatient1">
         <div class="modal-dialog mw-100 w-75" role="document">
             <div class="modal-content">
                 <div class="modal-header">
@@ -346,7 +374,8 @@
                     </div>
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="ml-3 btn btn-secondary" id="btn-cancel-patient" data-dismiss="modal">Đóng</button>
+                    <button type="button" class="ml-3 btn btn-secondary" id="btn-cancel-patient"
+                        data-dismiss="modal">Đóng</button>
 
                 </div>
             </div>
@@ -354,7 +383,8 @@
     </div>
 
     <!-- Modal detail info patient confirmed-->
-    <div class="modal fade " tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true" id="modalDetailPatientConfirmed">
+    <div class="modal fade " tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true"
+        id="modalDetailPatientConfirmed">
         <div class="modal-dialog mw-100 w-75" role="document">
             <div class="modal-content">
                 <div class="modal-header">
@@ -391,12 +421,14 @@
                         </div>
                         <div class="form-group col-4">
                             <label class="col-form-label text-label" for="patientTimeUpdate">Xác nhận lúc:</label>
-                            <input type="text" class="form-control" id="patientTimeUpdate" name="patientTimeUpdate" readonly>
+                            <input type="text" class="form-control" id="patientTimeUpdate" name="patientTimeUpdate"
+                                readonly>
                         </div>
                     </div>
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="ml-3 btn btn-secondary" id="btn-cancel-patient" data-dismiss="modal">Hủy</button>
+                    <button type="button" class="ml-3 btn btn-secondary" id="btn-cancel-patient"
+                        data-dismiss="modal">Hủy</button>
                     <button type="button" class="btn btn-primary" id="btn-confirm-patient-done">Xác nhận</button>
                 </div>
             </div>
@@ -404,7 +436,8 @@
     </div>
 
     <!-- Modal cancel booking for user-->
-    <div class="modal fade" id="modalCancelBooking" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal fade" id="modalCancelBooking" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+        aria-hidden="true">
         <div class="modal-dialog" role="document">
             <div class="modal-content">
                 <div class="modal-header">
@@ -426,7 +459,8 @@
                                     <input type="radio" id="option2" name="reasonCancel" value="reason2">
                                     <label for="option2">Tôi muốn tham khảo thêm nhiều cơ sở y tế khác</label><br>
                                     <input type="radio" id="option3" name="reasonCancel" value="reason3">
-                                    <label for="option3">Chưa sắp xếp được thời gian, tôi sẽ đặt lại lịch sau</label><br>
+                                    <label for="option3">Chưa sắp xếp được thời gian, tôi sẽ đặt lại lịch
+                                        sau</label><br>
                                     <input type="radio" id="option4" name="reasonCancel" value="reasonn4">
                                     <label for="option4">Tôi muốn đổi thời gian đặt lịch </label><br>
                                     <input type="radio" id="option5" name="reasonCancel" value="reason5">
@@ -451,7 +485,8 @@
     </div>
 
     <!-- Modal  info result patient-->
-    <div class="modal fade " tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true" id="modalResultlPatient">
+    <div class="modal fade " tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true"
+        id="modalResultlPatient">
         <div class="modal-dialog mw-100 w-75" role="document">
             <div class="modal-content">
                 <div class="modal-header">
@@ -498,7 +533,8 @@
                         <div class="form-group col-6">
                             <label class="col-form-label text-label" for="patientHistoryBreath">Kết quả chuẩn
                                 đoán:</label>
-                            <textarea class="form-control" name="patientHistoryBreath" id="patientHistoryBreath"></textarea>
+                            <textarea class="form-control" name="patientHistoryBreath"
+                                id="patientHistoryBreath"></textarea>
                         </div>
 
                         <div class="form-group col-6">
@@ -513,15 +549,17 @@
                     </div>
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="ml-3 btn btn-secondary" id="btn-cancel-patient" data-dismiss="modal">Hủy</button>
-                    <button type="button" class="btn btn-primary" id="btn-confirm-patient-done">Xác nhận</button>
+                    <button type="button" class="ml-3 btn btn-secondary" id="btn-cancel-patient"
+                        data-dismiss="modal">Oke</button>
+                    <!-- <button type="button" class="btn btn-primary" id="btn-confirm-patient-done">Xác nhận</button> -->
                 </div>
             </div>
         </div>
     </div>
 
     <!-- Modal history cancel booking -->
-    <div class="modal fade" id="modalHistoryBooking1" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal fade" id="modalHistoryBooking1" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+        aria-hidden="true">
         <div class="modal-dialog  mw-100 w-75" role="document">
             <div class="modal-content">
                 <div class="modal-header">
@@ -537,27 +575,33 @@
 
                                 <div class="form-group col-4">
                                     <label class="col-form-label text-label" for="patientName">Tên:</label>
-                                    <input type="text" class="form-control" id="patientName" name="patientName" readonly>
+                                    <input type="text" class="form-control" id="patientName" name="patientName"
+                                        readonly>
                                 </div>
                                 <div class="form-group col-4">
                                     <label class="col-form-label text-label" for="patientDate">Ngày:</label>
-                                    <input type="text" class="form-control" id="patientDate" name="patientDate" readonly>
+                                    <input type="text" class="form-control" id="patientDate" name="patientDate"
+                                        readonly>
                                 </div>
                                 <div class="form-group col-4">
                                     <label class="col-form-label text-label" for="patientTime">Giờ:</label>
-                                    <input type="text" class="form-control" id="patientTime" name="patientTime" readonly>
+                                    <input type="text" class="form-control" id="patientTime" name="patientTime"
+                                        readonly>
                                 </div>
                                 <div class="form-group col-4">
                                     <label class="col-form-label text-label" for="patientDoctor">Bác sĩ:</label>
-                                    <input type="text" class="form-control" id="patientDoctor" name="patientDoctor" readonly>
+                                    <input type="text" class="form-control" id="patientDoctor" name="patientDoctor"
+                                        readonly>
                                 </div>
                                 <div class="form-group col-4">
                                     <label class="col-form-label text-label" for="patientReason">Lý do hủy:</label>
-                                    <input type="text" class="form-control" id="patientReason" name="patientReason" readonly>
+                                    <input type="text" class="form-control" id="patientReason" name="patientReason"
+                                        readonly>
                                 </div>
                                 <div class="form-group col-4">
                                     <label class="col-form-label text-label" for="patientTimeCancel">Đã hủy lúc:</label>
-                                    <input type="text" class="form-control" id="patientTimeCancel" name="patientTimeCancel" readonly>
+                                    <input type="text" class="form-control" id="patientTimeCancel"
+                                        name="patientTimeCancel" readonly>
                                 </div>
                             </div>
                         </div>
@@ -567,14 +611,15 @@
                     </fieldset>
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" id="btn-view-history" data-dismiss="modal">Đóng</button>
+                    <button type="button" class="btn btn-secondary" id="btn-view-history"
+                        data-dismiss="modal">Đóng</button>
                 </div>
             </div>
         </div>
     </div>
 
     <script>
-        $(document).ready(function() {
+        $(document).ready(function () {
             $(".user-list-patients").addClass("active");
         })
     </script>
