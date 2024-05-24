@@ -1086,13 +1086,11 @@ function callAjaxRenderModalInfo(patientId, option) {
             $('#patientEmail').val(data.patient.email);
             $('#patientDate').val(data.patient.dateBooking);
             $('#patientTime').val(data.patient.timeBooking);
-            $('#patientReason').text(data.patient.description);
-            $('#patientAddress').text(data.patient.address);
-            console.log('data.ExtraInfo from admin.js: ', data.ExtraInfo);
-
+            $('#patientReason').val(data.patient.description);
+            $('#patientAddress').val(data.patient.address);
             if (data.ExtraInfo) {
-                $('#patientHistoryBreath').text(data.ExtraInfo.historyBreath);
-                $('#patientMoreInfo').text(data.ExtraInfo.moreInfo);
+                $('#patientHistoryBreath').val(data.ExtraInfo.historyBreath);
+                $('#patientMoreInfo').val(data.ExtraInfo.moreInfo);
             }
             if (option) {
                 $('#btn-confirm-patient-done').css('display', 'none');

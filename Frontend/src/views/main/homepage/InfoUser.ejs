@@ -275,7 +275,7 @@
                                             <tr>
                                                 <th>Tên</th>
                                                 <th>Ngày khám</th>
-                                                <th>Ngày hủy</th>
+                                                <th>Giờ khám</th>
                                                 <th class="w-25">Hành động</th>
                                             </tr>
                                         </thead>
@@ -512,15 +512,15 @@
                             <input type="text" class="form-control" id="patientDoctor" name="patientDoctor" readonly>
                         </div>
                         <div class="form-group col-4">
-                            <label class="col-form-label text-label" for="patientReason1">Lý do khám:</label>
-                            <input type="text" class="form-control" id="patientReason1" name="patientReason1" readonly>
+                            <label class="col-form-label text-label" for="patientReason">Lý do khám:</label>
+                            <input type="text" class="form-control" id="patientReason" name="patientReason" readonly>
                         </div>
                     </div>
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="ml-3 btn btn-secondary" id="btn-cancel-patient"
                         data-dismiss="modal">Hủy</button>
-                    <button type="button" class="btn btn-primary" id="btn-confirm-patient-done">Xác nhận</button>
+
                 </div>
             </div>
         </div>
@@ -538,39 +538,34 @@
                         <span aria-hidden="true">&times;</span>
                     </button>
                 </div>
-                <div class="col-8 mx-auto">
-                    <h2>Bạn muốn hủy lịch hẹn</h2>
-                    <hr>
-                    <div class="booking-success row">
-                        <div class="left-booking col-9 mt-3">
-                            <div>Vui lòng chọn lý do: </div>
-                            <div class="mt-2">
-                                <form id="formCancelBooking">
-                                    <input type="radio" id="option1" name="reasonCancel" value="reason1">
-                                    <label for="option1">Tôi muốn đi khám gấp nên không cần đặt lịch nữa</label><br>
-                                    <input type="radio" id="option2" name="reasonCancel" value="reason2">
-                                    <label for="option2">Tôi muốn tham khảo thêm nhiều cơ sở y tế khác</label><br>
-                                    <input type="radio" id="option3" name="reasonCancel" value="reason3">
-                                    <label for="option3">Chưa sắp xếp được thời gian, tôi sẽ đặt lại lịch
-                                        sau</label><br>
-                                    <input type="radio" id="option4" name="reasonCancel" value="reasonn4">
-                                    <label for="option4">Tôi muốn đổi thời gian đặt lịch </label><br>
-                                    <input type="radio" id="option5" name="reasonCancel" value="reason5">
-                                    <label for="option5">Tôi muốn xem thêm thông tin</label><br>
-                                    <input type="radio" id="option6" name="reasonCancel" value="reason6">
-                                    <label for="option6">Tôi không muốn đặt lịch khám nữa</label><br>
-                                    <input type="radio" id="option6" name="reasonCancel" value="reason">
-                                    <label for="option7">khác... <input type="text" id="otherReason"></label><br>
-                                </form>
-
-                            </div>
-
+                <div class="modal-body">
+                    <form id="formCancelBooking">
+                        <div class="form-check">
+                            <input class="form-check-input" type="radio" name="reasonCancel" id="inputDefaultReason"
+                                value="reason1" checked>
+                            <label class="form-check-label" for="exampleRadios1">
+                                Lịch hẹn không đúng
+                            </label>
                         </div>
-                    </div>
+                        <div class="form-check">
+                            <input class="form-check-input" type="radio" name="reasonCancel" id="exampleRadios2"
+                                value="reason2">
+                            <label class="form-check-label" for="exampleRadios2">
+                                Bệnh nhân hủy lịch
+                            </label>
+                        </div>
+                        <div class="form-check disabled">
+                            <input class="form-check-input" type="radio" name="reasonCancel" id="exampleRadios3"
+                                value="reason3">
+                            <label class="form-check-label" for="exampleRadios3">
+                                Lý do khác <input type="text" id="otherReason">
+                            </label>
+                        </div>
+                    </form>
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-dismiss="modal">Đóng</button>
-                    <button type="button" id="btnCancelBookingPatient1" class="btn btn-primary">Xác nhận</button>
+                    <button type="button" id="btnCancelBookingPatient" class="btn btn-primary">Xác nhận</button>
                 </div>
             </div>
         </div>
@@ -584,7 +579,7 @@
         <div class="modal-dialog mw-100 w-75" role="document">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title" id="exampleModalLabel">Chi tiết</h5>
+                    <h5 class="modal-title" id="exampleModalLabel">Chi tiết lịch hẹn</h5>
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                         <span aria-hidden="true">&times;</span>
                     </button>
@@ -592,36 +587,33 @@
                 <div class="modal-body">
                     <div class="row">
                         <div class="form-group col-4">
-                            <label class="col-form-label text-label" for="patientDoctor">Bác sĩ khám:</label>
-                            <input type="text" class="form-control" id="patientDoctor" name="patientDoctor" readonly>
+                            <label class="col-form-label text-label" for="patientName">Tên:</label>
+                            <input type="text" class="form-control" id="patientName1" name="patientName" readonly>
                         </div>
                         <div class="form-group col-4">
                             <label class="col-form-label text-label" for="patientPhone">Số điện thoại:</label>
-                            <input type="text" class="form-control" id="patientPhone" name="patientPhone" readonly>
+                            <input type="text" class="form-control" id="patientPhone1" name="patientPhone" readonly>
                         </div>
                         <div class="form-group col-4">
                             <label class="col-form-label text-label" for="patientEmail">Email:</label>
-                            <input type="email" class="form-control" id="patientEmail" name="patientEmail" readonly>
+                            <input type="email" class="form-control" id="patientEmail1" name="patientEmail" readonly>
                         </div>
                         <div class="form-group col-2">
                             <label class="col-form-label text-label" for="patientDate">Ngày:</label>
-                            <input type="text" class="form-control" id="patientDate" name="patientDate" readonly>
+                            <input type="text" class="form-control" id="patientDate1" name="patientDate" readonly>
                         </div>
                         <div class="form-group col-2">
                             <label class="col-form-label text-label" for="patientTime">Giờ:</label>
-                            <input type="text" class="form-control" id="patientTime" name="patientTime" readonly>
+                            <input type="text" class="form-control" id="patientTime1" name="patientTime" readonly>
                         </div>
                         <div class="form-group col-4">
-                            <label class="col-form-label text-label" for="patientReason1">Lý do khám:</label>
-                            <textarea class="form-control" name="patientReason1" id="patientReason1"
-                                readonly></textarea>
+                            <label class="col-form-label text-label" for="patientDoctor">Bác sĩ:</label>
+                            <input type="text" class="form-control" id="patientDoctor1" name="patientDoctor" readonly>
                         </div>
                         <div class="form-group col-4">
-                            <label class="col-form-label text-label" for="patientAddress">Địa chỉ:</label>
-                            <textarea class="form-control" name="patientAddress" id="patientAddress"
-                                readonly></textarea>
+                            <label class="col-form-label text-label" for="patientReason">Lý do khám:</label>
+                            <input type="text" class="form-control" id="patientReason1" name="patientReason" readonly>
                         </div>
-
                         <div class="col-12">
                             <label for="patientAddress">Kết quả khám:</label>
                         </div>
@@ -629,8 +621,8 @@
                         <div class="form-group col-6">
                             <label class="col-form-label text-label" for="patientHistoryBreath">Kết quả chuẩn
                                 đoán:</label>
-                            <textarea class="form-control" name="patientHistoryBreath"
-                                id="patientHistoryBreath"></textarea>
+                            <textarea class="form-control" name="patientHistoryBreath" id="patientHistoryBreath"
+                                readonly></textarea>
 
                         </div>
 
@@ -639,22 +631,16 @@
                             <textarea class="form-control" name="patientMoreInfo" id="patientMoreInfo"
                                 readonly></textarea>
                         </div>
-
-                        <!-- <div class="form-group col-12">
-                            <label class="col-form-label text-label" for="patientNote">Ghi chú:</label>
-                            <textarea class="form-control" name="patientNote" id="patientNote"></textarea>
-                        </div> -->
                     </div>
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="ml-3 btn btn-secondary" id="btn-cancel-patient"
-                        data-dismiss="modal">Oke</button>
-                    <!-- <button type="button" class="btn btn-primary" id="btn-confirm-patient-done">Xác nhận</button> -->
+                        data-dismiss="modal">Hủy</button>
+
                 </div>
             </div>
         </div>
     </div>
-
     <!-- Modal history cancel booking -->
     <div class="modal fade" id="modalHistoryBooking1" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
         aria-hidden="true">
@@ -672,28 +658,13 @@
                             <div class="row">
 
                                 <div class="form-group col-4">
-                                    <label class="col-form-label text-label" for="patientName">Tên:</label>
-                                    <input type="text" class="form-control" id="patientName" name="patientName"
-                                        readonly>
-                                </div>
-                                <div class="form-group col-4">
-                                    <label class="col-form-label text-label" for="patientDate">Ngày:</label>
-                                    <input type="text" class="form-control" id="patientDate" name="patientDate"
-                                        readonly>
-                                </div>
-                                <div class="form-group col-4">
-                                    <label class="col-form-label text-label" for="patientTime">Giờ:</label>
-                                    <input type="text" class="form-control" id="patientTime" name="patientTime"
-                                        readonly>
-                                </div>
-                                <div class="form-group col-4">
                                     <label class="col-form-label text-label" for="patientDoctor">Bác sĩ:</label>
-                                    <input type="text" class="form-control" id="patientDoctor" name="patientDoctor"
+                                    <input type="text" class="form-control" id="patientDoctor2" name="patientDoctor"
                                         readonly>
                                 </div>
                                 <div class="form-group col-5">
                                     <label class="col-form-label text-label" for="patientReason">Lý do hủy:</label>
-                                    <input type="text" class="form-control" id="patientReason" name="patientReason"
+                                    <input type="text" class="form-control" id="patientReason2" name="patientReason"
                                         readonly>
                                 </div>
                                 <div class="form-group col-4">

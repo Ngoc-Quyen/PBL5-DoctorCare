@@ -97,7 +97,10 @@ let postChangeStatusPatientForUser = async (req, res) => {
         return res.status(500).json(e);
     }
 };
-
+const formatDate = (date) => {
+    let parts = date.split('-');
+    return `${parts[2]}/${parts[1]}/${parts[0]}`; // Định dạng dd/mm/yyyy
+};
 let getPageInfoUser = async (req, res) => {
     try {
         return res.render('main/homepage/InfoUser.ejs', {
@@ -156,6 +159,24 @@ let postCheckCurrentPass = async (req, res) => {
     }
 };
 
+let getInfoBooking = async (req, res) => {
+    try {
+        let logs = await patientService.getInfoBooking(req.body.patientId);
+        return res.status(200).json(logs);
+    } catch (e) {
+        console.log(e);
+        return res.status(500).json(e);
+    }
+};
+let getLogsPatient = async (req, res) => {
+    try {
+        let logs = await patientService.getLogsPatient(req.body.patientId);
+        return res.status(200).json(logs);
+    } catch (e) {
+        console.log(e);
+        return res.status(500).json(e);
+    }
+};
 module.exports = {
     getManageCustomersPage: getManageCustomersPage,
     getInforCustomerById: getInforCustomerById,
@@ -165,4 +186,6 @@ module.exports = {
     getForPatientForUser: getForPatientForUser,
     postChangePass: postChangePass,
     postCheckCurrentPass: postCheckCurrentPass,
+    getInfoBooking: getInfoBooking,
+    getLogsPatient: getLogsPatient,
 };

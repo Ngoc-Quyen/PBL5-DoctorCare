@@ -21,7 +21,7 @@ const statusNewId = 4;
 const statusDone = 5;
 
 let getDoctorWithSchedule = (id, currentDate) => {
-    return new Promise(async(resolve, reject) => {
+    return new Promise(async (resolve, reject) => {
         //select with condition: chọn ngày hiện tại mà tổng đặt đang nhỏ hơn max
         try {
             let doctor = await db.User.findOne({
@@ -29,13 +29,14 @@ let getDoctorWithSchedule = (id, currentDate) => {
                 attributes: {
                     exclude: ['password'],
                 },
-                include: [{
+                include: [
+                    {
                         model: db.Schedule,
                         required: false,
                         where: {
                             date: currentDate,
                             sumBooking: {
-                                [Op.lt]: maxBooking
+                                [Op.lt]: maxBooking,
                             },
                         },
                     },
@@ -81,13 +82,11 @@ let getDoctorWithSchedule = (id, currentDate) => {
 };
 
 let getPostForDoctor = (id) => {
-    return new Promise(async(resolve, reject) => {
+    return new Promise(async (resolve, reject) => {
         try {
             let post = await db.Post.findOne({
                 where: { forDoctorId: id },
-                order: [
-                    ['createdAt', 'DESC']
-                ],
+                order: [['createdAt', 'DESC']],
                 attributes: ['id', 'title', 'contentHTML'],
             });
             resolve(post);
@@ -98,10 +97,10 @@ let getPostForDoctor = (id) => {
 };
 
 let postCreateSchedule = (user, arrSchedule, maxBooking) => {
-    return new Promise(async(resolve, reject) => {
+    return new Promise(async (resolve, reject) => {
         try {
             let schedule = await Promise.all(
-                arrSchedule.map(async(schedule) => {
+                arrSchedule.map(async (schedule) => {
                     await db.Schedule.create({
                         doctorId: user.id,
                         date: schedule.date,
@@ -120,7 +119,7 @@ let postCreateSchedule = (user, arrSchedule, maxBooking) => {
 };
 
 let createPatient = (item) => {
-    return new Promise(async(resolve, reject) => {
+    return new Promise(async (resolve, reject) => {
         try {
             let patient = await db.Patient.create(item);
 
@@ -132,14 +131,14 @@ let createPatient = (item) => {
 };
 
 let getScheduleDoctorByDate = (id, date) => {
-    return new Promise(async(resolve, reject) => {
+    return new Promise(async (resolve, reject) => {
         try {
             let schedule = await db.Schedule.findAll({
                 where: {
                     doctorId: id,
                     date: date,
                     sumBooking: {
-                        [Op.lt]: maxBooking
+                        [Op.lt]: maxBooking,
                     },
                 },
             });
@@ -166,8 +165,8 @@ let getScheduleDoctorByDate = (id, date) => {
         }
     });
 };
-let getScheduleDoctorByDateSumBooking = async(id, date) => {
-    return new Promise(async(resolve, reject) => {
+let getScheduleDoctorByDateSumBooking = async (id, date) => {
+    return new Promise(async (resolve, reject) => {
         try {
             let schedule = await db.Schedule.findAll({
                 where: {
@@ -200,7 +199,7 @@ let getScheduleDoctorByDateSumBooking = async(id, date) => {
     });
 };
 let getDoctorById = (id) => {
-    return new Promise(async(resolve, reject) => {
+    return new Promise(async (resolve, reject) => {
         try {
             let doctor = await db.User.findOne({
                 where: { id: id, roleId: 2 },
@@ -213,7 +212,7 @@ let getDoctorById = (id) => {
 };
 
 let getSpecializationById = (id) => {
-    return new Promise(async(resolve, reject) => {
+    return new Promise(async (resolve, reject) => {
         try {
             let specialization = await db.Specialization.findOne({ where: { id: id } });
             resolve(specialization);
@@ -224,7 +223,7 @@ let getSpecializationById = (id) => {
 };
 
 let getDoctorsForSpecialization = (id, date) => {
-    return new Promise(async(resolve, reject) => {
+    return new Promise(async (resolve, reject) => {
         try {
             let doctors = await db.Doctor_User.findAll({
                 where: { specializationId: id },
@@ -237,13 +236,13 @@ let getDoctorsForSpecialization = (id, date) => {
 
             //get schedule each doctor
             await Promise.all(
-                doctors.map(async(doctor) => {
+                doctors.map(async (doctor) => {
                     let schedule = await db.Schedule.findAll({
                         where: {
                             doctorId: doctor.User.id,
                             date: date,
                             sumBooking: {
-                                [Op.lt]: maxBooking
+                                [Op.lt]: maxBooking,
                             },
                         },
                         attributes: ['id', 'date', 'time'],
@@ -272,7 +271,7 @@ let getDoctorsForSpecialization = (id, date) => {
 };
 
 let getInfoDoctorById = (id) => {
-    return new Promise(async(resolve, reject) => {
+    return new Promise(async (resolve, reject) => {
         try {
             let doctor = await db.User.findOne({
                 where: { id: id },
@@ -297,7 +296,7 @@ let getInfoDoctorById = (id) => {
 };
 
 let deleteDoctorById = (id) => {
-    return new Promise(async(resolve, reject) => {
+    return new Promise(async (resolve, reject) => {
         try {
             await db.User.destroy({
                 where: { id: id },
@@ -318,7 +317,7 @@ let deleteDoctorById = (id) => {
 };
 
 let getDoctorForEditPage = (id) => {
-    return new Promise(async(resolve, reject) => {
+    return new Promise(async (resolve, reject) => {
         try {
             let doctor = await db.User.findOne({
                 where: { id: id },
@@ -333,7 +332,7 @@ let getDoctorForEditPage = (id) => {
     });
 };
 let getPatientForEditPage = (id) => {
-    return new Promise(async(resolve, reject) => {
+    return new Promise(async (resolve, reject) => {
         try {
             let patient = await db.User.findOne({
                 where: { id: id },
@@ -347,7 +346,7 @@ let getPatientForEditPage = (id) => {
 };
 
 let updateDoctorInfo = (data) => {
-    return new Promise(async(resolve, reject) => {
+    return new Promise(async (resolve, reject) => {
         try {
             let doctor = await db.User.findOne({
                 where: { id: data.id },
@@ -374,7 +373,7 @@ let updateDoctorInfo = (data) => {
 };
 
 let getPatientsBookAppointment = (data) => {
-    return new Promise(async(resolve, reject) => {
+    return new Promise(async (resolve, reject) => {
         try {
             let patients = await db.Patient.findAll({
                 where: {
@@ -382,9 +381,7 @@ let getPatientsBookAppointment = (data) => {
                     dateBooking: data.date,
                     statusId: statusNewId,
                 },
-                order: [
-                    ['updatedAt', 'ASC']
-                ],
+                order: [['updatedAt', 'ASC']],
                 attributes: ['id', 'name', 'gender', 'timeBooking', 'description', 'isSentForms'],
             });
             resolve(patients);
@@ -393,8 +390,8 @@ let getPatientsBookAppointment = (data) => {
         }
     });
 };
-let getPatientBooking = async(data) => {
-    return new Promise(async(resolve, reject) => {
+let getPatientBooking = async (data) => {
+    return new Promise(async (resolve, reject) => {
         try {
             let patients = await db.Patient.findAll({
                 where: {
@@ -411,13 +408,13 @@ let getPatientBooking = async(data) => {
 };
 
 let getDoctorSchedules = (data) => {
-    return new Promise(async(resolve, reject) => {
+    return new Promise(async (resolve, reject) => {
         try {
             let schedules = await db.Schedule.findAll({
                 where: {
                     doctorId: data.doctorId,
                     date: {
-                        [Op.in]: data.sevenDaySchedule
+                        [Op.in]: data.sevenDaySchedule,
                     },
                 },
             });
@@ -429,7 +426,7 @@ let getDoctorSchedules = (data) => {
 };
 
 let getPlacesForDoctor = () => {
-    return new Promise(async(resolve, reject) => {
+    return new Promise(async (resolve, reject) => {
         try {
             let places = await db.Place.findAll({
                 attributes: ['id', 'name'],
@@ -450,7 +447,7 @@ let removeAccents = (str) => {
 };
 
 let sendFormsForPatient = (id, files, userID) => {
-    return new Promise(async(resolve, reject) => {
+    return new Promise(async (resolve, reject) => {
         try {
             // Lấy thông tin bệnh nhân dựa trên id
             let patient = await patientService.getDetailPatient(id);
@@ -504,7 +501,7 @@ let sendFormsForPatient = (id, files, userID) => {
             await patient.update({
                 isSentForms: true,
                 // Cập nhật userID
-                userID: currentUserID
+                userID: currentUserID,
             });
 
             // Nếu bệnh nhân có thông tin bổ sung
@@ -535,9 +532,8 @@ let sendFormsForPatient = (id, files, userID) => {
     });
 };
 
-
 let getDoctorForFeedbackPage = (id) => {
-    return new Promise(async(resolve, reject) => {
+    return new Promise(async (resolve, reject) => {
         try {
             let doctor = await db.User.findOne({
                 where: { id: id },
@@ -554,7 +550,7 @@ let getDoctorForFeedbackPage = (id) => {
 };
 
 let createFeedback = (data) => {
-    return new Promise(async(resolve, reject) => {
+    return new Promise(async (resolve, reject) => {
         try {
             let doctorId = data.doctorId;
             let phone = data.feedbackPhone;
@@ -589,14 +585,8 @@ let createFeedback = (data) => {
         }
     });
 };
-<<<<<<< HEAD
-
 let deleteTimeByDate = async (idDoctor, timeDate) => {
     return new Promise(async (resolve, reject) => {
-=======
-let deleteTimeByDate = async(idDoctor, timeDate) => {
-    return new Promise(async(resolve, reject) => {
->>>>>>> userLast
         try {
             if (!timeDate || !idDoctor) {
                 resolve({
@@ -706,9 +696,5 @@ module.exports = {
     deleteTimeByDate: deleteTimeByDate,
     getScheduleDoctorByDateSumBooking: getScheduleDoctorByDateSumBooking,
     getPatientBooking: getPatientBooking,
-<<<<<<< HEAD
     getInfoDoctorsByCriteria: getInfoDoctorsByCriteria,
 };
-=======
-};
->>>>>>> userLast

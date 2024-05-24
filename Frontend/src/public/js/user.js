@@ -69,8 +69,7 @@ function loadNewPatientsForUser() {
                     <td> ${patient.dateBooking}    </td>
                     <td> (${patient.timeBooking})   </td>
                     <td> 
-                    <button  data-patient-id="${patient.id}"  class="ml-3 btn btn-warning btn-pending-patient">Xác nhận</button>
-                    <button  type="button" data-patient-id="${patient.id}" class="ml-3 btn btn-danger btn-pending-patient-cancel"> Hủy </button>
+                    <button type="button" data-patient-id="${patient.id}" class="ml-3 btn btn-primary btn-new-patient-ok1"><i class="fa fa-info" aria-hidden="true"></i></button>
                     </td>
                 </tr>
                 `;
@@ -120,6 +119,11 @@ function handleBtnNewPatientOk1() {
         let option = false;
         showDetailPatient1(patientId);
     });
+    $('#tableNeedConfirmPatients').on('click', '.btn-new-patient-ok1', function (e) {
+        let patientId = $(this).data('patient-id');
+        let option = false;
+        showDetailPatient1(patientId);
+    });
 }
 function showDetailPatient1(patientId) {
     $.ajax({
@@ -127,15 +131,44 @@ function showDetailPatient1(patientId) {
         url: `${window.location.origin}/api/get-detail-patient-by-id`,
         data: { patientId: patientId },
         success: function (data) {
-            $('#patientName').val(data.name);
-            $('#btn-confirm-patient-done').attr('data-patient-id', data.id);
-            $('#patientPhone').val(data.phone);
-            $('#patientEmail').val(data.email);
-            $('#patientDate').val(data.dateBooking);
-            $('#patientTime').val(data.timeBooking);
-            $('#patientReason').text(data.description);
-            $('#patientAddress').text(data.address);
+            $('#patientName').val(data.patient.name);
+            $('#btn-confirm-patient-done').attr('data-patient-id', data.patient.id);
+            $('#patientPhone').val(data.patient.phone);
+            $('#patientEmail').val(data.patient.email);
+            $('#patientDate').val(data.patient.dateBooking);
+            $('#patientTime').val(data.patient.timeBooking);
+            $('#patientReason').val(data.patient.description);
+            $('#patientAddress').val(data.patient.address);
+            $('#patientDoctor').val(data.doctor.name);
+
             $('#modalDetailPatient1').modal('show');
+        },
+        error: function (err) {
+            console.log(error);
+            alertify.error('Đã xảy ra lỗi, vui lòng thử lại sau!');
+        },
+    });
+}
+function showDetailBookend(patientId) {
+    $.ajax({
+        method: 'POST',
+        url: `${window.location.origin}/api/get-detail-patient-by-id`,
+        data: { patientId: patientId },
+        success: function (data) {
+            $('#patientName1').val(data.patient.name);
+            // $('#btn-confirm-patient-done').attr('data-patient-id', data.patient.id);
+            $('#patientPhone1').val(data.patient.phone);
+            $('#patientEmail1').val(data.patient.email);
+            $('#patientDate1').val(data.patient.dateBooking);
+            $('#patientTime1').val(data.patient.timeBooking);
+            $('#patientReason1').val(data.patient.description);
+            $('#patientAddress1').val(data.patient.address);
+            $('#patientDoctor1').val(data.doctor.name);
+            if (data.ExtraInfo) {
+                $('#patientHistoryBreath').val(data.ExtraInfo.historyBreath);
+                $('#patientMoreInfo').val(data.ExtraInfo.moreInfo);
+            }
+            $('#modalResultlPatient').modal('show');
         },
         error: function (err) {
             console.log(error);
@@ -152,27 +185,25 @@ function handleBtnNewPatientCancel() {
     });
 }
 
+// hàm show modal của đã khám
 function callAjaxRenderModalInfo(patientId, option) {
     $.ajax({
         method: 'POST',
         url: `${window.location.origin}/api/get-detail-patient-by-id`,
         data: { patientId: patientId },
         success: function (data) {
-            $('#patientName').val(data.name);
-            $('#btn-confirm-patient-done').attr('data-patient-id', data.id);
-            $('#patientPhone').val(data.phone);
-            $('#patientEmail').val(data.email);
-            $('#patientDate').val(data.dateBooking);
-            $('#patientTime').val(data.timeBooking);
-            $('#patientReason').text(data.description);
-            $('#patientAddress').text(data.address);
+            $('#patientDoctor').val(data.doctor.name);
+            $('#patientName').val(data.patient.name);
+            $('#btn-confirm-patient-done').attr('data-patient-id', data.patient.id);
+            $('#patientPhone').val(data.patient.phone);
+            $('#patientEmail').val(data.patient.email);
+            $('#patientDate').val(data.patient.dateBooking);
+            $('#patientTime').val(data.patient.timeBooking);
+            $('#patientReason').val(data.patient.description);
+            $('#patientAddress').val(data.patient.address);
             if (data.ExtraInfo) {
-                $('#patientHistoryBreath').text(data.ExtraInfo.historyBreath);
-                $('#patientMoreInfo').text(data.ExtraInfo.moreInfo);
-            }
-            if (option) {
-                // $('#btn-confirm-patient-done').css('display', 'none');
-                $('#btn-cancel-patient').text('OK');
+                $('#patientHistoryBreath').val(data.ExtraInfo.historyBreath);
+                $('#patientMoreInfo').val(data.ExtraInfo.moreInfo);
             }
             $('#modalResultlPatient').modal('show');
         },
@@ -180,14 +211,6 @@ function callAjaxRenderModalInfo(patientId, option) {
             console.log(error);
             alertify.error('Đã xảy ra lỗi, vui lòng thử lại sau!');
         },
-    });
-}
-
-function handleBtnPendingPatient() {
-    $('#tableNeedConfirmPatients').on('click', '.btn-pending-patient', function (e) {
-        let patientId = $(this).data('patient-id');
-        let option = false;
-        callAjaxRenderModalInfo(patientId, option);
     });
 }
 
@@ -202,17 +225,12 @@ function handleBtnPendingCancel() {
 function addNewRowTablePending(patient) {
     let htmlPending = `
                  <tr>
-                    <td> ${patient.id} - ${patient.name}   </td>
-                    <td> ${patient.phone}     </td>
-                    <td> ${patient.email}     </td>
-                    <td> ${convertStringToDateClient(patient.updatedAt)}     </td>
+                    <td> ${patient.name}   </td>
+                    <td> ${patient.dateBooking}     </td>
+                    <td> ${patient.timeBooking}     </td>
                     <td> 
-                    <button  data-patient-id="${
-                        patient.id
-                    }"  class="ml-3 btn btn-warning btn-pending-patient">Xác nhận</button>
-                    <button  type="button" data-patient-id="${
-                        patient.id
-                    }" class="ml-3 btn btn-danger btn-pending-patient-cancel"> Hủy </button>
+                    <button  data-patient-id="${patient.id}"  class="ml-3 btn btn-warning btn-pending-patient">Xác nhận</button>
+                    <button  type="button" data-patient-id="${patient.id}" class="ml-3 btn btn-danger btn-pending-patient-cancel"> Hủy </button>
                     </td>
                 </tr>
                
@@ -237,14 +255,10 @@ function addNewRowTableConfirmed(patient) {
 function addNewRowTableCanceled(patient) {
     let htmlPending = `
                   <tr>
-                    <td> ${patient.id} - ${patient.name}   </td>
-                    <td> ${patient.phone}     </td>
-                    <td> ${patient.email}     </td>
-                    <td> ${convertStringToDateClient(patient.updatedAt)} </td>
-                    <td> 
-                    <button   data-patient-id="${
-                        patient.id
-                    }"  class="ml-3 btn btn-primary btn-history-cancel-patient">Lịch sử</button>
+                    <td> ${patient.name}   </td>
+                    <td> ${patient.dateBooking}     </td>
+                    <td> ${patient.timeBooking}     </td>
+                    <button   data-patient-id="${patient.id}"  class="ml-3 btn btn-primary btn-history-cancel-patient">Lịch sử</button>
                     </td>
                 </tr>
                
@@ -253,7 +267,28 @@ function addNewRowTableCanceled(patient) {
 }
 
 function convertStringToDateClient(string) {
-    return moment(Date.parse(string)).format('DD/MM/YYYY, HH:mm A');
+    // Chuyển đổi chuỗi thành đối tượng Date
+    var date = new Date(string);
+
+    // Lấy các thành phần của ngày và thời gian
+    var day = date.getDate();
+    var month = date.getMonth() + 1; // Tháng bắt đầu từ 0 nên cần cộng thêm 1
+    var year = date.getFullYear();
+    var hours = date.getHours();
+    var minutes = date.getMinutes();
+    var seconds = date.getSeconds();
+
+    // Chuẩn hóa các thành phần để có hai chữ số
+    day = day < 10 ? '0' + day : day;
+    month = month < 10 ? '0' + month : month;
+    hours = hours < 10 ? '0' + hours : hours;
+    minutes = minutes < 10 ? '0' + minutes : minutes;
+    seconds = seconds < 10 ? '0' + seconds : seconds;
+
+    // Định dạng lại thành chuỗi ngày/tháng/năm, giờ:phút AM/PM
+    var formattedDate = day + '/' + month + '/' + year;
+
+    return formattedDate;
 }
 
 function handleAfterCallingPatient() {
@@ -305,7 +340,7 @@ function handleViewInfoPatientBooked() {
     $('#tableConfirmedPatients').on('click', '.btn-confirmed-patient', function (e) {
         let patientId = $(this).data('patient-id');
         let option = true;
-        callAjaxRenderModalInfo(patientId, option);
+        showDetailBookend(patientId);
     });
 }
 
@@ -369,7 +404,7 @@ function handleCancelBtn() {
                 addNewRowTableCanceled(patient);
                 alertify.success('Đã hủy lịch hẹn thành công');
                 setTimeout(function () {
-                    window.location.href = '/admin/get-new-patients'; // Thay thế '/your-new-url' bằng đường dẫn mới bạn muốn tải lại
+                    window.location.href = '/InfoUser#'; // Thay thế '/your-new-url' bằng đường dẫn mới bạn muốn tải lại
                 }, 2000);
             },
             error: function (error) {
@@ -393,25 +428,11 @@ function handleBtnViewHistory() {
 
                 let html = '';
                 data.forEach((log) => {
-                    html += `
-                     <div class="form-row mb-3">
-                            <div class="col-6">
-                                <input type="text"  class="form-control" id="historyStatus" value="${log.content}">
-                            </div>
-                            <div class="col-3">
-                                <input type="text"  class="form-control" id="personDone" value="${log.adminName}">
-                            </div>
-                            <div class="col-3">
-                                <input type="text"  class="form-control" id="timeDone" value="${convertStringToDateClient(
-                                    log.createdAt
-                                )} ">
-                            </div>
-                        </div>
-                    
-                    `;
+                    $('#patientTimeCancel').val(convertStringToDateClient(log.createdAt));
+                    $('#patientReason2').val(log.content);
+                    $('#patientDoctor2').val(log.adminName);
                 });
-                $('#contentHistory').append(html);
-                $('#modalHistoryBooking').modal('show');
+                $('#modalHistoryBooking1').modal('show');
             },
             error: function (error) {
                 console.log(error);
@@ -435,11 +456,11 @@ function handleDoctorViewInfoPatient() {
                 $('#patientEmail').val(data.email);
                 $('#patientDate').val(data.dateBooking);
                 $('#patientTime').val(data.timeBooking);
-                $('#patientReason').text(data.description);
-                $('#patientAddress').text(data.address);
+                $('#patientReason').val(data.description);
+                $('#patientAddress').val(data.address);
                 if (data.ExtraInfo) {
-                    $('#patientHistoryBreath').text(data.ExtraInfo.historyBreath);
-                    $('#patientMoreInfo').text(data.ExtraInfo.moreInfo);
+                    $('#patientHistoryBreath').val(data.ExtraInfo.historyBreath);
+                    $('#patientMoreInfo').val(data.ExtraInfo.moreInfo);
                     if (data.ExtraInfo.oldForms) {
                         let images = JSON.parse(data.ExtraInfo.oldForms);
                         let html = '';
@@ -562,7 +583,7 @@ function resetModal() {
             .end();
     });
 
-    $(`#modalHistoryBooking`).on('hidden.bs.modal', function (e) {
+    $(`#modalHistoryBooking1`).on('hidden.bs.modal', function (e) {
         $(this)
             .find('input,textarea,select')
             .val('')
@@ -606,7 +627,6 @@ function resetModal() {
 $(document).ready(function (e) {
     loadNewPatientsForUser();
     handleBtnNewPatientCancel();
-    handleBtnPendingPatient();
     handleBtnPendingCancel();
     resetModal();
     handleAfterCallingPatient();

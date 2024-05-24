@@ -252,9 +252,11 @@ let getDetailPatientBooking = async (req, res) => {
     try {
         let patient = await patientService.getDetailPatient(req.body.patientId);
         let message = await patientService.getExtanInfoByPatientId(req.body.patientId);
+        let doctor = await doctorService.getInfoDoctorById(patient.doctorId);
         let object = {
             patient: patient,
             ExtraInfo: message.extrainfos,
+            doctor: doctor,
         };
         return res.status(200).json(object);
     } catch (e) {
