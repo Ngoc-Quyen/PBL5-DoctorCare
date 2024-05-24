@@ -1,7 +1,9 @@
 import { validationResult } from 'express-validator';
 import auth from '../services/authService';
 import user from '../services/userService';
-
+import mailer from './../config/mailer';
+import { mailChangePass } from '../../lang/en';
+import apiAuth from '../middlewares/apiAuth';
 let getLogin = (req, res) => {
     return res.render('auth/login.ejs', {
         error: req.flash('error'),
@@ -85,21 +87,44 @@ let getAllCode = async (req, res) => {
 };
 let getResetPasswordPage = async (req, res) => {
     let emailUser = req.query.emailResetPassword;
-    console.log(emailUser);
     if (!emailUser) {
         return res.redirect('/login');
     }
     let account = await user.findUserByEmail(emailUser);
+
     if (account) {
         // Nếu có người dùng được tìm thấy, chuyển hướng đến trang reset password
         // return res.render('auth/reset-password.ejs');
+        let otp = apiAuth.generateOtp();
+        let dataSend = {
+            name: account.name,
+            otp: otp,
+        };
+        await mailer.sendEmailNormal(emailUser, mailChangePass.subject, mailChangePass.template(dataSend));
         return res.render('auth/reset-password.ejs', {
             user: account,
+            showOtpInput: true, // Hiển thị ô nhập mã OTP
+            otp: otp,
         });
     } else {
         // Nếu không có người dùng, ở lại trang hiện tại và đưa ra thông báo lỗi
         return res.redirect('/login');
     }
+};
+let sendOTPBack = async (req, res) => {
+    let emailUser = req.query.emailResetPassword;
+    let account = await user.findUserByEmail(emailUser);
+    let otp = apiAuth.generateOtp();
+    let dataSend = {
+        name: account.name,
+        otp: otp,
+    };
+    await mailer.sendEmailNormal(emailUser, mailChangePass.subject, mailChangePass.template(dataSend));
+    return res.render('auth/reset-password.ejs', {
+        user: account,
+        showOtpInput: true, // Hiển thị ô nhập mã OTP
+        otp: otp,
+    });
 };
 let postNewPassword = async (req, res) => {
     let data = req.body;
@@ -141,5 +166,5 @@ module.exports = {
     getResetPasswordPage: getResetPasswordPage,
     postNewPassword: postNewPassword,
     handleEditSpecialty: handleEditSpecialty,
-    
+    sendOTPBack: sendOTPBack,
 };

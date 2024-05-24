@@ -2,12 +2,15 @@ import db from '../models';
 import removeMd from 'remove-markdown';
 import syncElastic from './syncsElaticService';
 import helper from '../helper/client';
+import { reject, resolve } from 'bluebird';
+import { where } from 'sequelize';
 
 let getAllPosts = () => {
     return new Promise(async (resolve, reject) => {
         try {
             let posts = await db.Post.findAll({
-                attributes: ['id', 'title', 'writerId', 'createdAt'],
+                attributes: ['id', 'title', 'writerId', 'createdAt', 'contentMarkdown'],
+                // raw: true,
             });
             await Promise.all(
                 posts.map(async (post) => {
@@ -56,7 +59,15 @@ let getDetailPostPage = (id) => {
         try {
             let post = await db.Post.findOne({
                 where: { id: id },
-                attributes: ['id', 'title', 'contentHTML', 'contentMarkdown', 'forDoctorId', 'forSpecializationId'],
+                attributes: [
+                    'id',
+                    'title',
+                    'contentHTML',
+                    'contentMarkdown',
+                    'forDoctorId',
+                    'forSpecializationId',
+                    'isActive',
+                ],
             });
             if (!post) {
                 reject(`Can't get post with id=${id}`);
@@ -73,24 +84,63 @@ let getPostsPagination = (page, limit, role) => {
         try {
             let posts = '';
             //only get bài đăng y khoa
-            if (role === 'admin') {
+            if (role.roleName === 'admin') {
                 posts = await db.Post.findAndCountAll({
                     offset: (page - 1) * limit,
                     limit: limit,
-                    attributes: ['id', 'title', 'contentMarkdown', 'contentHTML', 'createdAt', 'writerId', 'updatedAt'],
+                    attributes: [
+                        'id',
+                        'title',
+                        'contentMarkdown',
+                        'contentHTML',
+                        'createdAt',
+                        'writerId',
+                        'updatedAt',
+                        'isActive',
+                    ],
                     order: [['createdAt', 'DESC']],
                 });
             } else {
-                posts = await db.Post.findAndCountAll({
-                    where: {
-                        forDoctorId: -1,
-                        forSpecializationId: -1,
-                    },
-                    offset: (page - 1) * limit,
-                    limit: limit,
-                    attributes: ['id', 'title', 'contentMarkdown', 'contentHTML', 'createdAt', 'writerId', 'updatedAt'],
-                    order: [['createdAt', 'DESC']],
-                });
+                if (role.roleName === 'doctor') {
+                    posts = await db.Post.findAndCountAll({
+                        where: {
+                            writerId: role.userId,
+                        },
+                        offset: (page - 1) * limit,
+                        limit: limit,
+                        attributes: [
+                            'id',
+                            'title',
+                            'contentMarkdown',
+                            'contentHTML',
+                            'createdAt',
+                            'writerId',
+                            'updatedAt',
+                            'isActive',
+                        ],
+                        order: [['createdAt', 'DESC']],
+                    });
+                } else {
+                    posts = await db.Post.findAndCountAll({
+                        where: {
+                            forDoctorId: -1,
+                            forSpecializationId: -1,
+                        },
+                        offset: (page - 1) * limit,
+                        limit: limit,
+                        attributes: [
+                            'id',
+                            'title',
+                            'contentMarkdown',
+                            'contentHTML',
+                            'createdAt',
+                            'writerId',
+                            'updatedAt',
+                            'isActive',
+                        ],
+                        order: [['createdAt', 'DESC']],
+                    });
+                }
             }
 
             let total = Math.ceil(posts.count / limit);
@@ -104,17 +154,6 @@ let getPostsPagination = (page, limit, role) => {
                     return post;
                 })
             );
-            // let users = await Promise.all(
-            //     posts.rows.map(async (post) => {
-            //         let user = await db.User.findOne({
-            //             where: {
-            //                 id: post.writerId,
-            //             },
-            //         });
-            //         return user; // return the user object from the map function
-            //     })
-            // );
-            // console.log('users from postService: ', users); // log the array of user objects
             resolve({
                 posts: posts,
                 total: total,
@@ -152,7 +191,7 @@ let putUpdatePost = (item) => {
         try {
             let post = await db.Post.findOne({
                 where: { id: item.id },
-                attributes: ['id', 'forDoctorId', 'forSpecializationId'],
+                attributes: ['id', 'forDoctorId', 'forSpecializationId', 'isActive'],
             });
             await post.update(item);
 
@@ -163,9 +202,10 @@ let putUpdatePost = (item) => {
                 plainText.replace(/(?:\r\n|\r|\\n)/g, ' ');
                 let data = {
                     postId: post.id,
-                    writerId: post.writerId,
+                    // writerId: post.writerId,
                     title: item.title,
                     content: plainText,
+                    isActive: item.isActive,
                 };
                 await syncElastic.updatePost(data);
             }
@@ -191,6 +231,21 @@ let doneComment = (id) => {
     });
 };
 
+let getPostByWriteId = (writerId) => {
+    return new Promise(async (resolve, reject) => {
+        try {
+            let posts = await db.Post.findAll({
+                where: {
+                    writerId: writerId,
+                },
+            });
+            resolve(posts);
+        } catch (error) {
+            reject(error);
+        }
+    });
+};
+
 module.exports = {
     postCreatePost: postCreatePost,
     getAllPosts: getAllPosts,
@@ -199,4 +254,5 @@ module.exports = {
     deletePostById: deletePostById,
     putUpdatePost: putUpdatePost,
     doneComment: doneComment,
+    getPostByWriteId: getPostByWriteId,
 };

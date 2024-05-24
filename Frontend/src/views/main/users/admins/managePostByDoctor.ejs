@@ -29,9 +29,10 @@
                                 <td>
                                     <%= post.id %>
                                 </td>
-                                <td>
+                                <td style="color: <%= post.isActive === 1 ? 'blue' : 'black' %>;">
                                     <%= post.title %>
                                 </td>
+
                                 <td>
                                     <%=post.getDataValue('writerName') %>
                                 </td>
@@ -39,7 +40,7 @@
                                     <%= post.getDataValue('dateClient') %>
                                 </td>
                                 <td class="">
-                                    <a class="" href="/admin/post/edit/<%= post.id %>" title="Edit"><i
+                                    <a class="" href="/doctor/post/edit/<%= post.id %>" title="Edit"><i
                                             class="fas fa-pen-square mx-3"></i></a>
                                     <a class="delete-post" href="#" data-post-id="<%= post.id%>" title="Delete"><i
                                             class="fas fa-trash"></i></a>

@@ -36,6 +36,10 @@ module.exports = {
             image: {
                 type: Sequelize.STRING,
             },
+            isActive: {
+                type: Sequelize.TINYINT(0),
+                defaultValue: true,
+            },
             createdAt: {
                 allowNull: false,
                 type: Sequelize.DATE,

@@ -1,5 +1,8 @@
 import doctorService from './../services/doctorService';
 import userService from './../services/userService';
+import homeService from './../services/homeService';
+import postService from '../services/postService';
+
 import _ from 'lodash';
 import moment from 'moment';
 import multer from 'multer';
@@ -244,6 +247,21 @@ let postAutoCreateAllDoctorsSchedule = async (req, res) => {
         return res.status(500).json(e);
     }
 };
+let getEditPost = async (req, res) => {
+    try {
+        let doctors = await userService.getInfoDoctors();
+        let specializations = await homeService.getSpecializations();
+        let post = await postService.getDetailPostPage(req.params.id);
+        return res.render('main/users/admins/editPostByDoctor.ejs', {
+            doctors: doctors,
+            specializations: specializations,
+            user: req.user,
+            post: post,
+        });
+    } catch (e) {
+        console.log(e);
+    }
+};
 
 module.exports = {
     getSchedule: getSchedule,
@@ -258,4 +276,5 @@ module.exports = {
     postAutoCreateAllDoctorsSchedule: postAutoCreateAllDoctorsSchedule,
     deleteScheduleDoctorByDate: deleteScheduleDoctorByDate,
     getScheduleByDate: getScheduleByDate,
+    getEditPost: getEditPost,
 };

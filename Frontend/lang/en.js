@@ -1,3 +1,5 @@
+import { template } from 'lodash';
+
 export const transValidation = {
     email_incorrect: 'Email không hợp lệ',
     gender_incorrect: 'Giới tính không hợp lệ',
@@ -14,7 +16,17 @@ export const transMailBookingNew = {
         <div>Giờ: ${data.time}</div>
         <div>Ngày: ${data.date}</div>
         <div>Tình trạng: <b> Đang chờ xử lý - Một cuộc hẹn mới đang chờ xác nhận</b></div>
-        <h4>Hệ thống Doctors Care sẽ tự động gửi email thông báo khi cuộc hẹn được xác nhận hoàn tất. Cảm ơn !</h4>`;
+        <h4>Hệ thống Doctors Care sẽ tự động gửi email thông báo khi cuộc hẹn được xác nhận hoàn tất.</h4>
+        <br>
+        <h4>Cảm ơn bạn đã sử dụng dịch vụ của DoctorCare!</h4>
+        <h4>Trân trọng,</h4> 
+        <div>
+            Đội ngũ hỗ trợ khách hàng <br>
+            <b>DoctorCare</b> <br>
+            Website: https://www.doctorcare.com <br>
+            Email: webdoctorcare@gmail.com <br>
+            Phone Number: 0382106557 <br>
+        </div>`;
     },
 };
 
@@ -27,7 +39,16 @@ export const transMailBookingFailed = {
         <div>Giờ: ${data.time}</div>
         <div>Ngày: ${data.date}</div>
         <div>Tình trạng: <b>Hủy - ${data.reason}</b></div>
-        <h4>Nếu bạn nhận thấy lỗi từ email này, vui lòng liên hệ hỗ trợ: <b> 0123 456 789 </b>. Cảm ơn!</h4>`;
+        <br>
+        <h4>Cảm ơn bạn đã sử dụng dịch vụ của DoctorCare!</h4>
+        <h4>Trân trọng,</h4> 
+        <div>
+            Đội ngũ hỗ trợ khách hàng <br>
+            <b>DoctorCare</b> <br>
+            Website: https://www.doctorcare.com <br>
+            Email: webdoctorcare@gmail.com <br>
+            Phone Number: 0382106557 <br>
+        </div>`;
     },
 };
 
@@ -40,7 +61,16 @@ export const transMailBookingSuccess = {
         <div>Giờ: ${data.time}</div>
         <div>Ngày: ${data.date}</div>
         <div>Tình trạng: <b>Thành công</b></div>
-        <h4>Cảm ơn rất nhiều!</h4>`;
+        <br>
+        <h4>Cảm ơn bạn đã sử dụng dịch vụ của DoctorCare!</h4>
+        <h4>Trân trọng,</h4> 
+        <div>
+            Đội ngũ hỗ trợ khách hàng <br>
+            <b>DoctorCare</b> <br>
+            Website: https://www.doctorcare.com <br>
+            Email: webdoctorcare@gmail.com <br>
+            Phone Number: 0382106557 <br>
+        </div>`;
     },
 };
 
@@ -54,7 +84,16 @@ export const transMailRemedy = {
         <div>Ví dụ: Họ và tên: Hongtien, SĐT đăng ký: 0123456789 và sinh: 2003, mật khẩu giải nén là: <b> Hongtien-012-03 </b> </div>
         <br>
         <div>Trong trường hợp không nhận được file đính kèm cũng như không giải nén được, vui lòng liên hệ tổng đài hỗ trợ <b>0123 456 789</b></div>
-        <h4>Cảm ơn!</h4>`;
+        <br>
+        <h4>Cảm ơn bạn đã sử dụng dịch vụ của DoctorCare!</h4>
+        <h4>Trân trọng,</h4> 
+        <div>
+            Đội ngũ hỗ trợ khách hàng <br>
+            <b>DoctorCare</b> <br>
+            Website: https://www.doctorcare.com <br>
+            Email: webdoctorcare@gmail.com <br>
+            Phone Number: 0382106557 <br>
+        </div>`;
     },
 };
 export const mailEnd = {
@@ -70,6 +109,38 @@ export const mailEnd = {
         <br>
         <div>Nếu có gì thắc mắc, vui lòng liên hệ tổng đài hỗ trợ <b>0123 456 789</b></div>
         <div>Có phản hồi về vấn đề dịch vụ khám bệnh vui lòng gửi mail phản hồi tại địa chỉ mail <b>tranngocquyen262dc@gmail.com</b></div>
-        <h4>Cảm ơn bạn đã sử dụng dịch vụ của chúng tôi!</h4>`;
+        <br>
+        <h4>Cảm ơn bạn đã sử dụng dịch vụ của DoctorCare!</h4>
+        <h4>Trân trọng,</h4> 
+        <div>
+            Đội ngũ hỗ trợ khách hàng <br>
+            <b>DoctorCare</b> <br>
+            Website: https://www.doctorcare.com <br>
+            Email: webdoctorcare@gmail.com <br>
+            Phone Number: 0382106557 <br>
+        </div>
+        `;
+    },
+};
+
+export const mailChangePass = {
+    subject: 'Email gửi mã OTP đổi mật khẩu',
+    template: (data) => {
+        return `<h3>Chào ${data.name}</h3>
+        <div>Chúng tôi đã nhận được yêu cầu thay đổi mật khẩu cho tài khoản của bạn tại DoctorCare. Để hoàn tất quá trình này, vui lòng nhập Mã xác thực một lần (OTP) dưới đây: </div>
+        <div><b>Mã OTP của bạn là: ${data.otp}</b></div>
+        <div>Nếu bạn không yêu cầu thay đổi mật khẩu, vui lòng bỏ qua email này và liên hệ với bộ phận hỗ trợ khách hàng của chúng tôi để được trợ giúp.</div>
+        <div><b>Lưu ý:</b> Vì lý do bảo mật, hãy không chia sẻ mã OTP này với bất kỳ ai. Nếu bạn nhận được email này nhưng không phải do bạn yêu cầu, vui lòng thông báo cho chúng tôi ngay lập tức.</div>
+        <br>
+        <h4>Cảm ơn bạn đã sử dụng dịch vụ của DoctorCare!</h4>
+        <h4>Trân trọng,</h4> 
+        <div>
+            Đội ngũ hỗ trợ khách hàng <br>
+            <b>DoctorCare</b> <br>
+            Website: https://www.doctorcare.com <br>
+            Email: webdoctorcare@gmail.com <br>
+            Phone Number: 0382106557 <br>
+        </div>
+        `;
     },
 };

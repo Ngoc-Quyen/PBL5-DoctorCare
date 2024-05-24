@@ -237,10 +237,11 @@ let putUpdatePost = async (req, res) => {
             title: req.body.titlePost,
             forDoctorId: req.body.forDoctorId,
             forSpecializationId: req.body.forSpecializationId,
-            writerId: req.user.id,
+            // writerId: req.user.id,
             contentMarkdown: req.body.contentMarkdown,
             contentHTML: req.body.contentHTML,
             updatedAt: Date.now(),
+            isActive: req.body.isActive,
         };
 
         await postService.putUpdatePost(data);
@@ -288,7 +289,15 @@ let getAllPosts = async (req, res) => {
         return res.status(500).json(e);
     }
 };
-
+let getPostByWriteId = async (req, res) => {
+    try {
+        let posts = await postService.getPostByWriteId(req.user.id);
+        return res.status(200).json({ data: posts });
+        return;
+    } catch (error) {
+        return res.status(500).json(error);
+    }
+};
 let getCreatePost = async (req, res) => {
     let doctors = await userService.getInfoDoctors();
     let specializations = await homeService.getSpecializations();
@@ -304,6 +313,7 @@ let postCreatePost = async (req, res) => {
         let item = req.body;
         item.writerId = req.user.id;
         item.createdAt = Date.now();
+        item.isActive = 0;
         let post = await postService.postCreatePost(item);
         return res.status(200).json({
             status: 1,
@@ -316,16 +326,34 @@ let postCreatePost = async (req, res) => {
 
 let getManagePosts = async (req, res) => {
     try {
-        let role = '';
+        let role = {};
+        let object = {};
         if (req.user) {
-            if (req.user.roleId === 1) role = 'admin';
+            if (req.user.roleId === 1) {
+                role = {
+                    roleName: 'admin',
+                    userId: req.user.id,
+                };
+                object = await postService.getPostsPagination(1, +process.env.LIMIT_GET_POST, role);
+                return res.render('main/users/admins/managePost.ejs', {
+                    user: req.user,
+                    posts: object.posts,
+                    total: object.total,
+                });
+            }
+            if (req.user.roleId === 2) {
+                role = {
+                    roleName: 'doctor',
+                    userId: req.user.id,
+                };
+                object = await postService.getPostsPagination(1, +process.env.LIMIT_GET_POST, role);
+                return res.render('main/users/admins/managePostByDoctor.ejs', {
+                    user: req.user,
+                    posts: object.posts,
+                    total: object.total,
+                });
+            }
         }
-        let object = await postService.getPostsPagination(1, +process.env.LIMIT_GET_POST, role);
-        return res.render('main/users/admins/managePost.ejs', {
-            user: req.user,
-            posts: object.posts,
-            total: object.total,
-        });
     } catch (e) {
         console.log(e);
         return res.status(500).json(e);
@@ -656,4 +684,6 @@ module.exports = {
 
     getDoctorBy: getDoctorBy,
     getSpecializationById: getSpecializationById,
+
+    getPostByWriteId: getPostByWriteId,
 };

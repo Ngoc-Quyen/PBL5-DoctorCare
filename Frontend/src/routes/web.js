@@ -152,6 +152,10 @@ let initRoutes = (app) => {
         auth.checkLoggedIn,
         doctor.postAutoCreateAllDoctorsSchedule
     );
+    router.get('/doctor/manage/posts', auth.checkLoggedIn, admin.getManagePosts);
+    router.get('/doctor/manage/post/create', auth.checkLoggedIn, admin.getCreatePost);
+    router.post('/doctor/manage/post/create', auth.checkLoggedIn, admin.postCreatePost);
+    router.get('/doctor/post/edit/:id', auth.checkLoggedIn, doctor.getEditPost);
 
     router.get('/admin/manage/customers', auth.checkLoggedIn, customer.getManageCustomersPage);
     router.get('/admin/get-new-patients', auth.checkLoggedIn, admin.getNewPatients);
