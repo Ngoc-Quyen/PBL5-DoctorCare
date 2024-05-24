@@ -31,6 +31,9 @@ body a {
 }
 
 .header-search {
+    position: relative;
+    z-index: 1;
+    /* Đảm bảo phần tử cha có z-index cao hơn */
     background-color: #ffffff;
     border-radius: 10px;
     text-align: center;
@@ -139,40 +142,31 @@ body a {
     0% {
         background-image: url("../images/bg1.jpg");
     }
-
     20% {
         background-image: url("../images/bg1.jpg");
     }
-
     25% {
         background-image: url("../images/bg2.png");
     }
-
     45% {
         background-image: url("../images/bg2.png");
     }
-
     50% {
         background-image: url("../images/bg3.png");
     }
-
     70% {
         background-image: url("../images/bg3.png");
     }
-
     75% {
         background-image: url("../images/bg4.png");
     }
-
     95% {
         background-image: url("../images/bg4.png");
     }
-
     100% {
         background-image: url("../images/bg1.jpg");
     }
 }
-
 
 .sec-header .content-header {
     width: 1300px;
@@ -853,7 +847,6 @@ pre {
     0% {
         transform: rotate(0deg);
     }
-
     100% {
         transform: rotate(360deg);
     }
@@ -893,10 +886,23 @@ pre {
 }
 
 .show-info-search {
+    position: absolute;
+    top: 100%;
+    /* Đặt ngay bên dưới input */
+    left: 0;
+    width: 100%;
+    background-color: white;
+    border: 1px solid #ccc;
+    z-index: 1000;
+    /* Đảm bảo phần tử này nằm trên các phần tử khác */
+    max-height: 300px;
+    /* Đặt giới hạn chiều cao, nếu cần */
+    overflow-y: auto;
+    /* Kích hoạt cuộn nếu cần */
     display: none;
     border-radius: 5px;
     margin-top: 10px;
-    background-color: #ccc;
+    /* background-color: #ccc; */
     min-height: 35px;
     height: auto;
 }
@@ -1195,20 +1201,26 @@ h3.show-title-post {
     /* Add space above the buttons */
 }
 
+
 /* Style for the buttons container on larger screens */
+
 .col-md-12-buttons {
     display: flex;
     justify-content: flex-end;
     /* Align buttons to the right */
 }
 
+
 /* Style for individual button containers */
+
 .col-md-12-buttons .d-flex {
     margin-left: 10px;
     /* Add space between buttons */
 }
 
+
 /* Style for the "Đã đặt khám" button */
+
 .btn-noclick {
     background-color: #ccc;
     /* Grey background */
@@ -1227,7 +1239,9 @@ h3.show-title-post {
     /* Darker grey on hover */
 }
 
+
 /* Style for the "Hủy" button */
+
 .btn-cancel {
     background-color: #dc3545;
     /* Red background */
@@ -1261,17 +1275,12 @@ h3.show-title-post {
     /* Hiệu ứng đổ bóng */
     box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.5);
     /* offsetX, offsetY, blurRadius, spreadRadius, color */
-
-
 }
-
-
 
 .image-container {
     width: 400%;
     /* Ensures the container takes full width */
     display: inline-block;
-
 }
 
 .post-image img {
@@ -1281,7 +1290,6 @@ h3.show-title-post {
     /* Ensures the image is responsive */
     height: auto;
     /* Maintains aspect ratio */
-
 }
 
 .image-caption {
@@ -1290,7 +1298,6 @@ h3.show-title-post {
     margin-top: 10px;
     /* Space between image and caption */
 }
-
 
 .background-right {
     border-radius: 10px;
@@ -1308,15 +1315,12 @@ h3.show-title-post {
     box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.5);
     /* offsetX, offsetY, blurRadius, spreadRadius, color */
     background-color: #00BAEE;
-
 }
-
 
 .wrapper {
     display: flex;
     justify-content: space-between;
     /* Canh trái và phải */
-
 }
 
 .wrapper .mess-contact {
@@ -1325,12 +1329,10 @@ h3.show-title-post {
     height: 170px;
     border-radius: 10px;
     margin-left: 30px;
-
     display: flex;
     justify-content: center;
     /* Canh giữa theo chiều ngang */
     align-items: center;
-
 }
 
 .wrapper .zalo-contact {
@@ -1369,5 +1371,4 @@ h3.show-title-post {
     /* Centers the image horizontally within its container */
     border-radius: 50%;
     /* Add more styling here as needed */
-
 }

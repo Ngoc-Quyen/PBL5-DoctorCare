@@ -100,6 +100,8 @@ let initRoutes = (app) => {
     router.post('/booking-doctor-without-files/create', home.postBookingDoctorPageWithoutFiles);
     router.post('/booking-doctor-normal/create', home.postBookingDoctorPageNormal);
 
+    router.post('/api/search', home.searchHandler);
+
     router.get('/detail/post/:id', home.getDetailPostPage);
     router.get('/booking-info/:id', home.getInfoBookingPage);
 

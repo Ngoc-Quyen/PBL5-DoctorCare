@@ -1,4 +1,28 @@
 $(document).ready(function() {
+    $('#input-search').on('input', function() {
+        let query = $(this).val();
+        if (query.length > 0) {
+            $.ajax({
+                method: 'POST',
+                url: `${window.location.origin}/api/search`,
+                data: { query: query },
+                success: function(data) {
+                    let results = data.results;
+                    let htmlContent = '';
+                    results.forEach(result => {
+                        htmlContent += `<div class="search-result-item">${result.name}</div>`;
+                    });
+                    $('#show-info-search').html(htmlContent);
+                },
+                error: function(err) {
+                    console.log(err);
+                    $('#show-info-search').html('<div class="search-result-item">Không tìm thấy kết quả</div>');
+                }
+            });
+        } else {
+            $('#show-info-search').html('');
+        }
+    });
     $('.slider-nav').slick({
         slidesToShow: 4,
         slidesToScroll: 1,
