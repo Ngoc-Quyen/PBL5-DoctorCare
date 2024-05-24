@@ -220,6 +220,18 @@ let initRoutes = (app) => {
     router.get('/reset-password', auth.getResetPasswordPage);
     router.post('/forgot-password/set-new-password', auth.postNewPassword);
     router.post('/users/update-user', upload.single('avatar'), auth.handleEditSpecialty);
+
+    router.post('/users/change-password', customer.postChangePass);
+    router.post('/check-current-password', customer.postCheckCurrentPass);
+    router.post('/users/update-user', upload.single('avatar'), auth.handleEditSpecialty);
+
+    router.get('/users/edit/:id', auth.checkLoggedIn, customer.getEditCustomer);
+    router.post('/users/edit/:id', auth.checkLoggedIn, customer.postEditCustomer);
+    router.post('/send-otp', auth.postSendOTP);
+
+
+
+
     return app.use('/', router);
     return app.use('/', router);
 };

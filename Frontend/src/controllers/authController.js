@@ -1,6 +1,9 @@
 import { validationResult } from 'express-validator';
 import auth from '../services/authService';
 import user from '../services/userService';
+import mailer from './../config/mailer';
+import { mailChangePass } from '../../lang/en';
+import apiAuth from '../middlewares/apiAuth';
 
 let getLogin = (req, res) => {
     return res.render('auth/login.ejs', {
@@ -12,7 +15,7 @@ let getRegister = (req, res) => {
     return res.render('auth/register.ejs');
 };
 
-let postRegister = async (req, res) => {
+let postRegister = async(req, res) => {
     let customer = {
         name: req.body.name,
         phone: req.body.phone,
@@ -37,7 +40,7 @@ let postRegister = async (req, res) => {
     }
 };
 
-let verifyAccount = async (req, res) => {
+let verifyAccount = async(req, res) => {
     let errorArr = [];
     let successArr = [];
     try {
@@ -51,7 +54,7 @@ let verifyAccount = async (req, res) => {
 };
 
 let getLogout = (req, res) => {
-    req.session.destroy(function (err) {
+    req.session.destroy(function(err) {
         console.log(err);
         return res.redirect('/login');
     });
@@ -71,7 +74,7 @@ let checkLoggedOut = (req, res, next) => {
     next();
 };
 
-let getAllCode = async (req, res) => {
+let getAllCode = async(req, res) => {
     try {
         let data = await user.getAllCodeService(req.query.type);
         return res.status(200).json(data);
@@ -83,25 +86,34 @@ let getAllCode = async (req, res) => {
         });
     }
 };
-let getResetPasswordPage = async (req, res) => {
+let getResetPasswordPage = async(req, res) => {
     let emailUser = req.query.emailResetPassword;
     console.log(emailUser);
     if (!emailUser) {
         return res.redirect('/login');
     }
     let account = await user.findUserByEmail(emailUser);
+
     if (account) {
         // Nếu có người dùng được tìm thấy, chuyển hướng đến trang reset password
         // return res.render('auth/reset-password.ejs');
+        let otp = apiAuth.generateOtp();
+        let dataSend = {
+            name: account.name,
+            otp: otp,
+        };
+        await mailer.sendEmailNormal(emailUser, mailChangePass.subject, mailChangePass.template(dataSend));
         return res.render('auth/reset-password.ejs', {
             user: account,
+            showOtpInput: true, // Hiển thị ô nhập mã OTP
+            otp: otp,
         });
     } else {
         // Nếu không có người dùng, ở lại trang hiện tại và đưa ra thông báo lỗi
         return res.redirect('/login');
     }
 };
-let postNewPassword = async (req, res) => {
+let postNewPassword = async(req, res) => {
     let data = req.body;
     let message = await user.updateUser(data);
     if (message.errCode === 0) {
@@ -112,7 +124,7 @@ let postNewPassword = async (req, res) => {
         return res.redirect('/reset-password');
     }
 };
-let handleEditSpecialty = async (req, res) => {
+let handleEditSpecialty = async(req, res) => {
     let data = req.body;
     const filePath = req.file; // Đường dẫn tạm thời của tệp tải lên
     // console.log('data from authController: ', data);
@@ -128,6 +140,38 @@ let handleEditSpecialty = async (req, res) => {
         // Hien thi thong bao chưa cập nhật được
     }
 };
+let sendOTPBack = async(req, res) => {
+    let emailUser = req.query.emailResetPassword;
+    let account = await user.findUserByEmail(emailUser);
+    let otp = apiAuth.generateOtp();
+    let dataSend = {
+        name: account.name,
+        otp: otp,
+    };
+    await mailer.sendEmailNormal(emailUser, mailChangePass.subject, mailChangePass.template(dataSend));
+    return res.render('auth/reset-password.ejs', {
+        user: account,
+        showOtpInput: true, // Hiển thị ô nhập mã OTP
+        otp: otp,
+    });
+};
+let postSendOTP = async(req, res) => {
+    try {
+        const { email } = req.body;
+
+        // Generate a new OTP
+        const otp = apiAuth.generateOtp();
+
+        // Send the OTP email
+        await mailer.sendEmailNormal(email, mailChangePass.subject, mailChangePass.template({ otp }));
+
+        res.status(200).send('OTP resent successfully');
+    } catch (error) {
+        console.error('Error:', error);
+        res.status(500).send('Failed to resend OTP');
+    }
+
+};
 module.exports = {
     getLogin: getLogin,
     getRegister: getRegister,
@@ -139,5 +183,8 @@ module.exports = {
     getAllCode: getAllCode,
     getResetPasswordPage: getResetPasswordPage,
     postNewPassword: postNewPassword,
-    handleEditSpecialty: handleEditSpecialty
+    handleEditSpecialty: handleEditSpecialty,
+    postSendOTP: postSendOTP,
+    sendOTPBack: sendOTPBack,
+
 };
