@@ -20,15 +20,14 @@ let router = express.Router();
 let LocalStrategy = passportLocal.Strategy;
 
 passport.use(
-    new LocalStrategy(
-        {
+    new LocalStrategy({
             usernameField: 'email',
             passwordField: 'password',
             passReqToCallback: true,
         },
-        async (req, email, password, done) => {
+        async(req, email, password, done) => {
             try {
-                await userService.findUserByEmail(email).then(async (user) => {
+                await userService.findUserByEmail(email).then(async(user) => {
                     if (!user) {
                         return done(null, false, req.flash('error', 'Email không tồn tại'));
                     }
@@ -186,10 +185,18 @@ let initRoutes = (app) => {
     router.delete('/admin/delete/specialization', auth.checkLoggedIn, admin.deleteSpecializationById);
     router.delete('/admin/delete/post', auth.checkLoggedIn, admin.deletePostById);
 
+    router.post('/users/change-password', customer.postChangePass);
+    router.post('/check-current-password', customer.postCheckCurrentPass);
+    router.post('/users/update-user', upload.single('avatar'), auth.handleEditSpecialty);
+
+    router.get('/users/edit/:id', auth.checkLoggedIn, customer.getEditCustomer);
+    router.post('/users/edit/:id', auth.checkLoggedIn, customer.postEditCustomer);
+    router.post('/send-otp', auth.postSendOTP);
+
     router.get('/login', auth.checkLoggedOut, auth.getLogin);
 
-    router.post('/login', function (req, res, next) {
-        passport.authenticate('local', function (err, user, info) {
+    router.post('/login', function(req, res, next) {
+        passport.authenticate('local', function(err, user, info) {
             if (err) {
                 return next(err);
             }
@@ -198,7 +205,7 @@ let initRoutes = (app) => {
                 return res.redirect('/login');
             }
 
-            req.logIn(user, function (err) {
+            req.logIn(user, function(err) {
                 if (err) {
                     return next(err);
                 }

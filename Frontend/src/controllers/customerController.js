@@ -10,7 +10,7 @@ const statusPendingId = 3;
 const statusFailedId = 2;
 const statusSuccessId = 1;
 
-let getManageCustomersPage = async (req, res) => {
+let getManageCustomersPage = async(req, res) => {
     try {
         let comments = await patientService.getComments();
         return res.render('main/users/admins/manageCustomer.ejs', {
@@ -21,7 +21,7 @@ let getManageCustomersPage = async (req, res) => {
         console.log(e);
     }
 };
-let getInforCustomerById = async (req, res) => {
+let getInforCustomerById = async(req, res) => {
     try {
         let idUser = req.body.id;
         let mess = await userService.getUserById(idUser);
@@ -40,7 +40,7 @@ let getInforCustomerById = async (req, res) => {
         return res.status(500).json(error);
     }
 };
-let deleteCustomerById = async (req, res) => {
+let deleteCustomerById = async(req, res) => {
     try {
         let idUser = req.body.id;
         await userService.deleteUserById(idUser);
@@ -52,7 +52,7 @@ let deleteCustomerById = async (req, res) => {
         return res.status(500).json(error);
     }
 };
-let postChangeStatusPatientForUser = async (req, res) => {
+let postChangeStatusPatientForUser = async(req, res) => {
     try {
         let id = req.body.patientId;
         let status = req.body.status;
@@ -101,7 +101,7 @@ const formatDate = (date) => {
     let parts = date.split('-');
     return `${parts[2]}/${parts[1]}/${parts[0]}`; // Định dạng dd/mm/yyyy
 };
-let getPageInfoUser = async (req, res) => {
+let getPageInfoUser = async(req, res) => {
     try {
         return res.render('main/homepage/InfoUser.ejs', {
             user: req.user,
@@ -111,7 +111,7 @@ let getPageInfoUser = async (req, res) => {
         console.log(e);
     }
 };
-let getForPatientForUser = async (req, res) => {
+let getForPatientForUser = async(req, res) => {
     try {
         let idUser = req.user.id;
         let object = await patientService.getForPatientForUser(idUser);
@@ -124,7 +124,7 @@ let getForPatientForUser = async (req, res) => {
         return res.status(500).json(e);
     }
 };
-let postChangePass = async (req, res) => {
+let postChangePass = async(req, res) => {
     try {
         const { currentPass, newPass, confirmPass } = req.body;
 
@@ -141,7 +141,7 @@ let postChangePass = async (req, res) => {
     }
 };
 
-let postCheckCurrentPass = async (req, res) => {
+let postCheckCurrentPass = async(req, res) => {
     try {
         const { currentPass } = req.body;
         const email = req.user.email; // Assumes email is stored in req.user
@@ -159,7 +159,7 @@ let postCheckCurrentPass = async (req, res) => {
     }
 };
 
-let getInfoBooking = async (req, res) => {
+let getInfoBooking = async(req, res) => {
     try {
         let logs = await patientService.getInfoBooking(req.body.patientId);
         return res.status(200).json(logs);
@@ -168,13 +168,50 @@ let getInfoBooking = async (req, res) => {
         return res.status(500).json(e);
     }
 };
-let getLogsPatient = async (req, res) => {
+let getLogsPatient = async(req, res) => {
     try {
         let logs = await patientService.getLogsPatient(req.body.patientId);
         return res.status(200).json(logs);
     } catch (e) {
         console.log(e);
         return res.status(500).json(e);
+    }
+};
+let getEditCustomer = async(req, res) => {
+    try {
+        const { id, name, email, phone, address, birthday } = req.query;
+        const message = await userService.updateInfor({ id, name, email, phone, address, birthday });
+
+        if (message.errCode === 0) {
+            return res.redirect('/InfoUser');
+        } else {
+            return res.status(400).json({ message: message.errMessage });
+        }
+    } catch (error) {
+        console.log("Error updating password:", error);
+        return res.status(500).json({ error: "Internal server error" });
+    }
+};
+
+let postEditCustomer = async(req, res) => {
+    try {
+        const { id, name, email, phone, address, birthday } = req.body;
+        const result = await userService.updateInfor({ id, name, email, phone, address, birthday });
+
+        if (result.errCode === 0) {
+            return res.send(`
+                <script>
+                    alert('Thông tin người dùng đã được cập nhật thành công.');
+                    window.location.href = '/InfoUser'; // Chuyển hướng đến trang thông tin người dùng
+                </script>
+            `);
+            // return res.redirect('/InfoUser');
+        } else {
+            return res.status(400).json({ message: result.errMessage });
+        }
+    } catch (error) {
+        console.error('Error updating customer:', error);
+        return res.status(500).json({ error: 'Internal server error' });
     }
 };
 module.exports = {
@@ -188,4 +225,6 @@ module.exports = {
     postCheckCurrentPass: postCheckCurrentPass,
     getInfoBooking: getInfoBooking,
     getLogsPatient: getLogsPatient,
+    getEditCustomer: getEditCustomer,
+    postEditCustomer: postEditCustomer,
 };

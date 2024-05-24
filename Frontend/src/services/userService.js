@@ -16,7 +16,7 @@ let salt = 7;
 let createDoctor = (doctor) => {
     doctor.roleId = 2;
     doctor.password = bcrypt.hashSync(doctor.password, salt);
-    return new Promise(async (resolve, reject) => {
+    return new Promise(async(resolve, reject) => {
         let newDoctor = await db.User.create(doctor);
         let item = {
             doctorId: newDoctor.id,
@@ -30,7 +30,7 @@ let createDoctor = (doctor) => {
 };
 
 let getInfoDoctors = () => {
-    return new Promise(async (resolve, reject) => {
+    return new Promise(async(resolve, reject) => {
         try {
             let doctors = await db.User.findAll({
                 where: { roleId: 2 },
@@ -40,7 +40,7 @@ let getInfoDoctors = () => {
                 ],
             });
             await Promise.all(
-                doctors.map(async (doctor) => {
+                doctors.map(async(doctor) => {
                     if (doctor.Doctor_User) {
                         let specialization = await helper.getSpecializationById(doctor.Doctor_User.specializationId);
                         let countBooking = doctor.Patients.length;
@@ -60,7 +60,7 @@ let getInfoDoctors = () => {
     });
 };
 let getInforPatients = () => {
-    return new Promise(async (resolve, reject) => {
+    return new Promise(async(resolve, reject) => {
         try {
             let patients = await db.User.findAll({
                 where: {
@@ -78,7 +78,7 @@ let getInforPatients = () => {
     });
 };
 let findUserByEmail = (email) => {
-    return new Promise(async (resolve, reject) => {
+    return new Promise(async(resolve, reject) => {
         try {
             let user = await db.User.findOne({
                 where: { email: email },
@@ -96,7 +96,7 @@ let comparePassword = (password, user) => {
 };
 
 let findUserById = (id) => {
-    return new Promise(async (resolve, reject) => {
+    return new Promise(async(resolve, reject) => {
         try {
             let user = await db.User.findOne({
                 where: { id: id },
@@ -111,7 +111,7 @@ let findUserById = (id) => {
 };
 
 let getUserById = (idUser) => {
-    return new Promise(async (resolve, reject) => {
+    return new Promise(async(resolve, reject) => {
         try {
             if (!idUser) {
                 resolve({
@@ -140,6 +140,7 @@ let getUserById = (idUser) => {
         }
     });
 };
+
 function stringToDate(_date, _format, _delimiter) {
     let formatLowerCase = _format.toLowerCase();
     let formatItems = formatLowerCase.split(_delimiter);
@@ -153,7 +154,7 @@ function stringToDate(_date, _format, _delimiter) {
 }
 
 let getInfoStatistical = (month) => {
-    return new Promise(async (resolve, reject) => {
+    return new Promise(async(resolve, reject) => {
         try {
             let year = moment().year();
             let startDate = Date.parse(stringToDate(`01/${month}/${year}`, 'dd/MM/yyyy', '/'));
@@ -198,7 +199,7 @@ let getInfoStatistical = (month) => {
                         patientId: _.map(v, 'id'),
                     }))
                     .value();
-                let doctorObject = _.maxBy(bestDoctorIdArr, function (o) {
+                let doctorObject = _.maxBy(bestDoctorIdArr, function(o) {
                     return o.patientId.length;
                 });
                 bestDoctor = await db.User.findOne({
@@ -222,12 +223,11 @@ let getInfoStatistical = (month) => {
     });
 };
 
-let getInfoDoctorChart = async (month, doctorId) => {
-    return new Promise(async (resolve, reject) => {
+let getInfoDoctorChart = async(month, doctorId) => {
+    return new Promise(async(resolve, reject) => {
         try {
-            let year = moment().year();
-            let startDate = Date.parse(stringToDate(`01/${month}/${year}`, 'dd/MM/yyyy', '/'));
-            let endDate = Date.parse(stringToDate(`31/${month}/${year}`, 'dd/MM/yyyy', '/'));
+            let startDate = Date.parse(stringToDate(`01/${month}/2024`, 'dd/MM/yyyy', '/'));
+            let endDate = Date.parse(stringToDate(`31/${month}/2024`, 'dd/MM/yyyy', '/'));
             let patients = await db.Patient.findAndCountAll({
                 attributes: ['id', 'doctorId', 'statusId', 'isSentForms'],
                 where: {
@@ -245,7 +245,7 @@ let getInfoDoctorChart = async (month, doctorId) => {
 };
 
 let createAllDoctorsSchedule = () => {
-    return new Promise(async (resolve, reject) => {
+    return new Promise(async(resolve, reject) => {
         try {
             let timeArr = [
                 '08:00 - 09:00',
@@ -292,7 +292,7 @@ let createAllDoctorsSchedule = () => {
                     await Promise.all(
                         doctors.map((doctor) => {
                             sevenDaySchedule.map((day) => {
-                                timeArr.map(async (time) => {
+                                timeArr.map(async(time) => {
                                     let schedule = {
                                         doctorId: doctor.id,
                                         date: day,
@@ -319,7 +319,7 @@ let createAllDoctorsSchedule = () => {
 };
 
 let getAllDoctorsSchedule = () => {
-    return new Promise(async (resolve, reject) => {
+    return new Promise(async(resolve, reject) => {
         try {
             let schedules = await db.Schedule.findAll({
                 attributes: ['doctorId', 'date', 'time'],
@@ -332,7 +332,7 @@ let getAllDoctorsSchedule = () => {
     });
 };
 let getAllUsers = () => {
-    return new Promise(async (resolve, reject) => {
+    return new Promise(async(resolve, reject) => {
         try {
             let supporters = await db.User.findAll({
                 where: { roleId: 3 },
@@ -344,8 +344,8 @@ let getAllUsers = () => {
         }
     });
 };
-let getAllCodeService = async (typeInput) => {
-    return new Promise(async (resolve, reject) => {
+let getAllCodeService = async(typeInput) => {
+    return new Promise(async(resolve, reject) => {
         try {
             if (!typeInput) {
                 resolve({
@@ -372,7 +372,7 @@ let getAllCodeService = async (typeInput) => {
     });
 };
 let hashUserPassword = (password) => {
-    return new Promise(async (resolve, reject) => {
+    return new Promise(async(resolve, reject) => {
         try {
             var hashPassword = await bcrypt.hashSync(password, salt);
             resolve(hashPassword); //thay vi dung return
@@ -381,8 +381,8 @@ let hashUserPassword = (password) => {
         }
     });
 };
-let updateUser = async (data) => {
-    return new Promise(async (resolve, reject) => {
+let updateUser = async(data) => {
+    return new Promise(async(resolve, reject) => {
         try {
             if (!data.email) {
                 resolve({
@@ -420,8 +420,8 @@ let updateUser = async (data) => {
         }
     });
 };
-let updateUserDataFile = async (data, filePath) => {
-    return new Promise(async (resolve, reject) => {
+let updateUserDataFile = async(data, filePath) => {
+    return new Promise(async(resolve, reject) => {
         try {
             if (!data.email) {
                 resolve({
@@ -465,8 +465,8 @@ let updateUserDataFile = async (data, filePath) => {
         }
     });
 };
-let updateProfile = async (data) => {
-    return new Promise(async (resolve, reject) => {
+let updateProfile = async(data) => {
+    return new Promise(async(resolve, reject) => {
         try {
             if (!data.id) {
                 resolve({
@@ -509,7 +509,7 @@ let updateProfile = async (data) => {
     });
 };
 let checkUserEmail = (userEmail) => {
-    return new Promise(async (resolve, reject) => {
+    return new Promise(async(resolve, reject) => {
         try {
             let user = await db.User.findOne({
                 where: { email: userEmail },
@@ -524,8 +524,8 @@ let checkUserEmail = (userEmail) => {
         }
     });
 };
-let createNewUser = async (data) => {
-    return new Promise(async (resolve, reject) => {
+let createNewUser = async(data) => {
+    return new Promise(async(resolve, reject) => {
         try {
             const emailExists = await checkUserEmail(data.email);
             if (emailExists) {
@@ -558,8 +558,8 @@ let createNewUser = async (data) => {
         }
     });
 };
-let deleteUserById = async (idUser) => {
-    return new Promise(async (resolve, reject) => {
+let deleteUserById = async(idUser) => {
+    return new Promise(async(resolve, reject) => {
         try {
             if (!idUser) {
                 resolve({
@@ -579,8 +579,8 @@ let deleteUserById = async (idUser) => {
         }
     });
 };
-let getUserByPhone = async (phone) => {
-    return new Promise(async (resolve, reject) => {
+let getUserByPhone = async(phone) => {
+    return new Promise(async(resolve, reject) => {
         try {
             let customers = await db.User.findAll({
                 where: {
@@ -606,7 +606,7 @@ let getUserByPhone = async (phone) => {
     });
 };
 let updatePassword = (email, currentPass, newPass, confirmPass) => {
-    return new Promise(async (resolve, reject) => {
+    return new Promise(async(resolve, reject) => {
         try {
             if (!email || !currentPass || !newPass || !confirmPass) {
                 resolve({
@@ -648,7 +648,7 @@ let updatePassword = (email, currentPass, newPass, confirmPass) => {
                     return;
                 }
 
-                bcrypt.hash(newPass, salt, async (err, hashedPassword) => {
+                bcrypt.hash(newPass, salt, async(err, hashedPassword) => {
                     if (err) {
                         reject(err);
                         return;
@@ -672,7 +672,7 @@ let updatePassword = (email, currentPass, newPass, confirmPass) => {
 };
 
 let checkCurrentPassword = (email, currentPass) => {
-    return new Promise(async (resolve, reject) => {
+    return new Promise(async(resolve, reject) => {
         try {
             let user = await db.User.findOne({ where: { email } });
 
@@ -690,12 +690,52 @@ let checkCurrentPassword = (email, currentPass) => {
                 resolve({ correct: passwordMatch });
             });
         } catch (error) {
-            console.error('Error checking current password:', error);
+            console.error("Error checking current password:", error);
             resolve({ correct: false });
         }
     });
 };
 
+let updateInfor = async(data) => {
+    return new Promise(async(resolve, reject) => {
+        try {
+            if (!data.email) {
+                resolve({
+                    errCode: 2,
+                    errMessage: 'Missing required Parameter!',
+                });
+            }
+            let user = await db.User.findOne({
+                where: { email: data.email },
+                raw: false,
+            });
+            if (!user) {
+                resolve({
+                    errCode: 1,
+                    errMessage: `User's not found!`,
+                });
+            } else {
+                // Update user information with provided data
+                user.name = data.name;
+                user.address = data.address;
+                user.phone = data.phone;
+                // user.birthday = data.birthday;
+                // Save the updated user object
+                await user.save();
+                resolve({
+                    errCode: 0,
+                    errMessage: 'Update user information successfully!',
+                });
+            }
+        } catch (error) {
+            console.error('Error updating user information:', error);
+            reject({
+                errCode: 3,
+                errMessage: 'Failed to update user information!',
+            });
+        }
+    });
+};
 module.exports = {
     createDoctor: createDoctor,
     getInfoDoctors: getInfoDoctors,
@@ -717,4 +757,5 @@ module.exports = {
     getUserByPhone: getUserByPhone,
     updatePassword: updatePassword,
     checkCurrentPassword: checkCurrentPassword,
+    updateInfor: updateInfor,
 };
