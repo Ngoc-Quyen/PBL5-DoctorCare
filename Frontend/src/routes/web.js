@@ -72,9 +72,9 @@ let initRoutes = (app) => {
     router.get('/all-specializations', home.getPageAllSpecializations);
     router.get('/InfoUser', customer.getPageInfoUser);
     router.get('/InfoBooked', home.getPageInfoBooked);
-
     // router.get('/cancel', home.getPageCancel);
     // router.get('/canceled', home.getPageCanceled);
+
     // router.get('/changePass', home.getPageChangePass);
 
     router.get('/webhook', bot.getWebhookFB);
@@ -173,12 +173,14 @@ let initRoutes = (app) => {
     router.post('/admin/manage/booking-date', auth.checkLoggedIn, admin.getForPatientsByDateTabs);
 
     router.post('/user/get-patients-for-user', auth.checkLoggedIn, customer.getForPatientForUser);
-    router.post('/user/change-status-patient-for -user', auth.checkLoggedIn, customer.postChangeStatusPatientForUser);
+    router.post('/user/change-status-patient-for-user', auth.checkLoggedIn, customer.postChangeStatusPatientForUser);
+    router.post('/user/get-Doctor-patient', auth.checkLoggedIn, customer.getInfoBooking);
     // router.post('/user/get-patients-for-user', auth.checkLoggedIn, admin.getForPatientsTabs);
     // router.post('/user/change-status-patient-for -user', auth.checkLoggedIn, customer.postChangeStatusPatientForUser);
 
     router.post('/api/get-info-doctor-by-id', doctor.getInfoDoctorById);
     router.post('/api/get-detail-patient-by-id', home.getDetailPatientBooking);
+    router.post('/user/get-logs-patient', auth.checkLoggedIn, customer.getLogsPatient);
 
     router.delete('/admin/delete/doctor', auth.checkLoggedIn, admin.deleteDoctorById);
     router.delete('/admin/delete/specialization', auth.checkLoggedIn, admin.deleteSpecializationById);

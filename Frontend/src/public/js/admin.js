@@ -939,6 +939,7 @@ function loadNewPatientsForAdmin() {
         },
     });
 }
+
 function loadPatientsByDate() {
     $('#btn-search-date').on('click', function (e) {
         $.ajax({
@@ -1088,6 +1089,7 @@ function callAjaxRenderModalInfo(patientId, option) {
             $('#patientReason').text(data.patient.description);
             $('#patientAddress').text(data.patient.address);
             console.log('data.ExtraInfo from admin.js: ', data.ExtraInfo);
+
             if (data.ExtraInfo) {
                 $('#patientHistoryBreath').text(data.ExtraInfo.historyBreath);
                 $('#patientMoreInfo').text(data.ExtraInfo.moreInfo);
@@ -1584,6 +1586,7 @@ function handleFindStatisticalAdmin() {
         statisticalAdmin($('#monthAnalyse').val());
     });
 }
+
 function searchCustomerByPhone() {
     $('#btnSearch').on('click', function () {
         event.preventDefault(); // Ngăn chặn hành động mặc định của thẻ <a>

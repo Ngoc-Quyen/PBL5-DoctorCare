@@ -122,6 +122,10 @@ let getContactPage = (req, res) => {
 let getPostsWithPagination = async (req, res) => {
     let role = 'nope';
     let object = await postService.getPostsPagination(1, +process.env.LIMIT_GET_POST, role);
+
+    // In ra giá trị của biến object
+    console.log(object);
+
     return res.render('main/homepage/allPostsPagination.ejs', {
         posts: object.posts,
         total: object.total,
@@ -347,6 +351,8 @@ let getPageCanceled = async (req, res) => {
 };
 
 module.exports = {
+    getPageCancel: getPageCancel,
+    getPageCanceled: getPageCanceled,
     getHomePage: getHomePage,
     getUserPage: getUserPage,
     getDetailSpecializationPage: getDetailSpecializationPage,

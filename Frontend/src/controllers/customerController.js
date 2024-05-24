@@ -5,14 +5,12 @@ import postService from '../services/postService';
 import patientService from '../services/patientService';
 import doctorService from './../services/doctorService';
 
-
-
 const statusNewId = 4;
 const statusPendingId = 3;
 const statusFailedId = 2;
 const statusSuccessId = 1;
 
-let getManageCustomersPage = async(req, res) => {
+let getManageCustomersPage = async (req, res) => {
     try {
         let comments = await patientService.getComments();
         return res.render('main/users/admins/manageCustomer.ejs', {
@@ -23,7 +21,7 @@ let getManageCustomersPage = async(req, res) => {
         console.log(e);
     }
 };
-let getInforCustomerById = async(req, res) => {
+let getInforCustomerById = async (req, res) => {
     try {
         let idUser = req.body.id;
         let mess = await userService.getUserById(idUser);
@@ -42,7 +40,7 @@ let getInforCustomerById = async(req, res) => {
         return res.status(500).json(error);
     }
 };
-let deleteCustomerById = async(req, res) => {
+let deleteCustomerById = async (req, res) => {
     try {
         let idUser = req.body.id;
         await userService.deleteUserById(idUser);
@@ -54,7 +52,7 @@ let deleteCustomerById = async(req, res) => {
         return res.status(500).json(error);
     }
 };
-let postChangeStatusPatientForUser = async(req, res) => {
+let postChangeStatusPatientForUser = async (req, res) => {
     try {
         let id = req.body.patientId;
         let status = req.body.status;
@@ -100,16 +98,17 @@ let postChangeStatusPatientForUser = async(req, res) => {
     }
 };
 
-let getPageInfoUser = async(req, res) => {
+let getPageInfoUser = async (req, res) => {
     try {
         return res.render('main/homepage/InfoUser.ejs', {
             user: req.user,
+            formatDate: formatDate, // Truyền hàm formatDate vào view
         });
     } catch (e) {
         console.log(e);
     }
 };
-let getForPatientForUser = async(req, res) => {
+let getForPatientForUser = async (req, res) => {
     try {
         let idUser = req.user.id;
         let object = await patientService.getForPatientForUser(idUser);
@@ -134,8 +133,8 @@ let postChangePass = async (req, res) => {
             return res.status(400).json({ message: message.errMessage });
         }
     } catch (error) {
-        console.log("Error updating password:", error);
-        return res.status(500).json({ error: "Internal server error" });
+        console.log('Error updating password:', error);
+        return res.status(500).json({ error: 'Internal server error' });
     }
 };
 
@@ -152,8 +151,8 @@ let postCheckCurrentPass = async (req, res) => {
             return res.json({ correct: false });
         }
     } catch (error) {
-        console.error("Error checking current password:", error);
-        return res.status(500).json({ error: "Internal server error." });
+        console.error('Error checking current password:', error);
+        return res.status(500).json({ error: 'Internal server error.' });
     }
 };
 
@@ -166,6 +165,4 @@ module.exports = {
     getForPatientForUser: getForPatientForUser,
     postChangePass: postChangePass,
     postCheckCurrentPass: postCheckCurrentPass,
-   
-    
 };

@@ -27,6 +27,14 @@ let getInfoBooking = (id) => {
             if (!patient) {
                 reject(`Can't get patient with id = ${id}`);
             }
+            let reasonCancel = await db.AdminLog.findOne({
+                where: { patientId: patient.id },
+                attributes: ['id', 'content', 'updatedAt'],
+            });
+            let historyResult = await db.ExtraInfo.findOne({
+                where: { patientId: patient.id },
+                attributes: ['id', 'historyBreath', 'moreInfo'],
+            });
             let doctor = await db.User.findOne({
                 where: { id: patient.doctorId },
                 attributes: ['name', 'avatar'],
@@ -36,6 +44,9 @@ let getInfoBooking = (id) => {
             patient.setDataValue('doctorAvatar', doctor.avatar);
             patient.setDataValue('patientTime', patient.timeBooking);
             patient.setDataValue('patientDate', patient.dateBooking);
+            patient.setDataValue('contentCancel', reasonCancel.content);
+            patient.setDataValue('resultPatient', historyResult.historyBreath);
+            patient.setDataValue('moreInfoPatient', historyResult.moreInfo);
             resolve(patient);
         } catch (e) {
             reject(e);
@@ -144,19 +155,19 @@ let changeStatusPatientForUser = (data, logs) => {
             });
 
             let user = await db.User.findOne({
-                where: { id: patient.UserId },
+                where: { id: patient.userId },
                 attributes: ['name', 'avatar', 'id'],
             });
 
-            //update tổng số lượt đặt bác sĩ khi status = thành công
-            if (data.statusId === statusSuccessId) {
-                let schedule = await db.Schedule.findOne({
-                    where: { userId: patient.userId, time: patient.timeBooking, date: patient.dateBooking },
-                });
+            // //update tổng số lượt đặt bác sĩ khi status = thành công
+            // if (data.statusId === statusSuccessId) {
+            //     let schedule = await db.Schedule.findOne({
+            //         where: { userId: patient.userId, time: patient.timeBooking, date: patient.dateBooking },
+            //     });
 
-                let sum = +schedule.sumBooking;
-                await schedule.update({ sumBooking: sum + 1 });
-            }
+            //     let sum = +schedule.sumBooking;
+            //     await schedule.update({ sumBooking: sum + 1 });
+            // }
 
             //update tổng số lượt cho user khi status = hủy
             if (data.statusId === statusFailedId) {
@@ -441,6 +452,7 @@ let getExtanInfoByPatientId = async (patientId) => {
         }
     });
 };
+
 module.exports = {
     getInfoBooking: getInfoBooking,
     getForPatientsTabs: getForPatientsTabs,

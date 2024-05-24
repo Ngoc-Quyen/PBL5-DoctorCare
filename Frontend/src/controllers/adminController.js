@@ -461,10 +461,11 @@ let postChangeStatusPatient = async (req, res) => {
 
         let patient = await patientService.changeStatusPatient(data, logs, historyBreath, moreInfo);
         let extrainfor = await patientService.updateExtrainfos(id, historyBreath, moreInfo);
+
         return res.status(200).json({
             message: 'success',
             patient: patient,
-            extrainfos: extrainfor,
+            // extrainfos: extrainfor,
         });
     } catch (e) {
         console.log(e);

@@ -42,7 +42,7 @@ session.configSession(app);
 configViewEngine(app);
 
 // Middleware để lưu userId vào session sau khi user đăng nhập
-app.use(function (req, res, next) {
+app.use(function(req, res, next) {
     if (req.session.user) {
         req.session.userId = req.session.user.id;
     }

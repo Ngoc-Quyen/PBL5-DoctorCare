@@ -30,9 +30,11 @@
                         function redirectToHome() {
                             window.location.href = "/";
                         }
+
                         function redirectToSpecializations() {
                             window.location.href = "/all-specializations";
                         }
+
                         function redirectToDoctors() {
                             window.location.href = "/all-doctors %>";
                         }
@@ -57,6 +59,7 @@
                     <% } else { %>
                         <div class="col-md-3 mt-3 d-none d-md-flex justify-content-around align-self-center"
                             id="notLoggedIn">
+
                             <div class="d-flex flex-column">
                                 <a href="/login" class="btn btn-design1 ">Đăng nhập</a>
                             </div>
@@ -106,7 +109,7 @@
                                         <div><a href="/detail/doctor/<%= doctor.User.id %>">Xem thêm...</a></div>
                                     </div>
                                 </div>
-                                <div class="right-content col-7">
+                                <div class="right-content col-7" style="overflow:auto;">
                                     <div>
                                         <div class="row header-booking">
                                             <label for="day-book-spe" class="label-booking">LỊCH HẸN</label>
@@ -124,7 +127,8 @@
                                         class=" d-flex flex-row  flex-wrap text-decoration-none">
                                         <% if(doctor.getDataValue('schedule').length===0){ %>
                                             <div class="no-schedule">
-                                                Bác sĩ "<%= doctor.User.name %>" không có cuộc hẹn vào ngày
+                                                Bác sĩ "
+                                                <%= doctor.User.name %>" không có cuộc hẹn vào ngày
                                                     <b>
                                                         <%= sevenDaySchedule[0] %>
                                                     </b>. Vui lòng chọn ngày khác.
@@ -149,6 +153,7 @@
                                                                     Không có lịch khám theo lịch trình trong khung thời
                                                                     gian hiện tại. Vui lòng chọn các lịch khám đã lên
                                                                     lịch tiếp theo.
+
                                                                 </div>
                                                                 <% } %>
                                                                     <% }) %>
@@ -171,10 +176,13 @@
                     <div class="col-4 mt-3">
                         THÔNG TIN:
                         <hr>
-                        <div> CHUYÊN KHOA : <%= specialization.name %>
+                        <div> CHUYÊN KHOA :
+                            <%= specialization.name %>
                         </div>
                         <% if(post) { %>
-                            <div class="content-description-spe pt-2"><%- post.contentHTML %> </div>
+                            <div class="content-description-spe pt-2">
+                                <%- post.contentHTML %>
+                            </div>
                             <% } %>
                                 <hr>
                                 <div class="spe-category">
@@ -340,6 +348,7 @@
                         <div class="modal-body text-center align-items-center">
                             <h5 class="modal-title mx-auto" id="exampleModalLabel">Bạn chưa đăng nhập. Vui lòng đăng
                                 nhập..</h5>
+
                         </div>
                         <div class="modal-footer justify-content-center">
                             <a href="/login" class="btn btn-primary">Đến trang đăng nhập</a>

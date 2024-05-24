@@ -1,4 +1,6 @@
 <% extend("../app.ejs") %>
+    <script src="/js/homepage.js">
+    </script>
     <section class="mt-0" style="background-color: #ABF3FD; height: 60px; display: flex; align-items: center;">
         <div class="container-fluid">
             <div class="row align-items-center">
@@ -85,57 +87,55 @@
             </div>
         </div>
     </section>
-    <section class="detail-all-posts mt-3">
+    <div class="container">
         <div class="container">
-            <div class="container">
-                <div class="row">
-                    <div class="col-8 ">
-                        <h2></h2>
-                        <hr>
-                        <div id="list-posts-client">
-                            <% posts.rows.forEach(function(post) { %>
-                                <a class="text-decoration-none" href="/detail/post/<%= post.id %>">
-                                    <div class=" mb-5 d-flex flex-row">
-                                        <div class="img-post col-4">
-                                            <img
-                                                src="https://cdn.bookingcare.vn/fr/w500/2018/06/18/113541benh-vien-bao-son.jpg">
-                                        </div>
-                                        <div class="col-8 d-flex flex-column">
-                                            <h3 class="show-title-post">
-                                                <%= post.title %>
-                                            </h3>
-                                            <div class="show-content-post" style="color: black">
-                                                <%= striptags(post.contentHTML) %>
-                                            </div>
+            <div class="row">
+                <div class="col-8 ">
+                    <h2></h2>
+                    <hr>
+                    <div id="list-posts-client">
+                        <% posts.rows.forEach(function(post) { %>
+                            <a class="text-decoration-none" href="/detail/post/<%= post.id %>">
+                                <div class=" mb-5 d-flex flex-row">
+                                    <div class="img-post col-4">
+                                        <img
+                                            src="https://cdn.bookingcare.vn/fr/w500/2018/06/18/113541benh-vien-bao-son.jpg">
+                                    </div>
+                                    <div class="col-8 d-flex flex-column">
+                                        <h3 class="show-title-post">
+                                            <%= post.title %>
+                                        </h3>
+                                        <div class="show-content-post" style="color: black">
+                                            <%= striptags(post.contentHTML) %>
                                         </div>
                                     </div>
+                                </div>
+                            </a>
+                            <% })%>
+                    </div>
+
+                    <nav aria-label="navigation" id="paginationForPostClient" data-total="<%= total %>">
+                        <ul class="pagination">
+                            <li class="page-item disabled li-pre-client">
+                                <a class="page-link page-post-pre-client" href="#" aria-label="Previous">
+                                    <span aria-hidden="true">&laquo; Trước</span>
                                 </a>
-                                <% })%>
-                        </div>
+                            </li>
 
-                        <nav aria-label="navigation" id="paginationForPostClient" data-total="<%= total %>">
-                            <ul class="pagination">
-                                <li class="page-item disabled li-pre-client">
-                                    <a class="page-link page-post-pre-client" href="#" aria-label="Previous">
-                                        <span aria-hidden="true">&laquo; Trước</span>
-                                    </a>
-                                </li>
-
-                                <li class="page-item ml-3 li-next-client">
-                                    <a class="page-link page-post-next-client" href="#" aria-label="Next">
-                                        <span aria-hidden="true">Sau &raquo; </span>
-                                    </a>
-                                </li>
-                            </ul>
-                        </nav>
-                    </div>
-                    <div class="col-4 mt-3">
-                        <input type="text" class="form-control" id="searchPostClient"
-                            placeholder="Tìm kiếm bài đăng...">
-                    </div>
+                            <li class="page-item ml-3 li-next-client">
+                                <a class="page-link page-post-next-client" href="#" aria-label="Next">
+                                    <span aria-hidden="true">Sau &raquo; </span>
+                                </a>
+                            </li>
+                        </ul>
+                    </nav>
+                </div>
+                <div class="col-4 mt-3">
+                    <input type="text" class="form-control" id="searchPostClient" placeholder="Tìm kiếm bài đăng...">
                 </div>
             </div>
         </div>
+    </div>
     </section>
     <footer class="sec-foot">
         <div class="container">
