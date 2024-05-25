@@ -118,13 +118,41 @@ let getDetailPostPage = async(req, res) => {
 let getContactPage = (req, res) => {
     return res.render('main/homepage/contact.ejs');
 };
+let getAllPosts = async(req, res) => {
+    try {
+        let page = req.query.page || 1; // Lấy trang từ query string, mặc định là trang 1
+        let limit = 10; // Số bài đăng trên mỗi trang
+        let offset = (page - 1) * limit; // Offset để lấy bài đăng cho trang hiện tại
+
+        // Sử dụng hàm trong service để lấy bài đăng cho trang hiện tại
+        let posts = await postService.getAllPosts(offset, limit);
+
+        // Đếm tổng số bài đăng
+        let totalPosts = await postService.countTotalPosts();
+
+        // Tính tổng số trang
+        let totalPages = Math.ceil(totalPosts / limit);
+
+        // Truyền các thông tin về phân trang tới template
+        return res.render('main/homepage/allPostsPagination.ejs', {
+            posts: posts,
+            currentPage: page,
+            totalPages: totalPages,
+            striptags: require('striptags') // Bạn có thể sử dụng thư viện striptags để loại bỏ thẻ HTML
+        });
+    } catch (e) {
+        console.error(e);
+        return res.status(500).send('Internal Server Error');
+    }
+};
+
 
 let getPostsWithPagination = async(req, res) => {
     let role = 'nope';
     let object = await postService.getPostsPagination(1, +process.env.LIMIT_GET_POST, role);
 
     // In ra giá trị của biến object
-    console.log(object);
+    console.log('ta là object', object);
 
     return res.render('main/homepage/allPostsPagination.ejs', {
         posts: object.posts,
@@ -429,5 +457,6 @@ module.exports = {
 
     getPageInfoBooked: getPageInfoBooked,
     getPageAllSpecializations: getPageAllSpecializations,
-    searchHandler: searchHandler
+    searchHandler: searchHandler,
+    getAllPosts: getAllPosts
 };

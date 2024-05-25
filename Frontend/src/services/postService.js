@@ -6,14 +6,14 @@ import { reject, resolve } from 'bluebird';
 import { where } from 'sequelize';
 
 let getAllPosts = () => {
-    return new Promise(async (resolve, reject) => {
+    return new Promise(async(resolve, reject) => {
         try {
             let posts = await db.Post.findAll({
-                attributes: ['id', 'title', 'writerId', 'createdAt', 'contentMarkdown'],
+                attributes: ['id', 'title', 'contentHTML', 'writerId', 'createdAt', 'contentMarkdown'],
                 // raw: true,
             });
             await Promise.all(
-                posts.map(async (post) => {
+                posts.map(async(post) => {
                     let user = await helper.getcustomerById(post.writerId);
                     let dateClient = helper.convertDateClient(post.createdAt);
                     post.setDataValue('writerName', user.name);
@@ -28,9 +28,16 @@ let getAllPosts = () => {
         }
     });
 };
-
+let countTotalPosts = async() => {
+    try {
+        let count = await db.Post.count();
+        return count;
+    } catch (e) {
+        throw e;
+    }
+};
 let postCreatePost = (item) => {
-    return new Promise(async (resolve, reject) => {
+    return new Promise(async(resolve, reject) => {
         try {
             let post = await db.Post.create(item);
 
@@ -55,7 +62,7 @@ let postCreatePost = (item) => {
 };
 
 let getDetailPostPage = (id) => {
-    return new Promise(async (resolve, reject) => {
+    return new Promise(async(resolve, reject) => {
         try {
             let post = await db.Post.findOne({
                 where: { id: id },
@@ -80,7 +87,7 @@ let getDetailPostPage = (id) => {
 };
 
 let getPostsPagination = (page, limit, role) => {
-    return new Promise(async (resolve, reject) => {
+    return new Promise(async(resolve, reject) => {
         try {
             let posts = '';
             //only get bài đăng y khoa
@@ -98,7 +105,9 @@ let getPostsPagination = (page, limit, role) => {
                         'updatedAt',
                         'isActive',
                     ],
-                    order: [['createdAt', 'DESC']],
+                    order: [
+                        ['createdAt', 'DESC']
+                    ],
                 });
             } else {
                 if (role.roleName === 'doctor') {
@@ -118,7 +127,9 @@ let getPostsPagination = (page, limit, role) => {
                             'updatedAt',
                             'isActive',
                         ],
-                        order: [['createdAt', 'DESC']],
+                        order: [
+                            ['createdAt', 'DESC']
+                        ],
                     });
                 } else {
                     posts = await db.Post.findAndCountAll({
@@ -138,7 +149,9 @@ let getPostsPagination = (page, limit, role) => {
                             'updatedAt',
                             'isActive',
                         ],
-                        order: [['createdAt', 'DESC']],
+                        order: [
+                            ['createdAt', 'DESC']
+                        ],
                     });
                 }
             }
@@ -146,7 +159,7 @@ let getPostsPagination = (page, limit, role) => {
             let total = Math.ceil(posts.count / limit);
 
             await Promise.all(
-                posts.rows.map(async (post) => {
+                posts.rows.map(async(post) => {
                     let user = await helper.getcustomerById(post.writerId);
                     let dateClient = helper.convertDateClient(post.createdAt);
                     post.setDataValue('writerName', user.name);
@@ -165,7 +178,7 @@ let getPostsPagination = (page, limit, role) => {
 };
 
 let deletePostById = (id) => {
-    return new Promise(async (resolve, reject) => {
+    return new Promise(async(resolve, reject) => {
         try {
             let post = await db.Post.findOne({
                 where: { id: id },
@@ -187,7 +200,7 @@ let deletePostById = (id) => {
 };
 
 let putUpdatePost = (item) => {
-    return new Promise(async (resolve, reject) => {
+    return new Promise(async(resolve, reject) => {
         try {
             let post = await db.Post.findOne({
                 where: { id: item.id },
@@ -218,7 +231,7 @@ let putUpdatePost = (item) => {
 };
 
 let doneComment = (id) => {
-    return new Promise(async (resolve, reject) => {
+    return new Promise(async(resolve, reject) => {
         try {
             let comment = await db.Comment.findOne({
                 where: { id: id },
@@ -232,7 +245,7 @@ let doneComment = (id) => {
 };
 
 let getPostByWriteId = (writerId) => {
-    return new Promise(async (resolve, reject) => {
+    return new Promise(async(resolve, reject) => {
         try {
             let posts = await db.Post.findAll({
                 where: {
@@ -255,4 +268,5 @@ module.exports = {
     putUpdatePost: putUpdatePost,
     doneComment: doneComment,
     getPostByWriteId: getPostByWriteId,
+    countTotalPosts: countTotalPosts
 };

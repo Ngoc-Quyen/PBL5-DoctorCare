@@ -105,7 +105,8 @@ let initRoutes = (app) => {
     router.get('/detail/post/:id', home.getDetailPostPage);
     router.get('/booking-info/:id', home.getInfoBookingPage);
 
-    router.get('/all-posts', home.getPostsWithPagination);
+    // router.get('/all-posts', home.getPostsWithPagination);
+    router.get('/all-posts', home.getAllPosts);
     router.get('/posts/search/', home.getPostSearch);
 
     router.get('/users/manage/specialization', auth.checkLoggedIn, admin.getSpecializationPage);

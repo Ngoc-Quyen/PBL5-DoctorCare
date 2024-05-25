@@ -806,6 +806,15 @@ pre {
     -webkit-line-clamp: 3;
 }
 
+.show-content-post {
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 3;
+    /* Số dòng bạn muốn hiển thị */
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
 .detail-info-booking .booking-success {
     min-height: 400px;
     height: auto;

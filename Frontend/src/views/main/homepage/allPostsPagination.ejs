@@ -31,9 +31,11 @@
                         function redirectToHome() {
                             window.location.href = "/";
                         }
+
                         function redirectToSpecializations() {
                             window.location.href = "/all-specializations";
                         }
+
                         function redirectToDoctors() {
                             window.location.href = "/all-doctors %>";
                         }
@@ -57,8 +59,7 @@
                         </a>
                     </div>
                     <% } else { %>
-                        <div class="col-md-3 mt-3 d-none d-md-flex justify-content-around align-self-center"
-                            id="notLoggedIn">
+                        <div class="col-md-3 mt-3 d-none d-md-flex justify-content-around align-self-center" id="notLoggedIn">
                             <div class="d-flex flex-column">
                                 <a href="/login" class="btn btn-design1 ">Đăng nhập</a>
                             </div>
@@ -94,41 +95,44 @@
                     <h2></h2>
                     <hr>
                     <div id="list-posts-client">
-                        <% posts.rows.forEach(function(post) { %>
-                            <a class="text-decoration-none" href="/detail/post/<%= post.id %>">
-                                <div class=" mb-5 d-flex flex-row">
-                                    <div class="img-post col-4">
-                                        <img
-                                            src="https://cdn.bookingcare.vn/fr/w500/2018/06/18/113541benh-vien-bao-son.jpg">
-                                    </div>
-                                    <div class="col-8 d-flex flex-column">
-                                        <h3 class="show-title-post">
-                                            <%= post.title %>
-                                        </h3>
-                                        <div class="show-content-post" style="color: black">
-                                            <%= striptags(post.contentHTML) %>
+                        <% if (posts.length > 0) { %>
+                            <% posts.forEach(function(post) { %>
+
+                                <a class="text-decoration-none" href="/detail/post/<%= post.id %>">
+                                    <div class="mb-5 d-flex flex-row">
+
+                                        <div class="col-8 d-flex flex-column">
+                                            <h3 class="show-title-post">
+                                                <%= post.title %>
+                                            </h3>
+                                            <div class="show-content-post" style="color: black">
+                                                <%= striptags(post.contentHTML) %>
+                                            </div>
                                         </div>
                                     </div>
-                                </div>
-                            </a>
-                            <% })%>
+                                </a>
+                                <% }); %>
+                                    <% } else { %>
+                                        <p>Không có bài viết nào.</p>
+                                        <% } %>
                     </div>
 
-                    <nav aria-label="navigation" id="paginationForPostClient" data-total="<%= total %>">
+
+                    <nav aria-label="navigation" id="paginationForPostClient">
                         <ul class="pagination">
-                            <li class="page-item disabled li-pre-client">
+                            <li class="page-item li-pre-client">
                                 <a class="page-link page-post-pre-client" href="#" aria-label="Previous">
                                     <span aria-hidden="true">&laquo; Trước</span>
                                 </a>
                             </li>
-
-                            <li class="page-item ml-3 li-next-client">
+                            <li class="page-item li-next-client">
                                 <a class="page-link page-post-next-client" href="#" aria-label="Next">
-                                    <span aria-hidden="true">Sau &raquo; </span>
+                                    <span aria-hidden="true">Sau &raquo;</span>
                                 </a>
                             </li>
                         </ul>
                     </nav>
+
                 </div>
                 <div class="col-4 mt-3">
                     <input type="text" class="form-control" id="searchPostClient" placeholder="Tìm kiếm bài đăng...">
