@@ -101,6 +101,57 @@ let getForPatientsTabs = async (idDoctor) => {
     });
 };
 
+let getForPatientsByDateTabs = async (idDoctor, date) => {
+    return new Promise(async (resolve, reject) => {
+        try {
+            let newPatients = await db.Patient.findAll({
+                where: {
+                    statusId: statusNewId,
+                    doctorId: idDoctor,
+                    dateBooking: date,
+                },
+                order: [['updatedAt', 'DESC']],
+            });
+
+            let pendingPatients = await db.Patient.findAll({
+                where: {
+                    statusId: statusPendingId,
+                    doctorId: idDoctor,
+                    dateBooking: date,
+                },
+                order: [['updatedAt', 'DESC']],
+            });
+
+            let confirmedPatients = await db.Patient.findAll({
+                where: {
+                    statusId: statusSuccessId,
+                    doctorId: idDoctor,
+                    dateBooking: date,
+                },
+                order: [['updatedAt', 'DESC']],
+            });
+
+            let canceledPatients = await db.Patient.findAll({
+                where: {
+                    statusId: statusFailedId,
+                    doctorId: idDoctor,
+                    dateBooking: date,
+                },
+                order: [['updatedAt', 'DESC']],
+            });
+
+            resolve({
+                newPatients: newPatients,
+                pendingPatients: pendingPatients,
+                confirmedPatients: confirmedPatients,
+                canceledPatients: canceledPatients,
+            });
+        } catch (e) {
+            reject(e);
+        }
+    });
+};
+
 let getForPatientForUser = async (idUser) => {
     return new Promise(async (resolve, reject) => {
         try {
@@ -465,4 +516,5 @@ module.exports = {
     getComments: getComments,
     updateExtrainfos: updateExtrainfos,
     getExtanInfoByPatientId: getExtanInfoByPatientId,
+    getForPatientsByDateTabs: getForPatientsByDateTabs,
 };

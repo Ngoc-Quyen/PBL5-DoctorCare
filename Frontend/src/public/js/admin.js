@@ -941,10 +941,13 @@ function loadNewPatientsForAdmin() {
 }
 
 function loadPatientsByDate() {
-    $('#btn-search-date').on('click', function (e) {
+    $('#btn_SearchBooking').on('click', function (e) {
+        let dateSearch = $('#dateDoctorAppointment').val();
+        console.log('dateSearch: ', $('#dateDoctorAppointment').val());
         $.ajax({
             url: `${window.location.origin}/admin/manage/booking-date`,
             method: 'POST',
+            data: { dateSearch: dateSearch },
             success: function (data) {
                 let countNew = data.object.newPatients.length;
                 let countPending = data.object.pendingPatients.length;
@@ -955,7 +958,11 @@ function loadPatientsByDate() {
                 $('#count-need').text(`${countPending}`);
                 $('#count-confirmed').text(`${countConfirmed}`);
                 $('#count-canceled').text(`${countCanceled}`);
-
+                // Clear the table bodies before appending new data
+                $('#tableNewPatients tbody').empty();
+                $('#tableNeedConfirmPatients tbody').empty();
+                $('#tableConfirmedPatients tbody').empty();
+                $('#tableCancelPatients tbody').empty();
                 let htmlNew,
                     htmlPending,
                     htmlConfirmed,
@@ -1127,14 +1134,10 @@ function addNewRowTablePending(patient) {
                     <td> ${patient.id} - ${patient.name}   </td>
                     <td> ${patient.phone}     </td>
                     <td> ${patient.email}     </td>
-                    <td> ${convertStringToDateClient(patient.updatedAt)}     </td>
+                    <td> ${patient.dateBooking} (${patient.timeBooking})     </td>
                     <td> 
-                    <button  data-patient-id="${
-                        patient.id
-                    }"  class="ml-3 btn btn-warning btn-pending-patient">Xác nhận</button>
-                    <button  type="button" data-patient-id="${
-                        patient.id
-                    }" class="ml-3 btn btn-danger btn-pending-patient-cancel"> Hủy </button>
+                    <button  data-patient-id="${patient.id}"  class="ml-3 btn btn-warning btn-pending-patient">Xác nhận</button>
+                    <button  type="button" data-patient-id="${patient.id}" class="ml-3 btn btn-danger btn-pending-patient-cancel"> Hủy </button>
                     </td>
                 </tr>
                
@@ -1148,11 +1151,9 @@ function addNewRowTableConfirmed(patient) {
                     <td> ${patient.id} - ${patient.name}   </td>
                     <td> ${patient.phone}     </td>
                     <td> ${patient.email}     </td>
-                    <td> ${convertStringToDateClient(patient.updatedAt)}     </td>
+                    <td> ${patient.dateBooking} (${patient.timeBooking})     </td>
                     <td> 
-                    <button  type="button" data-patient-id="${
-                        patient.id
-                    }"  class="ml-3 btn btn-info btn-confirmed-patient"> Thông tin</button>
+                    <button  type="button" data-patient-id="${patient.id}"  class="ml-3 btn btn-info btn-confirmed-patient"> Thông tin</button>
                     </td>
                 </tr>
                 `;
@@ -1165,11 +1166,9 @@ function addNewRowTableCanceled(patient) {
                     <td> ${patient.id} - ${patient.name}   </td>
                     <td> ${patient.phone}     </td>
                     <td> ${patient.email}     </td>
-                    <td> ${convertStringToDateClient(patient.updatedAt)} </td>
+                    <td> ${patient.dateBooking} (${patient.timeBooking}) </td>
                     <td> 
-                    <button   data-patient-id="${
-                        patient.id
-                    }"  class="ml-3 btn btn-primary btn-history-cancel-patient">Lịch sử</button>
+                    <button   data-patient-id="${patient.id}"  class="ml-3 btn btn-primary btn-history-cancel-patient">Lịch sử</button>
                     </td>
                 </tr>
                
