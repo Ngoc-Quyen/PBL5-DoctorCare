@@ -311,6 +311,36 @@ function deleteDoctorById() {
     });
 }
 
+// hàm xóa doctor item
+$(document).ready(function () {
+    // Event delegation to handle click events for dynamically added elements
+    $(document).on('click', '.delete-doctor-info', function (e) {
+        if (!confirm('Xóa bác sĩ này?')) {
+            return;
+        }
+
+        let id = $(this).data('doctor-id');
+        let node = this;
+        $.ajax({
+            method: 'DELETE',
+            url: `${window.location.origin}/admin/delete/doctor`,
+            data: { id: id },
+            success: function (data) {
+                node.closest('tr').remove();
+                alertify.success('Xóa thành công');
+                // Chờ 2 giây và sau đó tải lại trang với đường dẫn mới
+                setTimeout(function () {
+                    window.location.href = '/users/manage/doctor'; // Thay thế '/your-new-url' bằng đường dẫn mới bạn muốn tải lại
+                }, 2000); // 2000 milliseconds = 2 giây
+            },
+            error: function (err) {
+                alertify.error('Đã xảy ra lỗi, vui lòng thử lại sau!');
+                console.log(err);
+            },
+        });
+    });
+});
+
 // function deleteCustomerById() {
 //     $('.delete-customer-info').on('click', function (e) {
 //         if (!confirm('Xóa bệnh nhân này?')) {
@@ -427,7 +457,11 @@ function showModalInfoDoctor() {
                 } else {
                     $('#addressDoctor').val('Chưa cập nhật');
                 }
-                $('#specializationDoctor').val(data.doctor.specializationName);
+                if (data.specializationName) {
+                    $('#specializationDoctor12').val(data.specializationName);
+                } else {
+                    $('#specializationDoctor12').val('Chua cap nhat');
+                }
 
                 if (data.doctor.avatar) {
                     $('#imageDoctor').prepend(`<img class="img-info-clinic" src="${data.doctor.avatar}" />`);
@@ -444,6 +478,47 @@ function showModalInfoDoctor() {
         });
     });
 }
+// hàm show doctor item
+$(document).ready(function () {
+    // Event delegation to handle click events for dynamically added elements
+    $(document).on('click', '.show-doctor-info', function (e) {
+        e.preventDefault();
+        let id = $(this).data('doctor-id');
+        $.ajax({
+            method: 'POST',
+            url: `${window.location.origin}/api/get-info-doctor-by-id`,
+            data: { id: id },
+            success: function (data) {
+                $('#imageDoctor').empty();
+
+                $('#nameDoctor').val(data.doctor.name);
+                if (data.doctor.phone) {
+                    $('#phoneDoctor').val(data.doctor.phone);
+                } else {
+                    $('#phoneDoctor').val('Chưa cập nhật');
+                }
+                if (data.doctor.address) {
+                    $('#addressDoctor').val(data.doctor.address);
+                } else {
+                    $('#addressDoctor').val('Chưa cập nhật');
+                }
+                $('#specializationDoctor12').val(data.specializationName);
+
+                if (data.doctor.avatar) {
+                    $('#imageDoctor').prepend(`<img class="img-info-clinic" src="${data.doctor.avatar}" />`);
+                } else {
+                    $('#imageDoctor').text('Chưa cập nhật');
+                }
+
+                $('#modalInfoDoctor').modal('show');
+            },
+            error: function (error) {
+                console.log(error);
+                alertify.error('Đã xảy ra lỗi, vui lòng thử lại sau!');
+            },
+        });
+    });
+});
 
 // function showModalInfoCustomer() {
 //     $('.show-customer-info').on('click', function (e) {
@@ -521,45 +596,22 @@ $(document).ready(function () {
     });
 });
 
-function updateDoctor() {
-    $('#btnUpdateDoctor').on('click', function (e) {
-        let doctorId = $('#btnUpdateDoctor').data('doctor-id');
+function updateCustomer() {
+    $('#btnUpdateCustomer').on('click', function (e) {
+        let doctorId = $('#btnUpdateCustomer').data('doctor-id');
+        let data = {
+            id: doctorId,
+        };
 
-        let formData = new FormData($('form#formUpdateDoctor')[0]);
-        //contain file upload
-        if ($('#image-clinic').val()) {
-            formData.append('avatar', document.getElementById('image-clinic').files[0]);
-            formData.append('id', doctorId);
-            handleUpdateDoctorNormal(formData);
-        } else {
-            // create without file upload
-            let data = {
-                id: doctorId,
-            };
-            for (let pair of formData.entries()) {
-                data[pair[0]] = pair[1];
-            }
-            handleUpdateDoctorWithoutFile(data);
-        }
+        // Cập nhật URL với giá trị thực tế của doctorId
+        let url = `${window.location.origin}/users/customer/edit/${doctorId}`;
         $.ajax({
             method: 'POST',
-            url: `${window.location.origin}/users/doctor/edit/:id`,
+            url: url,
             data: data,
             success: function (data) {
-                if (data.errCode === 0) {
-                    alertify.success('Cập nhật thông tin thành công');
-                    // Chờ 2 giây và sau đó tải lại trang với đường dẫn mới
-                    setTimeout(function () {
-                        window.location.href = '/users/doctor/edit/:id'; // Thay thế '/your-new-url' bằng đường dẫn mới bạn muốn tải lại
-                    }, 2000); // 2000 milliseconds = 2 giây
-                } else {
-                    alertify.success('Đã xảy ra lỗi khi cập nhật');
-                    // Chờ 2 giây và sau đó tải lại trang với đường dẫn mới
-                    console.log(data.errMessage);
-                    setTimeout(function () {
-                        window.location.href = '/users/doctor/edit/:id'; // Thay thế '/your-new-url' bằng đường dẫn mới bạn muốn tải lại
-                    }, 2000); // 2000 milliseconds = 2 giây
-                }
+                alert('Cập nhật thành công');
+                window.location.href = `${window.location.origin}/users/manage/customer`;
             },
             error: function (error) {
                 alertify.error('Đã xảy ra lỗi, vui lòng thử lại sau!');
@@ -569,38 +621,28 @@ function updateDoctor() {
     });
 }
 
-function handleUpdateDoctorNormal(formData) {
-    $.ajax({
-        method: 'PUT',
-        url: `${window.location.origin}/admin/doctor/update`,
-        data: formData,
-        cache: false,
-        contentType: false,
-        processData: false,
-        success: function (data) {
-            alert('Cập nhâtj thành công');
-            window.location.href = `${window.location.origin}/users/manage/doctor`;
-        },
-        error: function (error) {
-            alertify.error('Đã xảy ra lỗi, vui lòng thử lại sau!');
-            console.log(error);
-        },
-    });
-}
+function updateDoctorFinal() {
+    $('#btnUpdateDoctor').on('click', function (e) {
+        let doctorId = $('#btnUpdateDoctor').data('doctor-id');
+        let data = {
+            id: doctorId,
+        };
 
-function handleUpdateDoctorWithoutFile(data) {
-    $.ajax({
-        method: 'PUT',
-        url: `${window.location.origin}/admin/doctor/update-without-file`,
-        data: data,
-        success: function (data) {
-            alert('Cập nhật thành công');
-            window.location.href = `${window.location.origin}/users/manage/doctor`;
-        },
-        error: function (error) {
-            alertify.error('Đã xảy ra lỗi, vui lòng thử lại sau!');
-            console.log(error);
-        },
+        // Cập nhật URL với giá trị thực tế của doctorId
+        let url = `${window.location.origin}/users/doctor/edit/${doctorId}`;
+        $.ajax({
+            method: 'POST',
+            url: url,
+            data: data,
+            success: function (data) {
+                alert('Cập nhật thành công');
+                window.location.href = `${window.location.origin}/users/manage/doctor`;
+            },
+            error: function (error) {
+                alertify.error('Đã xảy ra lỗi, vui lòng thử lại sau!');
+                console.log(error);
+            },
+        });
     });
 }
 
@@ -1654,6 +1696,7 @@ function updateDoctorTable(doctors) {
     console.log('doctors from admin.js: ', doctors);
     doctors.forEach(function (doctor) {
         const row = `<tr>
+                        <td>${doctor.id}</td>
                         <td>${doctor.name}</td>
                         <td>${doctor.phone}</td>
                         <td>
@@ -1751,7 +1794,7 @@ $(document).ready(function (e) {
     createNewDoctor();
     deleteDoctorById();
     showModalInfoDoctor();
-    updateDoctor();
+    // updateDoctor();
     deleteSpecializationById();
     showPostsForAdmin();
     deletePostById();
@@ -1788,4 +1831,6 @@ $(document).ready(function (e) {
     loadPatientsByDate();
     searchCustomerByPhone();
     searchDoctorBy();
+    updateCustomer();
+    updateDoctorFinal();
 });

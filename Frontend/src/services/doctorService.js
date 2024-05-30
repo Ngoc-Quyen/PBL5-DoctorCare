@@ -288,7 +288,11 @@ let getInfoDoctorById = (id) => {
             });
 
             doctor.setDataValue('specializationName', specialization.name);
-            resolve(doctor);
+            let specializationName = specialization.name;
+            resolve({
+                doctor: doctor,
+                specializationName: specializationName,
+            });
         } catch (e) {
             reject(e);
         }
@@ -371,7 +375,56 @@ let updateDoctorInfo = (data) => {
         }
     });
 };
-
+let updateProfile = async (data) => {
+    return new Promise(async (resolve, reject) => {
+        try {
+            if (!data.id) {
+                resolve({
+                    errCode: 2,
+                    errMessage: 'Missing required Parameter!',
+                });
+            }
+            let doctor = await db.User.findOne({
+                where: { id: data.id },
+                include: { model: db.Doctor_User, required: false },
+            });
+            if (!doctor) {
+                resolve({
+                    errCode: 1,
+                    errMessage: `user's not found!`,
+                });
+            } else {
+                doctor.name = data.name;
+                doctor.description = data.description;
+                doctor.address = data.address;
+                doctor.phone = data.phone;
+                doctor.isActive = data.isActive;
+                doctor.specializationId = data.specializationId;
+                // Nếu có file ảnh được upload, gửi ảnh lên Firebase và lấy URL
+                let url = data.avatar;
+                if (url) {
+                    doctor.avatar = url;
+                }
+                await doctor.save();
+                if (doctor.Doctor_User) {
+                    await doctor.Doctor_User.update(data);
+                } else {
+                    await db.Doctor_User.create({
+                        doctorId: data.id,
+                        specializationId: data.specializationId,
+                    });
+                }
+                resolve({
+                    errCode: 0,
+                    errMessage: 'Update the user success!',
+                    doctor,
+                });
+            }
+        } catch (error) {
+            reject(error);
+        }
+    });
+};
 let getPatientsBookAppointment = (data) => {
     return new Promise(async (resolve, reject) => {
         try {
@@ -697,4 +750,6 @@ module.exports = {
     getScheduleDoctorByDateSumBooking: getScheduleDoctorByDateSumBooking,
     getPatientBooking: getPatientBooking,
     getInfoDoctorsByCriteria: getInfoDoctorsByCriteria,
+
+    updateProfile: updateProfile,
 };

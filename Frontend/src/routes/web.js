@@ -20,14 +20,15 @@ let router = express.Router();
 let LocalStrategy = passportLocal.Strategy;
 
 passport.use(
-    new LocalStrategy({
+    new LocalStrategy(
+        {
             usernameField: 'email',
             passwordField: 'password',
             passReqToCallback: true,
         },
-        async(req, email, password, done) => {
+        async (req, email, password, done) => {
             try {
-                await userService.findUserByEmail(email).then(async(user) => {
+                await userService.findUserByEmail(email).then(async (user) => {
                     if (!user) {
                         return done(null, false, req.flash('error', 'Email không tồn tại'));
                     }
@@ -122,7 +123,7 @@ let initRoutes = (app) => {
     router.get('/users/manage/customer/create', auth.checkLoggedIn, admin.getCreatePatient);
     router.post('/users/manage/customer/create', auth.checkLoggedIn, admin.postCreatePatient);
     router.get('/users/customer/edit/:id', auth.checkLoggedIn, admin.getEditPatient);
-    router.post('/users/customer/edit/:id', auth.checkLoggedIn, admin.postEditPatient);
+    router.post('/users/customer/edit/:id', auth.checkLoggedIn, upload.single('imageInput'), admin.postEditPatient);
     router.post('/get-info-customer-by-id', customer.getInforCustomerById);
     router.delete('/users/customer/delete', auth.checkLoggedIn, customer.deleteCustomerById);
 
@@ -134,9 +135,10 @@ let initRoutes = (app) => {
     router.get('/users/manage/doctor/create', auth.checkLoggedIn, admin.getCreateDoctor);
     router.post('/admin/doctor/create', auth.checkLoggedIn, admin.postCreateDoctor);
     router.get('/users/doctor/edit/:id', auth.checkLoggedIn, admin.getEditDoctor);
-    router.put('/admin/doctor/update-without-file', auth.checkLoggedIn, admin.putUpdateDoctorWithoutFile);
-    router.put('/admin/doctor/update', auth.checkLoggedIn, admin.putUpdateDoctor);
-    router.post('/users/doctor/edit/:id', auth.checkLoggedIn, admin.putUpdateDoctorWithoutFile);
+    // router.put('/admin/doctor/update-without-file', auth.checkLoggedIn, admin.putUpdateDoctorWithoutFile);
+    // router.put('/admin/doctor/update', auth.checkLoggedIn, admin.putUpdateDoctor);
+    // router.post('/users/doctor/edit/:id', auth.checkLoggedIn, admin.putUpdateDoctorWithoutFile);
+    router.post('/users/doctor/edit/:id', auth.checkLoggedIn, upload.single('imageInput'), admin.postEditDoctor);
     router.post('/users/manage/customer?phone=${phone}', auth.checkLoggedIn, admin.getUserByPhone);
 
     router.get('/doctor/manage/schedule', doctor.getSchedule);
@@ -198,8 +200,8 @@ let initRoutes = (app) => {
 
     router.get('/login', auth.checkLoggedOut, auth.getLogin);
 
-    router.post('/login', function(req, res, next) {
-        passport.authenticate('local', function(err, user, info) {
+    router.post('/login', function (req, res, next) {
+        passport.authenticate('local', function (err, user, info) {
             if (err) {
                 return next(err);
             }
@@ -208,7 +210,7 @@ let initRoutes = (app) => {
                 return res.redirect('/login');
             }
 
-            req.logIn(user, function(err) {
+            req.logIn(user, function (err) {
                 if (err) {
                     return next(err);
                 }

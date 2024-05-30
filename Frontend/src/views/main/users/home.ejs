@@ -25,7 +25,9 @@
                             <div class="col mr-2">
                                 <div class="text-xs font-weight-bold text-primary text-uppercase mb-1">Tổng số bệnh nhân
                                 </div>
-                                <div class="h5 mb-0 font-weight-bold text-gray-800" id="sumPatient"></div>
+                                <div class="h5 mb-0 font-weight-bold text-gray-800" id="sumPatient">
+                                    <%= object.patients.count %>
+                                </div>
                             </div>
                             <div class="col-auto">
                                 <i class="fas fa-calendar fa-2x text-gray-300"></i>
@@ -41,7 +43,9 @@
                         <div class="row no-gutters align-items-center">
                             <div class="col mr-2">
                                 <div class="text-xs font-weight-bold text-primary text-uppercase mb-1">Bác sĩ</div>
-                                <div class="h5 mb-0 font-weight-bold text-gray-800" id="sumDoctor"></div>
+                                <div class="h5 mb-0 font-weight-bold text-gray-800" id="sumDoctor">
+                                    <%= object.patients.count %>
+                                </div>
                             </div>
                             <div class="col-auto">
                                 <i class="fas fa-calendar fa-2x text-gray-300"></i>
@@ -56,8 +60,10 @@
                     <div class="card-body">
                         <div class="row no-gutters align-items-center">
                             <div class="col mr-2">
-                                <div class="text-xs font-weight-bold text-primary text-uppercase mb-1">Gói khám</div>
-                                <div class="h5 mb-0 font-weight-bold text-gray-800" id="sumPost"></div>
+                                <div class="text-xs font-weight-bold text-primary text-uppercase mb-1">Bài đăng</div>
+                                <div class="h5 mb-0 font-weight-bold text-gray-800" id="sumPost">
+                                    <%= object.posts.count%>
+                                </div>
                             </div>
                             <div class="col-auto">
                                 <i class="fas fa-calendar fa-2x text-gray-300"></i>
@@ -72,7 +78,13 @@
                 <div class="card bg-primary text-white shadow">
                     <div class="card-body">
                         Bác sĩ được đặt nhiều nhất
-                        <div class="text-white-50 small" id="bestDoctor"></div>
+                        <div class="text-white-50 small" id="bestDoctor">
+                            <% if (object.bestDoctor==='' ) { %>
+                                Không có thông tin
+                                <% } else { %>
+                                    <%= object.bestDoctor.name %> (<%= object.bestDoctorCount %>)
+                                            <% } %>
+                        </div>
                     </div>
                 </div>
             </div>

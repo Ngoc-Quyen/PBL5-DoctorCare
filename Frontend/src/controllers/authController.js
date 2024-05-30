@@ -4,6 +4,7 @@ import user from '../services/userService';
 import mailer from './../config/mailer';
 import { mailChangePass } from '../../lang/en';
 import apiAuth from '../middlewares/apiAuth';
+import uploadImg from '../services/imgLoadFirebase';
 
 let getLogin = (req, res) => {
     return res.render('auth/login.ejs', {
@@ -15,7 +16,7 @@ let getRegister = (req, res) => {
     return res.render('auth/register.ejs');
 };
 
-let postRegister = async(req, res) => {
+let postRegister = async (req, res) => {
     let customer = {
         name: req.body.name,
         phone: req.body.phone,
@@ -40,7 +41,7 @@ let postRegister = async(req, res) => {
     }
 };
 
-let verifyAccount = async(req, res) => {
+let verifyAccount = async (req, res) => {
     let errorArr = [];
     let successArr = [];
     try {
@@ -54,7 +55,7 @@ let verifyAccount = async(req, res) => {
 };
 
 let getLogout = (req, res) => {
-    req.session.destroy(function(err) {
+    req.session.destroy(function (err) {
         console.log(err);
         return res.redirect('/login');
     });
@@ -74,7 +75,7 @@ let checkLoggedOut = (req, res, next) => {
     next();
 };
 
-let getAllCode = async(req, res) => {
+let getAllCode = async (req, res) => {
     try {
         let data = await user.getAllCodeService(req.query.type);
         return res.status(200).json(data);
@@ -86,7 +87,7 @@ let getAllCode = async(req, res) => {
         });
     }
 };
-let getResetPasswordPage = async(req, res) => {
+let getResetPasswordPage = async (req, res) => {
     let emailUser = req.query.emailResetPassword;
     console.log(emailUser);
     if (!emailUser) {
@@ -113,7 +114,7 @@ let getResetPasswordPage = async(req, res) => {
         return res.redirect('/login');
     }
 };
-let postNewPassword = async(req, res) => {
+let postNewPassword = async (req, res) => {
     let data = req.body;
     let message = await user.updateUser(data);
     if (message.errCode === 0) {
@@ -124,12 +125,14 @@ let postNewPassword = async(req, res) => {
         return res.redirect('/reset-password');
     }
 };
-let handleEditSpecialty = async(req, res) => {
+let handleEditSpecialty = async (req, res) => {
     let data = req.body;
-    const filePath = req.file; // Đường dẫn tạm thời của tệp tải lên
-    // console.log('data from authController: ', data);
-    // console.log('req.file: ', filePath);
-    let message = await user.updateUserDataFile(data, filePath);
+    let file = req.file;
+    let imgUrl = '';
+    if (file) {
+        imgUrl = await uploadImg.uploadImg(file);
+    }
+    let message = await user.updateUserDataFile(data, imgUrl);
     if (message.errCode === 0) {
         console.log('message: ', message.errMessage);
         return res.redirect('/users');
@@ -140,7 +143,7 @@ let handleEditSpecialty = async(req, res) => {
         // Hien thi thong bao chưa cập nhật được
     }
 };
-let sendOTPBack = async(req, res) => {
+let sendOTPBack = async (req, res) => {
     let emailUser = req.query.emailResetPassword;
     let account = await user.findUserByEmail(emailUser);
     let otp = apiAuth.generateOtp();
@@ -155,7 +158,7 @@ let sendOTPBack = async(req, res) => {
         otp: otp,
     });
 };
-let postSendOTP = async(req, res) => {
+let postSendOTP = async (req, res) => {
     try {
         const { email } = req.body;
 
@@ -170,7 +173,6 @@ let postSendOTP = async(req, res) => {
         console.error('Error:', error);
         res.status(500).send('Failed to resend OTP');
     }
-
 };
 module.exports = {
     getLogin: getLogin,
@@ -186,5 +188,4 @@ module.exports = {
     handleEditSpecialty: handleEditSpecialty,
     postSendOTP: postSendOTP,
     sendOTPBack: sendOTPBack,
-
 };

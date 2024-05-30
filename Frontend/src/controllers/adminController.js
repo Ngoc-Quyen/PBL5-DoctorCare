@@ -7,6 +7,7 @@ import specializationService from './../services/specializationService';
 import customerService from '../services/customerService';
 import doctorService from './../services/doctorService';
 import chatFBServie from './../services/chatFBService';
+import uploadImg from '../services/imgLoadFirebase';
 import multer from 'multer';
 import moment from 'moment';
 
@@ -109,6 +110,35 @@ let putUpdateDoctorWithoutFile = async (req, res) => {
     } catch (e) {
         console.log(e);
         return res.status(500).json(e);
+    }
+};
+let postEditDoctor = async (req, res) => {
+    try {
+        let file = req.file;
+        let imgUrl = '';
+        if (file) {
+            imgUrl = await uploadImg.uploadImg(file);
+        }
+        let data = {
+            id: req.body.idDoctor,
+            name: req.body.nameDoctor,
+            phone: req.body.phoneDoctor,
+            address: req.body.addressDoctor,
+            description: req.body.introEditDoctor,
+            specializationId: req.body.specializationDoctor,
+            avatar: imgUrl,
+        };
+        // let patient = await doctorService.getPatientForEditPage(req.params.id);
+        // let specializations = await homeService.getSpecializations();
+        let mess = await doctorService.updateProfile(data);
+        if (mess.errCode === 0) {
+            return res.status(200).json(mess);
+            // return res.redirect('/users/manage/customer');
+        } else {
+            return res.status(200).json(mess);
+        }
+    } catch (error) {
+        return res.status(500).json(error);
     }
 };
 
@@ -535,26 +565,33 @@ let getEditPatient = async (req, res) => {
     });
 };
 let postEditPatient = async (req, res) => {
-    let data = {
-        id: req.body.idDoctor,
-        name: req.body.nameDoctor,
-        phone: req.body.phoneDoctor,
-        gender: req.body.gender,
-        address: req.body.addressDoctor,
-        description: req.body.introEditDoctor,
-        birthday: req.body.birthday,
-    };
-    let patient = await doctorService.getPatientForEditPage(req.params.id);
-    let specializations = await homeService.getSpecializations();
-    let mess = await userService.updateProfile(data);
-    if (mess.errCode === 0) {
-        return res.redirect('/users/manage/customer');
-    } else {
-        return res.render('main/users/admins/editCustomer.ejs', {
-            user: req.user,
-            doctor: patient,
-            specializations: specializations,
-        });
+    try {
+        let file = req.file;
+        let imgUrl = '';
+        if (file) {
+            imgUrl = await uploadImg.uploadImg(file);
+        }
+        let data = {
+            id: req.body.idDoctor,
+            name: req.body.nameDoctor,
+            phone: req.body.phoneDoctor,
+            gender: req.body.gender,
+            address: req.body.addressDoctor,
+            description: req.body.introEditDoctor,
+            birthday: req.body.birthday,
+            avatar: imgUrl,
+        };
+        let patient = await doctorService.getPatientForEditPage(req.params.id);
+        let specializations = await homeService.getSpecializations();
+        let mess = await userService.updateProfile(data);
+        if (mess.errCode === 0) {
+            return res.status(200).json(mess);
+            // return res.redirect('/users/manage/customer');
+        } else {
+            return res.status(200).json(mess);
+        }
+    } catch (error) {
+        return res.status(500).json(error);
     }
 };
 let getEditSpecialization = async (req, res) => {
@@ -686,4 +723,5 @@ module.exports = {
     getSpecializationById: getSpecializationById,
 
     getPostByWriteId: getPostByWriteId,
+    postEditDoctor: postEditDoctor,
 };
