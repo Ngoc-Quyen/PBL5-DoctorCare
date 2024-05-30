@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 // import { initializeApp } from 'firebase/app';
 // import { getStorage, ref, getDownloadURL, uploadBytesResumable } from 'firebase/storage';
 // import config from '../config/firebaseConfig';
@@ -63,6 +64,16 @@ const config = require('../config/firebaseConfig').firebaseConfig;
 const firebaseApp = initializeApp(config);
 const storage = getStorage(firebaseApp);
 
+=======
+const { initializeApp } = require('firebase/app');
+const { getStorage, ref, getDownloadURL, uploadBytesResumable } = require('firebase/storage');
+const { Readable } = require('stream');
+const config = require('../config/firebaseConfig').firebaseConfig;
+
+// Initialize Firebase
+const firebaseApp = initializeApp(config);
+const storage = getStorage(firebaseApp);
+>>>>>>> branchTestQ
 const uploadImg = async (fileData) => {
     return new Promise(async (resolve, reject) => {
         try {
@@ -71,13 +82,19 @@ const uploadImg = async (fileData) => {
                 resolve(null);
                 return;
             }
+<<<<<<< HEAD
 
+=======
+>>>>>>> branchTestQ
             const dateTime = giveCurrentDateTime();
             const storageRef = ref(storage, `images/${fileData.originalname}-${dateTime}`);
             const metadata = {
                 contentType: fileData.mimetype,
             };
+<<<<<<< HEAD
 
+=======
+>>>>>>> branchTestQ
             const snapshot = await uploadBytesResumable(storageRef, fileData.buffer, metadata);
             const downloadURL = await getDownloadURL(snapshot.ref);
 
@@ -87,7 +104,10 @@ const uploadImg = async (fileData) => {
         }
     });
 };
+<<<<<<< HEAD
 
+=======
+>>>>>>> branchTestQ
 const giveCurrentDateTime = () => {
     const today = new Date();
     const date = `${today.getFullYear()}-${String(today.getMonth() + 1).padStart(2, '0')}-${String(

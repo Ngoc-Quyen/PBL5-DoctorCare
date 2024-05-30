@@ -181,6 +181,13 @@ let getInfoStatistical = (month) => {
 
             let posts = await db.Post.findAndCountAll({
                 attributes: ['id', 'writerId'],
+                // where: {
+                //     forSpecializationId: -1,
+                //     forDoctorId: -1,
+                //     createdAt: {
+                //         [Op.between]: [startDate, endDate],
+                //     },
+                // },
             });
 
             let bestDoctor = '';
@@ -439,6 +446,7 @@ let updateUserDataFile = async (data, filePath) => {
                 user.description = data.description;
                 user.phone = data.phone;
                 user.gender = data.gender;
+                user.address = data.address;
                 let url = filePath;
                 if (url) {
                     user.avatar = url;

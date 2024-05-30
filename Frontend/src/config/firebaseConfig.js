@@ -9,9 +9,6 @@ admin.initializeApp({
 });
 
 const bucket = admin.storage().bucket();
-
-// module.exports = bucket;
-
 module.exports = {
     firebaseConfig: {
         apiKey: process.env.API_KEY,

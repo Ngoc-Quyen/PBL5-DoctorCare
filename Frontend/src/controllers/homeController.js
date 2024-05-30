@@ -39,10 +39,9 @@ let getHomePage = async (req, res) => {
 
 let getUserPage = async (req, res) => {
     let currentMonth = new Date().getMonth() + 1;
-    let month = req.query.month;
-    let object = await userService.getInfoStatistical(month);
-    console.log('month: ', month);
 
+    let object = await userService.getInfoStatistical(currentMonth);
+    console.log('ket qua cua thang: ', currentMonth);
     res.render('main/users/home.ejs', {
         user: req.user,
         currentMonth: currentMonth,

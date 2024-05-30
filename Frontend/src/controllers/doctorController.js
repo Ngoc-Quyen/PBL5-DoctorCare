@@ -111,10 +111,11 @@ let deleteScheduleDoctorByDate = async (req, res) => {
 };
 let getInfoDoctorById = async (req, res) => {
     try {
-        let doctor = await doctorService.getInfoDoctorById(req.body.id);
+        let object = await doctorService.getInfoDoctorById(req.body.id);
         return res.status(200).json({
             message: 'success',
-            doctor: doctor,
+            doctor: object.doctor,
+            specializationName: object.specializationName,
         });
     } catch (e) {
         console.log(e);

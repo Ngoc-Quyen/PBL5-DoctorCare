@@ -117,6 +117,35 @@ let putUpdateDoctorWithoutFile = async (req, res) => {
         return res.status(500).json(error);
     }
 };
+let postEditDoctor = async (req, res) => {
+    try {
+        let file = req.file;
+        let imgUrl = '';
+        if (file) {
+            imgUrl = await uploadImg.uploadImg(file);
+        }
+        let data = {
+            id: req.body.idDoctor,
+            name: req.body.nameDoctor,
+            phone: req.body.phoneDoctor,
+            address: req.body.addressDoctor,
+            description: req.body.introEditDoctor,
+            specializationId: req.body.specializationDoctor,
+            avatar: imgUrl,
+        };
+        // let patient = await doctorService.getPatientForEditPage(req.params.id);
+        // let specializations = await homeService.getSpecializations();
+        let mess = await doctorService.updateProfile(data);
+        if (mess.errCode === 0) {
+            return res.status(200).json(mess);
+            // return res.redirect('/users/manage/customer');
+        } else {
+            return res.status(200).json(mess);
+        }
+    } catch (error) {
+        return res.status(500).json(error);
+    }
+};
 
 let putUpdateDoctor = (req, res) => {
     imageDoctorUploadFile(req, res, async (err) => {
@@ -567,7 +596,8 @@ let postEditPatient = async (req, res) => {
         let mess = await userService.updateProfile(data);
         if (mess.errCode === 0) {
             return res.status(200).json(mess);
-            // return res.redirect('/users/manage/doctor');
+
+            // return res.redirect('/users/manage/customer');
         } else {
             return res.status(200).json(mess);
         }
@@ -704,4 +734,5 @@ module.exports = {
     getSpecializationById: getSpecializationById,
 
     getPostByWriteId: getPostByWriteId,
+    postEditDoctor: postEditDoctor,
 };

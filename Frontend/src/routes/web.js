@@ -136,13 +136,9 @@ let initRoutes = (app) => {
     router.post('/admin/doctor/create', auth.checkLoggedIn, admin.postCreateDoctor);
     router.get('/users/doctor/edit/:id', auth.checkLoggedIn, admin.getEditDoctor);
     // router.put('/admin/doctor/update-without-file', auth.checkLoggedIn, admin.putUpdateDoctorWithoutFile);
-    router.put('/admin/doctor/update', auth.checkLoggedIn, admin.putUpdateDoctor);
-    router.post(
-        '/users/doctor/edit/:id',
-        auth.checkLoggedIn,
-        upload.single('imageInput'),
-        admin.putUpdateDoctorWithoutFile
-    );
+    // router.put('/admin/doctor/update', auth.checkLoggedIn, admin.putUpdateDoctor);
+    // router.post('/users/doctor/edit/:id', auth.checkLoggedIn, admin.putUpdateDoctorWithoutFile);
+    router.post('/users/doctor/edit/:id', auth.checkLoggedIn, upload.single('imageInput'), admin.postEditDoctor);
     router.post('/users/manage/customer?phone=${phone}', auth.checkLoggedIn, admin.getUserByPhone);
 
     router.get('/doctor/manage/schedule', doctor.getSchedule);
