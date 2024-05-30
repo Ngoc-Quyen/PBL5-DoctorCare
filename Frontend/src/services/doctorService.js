@@ -352,7 +352,24 @@ let updateDoctorInfo = (data) => {
                 where: { id: data.id },
                 include: { model: db.Doctor_User, required: false },
             });
-            await doctor.update(data);
+            if (!doctor) {
+                resolve({
+                    errCode: 1,
+                    errMessage: `doctor's not found!`,
+                });
+            } else {
+                doctor.name = data.name;
+                doctor.description = data.description;
+                doctor.address = data.address;
+                doctor.phone = data.phone;
+                doctor.isActive = data.isActive;
+                // Nếu có file ảnh được upload, gửi ảnh lên Firebase và lấy URL
+                let url = data.avatar;
+                if (url) {
+                    doctor.avatar = url;
+                }
+                await doctor.save();
+            }
             if (doctor.Doctor_User) {
                 await doctor.Doctor_User.update(data);
             } else {
@@ -365,6 +382,7 @@ let updateDoctorInfo = (data) => {
             resolve({
                 errCode: 0,
                 errMessage: 'success',
+                doctor: doctor,
             });
         } catch (e) {
             reject(e);

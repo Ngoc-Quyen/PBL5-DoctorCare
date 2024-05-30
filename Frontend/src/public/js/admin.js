@@ -1,3 +1,5 @@
+import { method } from 'bluebird';
+
 var loadFile = function (event) {
     var output = $('#image-preview');
     if ($('#image-clinic').val()) {
@@ -521,45 +523,23 @@ $(document).ready(function () {
     });
 });
 
-function updateDoctor() {
-    $('#btnUpdateDoctor').on('click', function (e) {
-        let doctorId = $('#btnUpdateDoctor').data('doctor-id');
+function updateCustomer() {
+    $('#btnUpdateCustomer').on('click', function (e) {
+        let doctorId = $('#btnUpdateCustomer').data('doctor-id');
+        let data = {
+            id: doctorId,
+        };
 
-        let formData = new FormData($('form#formUpdateDoctor')[0]);
-        //contain file upload
-        if ($('#image-clinic').val()) {
-            formData.append('avatar', document.getElementById('image-clinic').files[0]);
-            formData.append('id', doctorId);
-            handleUpdateDoctorNormal(formData);
-        } else {
-            // create without file upload
-            let data = {
-                id: doctorId,
-            };
-            for (let pair of formData.entries()) {
-                data[pair[0]] = pair[1];
-            }
-            handleUpdateDoctorWithoutFile(data);
-        }
+        // Cập nhật URL với giá trị thực tế của doctorId
+        let url = `${window.location.origin}/users/customer/edit/${doctorId}`;
+
         $.ajax({
             method: 'POST',
-            url: `${window.location.origin}/users/doctor/edit/:id`,
+            url: url,
             data: data,
             success: function (data) {
-                if (data.errCode === 0) {
-                    alertify.success('Cập nhật thông tin thành công');
-                    // Chờ 2 giây và sau đó tải lại trang với đường dẫn mới
-                    setTimeout(function () {
-                        window.location.href = '/users/doctor/edit/:id'; // Thay thế '/your-new-url' bằng đường dẫn mới bạn muốn tải lại
-                    }, 2000); // 2000 milliseconds = 2 giây
-                } else {
-                    alertify.success('Đã xảy ra lỗi khi cập nhật');
-                    // Chờ 2 giây và sau đó tải lại trang với đường dẫn mới
-                    console.log(data.errMessage);
-                    setTimeout(function () {
-                        window.location.href = '/users/doctor/edit/:id'; // Thay thế '/your-new-url' bằng đường dẫn mới bạn muốn tải lại
-                    }, 2000); // 2000 milliseconds = 2 giây
-                }
+                alert('Cập nhật thành công');
+                window.location.href = `${window.location.origin}/users/manage/customer`;
             },
             error: function (error) {
                 alertify.error('Đã xảy ra lỗi, vui lòng thử lại sau!');
@@ -569,40 +549,30 @@ function updateDoctor() {
     });
 }
 
-function handleUpdateDoctorNormal(formData) {
-    $.ajax({
-        method: 'PUT',
-        url: `${window.location.origin}/admin/doctor/update`,
-        data: formData,
-        cache: false,
-        contentType: false,
-        processData: false,
-        success: function (data) {
-            alert('Cập nhâtj thành công');
-            window.location.href = `${window.location.origin}/users/manage/doctor`;
-        },
-        error: function (error) {
-            alertify.error('Đã xảy ra lỗi, vui lòng thử lại sau!');
-            console.log(error);
-        },
-    });
-}
+// function updateDoctor() {
+//     $('#btnUpdateDoctor').on('click', function (e) {
+//         let doctorId = $('#btnUpdateDoctor').data('doctor-id');
+//         // Sử dụng JavaScript để lấy giá trị src khi người dùng thực hiện một hành động cụ thể
+//         const imageSrc = document.getElementById('image-preview').src;
+//         let data = {
+//             doctorId: doctorId,
+//         };
 
-function handleUpdateDoctorWithoutFile(data) {
-    $.ajax({
-        method: 'PUT',
-        url: `${window.location.origin}/admin/doctor/update-without-file`,
-        data: data,
-        success: function (data) {
-            alert('Cập nhật thành công');
-            window.location.href = `${window.location.origin}/users/manage/doctor`;
-        },
-        error: function (error) {
-            alertify.error('Đã xảy ra lỗi, vui lòng thử lại sau!');
-            console.log(error);
-        },
-    });
-}
+//         $.ajax({
+//             method: 'POST',
+//             url: `${window.location.origin}/users/doctor/edit/:id`,
+//             data: data,
+//             success: function (data) {
+//                 alert('Cập nhật thành công');
+//                 window.location.href = `${window.location.origin}/users/manage/doctor`;
+//             },
+//             error: function (error) {
+//                 alertify.error('Đã xảy ra lỗi, vui lòng thử lại sau!');
+//                 console.log(error);
+//             },
+//         });
+//     });
+// }
 
 function deleteSpecializationById() {
     $('.delete-specialization').on('click', function (e) {
@@ -1556,9 +1526,9 @@ function statisticalAdmin(month) {
         url: `${window.location.origin}/admin/statistical`,
         data: { month: month },
         success: function (data) {
-            $('#sumPatient').text(data.patients.count);
-            $('#sumDoctor').text(data.doctors.count);
-            $('#sumPost').text(data.posts.count);
+            $('#sumPatient').val(data.patients.count);
+            $('#sumDoctor').val(data.doctors.count);
+            $('#sumPost').val(data.posts.count);
 
             if (data.bestDoctor === '') {
                 $('#bestDoctor').text(`Không có thông tin`);
@@ -1581,6 +1551,22 @@ function statisticalAdmin(month) {
 function handleFindStatisticalAdmin() {
     $('#findStatisticalAdmin').on('click', function () {
         statisticalAdmin($('#monthAnalyse').val());
+    });
+}
+function showUserPage() {
+    // Lấy phần tử select
+    let selectElement = document.getElementById('monthAnalyse');
+    // Lấy giá trị của option được chọn
+    let selectedValue = selectElement.value;
+    $.ajax({
+        method: 'GET',
+        url: `${window.location.origin}/users`,
+        data: { month: selectedValue },
+        success: function (data) {},
+        error: function (error) {
+            alertify.error('Đã xảy ra lỗi khi lấy thông tin thống kê, vui lòng thử lại sau');
+            console.log(error);
+        },
     });
 }
 
@@ -1751,7 +1737,7 @@ $(document).ready(function (e) {
     createNewDoctor();
     deleteDoctorById();
     showModalInfoDoctor();
-    updateDoctor();
+    // updateDoctor();
     deleteSpecializationById();
     showPostsForAdmin();
     deletePostById();
@@ -1788,4 +1774,6 @@ $(document).ready(function (e) {
     loadPatientsByDate();
     searchCustomerByPhone();
     searchDoctorBy();
+    updateCustomer();
+    showUserPage();
 });

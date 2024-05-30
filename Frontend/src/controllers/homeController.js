@@ -19,7 +19,7 @@ const statusFailedId = 2;
 const statusSuccessId = 1;
 const statusNewId = 4;
 
-let getHomePage = async(req, res) => {
+let getHomePage = async (req, res) => {
     try {
         let specializations = await homeService.getSpecializations();
         let doctors = await userService.getInfoDoctors();
@@ -37,15 +37,20 @@ let getHomePage = async(req, res) => {
     }
 };
 
-let getUserPage = (req, res) => {
+let getUserPage = async (req, res) => {
     let currentMonth = new Date().getMonth() + 1;
+    let month = req.query.month;
+    let object = await userService.getInfoStatistical(month);
+    console.log('month: ', month);
+
     res.render('main/users/home.ejs', {
         user: req.user,
         currentMonth: currentMonth,
+        object: object,
     });
 };
 
-let getDetailSpecializationPage = async(req, res) => {
+let getDetailSpecializationPage = async (req, res) => {
     try {
         let object = await specializationService.getSpecializationById(req.params.id);
         // using date to get schedule of doctors
@@ -72,7 +77,7 @@ let getDetailSpecializationPage = async(req, res) => {
     }
 };
 
-let getDetailDoctorPage = async(req, res) => {
+let getDetailDoctorPage = async (req, res) => {
     try {
         let currentDate = moment().format('DD/MM/YYYY');
         let sevenDaySchedule = [];
@@ -103,7 +108,7 @@ let getBookingPage = (req, res) => {
     res.render('main/homepage/bookingPage.ejs');
 };
 
-let getDetailPostPage = async(req, res) => {
+let getDetailPostPage = async (req, res) => {
     try {
         let post = await postService.getDetailPostPage(req.params.id);
         res.render('main/homepage/post.ejs', {
@@ -118,7 +123,7 @@ let getDetailPostPage = async(req, res) => {
 let getContactPage = (req, res) => {
     return res.render('main/homepage/contact.ejs');
 };
-let getAllPosts = async(req, res) => {
+let getAllPosts = async (req, res) => {
     try {
         let page = req.query.page || 1; // Lấy trang từ query string, mặc định là trang 1
         let limit = 10; // Số bài đăng trên mỗi trang
@@ -138,7 +143,7 @@ let getAllPosts = async(req, res) => {
             posts: posts,
             currentPage: page,
             totalPages: totalPages,
-            striptags: require('striptags') // Bạn có thể sử dụng thư viện striptags để loại bỏ thẻ HTML
+            striptags: require('striptags'), // Bạn có thể sử dụng thư viện striptags để loại bỏ thẻ HTML
         });
     } catch (e) {
         console.error(e);
@@ -146,8 +151,7 @@ let getAllPosts = async(req, res) => {
     }
 };
 
-
-let getPostsWithPagination = async(req, res) => {
+let getPostsWithPagination = async (req, res) => {
     let role = 'nope';
     let object = await postService.getPostsPagination(1, +process.env.LIMIT_GET_POST, role);
 
@@ -161,7 +165,7 @@ let getPostsWithPagination = async(req, res) => {
     });
 };
 
-let getPostSearch = async(req, res) => {
+let getPostSearch = async (req, res) => {
     let search = req.query.keyword;
     let results = await elasticService.findPostsByTerm(search);
     return res.render('main/homepage/searchPost.ejs', {
@@ -170,7 +174,7 @@ let getPostSearch = async(req, res) => {
     });
 };
 
-let getInfoBookingPage = async(req, res) => {
+let getInfoBookingPage = async (req, res) => {
     try {
         let patientId = req.params.id;
         let patient = await patientService.getInfoBooking(patientId);
@@ -183,7 +187,7 @@ let getInfoBookingPage = async(req, res) => {
     }
 };
 
-let postBookingDoctorPageWithoutFiles = async(req, res) => {
+let postBookingDoctorPageWithoutFiles = async (req, res) => {
     try {
         if (!req.session.userId) {
             return res.status(401).json({ message: 'User not authenticated' });
@@ -211,7 +215,7 @@ let postBookingDoctorPageWithoutFiles = async(req, res) => {
 };
 
 let postBookingDoctorPageNormal = (req, res) => {
-    imageImageOldForms(req, res, async(err) => {
+    imageImageOldForms(req, res, async (err) => {
         if (err) {
             console.log(err);
             if (err.message) {
@@ -276,7 +280,7 @@ let imageImageOldForms = multer({
     limits: { fileSize: 1048576 * 20 },
 }).array('oldForms');
 
-let getDetailPatientBooking = async(req, res) => {
+let getDetailPatientBooking = async (req, res) => {
     try {
         let patient = await patientService.getDetailPatient(req.body.patientId);
         let message = await patientService.getExtanInfoByPatientId(req.body.patientId);
@@ -293,7 +297,7 @@ let getDetailPatientBooking = async(req, res) => {
     }
 };
 
-let getFeedbackPage = async(req, res) => {
+let getFeedbackPage = async (req, res) => {
     try {
         let doctor = await doctorService.getDoctorForFeedbackPage(req.params.id);
         return res.render('main/homepage/feedback.ejs', {
@@ -305,7 +309,7 @@ let getFeedbackPage = async(req, res) => {
     }
 };
 
-let postCreateFeedback = async(req, res) => {
+let postCreateFeedback = async (req, res) => {
     try {
         let feedback = await doctorService.createFeedback(req.body.data);
         return res.status(200).json({
@@ -326,7 +330,7 @@ let getPageForDoctors = (req, res) => {
     return res.render('main/homepage/forDoctors.ejs');
 };
 
-let postSearchHomePage = async(req, res) => {
+let postSearchHomePage = async (req, res) => {
     try {
         let result = await homeService.postSearchHomePage(req.body.keyword);
         return res.status(200).json(result);
@@ -336,7 +340,7 @@ let postSearchHomePage = async(req, res) => {
     }
 };
 
-let getPageAllDoctors = async(req, res) => {
+let getPageAllDoctors = async (req, res) => {
     try {
         let doctors = await homeService.getDataPageAllDoctors();
         return res.render('main/homepage/allDoctors.ejs', {
@@ -347,7 +351,7 @@ let getPageAllDoctors = async(req, res) => {
     }
 };
 
-let getPageAllSpecializations = async(req, res) => {
+let getPageAllSpecializations = async (req, res) => {
     try {
         let specializations = await homeService.getDataPageAllSpecializations();
         return res.render('main/homepage/allSpecializations.ejs', {
@@ -358,21 +362,21 @@ let getPageAllSpecializations = async(req, res) => {
     }
 };
 
-let getPageInfoBooked = async(req, res) => {
+let getPageInfoBooked = async (req, res) => {
     try {
         return res.render('main/homepage/InfoBooked.ejs', {});
     } catch (e) {
         console.log(e);
     }
 };
-let getPageCancel = async(req, res) => {
+let getPageCancel = async (req, res) => {
     try {
         return res.render('main/homepage/cancel.ejs', {});
     } catch (e) {
         console.log(e);
     }
 };
-let getPageCanceled = async(req, res) => {
+let getPageCanceled = async (req, res) => {
     try {
         return res.render('main/homepage/canceled.ejs', {});
     } catch (e) {
@@ -380,7 +384,7 @@ let getPageCanceled = async(req, res) => {
     }
 };
 // Định nghĩa hàm xử lý tìm kiếm
-let searchHandler = async(req, res) => {
+let searchHandler = async (req, res) => {
     let query = req.body.query;
 
     try {
@@ -389,37 +393,37 @@ let searchHandler = async(req, res) => {
             where: {
                 role: 2,
                 name: {
-                    [db.Sequelize.Op.like]: `%${query}%`
-                }
+                    [db.Sequelize.Op.like]: `%${query}%`,
+                },
             },
-            attributes: ['name']
+            attributes: ['name'],
         });
 
         // Tìm kiếm trong bảng specialty
         let specialties = await db.Specialization.findAll({
             where: {
                 name: {
-                    [db.Sequelize.Op.like]: `%${query}%`
-                }
+                    [db.Sequelize.Op.like]: `%${query}%`,
+                },
             },
-            attributes: ['name']
+            attributes: ['name'],
         });
 
         // Tìm kiếm trong bảng post
         let posts = await db.Post.findAll({
             where: {
                 title: {
-                    [db.Sequelize.Op.like]: `%${query}%`
-                }
+                    [db.Sequelize.Op.like]: `%${query}%`,
+                },
             },
-            attributes: ['title']
+            attributes: ['title'],
         });
 
         // Kết hợp kết quả từ các bảng
         let results = [
-            ...users.map(user => ({ name: user.name })),
-            ...specialties.map(specialization => ({ name: specialization.name })),
-            ...posts.map(post => ({ name: post.title }))
+            ...users.map((user) => ({ name: user.name })),
+            ...specialties.map((specialization) => ({ name: specialization.name })),
+            ...posts.map((post) => ({ name: post.title })),
         ];
 
         // Trả về kết quả tìm kiếm dưới dạng JSON
@@ -428,7 +432,6 @@ let searchHandler = async(req, res) => {
         res.status(500).json({ error: 'Lỗi khi tìm kiếm' });
     }
 };
-
 
 module.exports = {
     getPageCancel: getPageCancel,
@@ -458,5 +461,5 @@ module.exports = {
     getPageInfoBooked: getPageInfoBooked,
     getPageAllSpecializations: getPageAllSpecializations,
     searchHandler: searchHandler,
-    getAllPosts: getAllPosts
+    getAllPosts: getAllPosts,
 };
