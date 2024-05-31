@@ -165,6 +165,7 @@ function showDetailBookend(patientId) {
             $('#patientTime1').val(data.patient.timeBooking);
             $('#patientReason1').val(data.patient.description);
             $('#patientAddress1').val(data.patient.address);
+            console.log('doctor.name: ', data.doctor.name);
             $('#patientDoctor1').val(data.doctor.name);
             if (data.ExtraInfo) {
                 $('#patientHistoryBreath').val(data.ExtraInfo.historyBreath);

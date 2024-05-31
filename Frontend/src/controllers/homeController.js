@@ -286,7 +286,7 @@ let getDetailPatientBooking = async (req, res) => {
         let object = {
             patient: patient,
             ExtraInfo: message.extrainfos,
-            doctor: doctor,
+            doctor: doctor.doctor,
         };
         return res.status(200).json(object);
     } catch (e) {

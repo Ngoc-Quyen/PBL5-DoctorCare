@@ -225,7 +225,17 @@ let getInfoStatistical = (month) => {
         }
     });
 };
-
+let convertToString = async (dateString) => {
+    return new Promise(async (resolve, reject) => {
+        try {
+            let [day, month, year] = dateString.split('/').map(Number);
+            let date = new Date(year, month - 1, day);
+            resolve(date);
+        } catch (error) {
+            reject(error);
+        }
+    });
+};
 let getInfoDoctorChart = async (month, doctorId) => {
     return new Promise(async (resolve, reject) => {
         try {
@@ -240,6 +250,20 @@ let getInfoDoctorChart = async (month, doctorId) => {
                     doctorId: doctorId,
                 },
             });
+
+            // let startDate = `01/${month}/2024`;
+            // let endDate = `31/${month}/2024`;
+
+            // let patients = await db.Patient.findAndCountAll({
+            //     attributes: ['id', 'doctorId', 'statusId', 'isSentForms', 'dateBooking'],
+            //     where: {
+            //         doctorId: doctorId,
+            //         dateBooking: {
+            //             [Op.between]: [startDate, endDate],
+            //         },
+            //     },
+            // });
+            // console.log('startDate and endDate: ', endDate);
             resolve({ patients: patients });
         } catch (e) {
             reject(e);
