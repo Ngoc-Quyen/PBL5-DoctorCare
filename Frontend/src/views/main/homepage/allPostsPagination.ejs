@@ -91,48 +91,34 @@
     <div class="container">
         <div class="container">
             <div class="row">
-                <div class="col-8 ">
+                <div class="col-8">
                     <h2></h2>
                     <hr>
                     <div id="list-posts-client">
                         <% if (posts.length > 0) { %>
-                            <% posts.forEach(function(post) { %>
-
-                                <a class="text-decoration-none" href="/detail/post/<%= post.id %>">
-                                    <div class="mb-5 d-flex flex-row">
-
-                                        <div class="col-8 d-flex flex-column">
-                                            <h3 class="show-title-post">
-                                                <%= post.title %>
-                                            </h3>
-                                            <div class="show-content-post" style="color: black">
-                                                <%= striptags(post.contentHTML) %>
+                            <% posts.forEach(function(post, index) { %> <!-- Sử dụng tham số index của hàm forEach để kiểm tra vị trí của bài viết -->
+                                <% if (post.isActive === 1) { %> <!-- Kiểm tra nếu post.isActive là 1 -->
+                                    <a class="text-decoration-none" href="/detail/post/<%= post.id %>">
+                                        <div class="mb-5 d-flex flex-row">
+                                            <div class="col-8 d-flex flex-column">
+                                                <h3 class="show-title-post">
+                                                    <%= post.title %>
+                                                </h3>
+                                                <div class="show-content-post" style="color: black">
+                                                    <%= striptags(post.contentHTML) %>
+                                                </div>
                                             </div>
                                         </div>
-                                    </div>
-                                </a>
-                                <% }); %>
-                                    <% } else { %>
-                                        <p>Không có bài viết nào.</p>
-                                        <% } %>
+                                    </a>
+                                    <% if (index < posts.length - 1) { %> <!-- Kiểm tra nếu chưa phải là bài viết cuối cùng thì hiển thị đường ngăn cách -->
+                                        <hr>
+                                    <% } %>
+                                <% } %>
+                            <% }); %>
+                        <% } else { %>
+                            <p>Không có bài viết nào.</p>
+                        <% } %>
                     </div>
-
-
-                    <nav aria-label="navigation" id="paginationForPostClient">
-                        <ul class="pagination">
-                            <li class="page-item li-pre-client">
-                                <a class="page-link page-post-pre-client" href="#" aria-label="Previous">
-                                    <span aria-hidden="true">&laquo; Trước</span>
-                                </a>
-                            </li>
-                            <li class="page-item li-next-client">
-                                <a class="page-link page-post-next-client" href="#" aria-label="Next">
-                                    <span aria-hidden="true">Sau &raquo;</span>
-                                </a>
-                            </li>
-                        </ul>
-                    </nav>
-
                 </div>
                 <div class="col-4 mt-3">
                     <input type="text" class="form-control" id="searchPostClient" placeholder="Tìm kiếm bài đăng...">
@@ -140,6 +126,7 @@
             </div>
         </div>
     </div>
+    
     </section>
     <footer class="sec-foot">
         <div class="container">

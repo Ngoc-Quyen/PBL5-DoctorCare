@@ -1670,18 +1670,22 @@ function updateCustomerTable(customers) {
 }
 
 function searchDoctorBy() {
-    $('#btnSearchDoctor').on('click', function () {
+    $('#btnSearchDoctor').on('click', function (event) {
         event.preventDefault(); // Ngăn chặn hành động mặc định của thẻ <a>
-        let thongtin = document.getElementById('thongtin').value;
-        // Get the selected value from the select element
+        let thongtin;
         let selectedValue = $('#specializationDoctor').val();
+        if (selectedValue === "specializationId") {
+            thongtin = $('#thongtinSelect').val(); // Nếu tìm kiếm theo chuyên khoa, lấy giá trị từ select
+        } else {
+            thongtin = $('#thongtin').val(); // Nếu không, lấy giá trị từ input
+        }
         $.ajax({
             method: 'POST',
             url: `${window.location.origin}/users/manage/doctor`,
             data: { thongtin: thongtin, selectedValue: selectedValue },
             success: function (data) {
                 console.log(data);
-                updateDoctorTable(data); // Assuming 'customers' is the key in the response
+                updateDoctorTable(data); // Giả sử 'customers' là key trong response
             },
             error: function (error) {
                 alertify.error('Đã xảy ra lỗi khi lấy thông tin thống kê, vui lòng thử lại sau');
@@ -1690,6 +1694,7 @@ function searchDoctorBy() {
         });
     });
 }
+
 function updateDoctorTable(doctors) {
     const tbody = $('#dataTable tbody');
     tbody.empty(); // Clear existing table rows

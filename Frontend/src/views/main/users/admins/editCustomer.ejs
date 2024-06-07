@@ -1,105 +1,89 @@
 <% extend("master.ejs") %>
-    <!-- Page Heading -->
-    <div class="d-sm-flex align-items-center justify-content-between mb-4">
-        <h1 class="h3 mb-0 text-gray-800">Cập nhật thông tin bệnh nhân</h1>
+
+<!-- Page Heading -->
+<div class="d-sm-flex align-items-center justify-content-between mb-4">
+    <h1 class="h3 mb-0 text-gray-800">Cập nhật thông tin bệnh nhân</h1>
+</div>
+
+<!-- Content Row -->
+<div class="row">
+    <div class="col-lg-7">
+        <form id="formUpdateCustomer" method="POST" action="/users/customer/edit/<%= doctor.id %>" enctype="multipart/form-data">
+            <input type="text" class="form-control" id="idDoctor" name="idDoctor" placeholder="ID" value="<%= doctor.id %>" style="display: none;">
+            <div class="form-group">
+                <label for="nameDoctor">Tên</label>
+                <input type="text" class="form-control" id="nameDoctor" name="nameDoctor" placeholder="Tên" value="<%= doctor.name %>">
+            </div>
+            <div class="form-group">
+                <label for="phoneDoctor">Số điện thoại</label>
+                <input type="text" class="form-control" id="phoneDoctor" name="phoneDoctor" placeholder="Số điện thoại" value="<%= doctor.phone %>">
+            </div>
+            <div class="form-group">
+                <label for="gender">Giới tính</label>
+                <div>
+                    <div class="form-check form-check-inline">
+                        <input class="form-check-input" type="radio" name="gender" id="male" value="M" <% if(doctor.gender==='M' ) { %> checked <%}%> >
+                        <label class="form-check-label" for="male">Nam</label>
+                    </div>
+                    <div class="form-check form-check-inline">
+                        <input class="form-check-input" type="radio" name="gender" id="female" value="F" <% if(doctor.gender==='F' ) { %> checked <%}%>>
+                        <label class="form-check-label" for="female">Nữ</label>
+                    </div>
+                    <div class="form-check form-check-inline">
+                        <input class="form-check-input" type="radio" name="gender" id="other" value="O" <% if(doctor.gender==='O' ) { %> checked <%}%>>
+                        <label class="form-check-label" for="other">Khác</label>
+                    </div>
+                </div>
+            </div>
+            <div class="form-row">
+                <div class="form-group col-md-6">
+                    <label for="birthday">Sinh nhật</label>
+                    <input type="text" class="form-control" id="birthday" name="birthday" placeholder="<%= doctor.birthday %>" value="<%= doctor.birthday %>">
+                </div>
+                <div class="form-group col-md-6">
+                    <label for="isActive">Tình trạng</label>
+                    <div>
+                        <div class="form-check form-check-inline">
+                            <input class="form-check-input" type="radio" name="isActive" id="true" value="1" <% if(doctor.isActive===1 ) { %> checked <%}%> >
+                            <label class="form-check-label" for="true">Hoạt động</label>
+                        </div>
+                        <div class="form-check form-check-inline">
+                            <input class="form-check-input" type="radio" name="isActive" id="false" value="0" <% if(doctor.isActive===0 ) { %> checked <%}%>>
+                            <label class="form-check-label" for="false">Cấm</label>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="form-group">
+                <label for="addressDoctor">Địa chỉ</label>
+                <input type="text" class="form-control" id="addressDoctor" name="addressDoctor" placeholder="Địa chỉ" value="<%= doctor.address %>">
+            </div>
+            <div class="form-group">
+                <label for="introEditDoctor">Mô tả</label>
+                <textarea id="introEditDoctor" name="introEditDoctor" class="form-control"><%= doctor.description %></textarea>
+            </div>
+            <button type="submit" class="btn btn-primary" id="btnUpdateCustomer" data-doctor-id="<%= doctor.id %>">Cập nhật</button>
+        </form>
     </div>
 
-    <!-- Content Row -->
-    <div class="row">
-        <div class="col-10 mx-auto">
-            <form id="formUpdateCustomer" method="POST" action="/users/customer/edit/<%= doctor.id %>"
-                enctype="multipart/form-data">
-                <input type="text" class="form-control" id="idDoctor" name="idDoctor" placeholder="ID"
-                    value="<%= doctor.id %>" style="display: none;">
-                <div class="form-row">
-                    <div class="form-group col-6">
-                        <label for="nameDoctor">Tên</label>
-                        <input type="text" class="form-control" id="nameDoctor" name="nameDoctor" placeholder="Tên"
-                            value="<%= doctor.name %>">
-                    </div>
-                    <div class="form-group col-6">
-                        <label for="phoneDoctor">Số điện thoại</label>
-                        <input type="text" class="form-control" id="phoneDoctor" name="phoneDoctor"
-                            placeholder="Số điện thoại" value="<%= doctor.phone %>">
-                    </div>
-                </div>
-                <div class="form-row">
-                    <div class="form-group col-md-3">
-                        <label for="gender">Giới tính</label>
-                        <div class="form-control">
-                            <div class="form-check form-check-inline">
-                                <input class="form-check-input" type="radio" name="gender" id="male" value="M" <%
-                                    if(doctor.gender==='M' ) { %> checked <%}%> >
-                                    <label class="form-check-label" for="male">Nam</label>
-                            </div>
-                            <div class="form-check form-check-inline">
-                                <input class="form-check-input" type="radio" name="gender" id="female" value="F" <%
-                                    if(doctor.gender==='F' ) { %> checked <%}%>>
-                                    <label class="form-check-label" for="female">Nữ</label>
-                            </div>
-                            <div class="form-check form-check-inline">
-                                <input class="form-check-input" type="radio" name="gender" id="other" value="O" <%
-                                    if(doctor.gender==='O' ) { %> checked <%}%>>
-                                    <label class="form-check-label" for="other">Khác</label>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="form-group col-md-6">
-                        <label for="birthday">Sinh nhật</label>
-                        <input type="text" class="form-control" id="birthday" name="birthday"
-                            placeholder="<%= doctor.birthday %>" value="<%= doctor.birthday %>">
-                    </div>
-                    <div class="form-group col-md-3">
-                        <label for="gender">Tình trạng</label>
-                        <div class="form-control">
-                            <div class="form-check form-check-inline">
-                                <input class="form-check-input" type="radio" name="isActive" id="true" value="1" <%
-                                    if(doctor.isActive===1 ) { %> checked <%}%> >
-                                    <label class="form-check-label" for="true">Hoạt động</label>
-                            </div>
-                            <div class="form-check form-check-inline">
-                                <input class="form-check-input" type="radio" name="isActive" id="false" value="0" <%
-                                    if(doctor.isActive===0 ) { %> checked <%}%>>
-                                    <label class="form-check-label" for="false">Cấm</label>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="form-group">
-                    <label for="addressDoctor">Địa chỉ</label>
-                    <input type="text" class="form-control" id="addressDoctor" name="addressDoctor"
-                        placeholder="Địa chỉ" value="<%= doctor.address %>">
-                </div>
-                <div class="form-group">
-                    <label for="introEditDoctor">Mô tả</label>
-                    <textarea id="introEditDoctor" name="introEditDoctor"
-                        class="form-control"> <%= doctor.description %>  </textarea>
-                </div>
-
-                <div class="form-group">
-                    <label for="image-clinic">Cập nhật hình ảnh</label>
-                    <input type="file" id="image-clinic" accept="image/*" onchange="loadFile(event)" name="imageInput">
-                </div>
-
-                <div class="form-group">
-                    <% if(doctor.avatar) { %>
-                        <img class="img-preview-clinic-create" id="image-preview" src="<%= doctor.avatar %>">
-                        <% } else { %>
-                            <img class="img-preview-clinic-create d-none" id="image-preview">
-                            <% } %>
-                </div>
-
-                <button type="submit" class="btn btn-primary" id="btnUpdateCustomer"
-                    data-doctor-id="<%= doctor.id %>">Cập
-                    nhật</button>
-            </form>
+    <div class="col-lg-5">
+        <div class="form-group">
+            <label for="image-clinic">Cập nhật hình ảnh</label>
+            <input type="file" id="image-clinic" accept="image/*" onchange="loadFile(event)" name="imageInput">
         </div>
-
+        <div class="form-group">
+            <% if(doctor.avatar) { %>
+                <img class="img-preview-clinic-create" id="image-preview" src="<%= doctor.avatar %>">
+            <% } else { %>
+                <img class="img-preview-clinic-create d-none" id="image-preview">
+            <% } %>
+        </div>
     </div>
+</div>
 
-    <script>
-        $(document).ready(function () {
-            $("div #featureManage").addClass('show');
-            $("div #featureManage").find($("#aManageCustomer")).addClass("active");
-        })
-    </script>
+<script>
+    $(document).ready(function () {
+        $("div #featureManage").addClass('show');
+        $("div #featureManage").find($("#aManageCustomer")).addClass("active");
+    })
+</script>
