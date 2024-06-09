@@ -83,36 +83,7 @@
                         <div>Chuyên khoa: <span>
                                 <%= specialization.name %>
                             </span></div>
-                        <% if (user) { %>
-                            <div class="mt-2">
-                                <a href="/feedback/<%= doctor.id %>" class="btn-feedback text-decoration-none">Gửi ý kiến sau khi đi khám bác sĩ</a>
-                            </div>
-                            <% } else { %>
-                                <div class="mt-2">
-                                    <button type="button" class="btn-feedback text-decoration-none" data-toggle="modal" data-target="#loginModal">
-                                        Gửi ý kiến sau khi đi khám bác sĩ
-                                    </button>
-                                </div>
 
-                                <!-- Modal -->
-                                <div class="modal fade" id="loginModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-                                    <div class="modal-dialog" role="document">
-                                        <div class="modal-content">
-                                            <div class="modal-header text-center align-items-center">
-                                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                                    <span aria-hidden="true">&times;</span>
-                                                </button>
-                                            </div>
-                                            <div class="modal-body text-center align-items-center">
-                                                <h5 class="modal-title mx-auto" id="exampleModalLabel">Bạn chưa đăng nhập. Vui lòng đăng nhập.</h5>
-                                            </div>
-                                            <div class="modal-footer justify-content-center">
-                                                <a href="/login" class="btn btn-primary">Đến trang đăng nhập</a>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                                <% } %>
 
                     </div>
 

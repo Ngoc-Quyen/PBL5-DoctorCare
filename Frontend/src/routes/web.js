@@ -20,15 +20,14 @@ let router = express.Router();
 let LocalStrategy = passportLocal.Strategy;
 
 passport.use(
-    new LocalStrategy(
-        {
+    new LocalStrategy({
             usernameField: 'email',
             passwordField: 'password',
             passReqToCallback: true,
         },
-        async (req, email, password, done) => {
+        async(req, email, password, done) => {
             try {
-                await userService.findUserByEmail(email).then(async (user) => {
+                await userService.findUserByEmail(email).then(async(user) => {
                     if (!user) {
                         return done(null, false, req.flash('error', 'Email không tồn tại'));
                     }
@@ -85,7 +84,7 @@ let initRoutes = (app) => {
     router.get('/booking-online-messenger', bot.getBookingOnlineMessengerPage);
     router.post('/set-info-booking-online-messenger', bot.setInfoBookingMessenger);
 
-    router.get('/feedback/:id', home.getFeedbackPage);
+    router.get('/feedback/:doctorId', home.getFeedbackPage);
     router.post('/feedback/create', home.postCreateFeedback);
 
     router.get('/for-patients', home.getPageForPatients);
@@ -200,8 +199,8 @@ let initRoutes = (app) => {
 
     router.get('/login', auth.checkLoggedOut, auth.getLogin);
 
-    router.post('/login', function (req, res, next) {
-        passport.authenticate('local', function (err, user, info) {
+    router.post('/login', function(req, res, next) {
+        passport.authenticate('local', function(err, user, info) {
             if (err) {
                 return next(err);
             }
@@ -210,7 +209,7 @@ let initRoutes = (app) => {
                 return res.redirect('/login');
             }
 
-            req.logIn(user, function (err) {
+            req.logIn(user, function(err) {
                 if (err) {
                     return next(err);
                 }

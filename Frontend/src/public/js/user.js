@@ -1,7 +1,7 @@
 function handleChangeDatePicker(currentDate) {
     $('#datepicker')
         .datepicker()
-        .on('changeDate', function (event) {
+        .on('changeDate', function(event) {
             let date = $('#datepicker').val();
             let dateConvert = stringToDate(date, 'dd/MM/yyyy', '/');
             let currentDateConvert = stringToDate(currentDate, 'dd/MM/yyyy', '/');
@@ -31,7 +31,7 @@ function loadNewPatientsForUser() {
     $.ajax({
         url: `${window.location.origin}/user/get-patients-for-user`,
         method: 'POST',
-        success: function (data) {
+        success: function(data) {
             let countNew = data.object.newPatients.length;
             let countPending = data.object.pendingPatients.length;
             let countConfirmed = data.object.confirmedPatients.length;
@@ -82,10 +82,18 @@ function loadNewPatientsForUser() {
                     <td> ${patient.dateBooking}     </td>
                     <td>(${patient.timeBooking})   </td>
                     <td> 
-                    <button  type="button" data-patient-id="${patient.id}"  class="ml-3 btn btn-info btn-confirmed-patient"> Thông tin</button>
+                   <div class="btn-group">
+    <button type="button" data-patient-id="${patient.id}" class="btn btn-info btn-sm btn-confirmed-patient" style="font-size: 16px; background-color: #009933">Thông tin</button>
+    <button type="button" data-doctor-id="${patient.doctorId}" data-patient-id="${patient.id}" class="btn btn-secondary btn-sm btn-feedback-patient ml-1" style="font-size: 16px; color: #ffffff; background-color: #0066FF;">Phản hồi</button>
+
+</div>
+
+
+
                     </td>
                 </tr>
                 `;
+
             });
             // Đổ dữ liệu chỗ đã hủy
             data.object.canceledPatients.forEach((patient) => {
@@ -106,7 +114,7 @@ function loadNewPatientsForUser() {
             $('#tableConfirmedPatients tbody').append(htmlConfirmed);
             $('#tableCancelPatients tbody').append(htmlCanceled);
         },
-        error: function (error) {
+        error: function(error) {
             console.log(error);
             alertify.error('Đã xảy ra lỗi, vui lòng thử lại sau!');
         },
@@ -114,15 +122,23 @@ function loadNewPatientsForUser() {
 }
 
 function handleBtnNewPatientOk1() {
-    $('#tableNewPatients').on('click', '.btn-new-patient-ok1', function (e) {
+    $('#tableNewPatients').on('click', '.btn-new-patient-ok1', function(e) {
         let patientId = $(this).data('patient-id');
         let option = false;
         showDetailPatient1(patientId);
     });
-    $('#tableNeedConfirmPatients').on('click', '.btn-new-patient-ok1', function (e) {
+    $('#tableNeedConfirmPatients').on('click', '.btn-new-patient-ok1', function(e) {
         let patientId = $(this).data('patient-id');
         let option = false;
         showDetailPatient1(patientId);
+    });
+}
+
+function handleBtnFeedback() {
+    $('#tableConfirmedPatients').on('click', '.btn-feedback-patient', function(e) {
+        let doctorId = $(this).data('doctor-id');
+        let patientId = $(this).data('patient-id');
+        window.location.href = `/feedback/${doctorId}?patientId=${patientId}`;
     });
 }
 
@@ -131,7 +147,7 @@ function showDetailPatient1(patientId) {
         method: 'POST',
         url: `${window.location.origin}/api/get-detail-patient-by-id`,
         data: { patientId: patientId },
-        success: function (data) {
+        success: function(data) {
             $('#patientName').val(data.patient.name);
             $('#btn-confirm-patient-done').attr('data-patient-id', data.patient.id);
             $('#patientPhone').val(data.patient.phone);
@@ -144,7 +160,7 @@ function showDetailPatient1(patientId) {
 
             $('#modalDetailPatient1').modal('show');
         },
-        error: function (err) {
+        error: function(err) {
             console.log(error);
             alertify.error('Đã xảy ra lỗi, vui lòng thử lại sau!');
         },
@@ -156,7 +172,7 @@ function showDetailBookend(patientId) {
         method: 'POST',
         url: `${window.location.origin}/api/get-detail-patient-by-id`,
         data: { patientId: patientId },
-        success: function (data) {
+        success: function(data) {
             $('#patientName1').val(data.patient.name);
             // $('#btn-confirm-patient-done').attr('data-patient-id', data.patient.id);
             $('#patientPhone1').val(data.patient.phone);
@@ -173,7 +189,7 @@ function showDetailBookend(patientId) {
             }
             $('#modalResultlPatient').modal('show');
         },
-        error: function (err) {
+        error: function(err) {
             console.log(error);
             alertify.error('Đã xảy ra lỗi, vui lòng thử lại sau!');
         },
@@ -181,7 +197,7 @@ function showDetailBookend(patientId) {
 }
 
 function handleBtnNewPatientCancel() {
-    $('#tableNewPatients').on('click', '.btn-new-patient-cancel', function (e) {
+    $('#tableNewPatients').on('click', '.btn-new-patient-cancel', function(e) {
         $('#btnCancelBookingPatient').attr('data-patient-id', $(this).data('patient-id'));
         $('#btnCancelBookingPatient').attr('data-type', 'new-patient-cancel');
         $('#modalCancelBooking').modal('show');
@@ -194,7 +210,7 @@ function callAjaxRenderModalInfo(patientId, option) {
         method: 'POST',
         url: `${window.location.origin}/api/get-detail-patient-by-id`,
         data: { patientId: patientId },
-        success: function (data) {
+        success: function(data) {
             $('#patientDoctor').val(data.doctor.name);
             $('#patientName').val(data.patient.name);
             $('#btn-confirm-patient-done').attr('data-patient-id', data.patient.id);
@@ -210,7 +226,7 @@ function callAjaxRenderModalInfo(patientId, option) {
             }
             $('#modalResultlPatient').modal('show');
         },
-        error: function (err) {
+        error: function(err) {
             console.log(error);
             alertify.error('Đã xảy ra lỗi, vui lòng thử lại sau!');
         },
@@ -218,7 +234,7 @@ function callAjaxRenderModalInfo(patientId, option) {
 }
 
 function handleBtnPendingCancel() {
-    $('#tableNeedConfirmPatients').on('click', '.btn-pending-patient-cancel', function (e) {
+    $('#tableNeedConfirmPatients').on('click', '.btn-pending-patient-cancel', function(e) {
         $('#btnCancelBookingPatient').attr('data-patient-id', $(this).data('patient-id'));
         $('#btnCancelBookingPatient').attr('data-type', 'pending-patient-cancel');
         $('#modalCancelBooking').modal('show');
@@ -296,7 +312,7 @@ function convertStringToDateClient(string) {
 }
 
 function handleAfterCallingPatient() {
-    $('#btn-confirm-patient-done').on('click', function (e) {
+    $('#btn-confirm-patient-done').on('click', function(e) {
         if (!confirm('Bạn chắc chắn xác nhận kết thúc lịch hẹn?')) {
             return;
         }
@@ -324,15 +340,15 @@ function handleAfterCallingPatient() {
                 historyBreath: patientHistoryBreath,
                 moreInfo: patientMoreInfo,
             },
-            success: function (data) {
+            success: function(data) {
                 let patient = data.patient;
                 addNewRowTableConfirmed(patient);
                 alertify.success('Xác nhận thành công!');
-                setTimeout(function () {
+                setTimeout(function() {
                     window.location.href = '/admin/get-new-patients'; // Thay thế '/your-new-url' bằng đường dẫn mới bạn muốn tải lại
                 }, 2000);
             },
-            error: function (error) {
+            error: function(error) {
                 console.log(error);
                 alertify.error('Đã xảy ra lỗi, vui lòng thử lại sau!');
             },
@@ -341,7 +357,7 @@ function handleAfterCallingPatient() {
 }
 
 function handleViewInfoPatientBooked() {
-    $('#tableConfirmedPatients').on('click', '.btn-confirmed-patient', function (e) {
+    $('#tableConfirmedPatients').on('click', '.btn-confirmed-patient', function(e) {
         let patientId = $(this).data('patient-id');
         let option = true;
         showDetailBookend(patientId);
@@ -349,7 +365,7 @@ function handleViewInfoPatientBooked() {
 }
 
 function handleCancelBtn() {
-    $('#btnCancelBookingPatient').on('click', function (e) {
+    $('#btnCancelBookingPatient').on('click', function(e) {
         let formData = new FormData($('form#formCancelBooking')[0]);
         let data = {};
         let text = '';
@@ -403,15 +419,15 @@ function handleCancelBtn() {
             url: `${window.location.origin}/admin/change-status-patient`,
             method: 'POST',
             data: { patientId: patientId, status: 'failed', reason: text },
-            success: function (data) {
+            success: function(data) {
                 let patient = data.patient;
                 addNewRowTableCanceled(patient);
                 alertify.success('Đã hủy lịch hẹn thành công');
-                setTimeout(function () {
+                setTimeout(function() {
                     window.location.href = '/InfoUser#'; // Thay thế '/your-new-url' bằng đường dẫn mới bạn muốn tải lại
                 }, 2000);
             },
-            error: function (error) {
+            error: function(error) {
                 console.log(error);
                 alertify.error('Đã xảy ra lỗi, vui lòng thử lại sau!');
             },
@@ -420,14 +436,14 @@ function handleCancelBtn() {
 }
 
 function handleBtnViewHistory() {
-    $('#tableCancelPatients').on('click', '.btn-history-cancel-patient', function () {
+    $('#tableCancelPatients').on('click', '.btn-history-cancel-patient', function() {
         let patientId = $(this).data('patient-id');
         $('#btn-view-history').attr('data-patient-id', patientId);
         $.ajax({
             url: `${window.location.origin}/admin/get-logs-patient`,
             method: 'POST',
             data: { patientId: patientId },
-            success: function (data) {
+            success: function(data) {
                 $('#contentHistory').empty();
 
                 let html = '';
@@ -438,7 +454,7 @@ function handleBtnViewHistory() {
                 });
                 $('#modalHistoryBooking1').modal('show');
             },
-            error: function (error) {
+            error: function(error) {
                 console.log(error);
                 alertify.error('Đã xảy ra lỗi, vui lòng thử lại sau!');
             },
@@ -447,13 +463,13 @@ function handleBtnViewHistory() {
 }
 
 function handleDoctorViewInfoPatient() {
-    $('.doctor-view-detail').on('click', function (e) {
+    $('.doctor-view-detail').on('click', function(e) {
         let patientId = $(this).attr('data-patient-id');
         $.ajax({
             method: 'POST',
             url: `${window.location.origin}/api/get-detail-patient-by-id`,
             data: { patientId: patientId },
-            success: function (data) {
+            success: function(data) {
                 $('#imageOldForms').empty();
                 $('#patientName').val(data.name);
                 $('#patientPhone').val(data.phone);
@@ -484,7 +500,7 @@ function handleDoctorViewInfoPatient() {
 
                 $('#modalDetailPatientForDoctor').modal('show');
             },
-            error: function (err) {
+            error: function(err) {
                 console.log(error);
                 alertify.error('Đã xảy ra lỗi, vui lòng thử lại sau!');
             },
@@ -493,7 +509,7 @@ function handleDoctorViewInfoPatient() {
 }
 
 function showModalSendForms() {
-    $('.doctor-send-forms').on('click', function (e) {
+    $('.doctor-send-forms').on('click', function(e) {
         let patientId = $(this).attr('data-patient-id');
         let isSend = $(this).attr('data-is-send-forms');
 
@@ -501,7 +517,7 @@ function showModalSendForms() {
             url: `${window.location.origin}/api/get-detail-patient-by-id`,
             method: 'POST',
             data: { patientId: patientId },
-            success: function (data) {
+            success: function(data) {
                 let html = '';
                 $('#divGenerateFilesSend').empty();
                 $('#emailPatient').val(data.email);
@@ -532,7 +548,7 @@ function showModalSendForms() {
                 $('#divGenerateFilesSend').append(html);
                 $('#modalSendForms').modal('show');
             },
-            error: function (error) {
+            error: function(error) {
                 console.log(error);
                 alertify.error('Đã xảy ra lỗi, vui lòng thử lại sau!');
             },
@@ -541,7 +557,7 @@ function showModalSendForms() {
 }
 
 function handleSendFormsForPatient() {
-    $('#btnSendFilesForms').on('click', function (e) {
+    $('#btnSendFilesForms').on('click', function(e) {
         if (!$('#filesSend').val()) {
             alert('Please select files before sending!');
             return;
@@ -558,7 +574,7 @@ function handleSendFormsForPatient() {
             cache: false,
             contentType: false,
             processData: false,
-            success: function (data) {
+            success: function(data) {
                 $('#modalSendForms').modal('hide');
                 $('#processLoadingAdmin').addClass('d-none');
                 $('#btnSendFilesForms').prop('disabled', false);
@@ -568,7 +584,7 @@ function handleSendFormsForPatient() {
                     .addClass('fa-check-circle');
                 alertify.success('Sending remedies succeeds');
             },
-            error: function (error) {
+            error: function(error) {
                 alertify.error('Đã xảy ra lỗi, vui lòng thử lại sau!');
                 console.log(error);
             },
@@ -577,7 +593,7 @@ function handleSendFormsForPatient() {
 }
 
 function resetModal() {
-    $(`#modalDetailPatient`).on('hidden.bs.modal', function (e) {
+    $(`#modalDetailPatient`).on('hidden.bs.modal', function(e) {
         $(this)
             .find('input,textarea,select')
             .val('')
@@ -587,7 +603,7 @@ function resetModal() {
             .end();
     });
 
-    $(`#modalHistoryBooking1`).on('hidden.bs.modal', function (e) {
+    $(`#modalHistoryBooking1`).on('hidden.bs.modal', function(e) {
         $(this)
             .find('input,textarea,select')
             .val('')
@@ -597,7 +613,7 @@ function resetModal() {
             .end();
     });
 
-    $(`#modalDetailPatientForDoctor`).on('hidden.bs.modal', function (e) {
+    $(`#modalDetailPatientForDoctor`).on('hidden.bs.modal', function(e) {
         $(this)
             .find('input,textarea,select')
             .val('')
@@ -607,7 +623,7 @@ function resetModal() {
             .end();
     });
 
-    $(`#modalSendForms`).on('hidden.bs.modal', function (e) {
+    $(`#modalSendForms`).on('hidden.bs.modal', function(e) {
         $(this)
             .find('input,textarea,select')
             .val('')
@@ -616,7 +632,7 @@ function resetModal() {
             .prop('checked', '')
             .end();
     });
-    $(`#modalCancelBooking`).on('hidden.bs.modal', function (e) {
+    $(`#modalCancelBooking`).on('hidden.bs.modal', function(e) {
         $(this)
             .find('input,textarea,select')
             .val('')
@@ -628,15 +644,15 @@ function resetModal() {
     });
 }
 
-$(document).ready(function (e) {
-    $('#input-search').on('input', function () {
+$(document).ready(function(e) {
+    $('#input-search').on('input', function() {
         let query = $(this).val();
         if (query.length > 0) {
             $.ajax({
                 method: 'POST',
                 url: `${window.location.origin}/api/search`,
                 data: { query: query },
-                success: function (data) {
+                success: function(data) {
                     let results = data.results;
                     let htmlContent = '';
                     results.forEach((result) => {
@@ -644,7 +660,7 @@ $(document).ready(function (e) {
                     });
                     $('#show-info-search').html(htmlContent);
                 },
-                error: function (err) {
+                error: function(err) {
                     console.log(err);
                     $('#show-info-search').html('<div class="search-result-item">Không tìm thấy kết quả</div>');
                 },
@@ -666,4 +682,5 @@ $(document).ready(function (e) {
     showModalSendForms();
 
     handleBtnNewPatientOk1();
+    handleBtnFeedback();
 });

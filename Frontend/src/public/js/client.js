@@ -441,7 +441,8 @@ function handleSubmitFeedback() {
             url: `${window.location.origin}/feedback/create`,
             data: { data: data },
             success: function(data) {
-                alert('Sending a Feedback succeeds!');
+                alert('Cảm ơn phản hồi từ bạn!');
+                window.location.href = "/InfoUser";
             },
             error: function(err) {
                 alertify.error('Đã xảy ra lỗi, vui lòng thử lại sau!');
