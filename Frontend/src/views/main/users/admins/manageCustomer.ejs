@@ -3,7 +3,8 @@
     <div class="d-sm-flex align-items-center justify-content-between mb-4">
         <h1 class="h3 mb-0 text-gray-800">Quản lý bệnh nhân</h1>
         <div class="my-3">
-            <div class="form-row">
+            <div class="form-row col-10">
+                <label for="specializationDoctor">Nhập số điện thoại</label>
                 <input id="phone" name="phone" placeholder="Số điện thoại" type="text" class="form-control col-8 mr-4">
                 <a class="btn btn-primary" href="#" id="btnSearch">Tìm</a>
             </div>
@@ -71,26 +72,35 @@
                 <div class="modal-body">
                     <div class="row">
                         <div class="col-12">
+                            <div class="row">
+                                <div class="col-md-8">
+                                    <div class="form-row">
+                                        <div class="form-group col-md-12">
+                                            <label for="nameCustomer" class="col-form-label text-label">Tên</label>
+                                            <input type="text" class="form-control" id="nameCustomer" disabled>
+                                        </div>
+                                        <div class="form-group col-md-12">
+                                            <label for="phoneCustomer" class="col-form-label text-label">Số điện thoại</label>
+                                            <input type="text" class="form-control" id="phoneCustomer" disabled>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-4">
+                                    <div class="form-group">
+                                        <label class="col-form-label text-label">Hình ảnh</label>
+                                        <div id="imageCustomer" class="text-center">
+                                            <!-- Thêm hình ảnh tại đây -->
+                                            <img src="link-to-image.jpg" alt="Customer Image" class="img-fluid custom-img-size">
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
                             <div class="form-row">
-                                <div class="form-group col-7">
-                                    <label for="nameCustomer" class="col-form-label text-label">Tên</label>
-                                    <input type="text" class="form-control" id="nameCustomer" disabled>
-                                </div>
-                                <div class="form-group col-5">
-                                    <label for="phoneCustomer" class="col-form-label text-label">Số điện thoại</label>
-                                    <input type="text" class="form-control" id="phoneCustomer" disabled>
+                                <div class="form-group col-md-12">
+                                    <label for="addressCustomer" class="col-form-label text-label">Địa chỉ</label>
+                                    <input type="text" class="form-control" id="addressCustomer" name="addressCustomer" disabled>
                                 </div>
                             </div>
-                            <div class="form-group">
-                                <label for="addressCustomer" class="col-form-label text-label">Địa chỉ</label>
-                                <input type="text" class="form-control" id="addressCustomer" name="addressCustomer"
-                                    disabled>
-                            </div>
-                            <div class="form-group">
-                                <label class="col-form-label text-label"> Hình ảnh</label>
-                                <div id="imageCustomer"></div>
-                            </div>
-
                         </div>
                     </div>
                 </div>

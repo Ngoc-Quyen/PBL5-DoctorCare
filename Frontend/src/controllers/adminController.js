@@ -18,9 +18,11 @@ const statusSuccessId = 1;
 
 let getManageDoctor = async (req, res) => {
     let doctors = await userService.getInfoDoctors();
+    let specializations = await homeService.getSpecializations();
     return res.render('main/users/admins/manageDoctor.ejs', {
         user: req.user,
         doctors: doctors,
+        specializations: specializations,
     });
 };
 

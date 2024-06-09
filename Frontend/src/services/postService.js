@@ -9,7 +9,7 @@ let getAllPosts = () => {
     return new Promise(async(resolve, reject) => {
         try {
             let posts = await db.Post.findAll({
-                attributes: ['id', 'title', 'contentHTML', 'writerId', 'createdAt', 'contentMarkdown'],
+                attributes: ['id', 'title', 'contentHTML', 'writerId', 'isActive', 'createdAt', 'contentMarkdown'],
                 // raw: true,
             });
             await Promise.all(
