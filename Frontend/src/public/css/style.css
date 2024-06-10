@@ -1403,3 +1403,11 @@ h3.show-title-post {
     color: white;
     /* Các thuộc tính CSS khác tùy chỉnh */
 }
+
+.detail-post .avatar-doctor {
+    border-radius: 5%;
+    height: 300px;
+    width: 250px;
+    display: flex;
+    justify-content: center;
+}

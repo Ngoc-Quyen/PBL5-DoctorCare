@@ -47,10 +47,6 @@
                         <a href="/InfoUser">
                             <img src="../images/background/User.png" alt="User logo" class="logo">
                         </a>
-                        <!-- <a href="/InfoBooked" >
-                        <img src="../images/background/Lichhen.png" alt="Lichhen logo" class="logo">
-                    </a> -->
-
                         <a href="https://www.facebook.com/profile.php?id=100011010698678" target="_blank">
                             <img src="../images/background/Vector.png" alt="Contact logo" class="logo">
                         </a>
@@ -58,76 +54,68 @@
                             <img src="../images/background/logout.png" alt="Contact logo" class="logo">
                         </a>
                     </div>
-                    <% } else { %>
-                        <div class="col-md-3 mt-3 d-none d-md-flex justify-content-around align-self-center" id="notLoggedIn">
-                            <div class="d-flex flex-column">
-                                <a href="/login" class="btn btn-design1 ">Đăng nhập</a>
-                            </div>
-                            <div class="d-flex flex-column">
-                                <a href="/register" class="btn btn-design2 ">Đăng ký</a>
-                            </div>
-                            <a href="https://www.facebook.com/profile.php?id=100011010698678" target="_blank">
-                                <img src="../images/background/Vector.png" alt="Contact logo" class="logo">
-                            </a>
+                <% } else { %>
+                    <div class="col-md-3 mt-3 d-none d-md-flex justify-content-around align-self-center" id="notLoggedIn">
+                        <div class="d-flex flex-column">
+                            <a href="/login" class="btn btn-design1 ">Đăng nhập</a>
                         </div>
-                        <% } %>
+                        <div class="d-flex flex-column">
+                            <a href="/register" class="btn btn-design2 ">Đăng ký</a>
+                        </div>
+                        <a href="https://www.facebook.com/profile.php?id=100011010698678" target="_blank">
+                            <img src="../images/background/Vector.png" alt="Contact logo" class="logo">
+                        </a>
+                    </div>
+                <% } %>
             </div>
         </div>
     </section>
     <section class="detail-info-specialization">
         <div class="container">
-            <div class="container">
-                <div class="row">
-                    <div class="col-12 mt-3">
-                        <a class="text-decoration-none" href="/">Trang chủ </a><span aria-hidden="true">&raquo;</span>
-                        <span style="text-transform: uppercase">
-                            Danh sách bài đăng
-                        </span>
-                    </div>
+            <div class="row">
+                <div class="col-12 mt-3">
+                    <a class="text-decoration-none" href="/">Trang chủ </a><span aria-hidden="true">&raquo;</span>
+                    <span style="text-transform: uppercase">
+                        Danh sách bài đăng
+                    </span>
                 </div>
             </div>
         </div>
     </section>
     <div class="container">
-        <div class="container">
-            <div class="row">
-                <div class="col-8">
-                    <h2></h2>
-                    <hr>
-                    <div id="list-posts-client">
-                        <% if (posts.length > 0) { %>
-                            <% posts.forEach(function(post, index) { %> <!-- Sử dụng tham số index của hàm forEach để kiểm tra vị trí của bài viết -->
-                                <% if (post.isActive === 1) { %> <!-- Kiểm tra nếu post.isActive là 1 -->
-                                    <a class="text-decoration-none" href="/detail/post/<%= post.id %>">
-                                        <div class="mb-5 d-flex flex-row">
-                                            <div class="col-8 d-flex flex-column">
-                                                <h3 class="show-title-post">
-                                                    <%= post.title %>
-                                                </h3>
-                                                <div class="show-content-post" style="color: black">
-                                                    <%= striptags(post.contentHTML) %>
-                                                </div>
+        <div class="row">
+            <div class="col-12">
+                <h2></h2>
+                <hr>
+                <div id="list-posts-client">
+                    <% if (posts.length > 0) { %>
+                        <% posts.forEach(function(post, index) { %> <!-- Sử dụng tham số index của hàm forEach để kiểm tra vị trí của bài viết -->
+                            <% if (post.isActive === 1) { %> <!-- Kiểm tra nếu post.isActive là 1 -->
+                                <a class="text-decoration-none" href="/detail/post/<%= post.id %>">
+                                    <div class="mb-5 d-flex flex-row">
+                                        <div class="col-8">
+                                            <h3 class="show-title-post">
+                                                <%= post.title %>
+                                            </h3>
+                                            <div class="show-content-post" style="color: black">
+                                                <%= striptags(post.contentHTML) %>
                                             </div>
                                         </div>
-                                    </a>
-                                    <% if (index < posts.length - 1) { %> <!-- Kiểm tra nếu chưa phải là bài viết cuối cùng thì hiển thị đường ngăn cách -->
-                                        <hr>
-                                    <% } %>
+                                    </div>
+                                </a>
+                                <% if (index < posts.length - 1) { %> <!-- Kiểm tra nếu chưa phải là bài viết cuối cùng thì hiển thị đường ngăn cách -->
+                                    <hr>
                                 <% } %>
-                            <% }); %>
-                        <% } else { %>
-                            <p>Không có bài viết nào.</p>
-                        <% } %>
-                    </div>
-                </div>
-                <div class="col-4 mt-3">
-                    <input type="text" class="form-control" id="searchPostClient" placeholder="Tìm kiếm bài đăng...">
+                            <% } %>
+                        <% }); %>
+                    <% } else { %>
+                        <p>Không có bài viết nào.</p>
+                    <% } %>
                 </div>
             </div>
         </div>
     </div>
-    
-    </section>
+
     <footer class="sec-foot">
         <div class="container">
             <div class="row">

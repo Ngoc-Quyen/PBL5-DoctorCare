@@ -71,25 +71,26 @@
     </section>
     <section class="detail-content detail-post">
         <div class="container">
-            <div class="container">
-                <div class="row">
-                    <div class="col-8">
-                        <div class="input-search-post">
-                            <input id="searchInDetailPost" class="form-control" type="text" placeholder="Tìm kiếm bài đăng...">
-                        </div>
-                        <hr>
-                        <div class="title-post">
-                            <%= post.title %>
-                        </div>
-                        <div class="content-detail-post">
-                            <%- post.contentHTML %>
+            <div class="row">
+                <div class="col-md-8">
+                    <hr>
+                    <div class="title-post">
+                        <%= post.title %>
+                    </div>
+                    <div class="content-detail-post">
+                        <%- post.contentHTML %>
+                    </div>
+                </div>
+                <div class="col-md-4 tableOfContent pt-3">
+                    <div class="doctor-info" style="text-align: center;">
+                        <h4>Người viết bài</h4>
+                        <img src="<%= doctor.avatar %>" class="avatar-doctor" alt="Doctor Avatar" style="display: inline-block;">
+                        <div class="info-details" style="display: inline-block; vertical-align: top;">
+                            <span class="name-doctor"><%= doctor.name %></span>
+                            <div style="margin: 0 auto;">Chuyên khoa: <span><%= specialization %></span></div>
                         </div>
                     </div>
-                    <div class="col-4 tableOfContent pt-3">
-                        <div id="toc">
-                            <div class="main-content">Nội dung</div>
-                        </div>
-                    </div>
+                    
                 </div>
             </div>
         </div>

@@ -109,8 +109,15 @@ let getBookingPage = (req, res) => {
 let getDetailPostPage = async(req, res) => {
     try {
         let post = await postService.getDetailPostPage(req.params.id);
+        
+        // Lấy thông tin về bác sĩ dựa trên doctorId
+        let object = await doctorService.getInfoDoctorById(post.forDoctorId);
+
+
         res.render('main/homepage/post.ejs', {
             post: post,
+            doctor: object.doctor,
+            specialization: object.specializationName,
         });
     } catch (e) {
         console.log(e);
