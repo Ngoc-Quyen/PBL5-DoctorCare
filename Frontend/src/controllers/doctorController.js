@@ -64,12 +64,48 @@ let getSchedule = async (req, res) => {
 };
 
 let getCreateSchedule = async (req, res) => {
-    let listTime = await userService.getAllCodeService('TIME');
-    return res.render('main/users/admins/createSchedule.ejs', {
-        user: req.user,
-        listTime: listTime.data,
-    });
+    try {
+        let currentDate = moment().add(1, 'days').format('DD/MM/YYYY');
+        let selectedDate = req.query.Datechon || currentDate;
+        
+        let sevenDaySchedule = [];
+        for (let i = 0; i < 7; i++) {
+            let date = moment(new Date()).add(i, 'days').locale('vi').format('DD/MM/YYYY');
+            sevenDaySchedule.push(date);
+        }
+        
+        let data = {
+            sevenDaySchedule: sevenDaySchedule,
+            doctorId: req.user.id,
+        };
+        
+        let schedules = await doctorService.getDoctorSchedules(data);
+
+        schedules.forEach((x) => {
+            x.date = moment(x.date, 'DD/MM/YYYY').toDate();
+        });
+
+        schedules = _.sortBy(schedules, (x) => x.date);
+
+        schedules.forEach((x) => {
+            x.date = moment(x.date).format('DD/MM/YYYY');
+        });
+
+        let listTime = await userService.getAllCodeService('TIME');
+        
+        return res.render('main/users/admins/createSchedule.ejs', {
+            user: req.user,
+            listTime: listTime.data,
+            schedules: schedules,
+            sevenDaySchedule: sevenDaySchedule,
+            selectedDate: selectedDate,
+        });
+    } catch (e) {
+        console.log(e);
+        res.status(500).send('Server Error');
+    }
 };
+
 
 let postCreateSchedule = async (req, res) => {
     await doctorService.postCreateSchedule(req.user, req.body.schedule_arr, MAX_BOOKING);

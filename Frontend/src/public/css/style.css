@@ -368,8 +368,6 @@ body a {
 
 .post-image {
     position: relative;
-    right: 10;
-    margin-right: 30px;
 }
 
 .image-text {
@@ -1399,4 +1397,9 @@ h3.show-title-post {
 
 #selectInputContainer select {
     width: 300px;
+}
+.btn.btn-danger {
+    background-color: rgb(89, 18, 255);
+    color: white;
+    /* Các thuộc tính CSS khác tùy chỉnh */
 }
