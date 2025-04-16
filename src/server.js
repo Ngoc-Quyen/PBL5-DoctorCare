@@ -1,7 +1,5 @@
 require('dotenv').config();
 import express from 'express';
-import * as admin from 'firebase-admin';
-import serviceAccount from './serviceAccountKey.json';
 import configViewEngine from './config/viewEngine';
 import initRoutes from './routes/web';
 import bodyParser from 'body-parser';
@@ -42,15 +40,13 @@ session.configSession(app);
 configViewEngine(app);
 
 // Middleware để lưu userId vào session sau khi user đăng nhập
-app.use(function(req, res, next) {
+app.use(function (req, res, next) {
     if (req.session.user) {
         req.session.userId = req.session.user.id;
     }
     res.locals.user = req.session.user;
     next();
 });
-
-
 
 // config Passportjs
 app.use(passPort.initialize());

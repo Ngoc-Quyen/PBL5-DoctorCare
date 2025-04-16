@@ -10,11 +10,14 @@ import chatFBServie from './../services/chatFBService';
 import uploadImg from '../services/imgLoadFirebase';
 import multer from 'multer';
 import moment from 'moment';
+import _ from 'lodash';
 
 const statusNewId = 4;
 const statusPendingId = 3;
 const statusFailedId = 2;
 const statusSuccessId = 1;
+
+const MAX_BOOKING = 1;
 
 let getManageDoctor = async (req, res) => {
     let doctors = await userService.getInfoDoctors();
@@ -26,6 +29,22 @@ let getManageDoctor = async (req, res) => {
     });
 };
 
+let getManageDoctorPaging = async (req, res) => {
+    let page = parseInt(req.query.page) || 1;
+    let limit = 8;
+    let offset = (page - 1) * limit;
+    let { doctors, totalCount } = await userService.getInfoDoctorsPaging(limit, offset);
+
+    let specializations = await homeService.getSpecializations();
+
+    return res.render('main/users/admins/manageDoctor.ejs', {
+        user: req.user,
+        doctors: doctors,
+        specializations: specializations,
+        currentPage: page,
+        totalPages: totalCount,
+    });
+};
 let getCreateDoctor = async (req, res) => {
     let specializations = await homeService.getSpecializations();
     return res.render('main/users/admins/createDoctor.ejs', {
@@ -128,6 +147,7 @@ let postEditDoctor = async (req, res) => {
             address: req.body.addressDoctor,
             description: req.body.introEditDoctor,
             specializationId: req.body.specializationDoctor,
+            isActive: req.body.isActive,
             avatar: imgUrl,
         };
         // let patient = await doctorService.getPatientForEditPage(req.params.id);
@@ -207,6 +227,40 @@ let getCustomerPage = async (req, res) => {
     });
 };
 
+let getCustomerPaging = async (req, res) => {
+    let page = parseInt(req.query.page) || 1;
+    let limit = 8;
+    let offset = (page - 1) * limit;
+    let phone = req.body.phone;
+    let customers = [];
+    let totalPages = 0;
+    if (!phone) {
+        // Nếu không có số điện thoại, chỉ phân trang
+        ({ customers, totalPages } = await customerService.getAllCustomersPaging(limit, offset));
+    } else {
+        // Tìm kiếm theo số điện thoại và phân trang
+        ({ customers, totalPages } = await customerService.getCustomerByPhone(phone, limit, offset));
+    }
+
+    return res.render('main/users/admins/manageCustomer.ejs', {
+        user: req.user,
+        customers: customers,
+        currentPage: page,
+        phone: phone,
+        totalPages: totalPages,
+    });
+};
+
+let getCustomerByPhone = async (req, res) => {
+    let phone = req.body.phone;
+
+    try {
+        let customers = await customerService.getCustomerByPhone(phone);
+        return res.json({ customers });
+    } catch (e) {
+        return res.status(500).json({ error: 'Lỗi server' });
+    }
+};
 let deleteSpecializationById = async (req, res) => {
     try {
         await specializationService.deleteSpecializationById(req.body.id);
@@ -569,10 +623,12 @@ let getEditPatient = async (req, res) => {
 let postEditPatient = async (req, res) => {
     try {
         let file = req.file;
+        console.log('file in controller admin: ', file);
         let imgUrl = '';
         if (file) {
             imgUrl = await uploadImg.uploadImg(file);
         }
+
         let data = {
             id: req.body.idDoctor,
             name: req.body.nameDoctor,
@@ -581,16 +637,17 @@ let postEditPatient = async (req, res) => {
             address: req.body.addressDoctor,
             description: req.body.introEditDoctor,
             birthday: req.body.birthday,
+            isActive: req.body.isActive,
             avatar: imgUrl,
         };
-        let patient = await doctorService.getPatientForEditPage(req.params.id);
-        let specializations = await homeService.getSpecializations();
+
         let mess = await userService.updateProfile(data);
         if (mess.errCode === 0) {
-            return res.status(200).json(mess);
-            // return res.redirect('/users/manage/customer');
+            return res.redirect(`/users/customer/edit/${data.id}`);
+            // return res.status(200).json({ message: mess.errMessage });
         } else {
-            return res.status(200).json(mess);
+            return res.redirect(`/users/customer/edit/${data.id}`);
+            // return res.status(400).json({ message: mess.errMessage });
         }
     } catch (error) {
         return res.status(500).json(error);
@@ -678,12 +735,72 @@ let getSpecializationById = async (req, res) => {
         return res.status(500).json(error);
     }
 };
+
+let getCreateScheduleDoctor = async (req, res) => {
+    try {
+        let doctor_id = req.params.id;
+        let doctor = await doctorService.getDoctorForEditPage(doctor_id);
+        let currentDate = moment().add(1, 'days').format('DD/MM/YYYY');
+        let selectedDate = req.query.Datechon || currentDate;
+
+        let sevenDaySchedule = [];
+        for (let i = 0; i < 7; i++) {
+            let date = moment(new Date()).add(i, 'days').locale('vi').format('DD/MM/YYYY');
+            sevenDaySchedule.push(date);
+        }
+
+        let data = {
+            sevenDaySchedule: sevenDaySchedule,
+            doctorId: doctor_id,
+        };
+
+        let schedules = await doctorService.getDoctorSchedules(data);
+
+        schedules.forEach((x) => {
+            x.date = moment(x.date, 'DD/MM/YYYY').toDate();
+        });
+
+        schedules = _.sortBy(schedules, (x) => x.date);
+
+        schedules.forEach((x) => {
+            x.date = moment(x.date).format('DD/MM/YYYY');
+        });
+
+        let listTime = await userService.getAllCodeService('TIME');
+
+        return res.render('main/users/admins/createSchedule.ejs', {
+            user: req.user,
+            listTime: listTime.data,
+            schedules: schedules,
+            sevenDaySchedule: sevenDaySchedule,
+            selectedDate: selectedDate,
+            doctor_name: doctor.name,
+            doctor_id: doctor_id,
+        });
+    } catch (e) {
+        console.log(e);
+        res.status(500).send('Server Error');
+    }
+};
+
+let postCreateScheduleDoctor = async (req, res) => {
+    let doctor_id = req.params.id;
+    let doctor = await doctorService.getDoctorForEditPage(doctor_id);
+    await doctorService.postCreateSchedule(doctor_id, req.body.schedule_arr, MAX_BOOKING);
+    return res.status(200).json({
+        status: 1,
+        message: 'success',
+    });
+};
 module.exports = {
     getManageDoctor: getManageDoctor,
+    getManageDoctorPaging: getManageDoctorPaging,
     getCreateDoctor: getCreateDoctor,
     getSpecializationPage: getSpecializationPage,
     getEditDoctor: getEditDoctor,
     getCustomerPage: getCustomerPage,
+    getCustomerPaging: getCustomerPaging,
+    getCustomerByPhone: getCustomerByPhone,
     getManageBotPage: getManageBotPage,
     getEditPost: getEditPost,
     getManageCreateScheduleForDoctorsPage: getManageCreateScheduleForDoctorsPage,
@@ -726,4 +843,7 @@ module.exports = {
 
     getPostByWriteId: getPostByWriteId,
     postEditDoctor: postEditDoctor,
+
+    getCreateScheduleDoctor: getCreateScheduleDoctor,
+    postCreateScheduleDoctor: postCreateScheduleDoctor,
 };

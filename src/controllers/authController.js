@@ -89,7 +89,6 @@ let getAllCode = async (req, res) => {
 };
 let getResetPasswordPage = async (req, res) => {
     let emailUser = req.query.emailResetPassword;
-    console.log(emailUser);
     if (!emailUser) {
         return res.redirect('/login');
     }
@@ -134,7 +133,6 @@ let handleEditSpecialty = async (req, res) => {
     }
     let message = await user.updateUserDataFile(data, imgUrl);
     if (message.errCode === 0) {
-        console.log('message: ', message.errMessage);
         return res.redirect('/users');
         // Hiển thị thông báo cập nhật thành công
     } else {

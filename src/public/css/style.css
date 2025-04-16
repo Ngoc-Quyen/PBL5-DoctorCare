@@ -64,9 +64,18 @@ body a {
     height: 25px;
     text-align: center;
     position: absolute;
-    top: 90px;
+    /* top: 90px; */
+    left: -8px;
     z-index: 20;
     cursor: pointer;
+}
+
+.t-90 {
+    top: 90px;
+}
+
+.t-120 {
+    top: 120px;
 }
 
 .prev-custom:hover {
@@ -82,8 +91,8 @@ body a {
     height: 25px;
     text-align: center;
     position: absolute;
-    right: 0;
-    top: 90px;
+    right: -8px;
+    /* top: 90px; */
     z-index: 20;
     cursor: pointer;
 }
@@ -142,27 +151,35 @@ body a {
     0% {
         background-image: url("../images/bg1.jpg");
     }
+
     20% {
         background-image: url("../images/bg1.jpg");
     }
+
     25% {
         background-image: url("../images/bg2.png");
     }
+
     45% {
         background-image: url("../images/bg2.png");
     }
+
     50% {
         background-image: url("../images/bg3.png");
     }
+
     70% {
         background-image: url("../images/bg3.png");
     }
+
     75% {
         background-image: url("../images/bg4.png");
     }
+
     95% {
         background-image: url("../images/bg4.png");
     }
+
     100% {
         background-image: url("../images/bg1.jpg");
     }
@@ -752,6 +769,7 @@ pre {
     border-radius: 50%;
     width: 100px;
     height: 100px;
+    object-fit: cover;
 }
 
 .lb-update-image {
@@ -760,6 +778,7 @@ pre {
     border-radius: 5px;
     cursor: pointer;
 }
+
 
 .lb-update-image:hover {
     background-color: #ccc;
@@ -854,6 +873,7 @@ pre {
     0% {
         transform: rotate(0deg);
     }
+
     100% {
         transform: rotate(360deg);
     }
@@ -1379,13 +1399,15 @@ h3.show-title-post {
     border-radius: 50%;
     /* Add more styling here as needed */
 }
+
 .custom-width {
-    width: 300px; /* Độ rộng bạn muốn tùy chỉnh */
+    width: 300px;
+    /* Độ rộng bạn muốn tùy chỉnh */
 }
 
 
-.form-row > .col,
-.form-row > .col-auto {
+.form-row>.col,
+.form-row>.col-auto {
     padding-left: 0;
     padding-right: 0;
 }
@@ -1398,6 +1420,7 @@ h3.show-title-post {
 #selectInputContainer select {
     width: 300px;
 }
+
 .btn.btn-danger {
     background-color: rgb(89, 18, 255);
     color: white;
@@ -1410,4 +1433,24 @@ h3.show-title-post {
     width: 250px;
     display: flex;
     justify-content: center;
+}
+
+.update-avatar {
+    width: 300px;
+    height: 300px;
+}
+
+.update-avatar img {
+    max-width: 100%;
+    max-height: 100%;
+    object-fit: contain;
+}
+
+.w-30t {
+    width: 30%;
+}
+
+.w-h-200 {
+    width: 200px;
+    height: 200px;
 }

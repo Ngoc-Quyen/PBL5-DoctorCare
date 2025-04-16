@@ -32,6 +32,9 @@
 
     <script type='text/javascript' src="<%= process.env.URL_BING_HTTPS %>" async defer></script>
 
+    <!-- Load AlertifyJS -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/alertifyjs@1.13.1/build/css/alertify.min.css" />
+    <script src="https://cdn.jsdelivr.net/npm/alertifyjs@1.13.1/build/alertify.min.js"></script>
 </head>
 
 <body>
@@ -41,8 +44,8 @@
         <footer>
             <div class="text-center">
                 <span>Copyright &copy; <a title="More info"
-                                  href="https://www.facebook.com/profile.php?id=100011010698678"
-                                  target="_blank">Đại học Bách khoa Đà Nẵng - PBL5 - 2024</a></span>
+                        href="https://www.facebook.com/profile.php?id=100011010698678" target="_blank">Đại học Bách khoa
+                        Đà Nẵng - PBL5 - 2024</a></span>
             </div>
         </footer>
 
@@ -55,14 +58,14 @@
         <!-- Load Facebook SDK for JavaScript -->
         <div id="fb-root"></div>
         <script>
-            window.fbAsyncInit = function() {
+            window.fbAsyncInit = function () {
                 FB.init({
                     xfbml: true,
                     version: 'v7.0'
                 });
             };
 
-            (function(d, s, id) {
+            (function (d, s, id) {
                 var js, fjs = d.getElementsByTagName(s)[0];
                 if (d.getElementById(id)) return;
                 js = d.createElement(s);
@@ -73,7 +76,8 @@
         </script>
 
         <!-- Your customer chat code -->
-        <div class="fb-customerchat" attribution=setup_tool page_id="<%= process.env.PAGE_ID %>" theme_color="#0084ff" logged_in_greeting="Welcome to DoctorsCare." logged_out_greeting="Welcome to DoctorsCare.">
+        <div class="fb-customerchat" attribution=setup_tool page_id="<%= process.env.PAGE_ID %>" theme_color="#0084ff"
+            logged_in_greeting="Welcome to DoctorsCare." logged_out_greeting="Welcome to DoctorsCare.">
         </div>
 
 </body>

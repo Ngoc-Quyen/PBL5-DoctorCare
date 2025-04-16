@@ -31,7 +31,7 @@
                     </thead>
                     <tbody>
                         <% customers.forEach(function(customer) { %>
-                            <tr>
+                            <tr class="<%= customer.isActive ? '' : 'text-danger' %>">
                                 <td>
                                     <%= customer.name %>
                                 </td>
@@ -53,8 +53,36 @@
                                 </td>
                             </tr>
                             <% }) %>
+
                     </tbody>
                 </table>
+            </div>
+
+            <!-- PHÂN TRANG -->
+            <div class="d-flex justify-content-end mt-3">
+                <nav>
+                    <ul class="pagination">
+                        <% if (currentPage> 1) { %>
+                            <li class="page-item">
+                                <a class="page-link" href="?page=<%= currentPage - 1 %>">«</a>
+                            </li>
+                            <% } %>
+
+                                <% for (let i=1; i <=totalPages; i++) { %>
+                                    <li class="page-item <%= i === currentPage ? 'active' : '' %>">
+                                        <a class="page-link" href="?page=<%= i %>">
+                                            <%= i %>
+                                        </a>
+                                    </li>
+                                    <% } %>
+
+                                        <% if (currentPage < totalPages) { %>
+                                            <li class="page-item">
+                                                <a class="page-link" href="?page=<%= currentPage + 1 %>">»</a>
+                                            </li>
+                                            <% } %>
+                    </ul>
+                </nav>
             </div>
         </div>
     </div>
@@ -80,7 +108,8 @@
                                             <input type="text" class="form-control" id="nameCustomer" disabled>
                                         </div>
                                         <div class="form-group col-md-12">
-                                            <label for="phoneCustomer" class="col-form-label text-label">Số điện thoại</label>
+                                            <label for="phoneCustomer" class="col-form-label text-label">Số điện
+                                                thoại</label>
                                             <input type="text" class="form-control" id="phoneCustomer" disabled>
                                         </div>
                                     </div>
@@ -90,7 +119,8 @@
                                         <label class="col-form-label text-label">Hình ảnh</label>
                                         <div id="imageCustomer" class="text-center">
                                             <!-- Thêm hình ảnh tại đây -->
-                                            <img src="link-to-image.jpg" alt="Customer Image" class="img-fluid custom-img-size">
+                                            <img src="link-to-image.jpg" alt="Customer Image"
+                                                class="img-fluid custom-img-size">
                                         </div>
                                     </div>
                                 </div>
@@ -98,7 +128,8 @@
                             <div class="form-row">
                                 <div class="form-group col-md-12">
                                     <label for="addressCustomer" class="col-form-label text-label">Địa chỉ</label>
-                                    <input type="text" class="form-control" id="addressCustomer" name="addressCustomer" disabled>
+                                    <input type="text" class="form-control" id="addressCustomer" name="addressCustomer"
+                                        disabled>
                                 </div>
                             </div>
                         </div>
