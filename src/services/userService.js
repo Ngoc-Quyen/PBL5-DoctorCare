@@ -2,7 +2,7 @@ import bcrypt from 'bcryptjs';
 import db from './../models';
 import helper from '../helper/client';
 import elastic from './../config/elastic';
-import _ from 'lodash';
+import _, { orderBy } from 'lodash';
 
 const Sequelize = require('sequelize');
 const Op = Sequelize.Op;
@@ -38,6 +38,7 @@ let getInfoDoctors = () => {
                     { model: db.Doctor_User, required: false },
                     { model: db.Patient, required: false, where: { statusId: 1 } },
                 ],
+                order: [['id', 'ASC']], // Sắp xếp theo id tăng dần
             });
             await Promise.all(
                 doctors.map(async (doctor) => {
@@ -54,6 +55,50 @@ let getInfoDoctors = () => {
                 })
             );
             resolve(doctors);
+        } catch (e) {
+            reject(e);
+        }
+    });
+};
+let getInfoDoctorsPaging = async (limit, offset) => {
+    return new Promise(async (resolve, reject) => {
+        try {
+            let { count, rows: doctors } = await db.User.findAndCountAll({
+                where: { roleId: 2 },
+                attributes: ['id', 'name', 'isActive', 'phone'], // chỉ lấy các cột cần dùng
+                include: [
+                    {
+                        model: db.Doctor_User,
+                        required: false,
+                        attributes: ['specializationId'],
+                    },
+                    // {
+                    //     model: db.Patient,
+                    //     required: false,
+                    //     where: { statusId: 1 },
+                    //     attributes: [], // nếu không cần cột nào từ Patient, có thể để [] luôn
+                    // },
+                ],
+                order: [['id', 'ASC']],
+                limit,
+                offset,
+            });
+            let totalCount = Math.ceil(count / limit);
+            await Promise.all(
+                doctors.map(async (doctor) => {
+                    if (doctor.Doctor_User) {
+                        let specialization = await helper.getSpecializationById(doctor.Doctor_User.specializationId);
+                        // let countBooking = Array.isArray(doctor.Patients) ? doctor.Patients.length : 0;
+                        doctor.setDataValue('specializationName', specialization.name);
+                        // doctor.setDataValue('countBooking', countBooking);
+                    } else {
+                        doctor.setDataValue('specializationName', 'null');
+                        // doctor.setDataValue('countBooking', 0);
+                    }
+                    return doctor;
+                })
+            );
+            resolve({ doctors, totalCount });
         } catch (e) {
             reject(e);
         }
@@ -236,12 +281,17 @@ let convertToString = async (dateString) => {
         }
     });
 };
-let getInfoDoctorChart = async (month, doctorId) => {
+let getInfoDoctorChart = async (doctorId) => {
     return new Promise(async (resolve, reject) => {
         try {
-            let startDate = Date.parse(stringToDate(`01/${month}/2024`, 'dd/MM/yyyy', '/'));
-            let endDate = Date.parse(stringToDate(`31/${month}/2024`, 'dd/MM/yyyy', '/'));
-            let patients = await db.Patient.findAndCountAll({
+            const now = new Date(); // Lấy thời gian hiện tại
+            const year = now.getFullYear(); // Năm hiện tại
+            const month = now.getMonth(); // Tháng hiện tại (0-11)
+
+            const startDate = new Date(year, month, 1, 0, 0, 0); // Ngày đầu tháng lúc 00:00:00
+            const endDate = new Date(year, month + 1, 0, 23, 59, 59); // Ngày cuối tháng lúc 23:59:59
+
+            const patients = await db.Patient.findAndCountAll({
                 attributes: ['id', 'doctorId', 'statusId', 'isSentForms'],
                 where: {
                     createdAt: {
@@ -251,19 +301,6 @@ let getInfoDoctorChart = async (month, doctorId) => {
                 },
             });
 
-            // let startDate = `01/${month}/2024`;
-            // let endDate = `31/${month}/2024`;
-
-            // let patients = await db.Patient.findAndCountAll({
-            //     attributes: ['id', 'doctorId', 'statusId', 'isSentForms', 'dateBooking'],
-            //     where: {
-            //         doctorId: doctorId,
-            //         dateBooking: {
-            //             [Op.between]: [startDate, endDate],
-            //         },
-            //     },
-            // });
-            // console.log('startDate and endDate: ', endDate);
             resolve({ patients: patients });
         } catch (e) {
             reject(e);
@@ -761,6 +798,7 @@ let updateInfor = async (data) => {
 module.exports = {
     createDoctor: createDoctor,
     getInfoDoctors: getInfoDoctors,
+    getInfoDoctorsPaging: getInfoDoctorsPaging,
     findUserByEmail: findUserByEmail,
     findUserById: findUserById,
     comparePassword: comparePassword,

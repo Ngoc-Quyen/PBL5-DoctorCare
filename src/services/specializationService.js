@@ -38,7 +38,7 @@ let getAllSpecializations = () => {
         try {
             let listSpecializations = await db.Specialization.findAll({
                 attributes: ['id', 'name'],
-                order: [['name', 'ASC']],
+                order: [['id', 'ASC']],
             });
             resolve(listSpecializations);
         } catch (e) {

@@ -67,18 +67,18 @@ let getCreateSchedule = async (req, res) => {
     try {
         let currentDate = moment().add(1, 'days').format('DD/MM/YYYY');
         let selectedDate = req.query.Datechon || currentDate;
-        
+
         let sevenDaySchedule = [];
         for (let i = 0; i < 7; i++) {
             let date = moment(new Date()).add(i, 'days').locale('vi').format('DD/MM/YYYY');
             sevenDaySchedule.push(date);
         }
-        
+
         let data = {
             sevenDaySchedule: sevenDaySchedule,
             doctorId: req.user.id,
         };
-        
+
         let schedules = await doctorService.getDoctorSchedules(data);
 
         schedules.forEach((x) => {
@@ -92,7 +92,7 @@ let getCreateSchedule = async (req, res) => {
         });
 
         let listTime = await userService.getAllCodeService('TIME');
-        
+
         return res.render('main/users/admins/createSchedule.ejs', {
             user: req.user,
             listTime: listTime.data,
@@ -105,7 +105,6 @@ let getCreateSchedule = async (req, res) => {
         res.status(500).send('Server Error');
     }
 };
-
 
 let postCreateSchedule = async (req, res) => {
     await doctorService.postCreateSchedule(req.user, req.body.schedule_arr, MAX_BOOKING);
@@ -208,7 +207,6 @@ let getScheduleByDate = async (req, res) => {
         date: date,
         doctorId: req.user.id,
     };
-    console.log('date from doctorController: ', date);
     let patients = await doctorService.getPatientBooking(data);
     return res.render('main/users/admins/manageBooking.ejs', {
         user: req.user,
@@ -267,7 +265,7 @@ let FileSendPatient = multer({
 let postCreateChart = async (req, res) => {
     try {
         let doctorId = await req.user.id;
-        let object = await userService.getInfoDoctorChart(req.body.month, doctorId);
+        let object = await userService.getInfoDoctorChart(doctorId);
         return res.status(200).json(object);
     } catch (e) {
         console.log(e);

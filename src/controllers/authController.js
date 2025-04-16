@@ -89,7 +89,6 @@ let getAllCode = async (req, res) => {
 };
 let getResetPasswordPage = async (req, res) => {
     let emailUser = req.query.emailResetPassword;
-    console.log(emailUser);
     if (!emailUser) {
         return res.redirect('/login');
     }

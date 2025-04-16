@@ -20,14 +20,15 @@ let router = express.Router();
 let LocalStrategy = passportLocal.Strategy;
 
 passport.use(
-    new LocalStrategy({
+    new LocalStrategy(
+        {
             usernameField: 'email',
             passwordField: 'password',
             passReqToCallback: true,
         },
-        async(req, email, password, done) => {
+        async (req, email, password, done) => {
             try {
-                await userService.findUserByEmail(email).then(async(user) => {
+                await userService.findUserByEmail(email).then(async (user) => {
                     if (!user) {
                         return done(null, false, req.flash('error', 'Email không tồn tại'));
                     }
@@ -116,8 +117,8 @@ let initRoutes = (app) => {
     router.post('/users/manage/specialization/create', auth.checkLoggedIn, admin.postCreateSpecialization);
     router.post('/get-info-speciality-by-id', admin.getSpecializationById);
 
-    router.get('/users/manage/customer', auth.checkLoggedIn, admin.getCustomerPage);
-    router.post('/users/manage/customer', auth.checkLoggedIn, admin.getUserByPhone);
+    router.get('/users/manage/customer', auth.checkLoggedIn, admin.getCustomerPaging);
+    router.post('/users/manage/customer', auth.checkLoggedIn, admin.getCustomerByPhone);
     router.get('/users', auth.checkLoggedIn, home.getUserPage);
     router.get('/users/manage/customer/create', auth.checkLoggedIn, admin.getCreatePatient);
     router.post('/users/manage/customer/create', auth.checkLoggedIn, admin.postCreatePatient);
@@ -129,7 +130,7 @@ let initRoutes = (app) => {
     router.get('/users/manage/bot', auth.checkLoggedIn, admin.getManageBotPage);
     router.get('/users/manage/schedule-for-doctors', auth.checkLoggedIn, admin.getManageCreateScheduleForDoctorsPage);
 
-    router.get('/users/manage/doctor', auth.checkLoggedIn, admin.getManageDoctor);
+    router.get('/users/manage/doctor', auth.checkLoggedIn, admin.getManageDoctorPaging);
     router.post('/users/manage/doctor', auth.checkLoggedIn, admin.getDoctorBy);
     router.get('/users/manage/doctor/create', auth.checkLoggedIn, admin.getCreateDoctor);
     router.post('/admin/doctor/create', auth.checkLoggedIn, admin.postCreateDoctor);
@@ -139,6 +140,8 @@ let initRoutes = (app) => {
     // router.post('/users/doctor/edit/:id', auth.checkLoggedIn, admin.putUpdateDoctorWithoutFile);
     router.post('/users/doctor/edit/:id', auth.checkLoggedIn, upload.single('imageInput'), admin.postEditDoctor);
     router.post('/users/manage/customer?phone=${phone}', auth.checkLoggedIn, admin.getUserByPhone);
+    router.get('/users/manage/schedule-doctor/create/:id', auth.checkLoggedIn, admin.getCreateScheduleDoctor);
+    router.post('/users/manage/schedule-doctor/create/:id', auth.checkLoggedIn, admin.postCreateScheduleDoctor);
 
     router.get('/doctor/manage/schedule', doctor.getSchedule);
     router.get('/doctor/manage/schedule/create', auth.checkLoggedIn, doctor.getCreateSchedule);
@@ -161,7 +164,7 @@ let initRoutes = (app) => {
     router.get('/doctor/post/edit/:id', auth.checkLoggedIn, doctor.getEditPost);
 
     router.get('/admin/manage/customers', auth.checkLoggedIn, customer.getManageCustomersPage);
-    router.get('/admin/get-new-patients', auth.checkLoggedIn, admin.getNewPatients);
+    router.get('/doctor/get-new-patients', auth.checkLoggedIn, admin.getNewPatients);
     router.get('/admin/manage/posts', auth.checkLoggedIn, admin.getManagePosts);
     router.get('/admin/pagination/posts', admin.getPostsPagination);
     router.get('/admin/post/edit/:id', auth.checkLoggedIn, admin.getEditPost);
@@ -199,8 +202,8 @@ let initRoutes = (app) => {
 
     router.get('/login', auth.checkLoggedOut, auth.getLogin);
 
-    router.post('/login', function(req, res, next) {
-        passport.authenticate('local', function(err, user, info) {
+    router.post('/login', function (req, res, next) {
+        passport.authenticate('local', function (err, user, info) {
             if (err) {
                 return next(err);
             }
@@ -209,7 +212,7 @@ let initRoutes = (app) => {
                 return res.redirect('/login');
             }
 
-            req.logIn(user, function(err) {
+            req.logIn(user, function (err) {
                 if (err) {
                     return next(err);
                 }
@@ -219,6 +222,8 @@ let initRoutes = (app) => {
                     // Check user role after successful login
                     if (user.roleId === 3) {
                         return res.redirect('/');
+                    } else if (user.roleId === 2) {
+                        return res.redirect('/doctor/get-new-patients');
                     } else {
                         return res.redirect('/users');
                     }
